@@ -1,0 +1,119 @@
+<template>
+    <div class="midea-head" style="background-color:{{power === 'on'?bgColor:defaultColor}}">
+        <text class="{{language?'midea-head-title':'l_midea-head-title'}}" style="color:{{power === 'on'?'#ffffff':'#666666'}};">
+			{{title}}
+		</text>
+		<image class="midea-head-back" @click="openMenu" show="{{showMenu}}" src="../Component/MideaHead/assets/menu_ic_more_{{power === 'on'?'white':'normal'}}.png"></image>
+		<image class="midea-head-back" @click="goback" src="../Component/MideaHead/assets/menu_ic_cancel_{{power === 'on'?'online':'normal'}}.png"></image>
+    </div>
+</template>
+
+<style lang="less">
+	.l_midea-head-title{
+		width:800px;
+		height:144px;
+		font-size:50px;
+		font-weight: bold;
+		padding-right: 280px;
+		text-align:center;
+	}
+    .midea-head{
+		width:100%;
+		height: 144px;
+		background-color: #CCCCCC;
+		flex-direction: row;
+		&-title{
+			width:800px;
+			height:144px;
+			font-size:50px;
+			font-weight: bold;
+			padding-left: 280px;
+			text-align:center;
+		}
+		&-more{
+			width: 66px;
+			height: 66px;
+			margin-top: 40px;
+		}
+		&-back{
+			width: 66px;
+			height: 66px;
+			margin-left: 40px;
+			margin-top: 40px;
+		}
+	}
+</style>
+
+<script>
+	import router from '@system.router';
+    import prompt from '@system.prompt';
+    export default {
+        name: 'midea-time',
+        props: {
+			title:{
+				default: '',
+				type: String
+			},
+			power: {
+				default: 'off',
+				type: String
+			},
+			showMenu: {
+				default: true,
+				type: Boolean
+			},
+			isnew: {
+				default: false,
+				type: Boolean
+			},
+			hightColor: {
+				default: '#3191FD',
+				type: String
+			},
+			defaultColor: {
+				default: '#CCCCCC',
+				type: String
+			},
+			language: {
+				default: true,
+				type: Boolean
+			}
+		},
+        data(){
+            return {
+                value: '',
+                txt: this.text,
+				showMenu: true,
+				power_1:'off',
+				language:true,
+				bgColor: '#3191FD'
+            }
+        },
+        onInit(){
+			if(this.power){
+				this.$watch('power', 'watchPropsChange')
+			}
+			if(this.isnew){
+				this.bgColor = "#F9CB3D";
+			}else{
+				this.bgColor = "#3191FD";
+			}
+			
+        },
+		watchbgColorChange(newV, oldV){
+			this.bgColor = this.hightColor;
+		},
+		watchPropsChange(newV, oldV){
+			this.power_1 = newV;
+		},
+		goback(){
+			this.$emit("closeWebsocket",{ params: "关闭" })
+			router.clear();
+			// router.back();
+			this.$app.exit();
+		},
+		openMenu(){
+			this.$dispatch('openmenu', { params: "菜单" })
+		}
+    }
+</script>

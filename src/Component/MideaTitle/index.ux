@@ -1,0 +1,69 @@
+<!--<import name="midea-loading" src="../../Component/MideaLoading/index"></import>-->
+<template>
+    <div class="midea-title">
+		<image class="{{language?'midea-title-back':'midea-title-back-l'}}" @click="backPage()" src="../Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"></image>
+		<text class="midea-title-text">
+			{{title}}
+		</text>
+    </div>
+</template>
+
+<style lang="less">
+	.midea-title{
+		width: 100%;
+		height: 144px;
+		background-color: #ffffff;
+		border-bottom-color: #cccccc;
+		border-bottom-width: 1px;
+		flex-direction: row;
+		&-back{
+			width: 66px;
+			height:66px;
+			margin-top: 50px;
+			margin-left: 40px;
+		}
+		&-text{
+			width: 848px;
+			height: 144px;
+			text-align: center;
+			font-size: 50px;
+			color: #000000;
+			font-weight: bold;
+		}
+		&-back-l{
+			width: 66px;
+			height:66px;
+			margin-top: 50px;
+			margin-right: 40px;
+			transform: rotate(180deg);
+		}
+	}
+</style>
+
+<script>
+    import router from '@system.router';
+	import prompt from '@system.prompt';
+    module.exports = {
+		props: ['title','back','language'],
+		data: {
+			back: false,
+			language: true
+		},
+        onInit(){
+        },
+		backPage(){
+			if(this.back){
+				router.clear();
+				router.back();
+			}else{
+				router.clear();
+				// router.back();
+				this.$app.exit();
+			}
+		},
+		onDestroy(){
+//             this.$page.finish();
+//          	this.$app.exit();
+        }
+    }
+</script>

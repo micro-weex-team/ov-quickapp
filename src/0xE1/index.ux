@@ -1,0 +1,557 @@
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-foot" src="../Component/MideaFoot/index"></import>
+<template>
+    <div class="container">
+		<midea-head title="洗碗机" language="{{language}}" power="{{work_status==='power_off'?'off':'on'}}"></midea-head>
+		<refresh offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+			<list onscrollbottom="" id="list" class="E1_list" style="background-color: {{work_status === 'power_off'?'#CCCCCC':'#3191FD'}};">
+				<list-item class="E1_nav" type="listItem">
+					<div class="{{language?'E1_nav_list_lock':'E1_nav_list_lock_l'}}" @click="downMeiju()">
+						<image src="./assets/img/{{work_status === 'power_off'?'meijuicon':'loadingMeiju'}}.png" class="E1_nav_list_lock_img"></image>
+					</div>
+					<text class="E1_nav_list_usemeiju">使用美居</text>
+					<div if="{{wash_stage != 5}}" class="text_list">
+						<text class="E1_nav_standby" if="{{work_status === 'cancel' }}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">待机中</text>
+						<text class="E1_nav_warm" if="{{work_status === 'cancel'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">请选择下方功能</text>
+						<text class="E1_nav_close" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">已关机</text>
+						<text class="E1_nav_warm" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">点击下方开关</text>
+						<text class="E1_nav_data" if="{{work_status != 'cancel' && work_status != 'power_off' && (operator === 'pause' || operator === 'start')}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">05:28</text>
+						<text class="E1_nav_text" if="{{work_status != 'cancel' && work_status != 'power_off' && (operator === 'pause' || operator === 'start')}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">大约剩余</text>
+						<text class="E1_nav_mode" if="{{work_status != 'cancel' && work_status != 'power_off' && (operator === 'pause' || operator === 'start')}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">节能洗丨主洗</text>
+					</div>
+					<text class="E1_nav_standby" if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">保管中</text>
+					<text class="E1_nav_keepend"  if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">节能洗 | 已完成</text>
+				</list-item>
+			</list>
+		</refresh>
+		<div if="{{work_status === 'work' && operator === 'pause' && wash_stage != 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop">
+				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">停止</text>
+			</div>
+			<div class="E1_nav_status_stop">
+				<image src="./assets/img/start.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">继续</text>
+			</div>
+		</div>
+		<div if="{{work_status === 'work' && operator === 'start' && wash_stage != 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop">
+				<image src="./assets/img/pause.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">暂停</text>
+			</div>
+		</div>
+		<div if="{{work_status === 'work' && operator === 'start' && wash_stage === 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop">
+				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">暂停</text>
+			</div>
+		</div>
+		<div class="E1_alert" if="{{isalert}}">
+			<div class="E1_alert_nav" style="top: {{deviceHeight/2-312}}px;">
+				<text class="E1_alert_nav_head">节能洗</text>
+				<text class="E1_alert_nav_middle">确定启动“节能洗”模式吗</text>
+				<div class="E1_alert_nav_foot">
+					<div class="E1_alert_nav_foot_btn">
+						<text class="E1_alert_nav_foot_btn_left">取消</text>
+					</div>
+					<div class="E1_alert_nav_foot_btn">
+						<text class="E1_alert_nav_foot_btn_right">启动</text>
+					</div>
+				</div>
+			</div>
+		</div>
+		<midea-foot if="{{work_status != 'work' && work_status != 'cancel'}}" type='1' list-first="{{btnlist}}"></midea-foot>
+		<midea-loading if="{{isloading}}"></midea-loading>
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<midea-tips if="{{istips}}"></midea-tips>
+    </div>
+</template>
+<script>
+import api from '../Common/api/api.js';
+import router from '@system.router';
+import prompt from '@system.prompt';
+import fetch from '@system.fetch';
+import account from '@service.account';
+import storage from '@system.storage';
+import push from '@service.push';
+import pkg from '@system.package';
+import network from '@system.network';
+module.exports = {
+	private: {
+		isoffset:'-1000px',
+		isRefreshing:false,
+		isalert:false,
+		language: false,
+		isfirst: false,
+		iswarm: false,
+		isabout: false,
+		istips: false,
+		isloading: false,
+		deviceHeight:0,
+		timeoutInter: '',
+		openId: '',
+		accessToken: '',
+		btnlist:[{
+			name:'开关',
+			data:'on',
+			pic:'./assets/img/off.png',
+			clickAlert:false
+		},{
+			name:'节能洗',
+			data:'eco_wash',
+			pic:'./assets/img/eco_on.png',
+			clickAlert:true
+		}],
+		E1list:["work_status","operator","mode","wash_stage","left_time"],
+		online:"true",
+		work_status:'work',
+		operator:'start',
+		mode:'eco_wash',
+		wash_stage:5,
+		left_time: 0,
+	},
+	public: {
+		deviceSeries: '',
+		deviceId: '',
+		openid: ''
+	},
+	isshowclose() {
+		let that = this;
+		if (that.iswarm) {
+			that.istips = true;
+			let time = setTimeout(() => {
+				that.istips = false;
+			}, 3000);
+		}
+	},
+	onclickFn(e) {
+		this.isabout = false;
+	},
+	downMeiju() {
+		let that = this;
+		pkg.hasInstalled({
+			package: 'com.midea.ai.appliances',
+			success: function(data) {
+				if (data.result) {
+					prompt.showDialog({
+						title: '提示',
+						message: '确定打开美居？（仅支持美居5.2及以上版本）',
+						buttons: [
+							{
+								text: '直接打开',
+								color: '#33dd44'
+							}
+						],
+						success: function(data) {
+							// 													router.clear();
+							// 													that.$app.exit();
+							router.push({ uri: 'meiju://com.midea.meiju/main' });
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+				} else {
+					pkg.install({
+						package: 'com.midea.ai.appliances',
+						success: function(data) {
+							console.log(`handling success: ${data.result}`);
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+				}
+				console.log(`handling success: ${data.result}`);
+			},
+			fail: function(data, code) {
+				console.log(`handling fail, code = ${code}`);
+			}
+		});
+	},
+	scrollbottom(e) {
+		let that = this;
+		that.isRefreshing = e.refreshing;
+		let timestamp = Date.parse(new Date());
+		if (that.isfirst) {
+			storage.get({
+				key: 'openidToken',
+				success: function(data) {
+					that.isloading = true;
+					that.iswarm = true;
+					if (data === '') {
+						that.getdevicelist();
+					} else {
+						let obj = JSON.parse(data);
+						if (parseInt(timestamp) > parseInt(obj.time)) {
+							that.getdevicelist();
+						} else {
+							if (obj.openid === that.openid) {
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success');
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		}
+	},
+	timeGetData() {
+		let that = this;
+		that.timeoutInter = setInterval(function() {
+			that.iswarm = false;
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function(data) {
+					if (data === '') {
+						// that.getdevicelist();
+					} else {
+						let obj = JSON.parse(data);
+						if (parseInt(timestamp) > parseInt(obj.time)) {
+							// that.getdevicelist();
+						} else {
+							if (obj.openid === that.openid) {
+								// 									that.openId = obj.openid;
+								// 									that.accessToken = obj.accessToken;
+								// 									that.getDeviceStatus(that.openId);
+							} else {
+								// that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success');
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		}, 3000);
+	},
+	//获取第三方登录信息
+	getdevicelist() {
+		let that = this;
+		account.authorize({
+			type: 'code',
+			success: function(data) {
+				let params = {
+					thirdUId: data.code
+				};
+				api.getUserToken(params).then(res => {
+						let data_accesstoken = res;
+						if (data_accesstoken.code && data_accesstoken.code === 200) {
+							let result_data = typeof data_accesstoken.data === 'object'? data_accesstoken.data: JSON.parse(data_accesstoken.data);
+							if (!parseInt(result_data.code)) {
+								that.openId = result_data.openId;
+								that.accessToken = result_data.accessToken;
+								let obj = {
+									openid: that.openId,
+									accessToken: that.accessToken,
+									time: that.gettime()
+								};
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function(data) {},
+									fail: function(data, code) {}
+								});
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.initData();
+								that.isRefreshing = false;
+								that.isloading = false;
+								that.netWorkGet(that.getCode(result_data.code, '获取访问令牌失败'));
+								that.isfirst = true;
+							}
+						} else {
+							that.initData();
+							that.isRefreshing = false;
+							that.isloading = false;
+							that.netWorkGet('获取访问令牌失败');
+							that.isfirst = true;
+						}
+					})
+					.catch(error => {
+						that.initData();
+						that.isRefreshing = false;
+						that.isloading = false;
+						that.netWorkGet('获取访问令牌失败');
+						that.isfirst = true;
+					});
+			},
+			fail: function(data, code) {
+				that.initData();
+				that.netWorkGet('授权失败,请稍后重试');
+				that.isloading = false;
+				that.isRefreshing = false;
+				that.isfirst = true;
+			}
+		});
+	},
+	//查询状态
+	getDeviceStatus(opid) {
+		let that = this;
+		let params = {
+			openId: opid,
+			devices: [
+				{
+					deviceId: that.deviceId,
+					properties: that.E1list
+				}
+			]
+		};
+		api.postDeviceStatusQuery(params, that.accessToken).then(res => {
+				this.isfirst = true;
+				that.isRefreshing = false;
+				this.isloading = false;
+				if (res.code === 200) {
+					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+					if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+						let obj = data.devices[0].properties;
+						if (that.timeoutInter != '') {
+							clearInterval(that.timeoutInter);
+						}
+						if (that.online != 'true') {
+							that.istips = true;
+							setTimeout(function() {
+								that.istips = false;
+							}, 3000);
+						}
+// 						if (obj.running_status === 'start' || obj.running_status === 'pause') {
+// 							that.isstop = false;
+// 							if (obj.running_status === 'start') {
+// 								that.timeGetData();
+// 							}
+// 						}
+					} else {
+						that.initData();
+						that.isstop = true;
+						if (data.msg === '') {
+							let str1 = '';
+							if (data.devices[0].status) {
+								str1 = data.devices[0].status;
+								if (str1.toString() === '-6') {
+									that.isshowclose();
+									return false;
+								}
+								if (
+									str1.toString() === '-100' &&
+									res_data.devices[0].description.toString() === '3123'
+								) {
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								} else {
+									that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
+								}
+								// that.netWorkGet(api.getStatus(str1,'获取设备状态失败'))
+							} else {
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1, '获取设备状态失败'));
+							}
+							// that.netWorkGet('获取设备状态失败')
+						} else {
+							that.netWorkGet(data.msg);
+						}
+						// that.netWorkGet(data.msg)
+					}
+				} else {
+					that.initData();
+					that.isstop = true;
+					that.netWorkGet('获取设备状态失败,请稍后重试');
+				}
+			})
+			.catch(error => {
+				that.initData();
+				that.isstop = true;
+				that.netWorkGet('获取设备状态失败,请稍后重试');
+				that.isfirst = true;
+				that.isRefreshing = false;
+				that.isloading = false;
+			});
+	},
+	postDeviceControl(obj, status) {
+		let that = this;
+		let params = {
+			openId: that.openId,
+			devices: [
+				{
+					deviceId: that.deviceId,
+					properties: obj,
+					status: that.listDevice
+				}
+			]
+		};
+		that.isloading = true;
+		api.postDeviceControl(params, that.accessToken).then(res => {
+				// that.getDeviceStatus(that.openId);
+				if (res.code === 200) {
+					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+					if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
+						
+					} else {
+						that.initData();
+						that.isRefreshing = false;
+						that.isloading = false;
+						that.isstop = true;
+						if (data.msg === '') {
+							let str1 = '';
+							if (data.devices[0].status) {
+								str1 = data.devices[0].status;
+								if (str1.toString() === '-6') {
+									that.isshowclose();
+									return false;
+								}
+								if (
+									str1.toString() === '-100' &&
+									res_data.devices[0].description.toString() === '3123'
+								) {
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								} else {
+									that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
+								}
+							} else {
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1, '操作设备失败'));
+							}
+						} else {
+							that.netWorkGet(data.msg);
+						}
+					}
+				} else {
+					that.initData();
+					that.isRefreshing = false;
+					that.isloading = false;
+					that.netWorkGet('操作设备失败,请稍后重试');
+				}
+			})
+			.catch(error => {
+				that.initData();
+				that.isRefreshing = false;
+				that.isstop = true;
+				that.netWorkGet('操作设备失败,请稍后重试');
+				that.isloading = false;
+			});
+	},
+	initData() {
+		
+	},
+	netWorkGet(str) {
+		if (this.iswarm) {
+			network.getType({
+				success: function(data) {
+					if (data.type === 'none') {
+						prompt.showToast({
+							message: str + '请检查网络',
+							duration: 1
+						});
+					} else {
+						prompt.showToast({
+							message: str,
+							duration: 1
+						});
+					}
+				}
+			});
+		}
+	},
+	gettime() {
+		let timestamp = Date.parse(new Date());
+		return parseInt(timestamp) + 3600000;
+	},
+	onMenuPress() {
+		this.isabout = !this.isabout;
+	},
+	closeWebsocket(e) {
+		let that = this;
+		that.isclosews = true;
+		if (that.timeoutInter != '') {
+			clearInterval(that.timeoutInter);
+		}
+	},
+	onHide() {
+		let that = this;
+		that.closeWebsocket();
+	},
+	onShow() {
+		let that = this;
+		that.isclosews = false;
+		if (that.ws === '' && that.isws) {
+			// that.webSocketdata();
+		}
+		if (that.timeoutInter != '') {
+			clearInterval(that.timeoutInter);
+		}
+		that.timeGetData();
+	},
+	onInit() {
+		api.getlanguage().then(res => {
+			if (res === 'ug') {
+				this.language = false;
+			} else {
+				this.language = true;
+			}
+		});
+		let that = this;
+		that.deviceHeight = that.$app.options.env.deviceHeight;
+		router.clear();
+		that.$on('cancel', function(e) {
+			that.isabout = false;
+		});
+		that.$on('closetips', function(e) {
+			that.istips = false;
+		});
+		that.$on('openmenu', function(e) {
+			that.isabout = !that.isabout;
+		});
+		let timestamp = Date.parse(new Date());
+// 		storage.get({
+// 			key: 'openidToken',
+// 			success: function(data) {
+// 				if (data === '') {
+// 					that.getdevicelist();
+// 				} else {
+// 					let obj = JSON.parse(data);
+// 					if (parseInt(timestamp) > parseInt(obj.time)) {
+// 						that.getdevicelist();
+// 					} else {
+// 						if (obj.openid === that.openid) {
+// 							that.openId = obj.openid;
+// 							that.accessToken = obj.accessToken;
+// 							that.getDeviceStatus(that.openId);
+// 						} else {
+// 							that.getdevicelist();
+// 						}
+// 					}
+// 				}
+// 				console.log('handling success');
+// 			},
+// 			fail: function(data, code) {
+// 				console.log(`handling fail, code = ${code}`);
+// 			}
+// 		});
+	},
+	onCreate() {},
+	onBackPress() {
+		router.clear();
+		this.$app.exit();
+	}
+};
+</script>
+
+<style lang='less'>
+	@import "./assets/index.less";
+</style>

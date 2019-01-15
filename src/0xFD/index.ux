@@ -1,0 +1,883 @@
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<template>
+    <div class="container" style="background-color: {{power === 'on'?'#3191FD':'#ccc'}};">
+		<midea-head title="加湿器" onclose-websocket="closeWebsocket" language="{{language}}" power="{{power}}"></midea-head>
+        <!-- <div class="content"> -->
+		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+			<list onscrollbottom="" onscroll="" class="main-nav" id="listdeviceNav">
+				<list-item type="deviceNav" class="main-nav-nav">
+					<div class="child-{{language?'lock':'lock-l'}}">
+						<image src="./assets/img/loadingMeiju.png" @click="downMeiju()" class="child-lock-image"></image>
+					</div>
+					<text class="child-lock-text">使用美居</text>
+					<div class="humidity_content">
+						<div class="text-box">
+							<text class="text-item" if="{{!language}}" style="color:{{power === 'on'?'#ffffff':'#666666'}}">%</text>
+							<text class="value" style="color:{{power === 'on'?'#ffffff':'#666666'}}">{{humidity_l?humidity_l:'--'}}</text>
+							<text class="text-item" if="{{language}}" style="color:{{power === 'on'?'#ffffff':'#666666'}}">%</text>
+						</div>
+						<text class="txt"  style="color:{{power === 'on'?'#ffffff':'#666666'}}">室内相对湿度</text>
+					</div>
+					<div class="water_tank">
+						<!--<image class="water_tank_img" src="./assets/img/water_tank{{power === 'on'?'_on':'_off'}}.png"></image>-->
+						<text  style="color:{{power === 'on'?'#ffffff':'#666666'}}">水箱状态:{{tank_status?FDtank_status(tank_status):'缺水'}}</text>
+					</div>
+					<div class="cur_humidity">
+						<text style="color:{{power === 'on'?'#ffffff':'#666666'}}">当前室内湿度:{{cur_humidity?cur_humidity:'--'}}%</text>
+					</div>
+					<div class="cur_wind">
+						<text style="color:{{power === 'on'?'#ffffff':'#666666'}}">风速:{{wind_speed?windDataFilter(wind_speed):'--'}}</text>
+					</div>
+				</list-item>
+				<!--<list-item type="loadMore" class="load-more" if="{{loadMore}}">
+					<progress type="circular"></progress>
+					<text>加载中</text>
+				</list-item>-->
+			</list>
+		</refresh>
+			<div class="control_box">
+				<div class="{{language?'switch_btn':'l_switch_btn'}}">
+					<image src="./assets/img/off.png" @click="control"></image>
+					<text>开关</text>
+				</div>
+				<div class="{{language?'':'wind_contr'}}">
+					<image src="./assets/img/wind_{{power + online === 'ontrue'?'on':'off'}}_{{wind_speed?windData(wind_speed):'1'}}.png" @click="windPop"></image>
+					<text class="{{power === 'on'?'':'off'}}">{{wind_speed?windDataFilter(wind_speed):'--'}}</text>
+				</div>
+				<div class="humidity_contr">
+					<div>
+						<text style="background-color:{{power + online === 'ontrue'?'#3191FD':'#ffffff'}};color: {{power + online === 'ontrue'?'#ffffff':'#D5D5D5'}};" class="humidity_value" @click="humidityPop">{{humidityDataFilter(humidity_l)}}</text>
+						<text style="color: {{power + online === 'ontrue'?'#000000':'#D5D5D5'}};">{{humidity.text}}</text>
+					</div>
+				</div>
+			</div>
+        <!-- </div> -->
+        <div class="mask" if="{{windPopShow}}" @click="windPopClose">
+            <div class="wind_pop pop_content">
+                <div class="content" for="windList">
+                    <div class="list_cont first_list" @click="modelSelect($item.value)" if="{{$idx===0}}">
+						<text class="{{language?'':'selected_l'}} {{claSec[$idx]}}" if="{{!language}}">{{$item.text}}</text>
+                        <image class="list_cont_img" src="{{$item.windIcon}}"></image>
+                        <text class="{{claSec[$idx]}}" if="{{language}}">{{$item.text}}</text>
+                    </div>
+                    <div class="list_cont" @click="modelSelect($item.value)" else>
+						<text class="{{language?'':'selected_l'}} {{claSec[$idx]}}" if="{{!language}}">{{$item.text}}</text>
+                        <image class="list_cont_img" src="{{$item.windIcon}}"></image>
+                        <text class="{{claSec[$idx]}}" if="{{language}}">{{$item.text}}</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mask" if="{{humidityPopShow}}" @click="humidityPopClose">
+            <div class="humidity_pop pop_content_1">
+				<list class="humidity_list" id="list">
+					<list-item type="humidity_data" @click="humiditySelect($item.value)" class="humidity_data {{$idx === 0?'humidity_data_line':''}}" for="{{humidity_data}}">
+						<text class="humidity_text" style="color:{{parseInt(humiditydata) === $item.value?'#3191FD':'#000000'}};">{{$item.value === 100?'F':$item.value}}%</text>
+						<!--<div class="humidity_img" show="{{parseInt(humiditydata) === $item.value}}">
+							<image src="./assets/img/ic_select.png"class="humidity_img_icon"></image>
+						</div>-->
+					</list-item>
+				</list>
+				<!--<div class="humidity_btn">
+					<div class="humidity_btn_1">
+						<text class="humidity_btn1" @click="humidityPopClose">取消</text>
+					</div>
+					<div class="humidity_btn_1">
+						<text class="humidity_btn2" @click="confirmhumidity()">确定</text>
+					</div>
+				</div>-->
+            </div>
+        </div>
+		<midea-loading if="{{isshowLoading}}"></midea-loading>
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<midea-tips if="{{istips}}"></midea-tips>
+    </div>
+</template>
+
+<style>
+    @import "./assets/index.css";
+</style>
+
+<script>
+    import api from '../Common/api/api.js';
+	import prompt from '@system.prompt';
+	import router from '@system.router';
+	import fetch from '@system.fetch';
+	import account from '@service.account';
+	import storage from '@system.storage';
+	import barcode from '@system.barcode';
+	import pkg from '@system.package';
+	// import IOT from '@service.iot';
+	import network from '@system.network'
+    export default {
+        private: {
+			isoffset:'-1000px',
+			isRefreshing:false,
+			ws: '',
+			isws: false,
+			isclosews: false,
+			language:true,
+			deviceHeight:0,
+			showMenu: true,
+			istips: false,
+			isabout: false,
+			online:"false",
+			isfirst:false,
+			isshowLoading: false,
+            isOpen: true,
+            dataColor: '#ffffff',
+            windPopShow: false,
+            humidityPopShow: false,
+            humidityValue: 78,
+            curHumidityValue: '82%',
+            waterValue: '62%',
+            windValue: '中风',
+			code: '',
+			humiditydata: '',
+			humidity_data: [{
+				value:40
+			},{
+				value:50
+			},{
+				value:60
+			},{
+				value:100
+			}],
+			accessToken: '',
+			openId: '',
+			power:'off',
+			wind_speed:'auto',
+			humidity_l: '--',
+			tank_status: '--',
+			cur_humidity: '--',
+			listDevice: {},
+			FDlist:['power','wind_speed','humidity','tank_status','cur_humidity'],
+			FDdata:{
+				power:'off',
+				wind_speed:'auto',
+				humidity: '--',
+				tank_status: '--',
+				cur_humidity: '--'
+			},
+            wind: {
+                img: './assets/img/wind_on_3.png',
+                imgOff: './assets/img/wind_off_3.png',
+                text: '中风'
+            },
+            humidity: {
+                text: '湿度',
+                imgOff: './assets/img/humidity_off.png',
+                value: 82
+            },
+            windList: [
+                {
+                    windIcon: './assets/img/wind4.png',
+                    text: '自动风',
+					value: 'auto'
+                },
+                {
+                    windIcon: './assets/img/wind3_selected.png',
+                    text: '高风',
+					value: 'high'
+                },
+                {
+                    windIcon: './assets/img/wind2.png',
+                    text: '中风',
+					value: 'middle'
+                },
+                {
+                    windIcon: './assets/img/wind1.png',
+                    text: '低风',
+					value: 'low'
+                }
+            ],
+            middleData: {},
+            middleList:[],
+            claSec: ['','selected','',''],
+			claSec_: ['','selected_l','',''],
+            selectedIndex: 2
+        },
+		public: {
+			deviceSeries: '',
+			deviceId: '',
+			openid: ''
+		},
+		onMenuPress(){
+			
+		},
+		closeWebsocket(e){
+			let that = this;
+			that.isclosews = true;
+			if(that.ws != ''){
+				that.ws.close({
+					code: 1000,
+					reason: '退出关闭',
+					success: function() {
+						that.ws = '';
+						console.log("关闭websocket成功")
+					},
+					fail: function(data, code) {
+						console.log("关闭websocke失败, code = "+JSON.stringify(code))
+					}
+				})
+			}
+		},
+		onHide(){
+			let that = this;
+			that.closeWebsocket();
+		},
+		onShow(){
+			let that = this;
+			that.isclosews = false;
+			if(that.ws === '' && that.isws){
+				// that.webSocketdata();
+			}
+		},
+		onclickFn(e){
+			this.isabout = false;
+		},
+		isshowclose(){
+			let that = this;
+			this.istips = true;
+			let time = setTimeout(() => {
+				that.istips = false;
+			},3000)
+		},
+		downMeiju(){
+			let that = this;
+			pkg.hasInstalled({
+				package: 'com.midea.ai.appliances',
+				success: function (data) {
+					if(data.result){
+						prompt.showDialog({
+												title: '提示',
+												message: "确定打开美居？（仅支持美居5.2及以上版本）",
+												buttons: [{
+													text: '直接打开',
+													color: '#33dd44'
+												}],
+												success: function (data) {
+// 													router.clear();
+// 													that.$app.exit();
+													router.push({uri:'meiju://com.midea.meiju/main'})
+												},
+												cancel: function () {
+													console.log('handling cancel')
+												},
+												fail: function (data, code) {
+													console.log(`handling fail, code = ${code}`)
+												}
+											})
+					}else{
+						pkg.install({
+							package: 'com.midea.ai.appliances',
+							success: function (data) {
+								console.log(`handling success: ${data.result}`)
+							},
+							fail: function (data, code) {
+								console.log(`handling fail, code = ${code}`)
+							}
+						})
+					}
+					console.log(`handling success: ${data.result}`)
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
+		humidityDataFilter(str){
+			if(this.online === 'true'){
+				if(str){
+					if(str.toString() === '100'){
+						return "F%";
+					}else{
+						return str + "%";
+					}
+				}else{
+					return 'off'
+				}
+			}else{
+				return 'off'
+			}
+		},
+		windData(str){
+			switch(str){
+				case 'auto':
+					return 1
+				break;
+				case 'low':
+					return 4
+				break;
+				case 'middle':
+					return 3
+				break;
+				case 'high':
+					return 2
+				break;
+			}
+		},
+		windDataFilter(str){
+			switch(str){
+				case 'auto':
+					return "自动风"
+				break;
+				case 'low':
+					return "低风"
+				break;
+				case 'middle':
+					return "中风"
+				break;
+				case 'high':
+					return "高风"
+				break;
+			}
+		},
+		windPopClose(){
+			this.windPopShow = false;
+		},
+		humidityPopClose(){
+			this.humidityPopShow = false;
+		},
+		FDtank_status(str){
+			if(str === '' || str.toString() === '0'){
+				return "缺水";
+			}else{
+				return "正常"
+			}
+		},
+        control(){
+			let params;
+			if(this.online === 'true'){
+				if(this.power === 'on'){
+					params = {
+						power: 'off'
+					}
+				}else{
+					params = {
+						power: 'on'
+					}
+				}
+				let status = ['power'];
+				this.startControlDevice(params,status);
+			}else{
+				this.isshowclose();
+				// prompt.showToast({message:"用户设备处于离线状态，控制功能不可操作"})
+			}
+        },
+        windPop(){
+			let that = this;
+            if(this.power === 'on' && this.online === 'true'){
+                this.windPopShow = true;
+				that.windList
+				let num = this.windData(this.wind_speed);
+				that.windList.forEach(function(item,i){
+					if((i+1) === num){
+						that.windList[i].windIcon = './assets/img/wind'+num+'_selected.png';
+						that.claSec[i] = 'selected';
+						that.claSec_[i] = 'selected_l';
+					}else{
+						that.windList[i].windIcon = './assets/img/wind'+(i+1)+'.png';
+						that.claSec[i] = '';
+						that.claSec_[i] = '';
+					}
+				})
+            }else{
+				if(this.online === 'false'){
+					this.isshowclose();
+					// prompt.showToast({message: '用户设备处于离线状态，控制功能不可操作'})
+				}else{
+					prompt.showToast({message: '设备关机状态,不能操作'})
+				}
+            }
+        },
+        modelSelect(index){
+			let that = this;
+			network.getType({
+				success: function (data) {
+					if(data.type === 'none'){
+						prompt.showToast({
+							message: "网络异常，请检查网络",
+							duration:1
+						}) 
+					}else{
+						let params = {
+							wind_speed: index
+						}
+						let status = ['wind_speed'];
+						that.windPopShow = false;
+						that.startControlDevice(params,status);
+					}
+				}
+			})
+			
+        },
+		humiditySelect(num){
+			this.humiditydata = num;
+			this.confirmhumidity();
+		},
+		confirmhumidity(){
+			let params = {
+				humidity: this.humiditydata
+			}
+			let status = ['humidity'];
+			this.humidityPopShow = false;
+			this.startControlDevice(params,status);
+		},
+        humidityPop(){
+            if(this.power === 'on' && this.online === 'true'){
+				this.humiditydata = this.humidity_l;
+                this.humidityPopShow = true;
+            }else{
+                if(this.online === 'false'){
+					this.isshowclose();
+					// prompt.showToast({message: '用户设备处于离线状态，控制功能不可操作'})
+				}else{
+					prompt.showToast({message: '设备关机状态,不能操作'})
+				}
+            }
+        },
+		scrollbottom(e){
+			let that = this;
+			that.isRefreshing = e.refreshing;
+			let timestamp = Date.parse(new Date());
+			if(that.isfirst){
+				that.isshowLoading = true;
+				storage.get({
+					key: 'openidToken',
+					success: function (data) {
+						if(data === ''){
+							that.getdevicelist();
+						}else{
+							let obj = JSON.parse(data);
+							if(parseInt(timestamp) > parseInt(obj.time)){
+								that.getdevicelist();
+							}else{
+								if(obj.openid === that.openid){
+									that.openId = obj.openid;
+									that.accessToken = obj.accessToken;
+									that.getDeviceStatus();
+								}else{
+									that.getdevicelist();
+								}
+							}
+						}
+						console.log('handling success')
+					},
+					fail: function (data, code) {
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
+			}
+		},
+		getdevicelist() {
+			this.isshowLoading = true;
+			let $this = this;
+			account.authorize({
+				type: 'code',
+				success: function(data) {
+					let params = {
+						thirdUId: data.code,
+					}
+					api.getUserToken(params).then((res) => {
+						let data_accesstoken = res;
+						if (data_accesstoken.code && data_accesstoken.code == 200) {
+							let result_data = (typeof data_accesstoken.data) === "object"?data_accesstoken.data:JSON.parse(data_accesstoken.data);
+							if (!parseInt(result_data.code) && result_data.accessToken) {
+								$this.accessToken = result_data.accessToken;
+								$this.openId = result_data.openId;
+								let obj = {
+									openid: $this.openId,
+									accessToken: $this.accessToken,
+									time: $this.gettime()
+								}
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function (data) {
+										
+									},
+									fail: function (data, code) {
+										
+									}
+								})
+								$this.getDeviceStatus();
+							} else {
+								$this.isfirst = true;
+								$this.isRefreshing = false;
+								$this.isshowLoading = false;
+								$this.netWorkGet(that.getCode(result_data.code,"获取访问令牌失败"))
+								// $this.netWorkGet("获取访问令牌失败")
+							}
+						} else {
+							$this.isfirst = true;
+							$this.isRefreshing = false;
+							$this.isshowLoading = false;
+							$this.netWorkGet("获取访问令牌失败,请稍后重试")
+						}
+					}).catch((error) => {
+						$this.isfirst = true;
+						$this.isRefreshing = false;
+						$this.isshowLoading = false;
+						$this.netWorkGet("获取访问令牌失败,请稍后重试")
+						// prompt.showToast({message:"哦。。出错了！！返回首页重试吧",duration:1})
+					})
+				},
+				fail: function(data, code) {
+					console.log("授权接口：data"+data+":::code"+code)
+					$this.isfirst = true;
+					$this.isRefreshing = false;
+					$this.isshowLoading = false;
+					// prompt.showToast({message:"授权失败，请重试",duration:1})
+					$this.netWorkGet("授权失败,请稍后重试")
+				}
+			})
+		},
+		//查询状态
+		getDeviceStatus() {
+			let that = this;
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: that.FDlist
+				}]
+			}
+			that.isfirst = true;
+			// that.webSocketdata();
+			// prompt.showToast({message:'sas' + JSON.stringify(params)})
+			api.postDeviceStatusQuery(params, that.accessToken).then((res) => {
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				if (res.code = 200) {
+					const res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+					if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
+						that.FDdata = res_data.devices[0].properties;
+						that.listDevice = res_data.devices[0].properties;
+						that.online = res_data.devices[0].properties.online;
+						if (that.online != 'true') {
+							that.istips = true;
+							setTimeout(function() {
+								that.istips = false;
+							}, 3000)
+						}
+						that.setdata();
+					}else{
+						that.initData();
+						that.isshowLoading = false;
+						if(res_data.msg === ''){
+							let str1 = '';
+							if(res_data.devices[0].status){
+								str1 = res_data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+								}
+								// that.netWorkGet(api.getStatus(str1,'获取设备状态失败'))
+							}else{
+								str1 = res_data.code;
+								that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
+							}
+							// that.netWorkGet('获取设备失败')
+						}else{
+							that.netWorkGet(res_data.msg)
+						}
+						// that.netWorkGet(res_data.msg)
+					}
+				}else{
+					that.initData();
+					// that.isshowLoading = false;
+					that.netWorkGet("获取设备状态失败,请稍后重试")
+				}
+				
+				// prompt.showToast({message:"sas"+JSON.stringify(that.FDdata)})
+				// that.humidityDataFilter();
+			}).catch((error) => {
+				that.initData();
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				this.netWorkGet("获取设备状态失败,请稍后重试")
+			})
+		},
+		startControlDevice(control_params,status) {
+			this.isshowLoading = true;
+			let $this = this;
+			let status_params = $this.FDdata;
+			for(let i = 0; i < status.length;i++){
+				delete status_params[status[i]]
+			}
+			if(status_params.online){
+				delete status_params.online
+			}
+			let params = {
+				'openId': $this.openId,
+				'devices': [{
+					"deviceId": $this.deviceId,
+					"properties": control_params,
+					"status":$this.listDevice
+					// "status":status_params
+				}]
+			}
+			api.postDeviceControl(params, $this.accessToken).then((res) => {
+				if (res.code && res.code == 200) {
+					let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data)
+					if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
+						let isall = false;
+						let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
+						$this.listDevice = obj;
+						$this.online = 'true';
+						if(obj.power){
+							$this.FDdata.power = obj.power;
+							$this.power = obj.power;
+						}else{
+							isall = true;
+						}
+						if(obj.wind_speed){
+							$this.FDdata.wind_speed = obj.wind_speed;
+						}else{
+							isall = true;
+						}
+						if(obj.humidity){
+							$this.FDdata.humidity = obj.humidity;
+						}else{
+							isall = true;
+						}
+						if(obj.tank_status){
+							$this.FDdata.tank_status = obj.tank_status;
+						}
+						if(obj.cur_humidity){
+							$this.FDdata.cur_humidity = obj.cur_humidity;
+						}else{
+							isall = true;
+						}
+						if(isall){
+							$this.isshowLoading = true;
+							$this.getDeviceStatus();
+						}else{
+							$this.isRefreshing = false;
+							$this.isshowLoading = false;
+						}
+// 						$this.FDdata = obj;
+// 						$this.online = bind_res_data.devices[0].online;
+// 						$this.FDdata.online = bind_res_data.devices[0].online;
+					}else{
+						$this.initData();
+						$this.isRefreshing = false;
+						$this.isshowLoading = false;
+						if(bind_res_data.msg === ''){
+							let str1 = '';
+							if(bind_res_data.devices[0].status){
+								str1 = bind_res_data.devices[0].status;
+								if(str1.toString() === '-6'){
+									$this.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+									// $this.netWorkGet('设备离线')
+									$this.isshowclose();
+								}else{
+									$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}     
+							}else{
+								str1 = bind_res_data.code;
+								$this.netWorkGet(api.getCode(str1,'操作设备失败'))
+							}
+							// $this.netWorkGet('操作设备失败')
+						}else{
+							$this.netWorkGet(bind_res_data.msg)
+						}
+						// $this.netWorkGet(bind_res_data.msg)
+					}
+					$this.setdata();
+				} else {
+					$this.isRefreshing = false;
+					$this.isshowLoading = false;
+					$this.netWorkGet("操作设备失败,请稍后重试")
+				}
+				// $this.humidityDataFilter();
+			}).catch((error) => {
+				$this.initData();
+				$this.isRefreshing = false;
+				$this.isshowLoading = false;
+				$this.netWorkGet("操作设备失败,请稍后重试")
+			})
+		},
+		setdata(){
+			this.power = this.FDdata.power;
+			this.wind_speed = this.FDdata.wind_speed;
+			this.humidity_l = this.FDdata.humidity;
+			this.tank_status = this.FDdata.tank_status;
+			this.cur_humidity = this.FDdata.cur_humidity;
+		},
+		initData(){
+			this.isfirst = true;
+			this.FDdata = {
+				power:'off',
+				wind_speed:'auto',
+				humidity: '--',
+				tank_status: '--',
+				cur_humidity: '--'
+			}
+		},
+		gettime(){
+			let timestamp = Date.parse(new Date());
+			return parseInt(timestamp) + 3600000;
+		},
+		netWorkGet(str){
+			network.getType({
+				success: function (data) {
+					if(data.type === 'none'){
+						prompt.showToast({
+							message: str + ",请检查网络",
+							duration:1
+						}) 
+					}else{
+						prompt.showToast({
+							message: str,
+							duration:1
+						}) 
+					}
+				}
+			})
+		},
+		webSocketdata() {
+					let that = this;
+					api.createWensocket(that.deviceId).then((ws) => {
+						that.ws = ws;
+						that.isws = true;
+						ws.onopen = function() {
+							console.log("websocket连接成功")
+						}
+						ws.onerror = function(data) {
+							// 连接失败
+							//失败之后再重启
+							that.webSocketdata();
+							console.log('websocket连接失败')
+						}
+						ws.onmessage = function(res) {
+// 							prompt.showDialog({
+// 								title: 'websocket',
+// 								message: "websocket："+ JSON.stringify(res),
+// 								buttons: [{
+// 									text: '确定',
+// 									color: '#33dd44'
+// 								}],
+// 								success: function (data) {
+// 								},
+// 								cancel: function () {
+// 									console.log('handling cancel')
+// 								},
+// 								fail: function (data, code) {
+// 									console.log(`handling fail, code = ${code}`)
+// 								}
+// 							})
+							let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+							if(obj.status.online){
+								that.online = obj.status.online;
+								that.FDdata.online = obj.status.online;
+							}else{
+								that.FDdata.online = 'true';
+								that.online = 'true';
+							}
+							if (obj.status.power) {
+								that.FDdata.power = obj.status.power;
+								that.power = obj.status.power;
+							}
+							if (obj.status.wind_speed) {
+								that.FDdata.lock = obj.status.wind_speed;
+							}
+							if (obj.status.humidity) {
+								that.FDdata.humidity = obj.status.humidity;
+							}
+							if (obj.status.tank_status) {
+								that.FDdata.tank_status = obj.status.tank_status;
+							}
+							if (obj.status.cur_humidity) {
+								that.FDdata.cur_humidity = obj.status.cur_humidity;
+							}
+							that.listDevice = that.FDdata;
+							that.setdata();
+						}
+						ws.onclose = function() {
+							// 关闭 websocket
+							// 关闭之后再重启
+							if(!that.isclosews){
+								that.webSocketdata();
+							}
+							console.log("websocket连接已关闭...")
+						};
+					});
+				},
+        onInit(){
+			api.getlanguage().then((res) => {
+				if(res === 'ug'){
+					this.language = false;
+				}else{
+					this.language = true;
+				}
+			})
+			let that = this;
+			this.deviceHeight = this.$app.options.env.deviceHeight;
+			// prompt.showToast({message:"deviceId"+this.deviceId + ":::openid:"+this.openid})
+			router.clear();
+            this.$page.setTitleBar({text: '加湿器'});
+			that.$on('cancel', function(e){
+				that.isabout = false;
+			})
+			that.$on('closetips', function(e){
+				that.istips = false;
+			})
+			that.$on('openmenu', function(e){
+				that.isabout = !that.isabout;
+			})
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					// prompt.showToast({message:"data"+JSON.stringify(data)})
+					if(data === ''){
+						that.getdevicelist();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								that.getDeviceStatus();
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+			// this.getdevicelist()
+        },
+		onBackPress(){
+			let that = this;
+			that.closeWebsocket();
+			router.clear();
+			this.$app.exit();
+// 			IOT.send({
+// 			   action: 'jumpMainPage', 
+// 			})
+			
+		}
+    }
+
+</script>

@@ -1,0 +1,10 @@
+.l_image_back{
+	/* margin-right: 40px; */
+	transform: rotate(180deg);
+}
+.l_nav_tips_list{
+	width: 100%;
+	margin-left: 400px;
+	margin-right: 200px;
+	flex-direction: row;
+}

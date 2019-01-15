@@ -1,0 +1,146 @@
+<import name="midea-title" src="../Component/MideaTitle/index"></import>
+<template>
+    <div class="container">
+		<midea-title title="扫描设备二维码" back="{{isback}}"></midea-title>
+    </div>
+</template>
+
+<style>
+    
+</style>
+
+<script>
+    import router from '@system.router';
+    import prompt from '@system.prompt';
+	import fetch from '@system.fetch';
+	import account from '@service.account';
+	import storage from '@system.storage';
+	import barcode from '@system.barcode';
+	import api from '../Common/api/api.js';
+	import IOT from '@service.iot';
+    module.exports = {
+        private: {
+			isback: false,
+			iot_url:'',
+			iot_device_ssid:'',
+			iot_config_type:'',
+		},
+		public: {
+			iot_wifi_ssid: "",
+			iot_wifi_password: "",
+			iot_wifi_secretType:"",
+		},
+		onInit() {
+			let that = this;
+			that.openScan();
+		},
+		openScan(){
+			let that = this;
+			barcode.scan({
+				success: function (data) {
+					let mode = api.getUrlCan(data.result,'mode');
+					// that.iot_device_ssid = api.getDeviceInformation(data.result);
+					if(api.getDeviceInformation(data.result)){
+						if(mode){
+							if(that.iot_config_type.toString() === '-1' || that.iot_config_type.toString() === ''){
+								if(mode && mode != ''){
+									let str = mode.toString();
+									mode = str.substring(str.length-1,str.length);
+									that.iot_config_type = str.substring(str.length-1,str.length);
+								}else{
+									that.iot_config_type = '0';
+								}
+							}
+						}else{
+							that.iot_config_type = '0';
+						}
+						if(that.iot_config_type.toString() === '1'){
+							router.push ({
+								uri: "config_network",
+								params: {
+									iot_wifi_ssid: that.iot_wifi_ssid,
+									iot_wifi_password: that.iot_wifi_password,
+									iot_url:data.result,
+									iot_device_ssid:that.iot_device_ssid,
+									iot_wifi_secretType: that.iot_wifi_secretType,
+									iot_config_type:that.iot_config_type,
+								}
+							})
+						}else{
+							router.push ({
+								uri: "config_network",
+								params: {
+									iot_wifi_ssid: that.iot_wifi_ssid,
+									iot_wifi_password: that.iot_wifi_password,
+									iot_wifi_secretType: that.iot_wifi_secretType,
+									iot_url:data.result,
+									iot_device_ssid:that.iot_device_ssid,
+									iot_config_type:that.iot_config_type,
+								}
+							})
+						}
+					}else{
+						prompt.showDialog({
+							title: '手动添加设备',
+							message: "设备二维码信息不正确，请扫描正确的二维码",
+							buttons: [{
+								text: '重新扫描',
+								color: '#33dd44'
+							},{
+								text: '取消',
+								color: '#666666'
+							}],
+							success: function (data) {
+								if(data.index === 0){
+									that.openScan();
+								}else if(data.index === 1){
+									router.back();
+								}
+							},
+							cancel: function () {
+								console.log('handling cancel')
+							},
+							fail: function (data, code) {
+								console.log(`handling fail, code = ${code}`)
+							}
+						})
+					}
+				},
+				fail: function (data, code) {
+					that.$app.exit();
+					// router.back();
+// 					this.$page.finish();
+//          			that.$app.exit();
+// 					IOT.send({
+// 					   action: 'jumpMainPage', 
+// 					})
+				},
+				cancel: function (data) {
+					// router.back();
+					
+         			that.$app.exit();
+// 					IOT.send({
+// 					   action: 'jumpMainPage', 
+// 					})
+				}
+			})
+		},
+		startConfigDevice(){
+			
+		},
+		onBackPress(){
+// 			IOT.send({
+// 			   action: 'jumpMainPage', 
+// 			})
+			router.clear();
+			this.$app.exit();
+		},
+		onReady(){
+			
+		},
+		onDestroy(){
+			this.$app.exit();
+            this.$page.finish();
+        }
+    }
+</script>

@@ -1,0 +1,253 @@
+.container{
+	width: 100%;
+	flex-direction: column;
+}
+.nav_list{
+	width: 100%;
+}
+.midea-title{
+	width: 100%;
+	height: 144px;
+	background-color: #ffffff;
+	border-bottom-color: #cccccc;
+	border-bottom-width: 1px;
+	flex-direction: row;
+}
+.midea-title-back{
+	width: 66px;
+	height:66px;
+	margin-top: 50px;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+.midea-title-text{
+	width: 848px;
+	height: 144px;
+	text-align: center;
+	font-size: 50px;
+	color: #000000;
+	font-weight: bold;
+}
+.nav_list_all{
+	width: 100%;
+}
+.seting{
+	width: 100%;
+	flex-direction: column;
+}
+.top{
+	width: 100%;
+	height: 800px;
+    /*height: 1370px;*/
+	flex-direction: column;
+    color: #666666;
+}
+.nav_tips{
+	flex-direction: column;
+	justify-content: center;
+}
+.nav_time{
+	width: 100%;
+	text-align: center;
+	font-size: 42px;
+	color: #2A2A2A;
+}
+.nav_bottom{
+	margin-top: 50px;
+	width: 1000px;
+	margin-left: 40px;
+	margin-right: 40px;
+	flex-direction: column;
+}
+.progress{
+    color: #25D4DF;
+	width: 100%;
+	/*margin-top: 400px;*/
+	margin-top: -440px;
+	text-align: center;
+	font-weight: bold;
+}
+.nav_tips_list_img{
+	width: 40px;
+	height: 40px;
+	margin-top: 12px;
+	resize-mode: cover;
+	/* margin-right: 300px; */
+}
+.top_done{
+	width: 600px;
+	height: 600px;
+	resize-mode: cover;
+	margin-left: 240px;
+	margin-right: 240px;
+	margin-top: 150px;
+	animation-name: loadingAn;
+	animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count:infinite;
+}
+.isanimation{
+	width: 40px;
+	height: 40px;
+	margin-top: 12px;
+	resize-mode: cover;
+	animation-name: loadingAn;
+	animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count:infinite;
+}
+.top_done_1{
+	resize-mode: cover;
+	width: 600px;
+	height: 600px;
+	margin-right: 240px;
+	margin-left: 240px;
+	margin-top: 150px;
+}
+.text_progress{
+	font-size: 50px;
+}
+.nav_progress{
+	font-weight: bold;
+	 font-size: 130px;
+}
+.nav_tips_list{
+	width: 100%;
+	margin-left: 300px;
+	margin-right: 300px;
+	flex-direction: row;
+}
+.seting-tips{
+	margin-bottom: 30px;
+	width: 100%;
+	text-align: center;
+    font-size: 48px;
+    color: #000000;
+}
+.nav_tips_progerss{
+	margin-top: 10px;
+	margin-left: 300px;
+	width: 40px;
+	height: 40px;
+	/*color: #C9C9C9;*/
+	animation-name: loadingAn;
+	animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count:infinite;
+}
+.txt{
+	margin-left: 30px;
+	width: 50%;
+  font-size: 42px;
+  color: #666666;
+  line-height: 60px;
+}
+.done{
+	width: 100%;
+	flex-direction: column;
+}
+.btn{
+    width: 960px;
+    height: 120px;
+    border-radius: 16px;
+    font-size: 48px;
+    margin-top: 30px;
+}
+.btn-info{
+    background-color: #21D9E5;
+    color: #fff;
+}
+.btn-cancel{
+    border: 3px solid #21D9E5;
+    color: #21D9E5;
+}
+.set-succ{
+	width: 100%;
+	flex-direction: column;
+}
+.set_top{
+	width: 100%;
+	flex-direction: column;
+}
+.nav_btn{
+	width: 900px;
+	margin-right: 90px;
+	margin-left: 90px;
+	margin-top: 200px;
+	margin-bottom: 100px;
+}
+.nav_btn_2{
+	width: 900px;
+	margin-right: 90px;
+	/*position: fixed;
+	left: 90px;
+	bottom: 200px;*/
+	margin-left: 90px;
+	margin-top: 200px;
+}
+.nav_btn_1{
+	width: 900px;
+	margin-right: 90px;
+	/*position: fixed;
+	left: 90px;
+	bottom: 60px;*/
+	margin-left: 90px;
+	margin-top: 40px;
+	/*margin-bottom: 100px;*/
+}
+.nav_btn_3{
+	width: 900px;
+	margin-right: 90px;
+	/*position: fixed;
+	left: 90px;
+	bottom: 60px;*/
+	margin-left: 90px;
+	margin-top: 40px;
+	margin-bottom: 100px;
+}
+.nav_btn_text{
+	width: 100%;
+	height: 120px;
+	border-radius: 16px;
+	font-size: 48px;
+	color: #FFFFFF;
+	text-align: center;
+	background-color: #21D9E5;
+}
+.nav_progress_fail{
+	font-size: 150px;
+	color: red;
+}
+.txt_3{
+	width: 100%;
+	text-align: left;
+  font-size: 42px;
+  color: #666666;
+  line-height: 60px;
+}
+.nav_btn_text_1{
+	width: 100%;
+	height: 120px;
+	border-radius: 16px;
+	font-size: 48px;
+	color: #21D9E5;
+	text-align: center;
+	border: 3px solid #21D9E5;
+}
+.txt_remine{
+	margin-top: 20px;
+	font-size: 40px;
+	text-align: center;
+	width: 100%;
+	color: #3191FD;
+}
+
+/*
+**
+**动画
+*/
+@keyframes loadingAn
+{
+from {transform: rotate(0deg);}
+to {transform: rotate(360deg);}
+}

@@ -1,0 +1,157 @@
+<template>
+	<div class="Midea-compont">
+		<div class="Midea-dialog">
+			<list class="Midea-list" id="list">
+				<list-item class="Midea-item" type="listItem" for="{{list}}" @click="selectData($item.id)">
+					<text class="Midea-text" if="{{language}}" style="color: {{selectgear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}</text>
+					<div class="Midea-{{language?'imgage':'imgage_l'}}">
+						<image class="Midea-img" show="{{selectgear === $item.id}}" src="./assets/img/ic_select.png"></image>
+					</div>
+					<text class="Midea-text" if="{{!language}}" style="color: {{selectgear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}</text>
+				</list-item>
+			</list>
+			<div class="Midea-btn">
+				<div if="{{language}}" class="Midea-btn1" @click="closeDialog">
+					<text class="Midea-btn1text">取消</text>
+				</div>
+				<div class="Midea-btn1" @click="confirm">
+					<text class="Midea-btn2text">确定</text>
+				</div>
+				<div if="{{!language}}" class="Midea-btn1" @click="closeDialog">
+					<text class="Midea-btn1text">取消</text>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+<script>
+	import prompt from '@system.prompt';
+	export default {
+		props:{
+			list:{
+				default: [],
+				type: Array
+			},
+			data:{
+				default: 1,
+				type: Number
+			},
+			language:{
+				default: true,
+				type: Boolean
+			}
+		},
+		data: {
+			selectgear:''
+		},
+		closeDialog(){
+			this.$emit('closeDia',{param:"关闭"})
+		},
+		confirm(){
+			this.$emit('conData',{param:"关闭"})
+		},
+		selectData(id){
+			this.$emit('selectGear',{param:id})
+		},
+		watchPropsChange(newV, oldV){
+			this.selectgear = newV;
+		},
+		onInit () {
+			let that = this;
+			that.list.forEach(function(item,i){
+				if(item.id === that.data){
+					setTimeout(function(){
+						that.$element('list').scrollTo({index: i-1})
+					},200)
+				}
+			})
+			that.selectgear = that.data;
+			that.$watch("data", 'watchPropsChange')
+		}
+	}
+</script>
+<style lang="less">
+	.Midea-compont{
+		position: fixed;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		background-color: #000000;
+		opacity: 0.5;
+	}
+	.Midea-{
+		&dialog{
+			position: fixed;
+			height: 900px;
+			bottom: 60px;
+			left: 60px;
+			right: 60px;
+			width: 960px;
+			border-radius: 30px;
+			background-color: #FFFFFF;
+			flex-direction: column;
+		}
+		&list{
+			width: 100%;
+			height: 750px;
+		}
+		&item{
+			width: 100%;
+			height: 150px;
+			flex-direction: row;
+		}
+		&text{
+			font-weight: bold;
+			margin-left: 40px;
+			color: #cccccc;
+			font-size: 50px;
+			width: 50%;
+			text-align: right;
+		}
+		&imgage_l{
+			flex-direction: row;
+			justify-content: flex-end;
+			width: 50%;
+		}
+		&imgage{
+			flex-direction: row;
+			justify-content: flex-start;
+			width: 50%;
+		}
+		&img{
+			margin-top: 55px;
+			margin-left: 20px;
+			width: 40px;
+			height: 40px;
+		}
+		&btn{
+			width: 100%;
+			height: 150px;
+			flex-direction: row;
+			border-top-color: #E5E5E5;
+			border-top-width: 1px;
+		}
+		&btn1{
+			width: 50%;
+			height:150px;
+		}
+		&btn1text{
+			width:100%;
+			height:70px;
+			border-right-width:2px;
+			border-right-color:#E5E5E5;
+			text-align: center;
+			font-size: 48px;
+			margin-top: 40px;
+		}
+		&btn2text{
+			width:100%;
+			height:70px;
+			color: #3191FD;
+			text-align: center;
+			font-size: 48px;
+			margin-top: 30px;
+		}
+	}
+</style>

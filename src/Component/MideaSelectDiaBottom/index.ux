@@ -1,0 +1,206 @@
+<template>
+	<div class="M-dialog" @click="closeDia">
+		<div class="M-dialog-alert {{showdia?'translateUp':'translateDown'}}" style="height: {{heightD}}px;">
+			<text class="M-dialog-alert-head" if="{{ishead}}">{{headtitle}}</text>
+			<div class="M-dialog-alert-nav" style="height: {{150*showline}}px;">
+				<list onscrollbottom="" class="M-dialog-alert-nav-list" id="list">
+					<list-item type="selectList" class="M-dialog-alert-nav-item {{$idx+1 == listNum && !isfoot?'nofoot':''}}" for="{{datalist}}">
+						<text class="M-dialog-alert-nav-item-name" style="text-align: {{isselecticon?'right':'center'}};color: {{$item.select?color:'#000000'}};">{{$item.name}}</text>
+						<div class="M-dialog-alert-nav-item-pic" if="{{isselecticon}}">
+							<image class="M-dialog-alert-nav-item-icon" src="../Common/img/{{isyellow?'select-icon':'ic_select'}}.png"></image>
+						</div>
+					</list-item>
+				</list>
+			</div>
+			<div class="M-dialog-alert-foot" if="{{isfoot}}">
+				
+			</div>
+		</div>
+	</div>
+</template>
+
+<style lang='less'>
+	.M-dialog {
+		flex-direction: column;
+		align-items: center;
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background-color: #000000;
+		opacity: 0.5;
+		&-alert{
+			position: fixed;
+			bottom: 60px;
+			left: 30px;
+			right: 30px;
+			flex-direction: column;
+			justify-content: center;
+			background-color: #FFFFFF;
+			border-radius: 30px;
+			&-head{
+				width: 100%;
+				height: 150px;
+				text-align: center;
+				font-size: 48px;
+				font-weight: bold;
+				color: #000000;
+				border-bottom-color: #E5E5E5;
+				border-bottom-width: 1px;
+			}
+			&-nav{
+				width: 100%;
+				flex-direction: row;
+				&-list{
+					flex-direction: column;
+				}
+				&-item{
+					width: 100%;
+					height: 150px;
+					flex-direction: row;
+					border-bottom-color: #E5E5E5;
+					border-bottom-width: 1px;
+					&-name{
+						width: 100%;
+						text-align: right;
+						padding-right: 15px;
+						padding-left: 15px;
+						font-size: 48px;
+						color: #000000;
+					}
+					&-pic{
+						width: 100%;
+						padding-left: 15px;
+						padding-right: 15px;
+					}
+					&-icon{
+						margin-top: 50px;
+						width: 50px;
+						height: 50px;
+						resize-mode: cover;
+					}
+				}
+			}
+			&-foot{
+				width: 100%;
+				height: 150px;
+				border-top-color: #E5E5E5;
+				border-top-width: 1px;
+				flex-direction: row;
+			}
+		}
+	}
+	.nofoot{
+		border-bottom-color: #E5E5E5;
+		border-bottom-width: 0px;
+	}
+	
+	.translateUp {
+	  animation-name: translateUp;
+	  animation-duration: 100ms;
+	  animation-timing-function: linear;
+	  animation-fill-mode: forwards;
+	}
+	.translateDown {
+	  animation-name: translateDown;
+	  animation-duration: 100ms;
+	  animation-timing-function: linear;
+	  animation-fill-mode: forwards;
+	}
+	@keyframes translateUp {
+	  from {
+	    transform: translateY(800px);
+	  }
+	  to {
+	    transform: translateY(0px);
+	  }
+	}
+	@keyframes translateDown {
+	  from {
+	    transform: translateY(0px);
+	  }
+	  to {
+	    transform: translateY(800px);
+	  }
+	}
+</style>
+
+<script>
+	import prompt from '@system.prompt';
+	import notification from '@system.notification';
+	import router from '@system.router';
+	export default {
+		name: 'Midea-select',
+		props: {
+			isshow:{
+				default: false,
+				type: Boolean
+			},
+			isselecticon:{
+				default: false,
+				type: Boolean
+			},
+			isyellow:{
+				default: false,
+				type: Boolean
+			},
+			datalist:{
+				default: [],
+				type:Array
+			},
+			showline:{
+				default: 0,
+				type: Number
+			},
+			ishead:{
+				default: false,
+				type: Boolean
+			},
+			headtitle:{
+				default: "大家好",
+				type: String
+			},
+			isfoot:{
+				default: false,
+				type: Boolean
+			}
+		},
+		data() {
+			return {
+				heightD:0,
+				listNum:0,
+				color:'',
+				showdia:false
+			}
+		},
+		closeDia(){
+			let that = this;
+			that.showdia = false;
+			setTimeout(function(){
+				that.$emit("closeDia",{param:"关闭"})
+			},100)
+		},
+		clickE(){
+		},
+		onInit() {
+			
+		},
+		onReady(){
+			let headH = 0;
+			let foot = 0;
+			let that = this;
+			if(that.ishead){
+				headH = 150;
+			}
+			if(that.isfoot){
+				foot = 150;
+			}
+			that.heightD = that.showline*150+foot+headH;
+			that.listNum = that.datalist.length;
+			that.color = that.isyellow?'#F9CB3D':'#3191FD';
+			that.showdia = that.isshow;
+		}
+
+	}
+</script>

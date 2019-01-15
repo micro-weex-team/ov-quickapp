@@ -1,0 +1,1041 @@
+<!-- 组件引入 -->
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+
+<template>
+	<div class="container" id="container_body">
+		<midea-head title="电热水器" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{info.power}}"></midea-head>
+		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="refreshData" refreshing="{{isRefreshing}}">
+			<list onscrollbottom="" onscroll="" style="background-color: {{info.power == 'on'?'#F9CB3D':'#cccccc'}};" class="EA_nav" id="list">
+				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
+				<list-item type="listItem" class="EA_nav_list">
+					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}" @click="isMeiju()">
+						<image src="./assets/img/{{info.power == 'on'?'loadingMeiju':'meijuicon'}}.png" class="EA_nav_list_lock_img"></image>
+					</div>
+					<text class="EA_nav_list_usemeiju {{info.power == 'on'?'':'EA_nav_list_usemeiju2'}">使用美居</text>
+					<!-- 增加新的显示内容在下面 -->
+					<div class="temperature">
+						<text class="temperature-num {{info.power == 'on'?'':'off-color'}}">{{info.power == 'on'?info.cur_temperature:'--'}}</text>
+						<text class="text-icon {{info.power == 'on'?'':'off-color'}}">°</text>
+					</div>
+					<div class="txt-box">
+						<div class="txt-content" if="{{info.power == 'on'}}">
+							<text class="txt1">{{info.hot_power=='on'?'加热':info.warm_power=='on'?'保温':'待机'}}中</text>
+							<text class="txt2">当前加热温度:{{info.temperature}}°</text>
+						</div>
+						<text class="power-text" else>已关机</text>
+					</div>
+					<div class="info">
+						<div class="info-left">
+							<div>
+								<div class="text-box" if="{{info.power == 'on'}}">
+									<text class="num-text">{{parseInt(info.end_time_hour)*60+parseInt(info.end_time_minute)}}</text>
+									<text class="unit">分</text>
+								</div>
+								<text class="text3" else>-</text>
+							</div>
+							<text class="text {{info.power == 'on'?'':'text2'}}">剩余时间</text>
+						</div>
+						<div class="line" style="background-color: {{info.power == 'on'?'#FFFFFF':'#000000'}}"></div>
+						<div class="info-right">
+							<div>
+								<div class="text-box" if="{{info.power == 'on'}}">
+									<text class="num-text">{{info.heat_water_level}}</text>
+									<text class="unit">%</text>
+								</div>
+								<text class="text3" else>-</text>
+							</div>
+							<text class="text {{info.power == 'on'?'':'text2'}}">热水量</text>
+						</div>
+					</div>
+					<!-- <div class="btn-box">
+						<image class="btn-del" @click="del" src="./assets/img/{{info.power == 'on'?'del':'del2'}}.png"></image>
+						<image class="btn-add" @click="add" src="./assets/img/{{info.power == 'on'?'add':'add2'}}.png"></image>
+					</div> -->
+				</list-item>
+			</list>
+		</refresh>
+
+		<!-- 控制按钮 -->
+		<div class="control-box">
+			<div class="control-cell power-box" @click="contronlPower">
+				<image src="./assets/img/off.png"></image>
+				<text>开关</text>
+			</div>
+			<div class="control-cell temperature-box-btn" @click="controlTemperatureBox">
+				<image src="./assets/img/{{info.power == 'on'?'tem':'tem-off'}}.png"></image>
+				<text style="opacity:{{info.power == 'on'?'1':'0.3'}}">温度</text>
+			</div>
+			<!-- <div class="control-cell time-box" @click="controlAppointmentBox">
+				<image src="./assets/img/{{info.power == 'on'?'time-on':'time'}}.png"></image>
+				<text>{{info.power == 'on'?info.yuyue?'预约 | 关':'预约':info.yuyue?'预约 | 开':'预约'}}</text>
+			</div> -->
+		</div>
+		<!-- 温度弹窗 -->
+		<div class="mask" if="mask" @click="resetMask"></div>
+		<div class="temperature-box  {{animateClass}}" if="temperatureShow">
+			<list class="temperature-list">
+				<block for="temperatureList">
+					<list-item type="temperature-speed" class="temperature-item" @click="temperatureSelect($idx, $item)">
+						<text class="txt" style="color: {{$idx == temperatureIndex?'#F9CB3D':'#CCCCCC'}}">{{$item}}°</text>
+						<image class="img-icon" style="opacity: {{$idx == temperatureIndex?'1':'0'}}" src="./assets/img/select-icon.png"></image>
+					</list-item>
+				</block>
+			</list>
+			<div class="btn-grounp">
+				<text class="btn btn-cancel" @click="temperatureCancel">取消</text>
+				<text class="btn btn-sure" @click="temperatureSure">确定</text>
+			</div>
+		</div>
+		<!-- 预约开关机 -->
+		<!-- <div class="appointment-box {{animateClass}}" if="appointmentShow">
+			<div class="title">
+				<text class="h3">预约开关机</text>
+				<text class="time-value">当前预约：10:15{{info.power == 'on'?'关':'开'}}机</text>
+			</div>
+			<div class="appointment-off">
+				<text class="h3">预约关机</text>
+				<image class="img" @click="appointmentOffClick" src="./assets/img/{{offSelected?'select':'unselect'}}.png"></image>
+			</div>
+			<div class="appointment-open">
+				<text class="h3">预约开机</text>
+				<image class="img" @click="appointmentOpenClick" src="./assets/img/{{openSelected?'select':'unselect'}}.png"></image>
+			</div>
+			<div class="appointment-time">
+				<text class="h3">预约时间</text>
+				<div class="select-time-box">
+					<text class="current-time">{{hoursList[hoursIndex]+':'+minutesList[minutesIndex]}}</text>
+					<image class="arow-img" src="./assets/img/arow_down.png"></image>
+				</div>
+			</div>
+			<div class="appointment-list-box">
+				<list class="hours-list">
+					<list-item type="hours-item" for="hoursList" @click="hoursClick($idx)">
+						<text style="color: {{$idx == hoursIndex?'#F9CB3D':'#CCCCCC'}}">{{$item}}</text>
+						<image class="img-icon" style="margin-left: 20px; opacity: {{$idx == hoursIndex?'1':'0'}}" src="./assets/img/select-icon.png"></image>
+					</list-item>
+				</list>
+				<list class="minutes-list">
+					<list-item type="minutes-item" for="minutesList" @click="minutesClick($idx)">
+						<text style="color: {{$idx == minutesIndex?'#F9CB3D':'#CCCCCC'}}">{{$item}}</text>
+						<image class="img-icon" style="margin-left: 20px; opacity: {{$idx == minutesIndex?'1':'0'}}" src="./assets/img/select-icon.png"></image>
+					</list-item>
+				</list>
+			</div>
+			<div class="btn-grounp">
+				<text class="btn btn-cancel" @click="resetMask">取消</text>
+				<text class="btn btn-sure" @click="appointmentSure">确定</text>
+			</div>
+		</div> -->
+		<!-- 组件 -->
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<midea-loading if="{{isshowLoading}}"></midea-loading>
+		<midea-tips if="{{istips}}"></midea-tips>
+	</div>
+</template>
+<script>
+	import api from '../Common/api/api.js';
+	import prompt from '@system.prompt';
+	import router from '@system.router';
+	import fetch from '@system.fetch';
+	import account from '@service.account';
+	import storage from '@system.storage';
+	import barcode from '@system.barcode';
+	// import IOT from '@service.iot';
+	import pkg from '@system.package';
+	import network from '@system.network';
+	
+	export default {
+		private: {
+			isoffset:'-1000px',
+			isRefreshing:false,
+			mask: false,
+			animateClass: '',
+			isshowLoading: false,
+			istips: false,
+			isabout: false,
+			bgColor: true,
+			language:true,
+			deviceHeight: 0,
+			isfirst:false,
+			timeoutInter: '',
+			temperatureList: [],
+			temperatureIndex: 0,
+			temperatureShow: false,
+			openSelected: 1,
+			offSelected: 0,
+			hoursList: [],
+			minutesList: [],
+			hoursIndex: 1,
+			ws: '',
+			isws: false,
+			iswarm: true,
+			isclosews: false,
+			minutesIndex: 1,
+			tipsTime:'',
+			appointmentShow: false,
+			E2data: ['power', 'hot_power', 'warm_power', 'cur_temperature', 'temperature', 'heat_water_level', 'end_time_hour', 'end_time_minute'],
+			online: 'false',
+			status: ['temperature', 'mode'],
+			info: {
+				power: 'off',
+				cur_temperature: '--',
+				temperature: '--',
+				end_time_hour: 0,
+				end_time_minute: 0,
+				heat_water_level: 0,
+				hot_power: 'off',
+				warm_power: 'off'
+			},
+			params: {},
+		},
+		public: {
+			deviceSeries: '',
+			deviceId: '',
+			openid: ''
+		},
+		//判断是否安装美居
+		isMeiju() {
+			let that = this;
+			pkg.hasInstalled({
+				package: 'com.midea.ai.appliances',
+				success: function (data) {
+					if(data.result){
+						prompt.showDialog({
+												title: '提示',
+												message: "确定打开美居？（仅支持美居5.2及以上版本）",
+												buttons: [{
+													text: '直接打开',
+													color: '#33dd44'
+												}],
+												success: function (data) {
+													//router.clear();
+													//that.$app.exit();
+													router.push({uri:'meiju://com.midea.meiju/main'})
+												},
+												cancel: function () {
+													console.log('handling cancel')
+												},
+												fail: function (data, code) {
+													console.log(`handling fail, code = ${code}`)
+												}
+											})
+					}else{
+						pkg.install({
+							package: 'com.midea.ai.appliances',
+							success: function (data) {
+								console.log(`handling success: ${data.result}`)
+							},
+							fail: function (data, code) {
+								console.log(`handling fail, code = ${code}`)
+							}
+						})
+					}
+					console.log(`handling success: ${data.result}`)
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
+		contronlPower() {
+			let that = this;
+			if (that.online == 'false' || !this.online) {
+				that.isshowclose();
+			} else {
+				if (that.info.power == 'off') {
+					that.params = {
+						power: 'on'
+					}
+				} else {
+					that.params = {
+						power: 'off'
+					}
+				}
+				that.postDeviceControl(that.params)
+			}
+		},
+		del() {
+			let that = this;
+			if (that.online == 'false' || !this.online) {
+				that.isshowclose();
+				return
+			}
+			if (that.info.power != 'on') {
+				prompt.showToast({message: '设备关机状态，不能操作'})
+				return
+			}
+			if (parseInt(that.info.temperature) > 30) {
+				let temperature = parseInt(that.info.temperature) - 1
+				that.params = {
+					temperature,
+					mode: 'custom'
+				}
+				that.postDeviceControl(that.params, that.status)
+			} else {
+				prompt.showToast({message: '最低加热温度为30'})
+			}
+		},
+		add() {
+			if (this.online == 'false' || !this.online) {
+				this.isshowclose();
+				return
+			}
+			if (this.info.power != 'on') {
+				prompt.showToast({message: '设备关机状态，不能操作'})
+				return
+			}
+			if (parseInt(this.info.temperature) < 75) {
+				let temperature = parseInt(this.info.temperature) + 1
+				this.params = {
+					temperature,
+					mode: 'custom'
+				}
+				this.postDeviceControl(this.params, this.status)
+			} else {
+				prompt.showToast({message: '最高加热温度为75'})
+			}
+		},
+		controlTemperatureBox() {
+			let that = this;
+			if (that.online === 'true') {
+				if (that.info.power === 'on') {
+					that.temperatureList.forEach(function(item,index){
+						if(item === parseInt(that.info.temperature)){
+							that.temperatureIndex = index;
+						}
+					})
+					that.mask = true;
+					that.animateClass = 'animate_S';
+					that.temperatureShow = true;
+				} else {
+					prompt.showToast({message: '设备关机状态，不能操作'})
+				}
+			} else {
+				that.istips = true;
+				setTimeout(function() {
+					that.istips = false;
+				}, 3000)
+			}
+		},
+		temperatureSelect(index, value) {
+			this.temperatureIndex = index;
+			this.params = {
+				temperature: parseInt(value),
+				mode: 'custom'
+			}
+		},
+		temperatureCancel() {
+			this.resetMask();
+		},
+		temperatureSure() {
+			this.resetMask();
+			this.postDeviceControl(this.params, this.status)
+		},
+		controlAppointmentBox() {
+			let that = this;
+			if (that.online === 'true') {
+				if (that.info.power === 'on') {
+					that.temperatureList.forEach(function(item,index){
+						if(item === parseInt(that.info.temperature)){
+							that.temperatureIndex = index;
+						}
+					})
+					that.mask = true;
+					that.animateClass = 'animate_S2';
+					that.appointmentShow = true;
+				} else {
+					prompt.showToast({
+						message: "童锁打开状态,请关闭童锁在进行操作"
+					})
+				}
+			} else {
+				that.istips = true;
+				setTimeout(function() {
+					that.istips = false;
+				}, 3000)
+			}
+			
+		},
+		appointmentOpenClick() {
+			this.openSelected = !this.openSelected
+		},
+		appointmentOffClick() {
+			this.offSelected = !this.offSelected
+		},
+		hoursClick(index) {
+			if (this.info.power === 'on') {
+				if (!this.offSelected) {
+					prompt.showToast({message: '请先打开预约关机'})
+					return
+				}
+			} else {
+				if (!this.openSelected) {
+					prompt.showToast({message: '请先打开预约开机'})
+					return
+				}
+			}
+			this.hoursIndex = index
+		},
+		minutesClick(index) {
+			if (this.info.power === 'on') {
+				if (!this.offSelected) {
+					prompt.showToast({message: '请先打开预约关机'})
+					return
+				}
+			} else {
+				if (!this.openSelected) {
+					prompt.showToast({message: '请先打开预约开机'})
+					return
+				}
+			}
+			this.minutesIndex = index
+		},
+		appointmentSure() {
+
+		},
+		resetMask() {
+			if (this.appointmentShow) {
+				this.animateClass = 'animate_D2';
+			} else {
+				this.animateClass = 'animate_D';
+			}
+			setTimeout(() => {
+				this.temperatureShow = false;
+				this.appointmentShow = false;
+				this.mask = false;
+			}, 400)
+		},
+		//获取第三方登录信息
+		getdevicelist(){
+            //this.isshowLoading = true;
+			let that = this;
+			account.authorize({
+				type: 'code',
+				success: function(data) {
+                    let params = {
+                        thirdUId: data.code,
+                    }
+                    api.getUserToken(params).then((res) => {
+						let data_accesstoken = res;
+                        if (data_accesstoken.code && data_accesstoken.code === 200) {
+                            let result_data = typeof data_accesstoken.data === 'object'?data_accesstoken.data:JSON.parse(data_accesstoken.data);
+                            if (parseInt(result_data.code) === 0 && result_data.accessToken) {
+                                that.accessToken = result_data.accessToken;
+                                that.openId = result_data.openId;
+								let obj = {
+									openid: that.openId,
+									accessToken: that.accessToken,
+									time: that.gettime()
+								}
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function (data) {
+										
+									},
+									fail: function (data, code) {
+										
+									}
+								})
+                                that.getDeviceStatus();
+                            } else {
+								that.isRefreshing = false;
+								that.isshowLoading = false;
+								that.isfirst = true;
+								that.netWorkGet(that.getCode(result_data.code,"获取访问令牌失败"))
+                            }
+                        } else {
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+							that.isfirst = true;
+							that.netWorkGet('获取访问令牌失败,请稍后重试');
+                        }
+                    }).catch((error) => {
+						that.isfirst = true;
+						that.isshowLoading = false;
+						that.isRefreshing = false;
+						that.netWorkGet('获取访问令牌失败,请稍后重试')
+    					// prompt.showToast({
+    					// 	message: "asd"+JSON.stringify(error),
+    					// 	duration: 1
+    					// })
+                    })
+				},
+				fail: function(data, code) {
+					that.isfirst = true;
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.netWorkGet('授权失败,请稍后重试')
+					// prompt.showToast({
+					// 	message: 'authorize:' + code
+					// })
+				}
+			})
+		},
+        //查询状态
+		getDeviceStatus(){
+			let that = this;
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: that.E2data
+				}]
+			}
+			//that.webSocketdata();
+			let num = false;
+			api.postDeviceStatusQuery(params,that.accessToken).then((res) => {
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				that.isfirst = true;
+				if(that.timeoutInter != ''){
+					clearInterval(that.timeoutInter);
+				}
+				//that.timeGetData()
+				// prompt.showDialog({
+				// 	title: '获取设备状态',
+				// 	message: "获取设备状态: " + res.data,
+				// 	buttons: [{
+				// 		text: '确定',
+				// 		color: '#33dd44'
+				// 	}],
+				// 	success: function (data) {
+						
+				// 	},
+				// 	cancel: function () {
+				// 		console.log('handling cancel')
+				// 	},
+				// 	fail: function (data, code) {
+				// 		console.log(`handling fail, code = ${code}`)
+				// 	}
+				// })
+				if(res.code === 200){
+					let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+					that.status = data.devices[0].status
+					if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
+						num = true;
+						let obj = data.devices[0].properties;
+						// that.info.power = 'on'
+						that.online = obj.online;
+						that.info = obj;
+						if (that.online != 'true') {
+							that.istips = true;
+							setTimeout(function() {
+								that.istips = false;
+							}, 3000)
+						}
+					}else{
+						that.initData();
+						if (data.msg === '') {
+							let str1 = '';
+							if (data.devices[0].status) {
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if (str1.toString() != '-100') {
+									that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+								} else {
+									if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+										that.isshowclose();
+									}else{
+										that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+									}
+								}
+							} else {
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
+							}
+						} else {
+							that.netWorkGet(data.msg)
+						}
+					}
+				}else{
+					that.netWorkGet('获取设备状态失败,请稍后重试');
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.initData();
+				}
+			}).catch((error) => {
+				if(that.timeoutInter != ''){
+					clearInterval(that.timeoutInter);
+				}
+				//that.timeGetData()
+				that.isfirst = true;
+				if(that.iswarm){
+					that.initData();
+				}
+				that.netWorkGet('获取设备状态失败,请稍后重试');
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+			})
+        },
+        //设备控制接口
+        postDeviceControl(obj, status = []){
+            this.isshowLoading = true;
+			let that = this;
+			let status_params = that.info;
+			for(let i = 0; i < status.length;i++){
+				delete status_params[status[i]]
+			}
+			if(status_params.online){
+				delete status_params.online
+			}
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: obj,
+					status: status_params
+				}]
+			}
+			// prompt.showToast({message: "params:" + JSON.stringify(params),duration:1})
+			api.postDeviceControl(params,that.accessToken).then((res) => {
+				// that.getDeviceStatus();
+				//that.isshowLoading = false;
+				// prompt.showDialog({
+				// 			title: '控制设备状态',
+				// 			message: "控制设备状态" + res.data,
+				// 			buttons: [{
+				// 				text: '确定',
+				// 				color: '#33dd44'
+				// 			}],
+				// 			success: function (data) {
+				// 			},
+				// 			cancel: function () {
+				// 				console.log('handling cancel')
+				// 			},
+				// 			fail: function (data, code) {
+				// 				console.log(`handling fail, code = ${code}`)
+				// 			}
+				// 		})
+				if (res.code && res.code == 200){
+					let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+					this.status = data.devices[0].status
+					if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
+						let isall = false;
+						that.online = "true";
+						let objdata = {}
+						let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+						if(obj.power){
+							objdata.power = obj.power;
+						}else{
+							isall = true;
+						}
+						if(obj.hot_power){
+							objdata.hot_power = obj.hot_power;
+						}else{
+							isall = true;
+						}
+						if(obj.warm_power){
+							objdata.warm_power = obj.warm_power;
+						}else{
+							isall = true;
+						}
+						if(obj.cur_temperature || parseInt(obj.cur_temperature) == 0){
+							objdata.cur_temperature = obj.cur_temperature;
+						}else{
+							isall = true;
+						}
+						if(obj.temperature || parseInt(obj.temperature) == 0){
+							objdata.temperature = obj.temperature;
+							that.temperatureList.forEach(function(item,index){
+								if(item === parseInt(obj.temperature)){
+									that.temperatureIndex = index;
+								}
+							})
+							
+						}else{
+							isall = true;
+						}
+						if(obj.heat_water_level || parseInt(obj.heat_water_level) == 0){
+							objdata.heat_water_level = obj.heat_water_level;
+						}else{
+							isall = true;
+						}
+						if(obj.end_time_hour || parseInt(obj.end_time_hour) == 0){
+							objdata.end_time_hour = obj.end_time_hour;
+						}else{
+							isall = true;
+						}
+						if(obj.end_time_minute || parseInt(obj.end_time_minute) == 0){
+							objdata.end_time_minute = obj.end_time_minute;
+						}else{
+							isall = true;
+						}
+						
+						that.info = objdata;
+						if(isall){
+							that.isshowLoading = true;
+							that.getDeviceStatus();
+						}else{
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+						}
+					}else{
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.initData();
+						if (data.msg === '') {
+							let str1 = '';
+							if (data.devices[0].status) {
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if (str1.toString() != '-100') {
+									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+								} else {
+									if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+										that.isshowclose();
+									}else{
+										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+									}
+								}
+							} else {
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1, '操作设备失败'))
+							}
+							// $this.netWorkGet('操作设备失败')
+						} else {
+							that.netWorkGet(data.msg)
+						}
+					}
+				}else{
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.initData();
+					that.netWorkGet('操作设备失败,请稍后重试')
+				}
+			}).catch((error) => {
+				that.initData();
+				that.netWorkGet('操作设备失败,请稍后重试');
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+			})
+		},
+		netWorkGet(str){
+			let that = this;
+			if(that.iswarm){
+				network.getType({
+					success: function (data) {
+						if(data.type === 'none'){
+							prompt.showToast({
+								message: str + "，请检查网络",
+								duration:1
+							}) 
+						}else{
+							prompt.showToast({
+								message: str,
+								duration:1
+							}) 
+						}
+					}
+				})
+			}
+		},
+		initData(){
+			this.isfirst = true;
+			this.info = {
+				online: 'false',
+				power: 'off',
+				cur_temperature: '--',
+				temperature: '--',
+				end_time_hour: 0,
+				end_time_minute: 0,
+				heat_water_level: 0,
+				hot_power: 'off',
+				warm_power: 'off'
+			}
+		},
+		isshowclose(){
+			let that = this;
+			that.istips = false;
+			if(that.tipsTime != ''){
+				clearTimeout(that.tipsTime)
+			}
+			that.istips = true;
+			that.tipsTime = setTimeout(function(){
+				that.istips = false;
+			},3000)
+		},
+		refreshData(e){
+			let that = this;
+			let timestamp = Date.parse(new Date());
+			that.isRefreshing = e.refreshing;
+			that.iswarm = true;
+			if (that.isfirst) {
+				that.isshowLoading = true;
+				storage.get({
+					key: 'openidToken',
+					success: function(data) {
+							if (data === '') {
+								that.getdevicelist();
+							} else {
+								let obj = JSON.parse(data);
+								if (parseInt(timestamp) > parseInt(obj.time)) {
+									that.getdevicelist();
+								} else {
+									if (obj.openid === that.openid) {
+										that.openId = obj.openid;
+										that.accessToken = obj.accessToken;
+										that.getDeviceStatus();
+									} else {
+										that.getdevicelist();
+									}
+								}
+							}
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
+			}
+        },
+		timeGetData(){
+			let that = this;
+			that.iswarm = false;
+			let timestamp = Date.parse(new Date());
+			that.timeoutInter = setInterval(function(){
+				storage.get({
+					key: 'openidToken',
+					success: function(data) {
+						if (data === '') {
+							that.getdevicelist();
+						} else {
+							let obj = JSON.parse(data);
+							if (parseInt(timestamp) > parseInt(obj.time)) {
+								that.getdevicelist();
+							} else {
+								if (obj.openid === that.openid) {
+									that.openId = obj.openid;
+									that.accessToken = obj.accessToken;
+									that.getDeviceStatus();
+								} else {
+									that.getdevicelist();
+								}
+							}
+						}
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
+			},3000)
+		},
+		gettime(){
+			let timestamp = Date.parse(new Date());
+			return parseInt(timestamp) + 3600000;
+		},
+		webSocketdata(){
+			let that = this;
+			api.createWensocket(that.deviceId).then((ws) => {
+				that.ws = ws;
+				that.isws = true;
+				ws.onopen = function(){
+					//prompt.showToast({
+					//	message:"连接成功"
+					//})
+				}
+				ws.onerror = function (data) {
+					//prompt.showToast({
+					//	message:"连接失败原因："+JSON.stringify(data)
+				    //})
+					that.webSocketdata();
+				}
+				ws.onmessage = function (res) {
+					let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+					if(obj.status.online){
+						that.online = obj.status.online;
+						that.info.online = obj.status.online;
+					}else{
+						that.info.online = 'true';
+						that.online = 'true';
+					}
+					//let objStatus = obj.status
+					 //prompt.showDialog({
+					 //		title: '设备自动获取状态',
+					 //		message: "设备自动获取状态:" + JSON.stringify(obj),
+					 //		buttons: [{
+					 //			text: '确定',
+					 //			color: '#33dd44'
+					 //		}],
+					 //		success: function (data) {
+					//			
+					 //		},
+					 //		cancel: function () {
+					 //			console.log('handling cancel')
+					 //		},
+					 //		fail: function (data, code) {
+					 //			console.log(`handling fail, code = ${code}`)
+					 //		}
+					 //	})
+					let objdata = {};
+					if(obj.status.power){
+						objdata.power = obj.status.power;
+					}
+					if(obj.status.hot_power){
+						objdata.hot_power = obj.status.hot_power;
+					}
+					if(obj.status.warm_power){
+						objdata.warm_power = obj.status.warm_power;
+					}
+					if(obj.status.cur_temperature || parseInt(obj.status.cur_temperature) == 0){
+						objdata.cur_temperature = obj.status.cur_temperature;
+					}
+					if(obj.status.temperature || parseInt(obj.status.temperature) == 0){
+						objdata.temperature = obj.status.temperature;
+						that.temperatureList.forEach(function(item,index){
+							if(item === parseInt(obj.temperature)){
+								that.temperatureIndex = index;
+							}
+						})
+					}
+					if(obj.status.heat_water_level || parseInt(obj.status.heat_water_level) == 0){
+						objdata.heat_water_level = obj.status.heat_water_level;
+					}
+					if(obj.status.end_time_hour || parseInt(obj.status.end_time_hour) == 0){
+						objdata.end_time_hour = obj.status.end_time_hour;
+					}
+					if(obj.status.end_time_minute || parseInt(obj.status.end_time_minute) == 0){
+						objdata.end_time_minute = obj.status.end_time_minute;
+					}
+					that.isshowLoading = false;
+					that.info = objdata;
+				}
+				ws.onclose = function() {
+					// 关闭 websocket
+					// 关闭之后再重启
+					if(!that.isclosews){
+						that.webSocketdata();
+					}
+					console.log("websocket连接已关闭...")
+				};
+			});
+		},
+		onclickFn(e){
+			this.isabout = false;
+		},
+		closeWebsocket(){
+			let that = this;
+			that.isclosews = true;
+			if(that.timeoutInter != ''){
+				clearInterval(that.timeoutInter);
+			}
+			if(that.ws != ''){
+				that.ws.close({
+					code: 1000,
+					reason: '退出关闭',
+					success: function() {
+						that.ws = '';
+						console.log("关闭websocket成功")
+					},
+					fail: function(data, code) {
+						console.log("关闭websocke失败, code = "+JSON.stringify(code))
+					}
+				})
+			}
+		},
+		onHide(){
+			let that = this;
+			that.closeWebsocket();
+		},
+		onShow(){
+			let that = this;
+			that.isclosews = false;
+			if(that.timeoutInter != ''){
+				clearInterval(that.timeoutInter);
+			}
+			//that.timeGetData()
+			if(that.ws === '' && that.isws){
+			//	that.webSocketdata();
+			}
+		},
+		onBackPress () {
+			let that = this;
+			that.closeWebsocket();
+			router.clear();
+			this.$app.exit();
+		},
+		onInit() {
+			this.deviceHeight = this.$app.options.env.deviceHeight;
+			api.getlanguage().then((res) => {
+				if (res === 'ug') {
+					this.language = false;
+				} else {
+					this.language = true;
+				}
+			})
+			let that = this;
+// 			setTimeout(function(){
+// 				that.istips = false;
+// 			},3000)
+			router.clear();
+			//组件控制
+			that.$on('cancel', function(e){
+				that.isabout = false;
+			})
+			that.$on('closetips', function(e){
+				if(that.tipsTime != ''){
+					clearTimeout(that.tipsTime)
+				}
+				that.istips = false;
+			})
+			that.$on('openmenu', function(e){
+				that.isabout = !that.isabout;
+			})
+			for(let i=26; i<=75; i++){
+				i+=4;
+				this.temperatureList.push(i);
+			}
+			for(let i=1; i<24; i++){
+				if (i<10) {
+					i = '0' + i;
+				}
+				this.hoursList.push(i);
+			}
+			for(let i=1; i<60; i++){
+				if (i<10) {
+					i = '0' + i;
+				}
+				this.minutesList.push(i);
+			}
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					that.isshowLoading = true;
+					// prompt.showToast({message:"data"+JSON.stringify(data)})
+					if(data === ''){
+						that.getdevicelist();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								that.getDeviceStatus();
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		}
+	}
+</script>
+<style lang='less'>
+	@import "./assets/index.less";
+</style>

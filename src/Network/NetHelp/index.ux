@@ -1,0 +1,200 @@
+<import name="midea-loading" src="../../Component/MideaLoading/index"></import>
+<template>
+    <div class="container">
+        <div class="nav_divce">
+			<image class="nav_divce_img" src="{{img}}"></image>
+		</div>
+		<list class="nav_tops">
+			<block>
+				<list-item type="product">
+					<text class="nav_tops_title">
+						<span>操作指引</span>
+					</text>
+				</list-item>
+				<list-item type="product">
+					<text class="nav_tops_text">
+						<span>{{main_mode_summary}}</span>
+					</text>
+				</list-item>
+				<!-- <list-item type="product">
+					<image class="nav_tops_img" src="{{deviceImg}}"></image>
+				</list-item>
+				<list-item type="product">
+					<text class="nav_tops_img_text">
+						<span>{{secondary_mode_summary}}</span>
+					</text>
+				</list-item> -->
+				<list-item type="product">
+					<div class="nav_tops_btn">
+						<div class="nav_tops_btn_radio">
+							<input type="checkbox" if="{{isdone}}" checked="{{!checked}}" @click="selectData()" class="nav_tops_btn_radio_btn" name="已完成上述操作">
+							<text class="nav_tops_btn_radio_text">
+								<span>已完成上述操作</span>
+							</text>
+						</div>
+						<input type="button" if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{btndisabled? '#CCCCCC':'#3191FD'}};" value="下一步" @click="nextPage()" disabled="{{btndisabled}}">
+					</div>
+				</list-item>
+			</block>
+		</list>
+		<midea-loading if="{{isloading}}"></midea-loading>
+    </div>
+</template>
+
+<style lang="less">
+    @import "./assets/index.less";
+</style>
+
+<script>
+	import IOT from '@service.iot';
+    import router from '@system.router';
+    import prompt from '@system.prompt';
+	import fetch from '@system.fetch';
+	import account from '@service.account';
+	import storage from '@system.storage';
+	import barcode from '@system.barcode';
+	import api from '../../Common/api/api.js';
+    module.exports = {
+        private: {
+			isloading: false,
+			isdone: true,
+			title:'配网帮助',
+			deviceImg: '',
+			img: '',
+			deviceCode: '',
+			ssidDevice: '',
+			main_mode_summary: '',
+			secondary_mode_summary: '',
+			btndisabled: true,
+			checked:true,
+        },
+		public: {
+			iot_wifi_ssid: "",
+			iot_wifi_password: "",
+			iot_url:"",
+			iot_device_ssid:"",
+			iot_wifi_secretType: "",
+			iot_config_type:"",
+		},
+		onInit() {
+			this.$page.setTitleBar({
+				text: this.title
+			})
+			this.getWifiList();
+		},
+		selectData(){
+			this.checked = !this.checked;
+			this.btndisabled = this.checked;
+			
+		},
+		nextPage(){
+			let that = this;
+			if(!this.checked){
+				router.push ({
+					uri: "config_network/apNetWork",
+					params: {
+						iot_wifi_ssid: that.iot_wifi_ssid,
+						iot_wifi_password: that.iot_wifi_password,
+						iot_url:that.iot_url,
+						iot_device_ssid:that.iot_device_ssid,
+						iot_wifi_secretType: that.iot_wifi_secretType,
+						iot_config_type:that.iot_config_type,
+					}
+				})
+			}
+		},
+		getConfigDeviceInfo(){
+			let that = this;
+			let mode = '';
+			if(that.iot_url){
+				mode = api.getUrlCan(that.iot_url,'mode');
+			}
+			if(that.iot_config_type.toString() === '-1' || that.iot_config_type === ''){
+				if(mode && mode != ''){
+					let str = mode.toString()
+					mode = str.substring(str.length-1,1);
+					that.iot_config_type = str.substring(str.length-1,1);
+				}else{
+					that.iot_config_type = '0';
+				}
+			}
+			if(api.getUrlCan(that.iot_url,'type')){
+				that.deviceCode = api.getUrlCan(that.iot_url,'type').substring(api.getUrlCan(that.iot_url,'type').length-8,api.getUrlCan(that.iot_url,'type').length)
+			}else if(that.ssidDevice === 'fa'){
+				that.deviceCode = 'FTS3016B'
+			}
+				let params = {
+					application: that.ssidDevice,
+					mode: that.iot_config_type.toString(),
+					code: that.deviceCode
+				}
+				// prompt.showToast({message:"params" + JSON.stringify(params)})
+				api.getConfigWorkHelp(params).then((res) => {
+					that.isloading = false;
+					if(res.code === 200){
+						let data = JSON.parse(res.data);
+						if(data.errorCode === 0){
+							that.isdone = true;
+							that.img = data.data[0].main_mode_img;
+							that.title = data.data[0].name;
+							that.main_mode_summary = data.data[0].main_mode_summary;
+							that.deviceImg = data.data[0].secondary_mode_img;
+							that.secondary_mode_summary = data.data[0].secondary_mode_summary;
+						}
+					}
+					
+				}).catch((error) => {
+					that.isloading = false;
+					console.log(error);
+				})
+		},
+		getWifiList(){
+			this.isloading = true;
+			let that = this;
+			if(that.iot_device_ssid === ''){
+				let type = api.getDeviceInformation(that.iot_url);
+				let ssid = api.getUrlCan(that.iot_url,'SSID');
+				if(type || ssid){
+					let str = type.substring(type.length-2,type.length).toLowerCase() || ssid.substring(6,8);
+					that.ssidDevice = str;
+					that.getConfigDeviceInfo();
+				}else{
+					// that.ssidDevice = that.iot_device_ssid.substring(6,8).toLowerCase();
+					prompt.showDialog({
+						title: '提示',
+						message: "设备不存在，请检查二维码是否正确",
+						buttons: [{
+							text: '确定',
+							color: '#33dd44'
+						}],
+						success: function (data) {
+							IOT.send({
+								action: 'jumpMainPage', 
+							})
+							router.clear();
+						},
+						cancel: function () {
+							console.log('handling cancel')
+						},
+						fail: function (data, code) {
+							console.log(`handling fail, code = ${code}`)
+						}
+					})
+				}
+			}else{
+				that.ssidDevice = that.iot_device_ssid.substring(6,8).toLowerCase();
+				that.getConfigDeviceInfo();
+			}
+		},
+		onBackPress(){
+			IOT.send({
+			   action: 'jumpMainPage', 
+			})
+			router.clear();
+		},
+		onDestroy(){
+            this.$page.finish();
+         	this.$app.exit();
+        }
+    }
+</script>

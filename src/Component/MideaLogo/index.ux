@@ -1,0 +1,98 @@
+<template>
+	<div class="download" @click="downloadAPP()">
+		<image class="download_img" src="./assets/img/{{isopen?'logo':'logo2'}}.png"></image>
+		<text style="color: {{isopen?'#ffffff':'#666666'}}">使用美居</text>
+	</div>
+</template>
+
+<style>
+	.download {
+		flex-direction: column;
+		align-items: center;
+		margin-left: 900px;
+		margin-top: 30px;
+	}
+
+	.download_img {
+		width: 90px;
+		height: 90px;
+		resize-mode: cover;
+	}
+
+	.download text {
+		width: 96px;
+		font-size: 24px;
+		text-align: center;
+		color: #fff;
+		margin-top: 10px;
+	}
+</style>
+
+<script>
+	import pkg from '@system.package';
+	import prompt from '@system.prompt';
+	import router from '@system.router';
+	export default {
+		name: 'MideaLogo',
+		props: {
+			isopen:{
+				default: false,
+				type: Boolean
+			}
+		},
+		data() {
+			return {
+				isOpen: false
+			}
+		},
+		downloadAPP() {
+			let that = this;
+			pkg.hasInstalled({
+				package: 'com.midea.ai.appliances',
+				success: function(data) {
+					if (data.result) {
+						prompt.showDialog({
+							title: '提示',
+							message: "确定打开美居？（仅支持美居5.2及以上版本）",
+							buttons: [{
+								text: '直接打开',
+								color: '#33dd44'
+							}],
+							success: function(data) {
+// 								router.clear();
+// 								that.$app.exit();
+								router.push({
+									uri: 'meiju://com.midea.meiju/main'
+								})
+							},
+							cancel: function() {
+								console.log('handling cancel')
+							},
+							fail: function(data, code) {
+								console.log(`handling fail, code = ${code}`)
+							}
+						})
+					} else {
+						pkg.install({
+							package: 'com.midea.ai.appliances',
+							success: function(data) {
+								console.log(`handling success: ${data.result}`)
+							},
+							fail: function(data, code) {
+								console.log(`handling fail, code = ${code}`)
+							}
+						})
+					}
+					console.log(`handling success: ${data.result}`)
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
+		onInit() {
+			this.isOpen = this.isopen;
+		}
+
+	}
+</script>

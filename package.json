@@ -1,0 +1,39 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "subversion": {
+    "toolkit": "0.0.32"
+  },
+  "description": "",
+  "scripts": {
+    "server": "hap server",
+    "debug": "hap debug",
+    "build": "hap build",
+    "release": "hap release",
+    "watch": "hap watch"
+  },
+  "devDependencies": {
+    "hap-toolkit": "0.0.32",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "css-what": "^2.1.0",
+    "koa": "^2.3.0",
+    "koa-send": "^4.1.1",
+    "koa-static": "^4.0.1",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.2.1",
+    "socket.io": "^2.1.0",
+    "webpack": "^1.13.0"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "echarts": "^4.1.0",
+    "flyio": "^0.6.4",
+    "js-sha256": "^0.9.0",
+    "less": "^3.8.0",
+    "less-loader": "^4.1.0"
+  }
+}

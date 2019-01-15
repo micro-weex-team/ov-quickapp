@@ -1,0 +1,347 @@
+<template>
+    <div class="container">
+       <text for="btnList" class="btn" @click="openUrl($item.url)">
+			<span>{{$item.name}}</span>
+		</text>
+	<!-- 	
+		<text class="btn" @click="getUserToken()">
+			<span>获取第三方令牌</span>
+		</text> -->
+		
+		<text class="btn" @click="getDeviceinfo()">
+			<span>用户授权</span>
+		</text>
+		
+		<text class="btn" @click="scan()">
+			<span>扫描二维码</span>
+		</text>
+		
+		<text class="btn" @click="getconfig()">
+			<span>获取配网帮助</span>
+		</text>
+		
+		
+    </div>
+</template>
+
+<style>
+    @import "./assets/index.css";
+</style>
+
+<script>
+	// import IOT from '@service.iot'
+    import router from '@system.router';
+    import prompt from '@system.prompt';
+	import fetch from '@system.fetch';
+	import app from '@system.app';
+	import account from '@service.account';
+	import storage from '@system.storage';
+	import barcode from '@system.barcode';
+	import api from '../Common/api/api.js'
+    module.exports = {
+        private: {
+					code: '',
+					SN:'',
+					btnList: [{
+						"name": "空调",
+						"url": "0xAC",
+						"value": ""
+					},{
+						"name": "滚筒洗衣机",
+						"url": "0xDB",
+						"value": ""
+					},{
+						"name": "冰箱",
+						"url": "0xCA",
+						"value": ""
+					},{
+						"name": "电风扇",
+						"url": "0xFA",
+						"value": ""
+					},{
+						"name": "配网页面",
+						"url": "config_network/apNetWork",
+						"value": ""
+					}],
+					path: '0xAC'
+		},
+		public: {
+			deviceId: '',
+		},
+		getDeviceinfo(){
+			// if(this.code === ''){
+				let that = this;
+				account.authorize({
+					type: 'code',
+					success: function (data) {
+						that.code = data.code;
+						that.scan();
+// 						prompt.showDialog({
+// 							title: "",
+// 							message: data,
+// 							buttons: [{
+// 									text: '确定',
+// 									color: '#33dd44'
+// 							}],
+// 							success: function (data) {
+// 								
+// 							},
+// 							cancel: function () {
+// 								console.log('handling cancel')
+// 							},
+// 							fail: function (data, code) {
+// 								console.log(`handling fail, code = ${code}`)
+// 							}
+// 						})
+						
+						storage.set({
+							key: 'authorize',
+							value: JSON.stringify(data),
+							success: function (data) {
+							},
+							fail: function (data, code) {
+							}
+						})
+					},
+					fail: function (data, code) {
+						prompt.showToast({message: 'authorize:' + code})
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
+			// }
+		},
+		openUrl(url){
+			console.log(url)
+			router.push ({
+				uri: url,
+				params:{
+					deviceId:this.deviceId
+				}
+			})
+		},
+		scan(){
+			let that = this;
+			barcode.scan({
+				success: function (data) {
+					let res = data.result;
+					prompt.showToast({message:res})
+					// api.GetRequest(res,"cd")
+					prompt.showToast({message:api.GetRequest(res,"SSID"),duration:1})
+					let params = {
+						deviceSsid: api.GetRequest(res,"SSID"),
+						ssid: 'Smart',
+						wifiPassword: 'SZsamrt09',
+						secretType: "[WPA2-PSK-CCMP][WPA-PSK-CCMP][ESS]",
+						type: 0,
+						vendorID: "ID2018",
+						deviceName: api.GetRequest(res,"SSID"),
+						deviceUuid: api.GetRequest(res,"SSID")
+					}
+// 					IOT.send({
+// 						action: 'getWifiList', 
+// 						vendorID: 'ID2018',
+// 						success: function (data) {
+// 							prompt.showDialog({
+// 								title: "获取wifi列表",
+// 								message: data,
+// 								buttons: [{
+// 										text: '确定',
+// 										color: '#33dd44'
+// 								}],
+// 								success: function (data) {
+// 									console.log('handling callback')
+// 								},
+// 								cancel: function () {
+// 									console.log('handling cancel')
+// 								},
+// 								fail: function (data, code) {
+// 									console.log(`handling fail, code = ${code}`)
+// 								}
+// 							})
+// 						},
+// 						fail: function (data, code) {
+// 							console.log(`handling fail, code = ${code}`)
+// 						}
+// 					})
+			
+					that.startNet(params);
+				},
+				fail: function (data, code) {
+				}
+			})
+		},
+		startNet(params){
+			IOT.send({
+				action: 'startConfigDevice', 
+				vendorID: params.vendorID,
+				data:{
+					connectData: { 
+						deviceSsid: params.deviceSsid, 
+						ssid: params.ssid, 
+						wifiPassword: params.wifiPassword, 
+						secretType: params.secretType
+					},
+					deviceInfo: {
+						deviceName: '',
+						deviceUuid: '',
+						type: params.type
+					}
+				},
+				success: function (data) {
+					prompt.showDialog({
+						title: "开始配网接口--成功",
+						message: data,
+						buttons: [{
+								text: '确定',
+								color: '#33dd44'
+						}],
+						success: function (data) {
+							console.log('handling callback')
+						},
+						cancel: function () {
+							console.log('handling cancel')
+						},
+						fail: function (data, code) {
+							console.log(`handling fail, code = ${code}`)
+						}
+					})
+				},
+				fail: function (data, code) {
+					prompt.showDialog({
+						title: "开始配网接口--失败",
+						message: data,
+						buttons: [{
+								text: '确定',
+								color: '#33dd44'
+						}],
+						success: function (data) {
+							console.log('handling callback')
+						},
+						cancel: function () {
+							console.log('handling cancel')
+						},
+						fail: function (data, code) {
+							console.log(`handling fail, code = ${code}`)
+						}
+					})
+				}
+			})
+		},
+		getUserToken(code){
+			let params = {
+				thirdUId: code,
+			}
+			api.getUserToken(params).then((res) => {	
+				let that = this;
+				prompt.showDialog({
+								title: '令牌',
+								message: res,
+								buttons: [{
+									text: '取消',
+									color: '#33dd44'
+								}],
+								success: function (data) {
+									if(res.code === 200){ 
+										let dataRes = JSON.parse(res.data)
+										if(dataRes.code === 0 || dataRes.code === "0"){
+											api.getDeviceList({openId: dataRes.openId,accessToken:dataRes.accessToken}).then((resp) => {
+												prompt.showDialog({
+																title: '获取用户设备列表',
+																message: resp,
+																buttons: [{
+																	text: '取消',
+																	color: '#33dd44'
+																}],
+																success: function (data) {
+																},
+																cancel: function () {
+																	console.log('handling cancel')
+																},
+																fail: function (data, code) {
+																	console.log(`handling fail, code = ${code}`)
+																}
+															})
+											}).catch((err) => {
+												prompt.showToast({message: err,duration: 1})
+											})
+										}
+									}
+									
+								},
+								cancel: function () {
+									console.log('handling cancel')
+								},
+								fail: function (data, code) {
+									console.log(`handling fail, code = ${code}`)
+								}
+							})
+			}).catch((error) => {
+				prompt.showToast({message: error,duration:1})
+			})
+		},
+		getconfig(){
+			let params = {
+				code: that.SN,
+				category: '0xDB',
+				mode: 1
+			}
+			api.getConfigWorkHelp(params).then((res) => {	
+				prompt.showDialog({
+								title: '获取配网帮助信息',
+								message: res,
+								buttons: [{
+									text: '取消',
+									color: '#33dd44'
+								}],
+								success: function (data) {
+									console.log('handling callback')
+								},
+								cancel: function () {
+									console.log('handling cancel')
+								},
+								fail: function (data, code) {
+									console.log(`handling fail, code = ${code}`)
+								}
+							})
+			}).catch((error) => {
+				prompt.showToast({message: error,duration:1})
+			})
+		},
+		onInit () {
+			prompt.showDialog({
+				title: '获取url信息',
+				message: this.deviceId,
+				buttons: [{
+					text: '取消',
+					color: '#33dd44'
+				}],
+				success: function (data) {
+					console.log('handling callback')
+				},
+				cancel: function () {
+					console.log('handling cancel')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+			// console.log(this.deviceId)
+			this.$page.setTitleBar({ text: '美居' });
+			let that = this;
+			storage.get({
+				key: 'authorize',
+				success: function (data) {
+					if(data != ''){
+						that.code = JSON.parse(data).code;
+					}
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+			// this.getDeviceinfo();
+			// js中输出页面传递的参数
+			console.info('key: ' + this.key)
+		}
+	}
+</script>
