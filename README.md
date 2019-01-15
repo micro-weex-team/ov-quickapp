@@ -92,6 +92,7 @@
 （注释）
 目前快应用开发只在src目录下开发即可
 src结构：
+
 ![](http://oss-cn-foshan.midea.com:17480/userDownload/9131190D33C241D983103F1715E545FD/pic/1547533323%281%29.png?certification=v11f54bef840818031d380a9f626e5290136)
 
 1、新增品类在src目录下添加即可，添加规则：新建文件夹——>文件夹命名（0x+品类名）——>新建一个index.ux文件；
