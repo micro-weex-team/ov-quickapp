@@ -125,6 +125,7 @@ import pkg from '@system.package';
 import network from '@system.network'
 export default {
 	private: {
+		timeTips:'',
 		isoffset:'-1000px',
 		isRefreshing:false,
 		ws: '',
@@ -312,8 +313,12 @@ export default {
 	},
 	isshowclose(){
 		let that = this;
-		this.istips = true;
-		let time = setTimeout(() => {
+		that.istips = false;
+		if(that.timeTips != ''){
+			clearTimeout(that.timeTips)
+		}
+		that.istips = true;
+		that.timeTips = setTimeout(() => {
 			that.istips = false;
 		},3000)
 	},
@@ -580,18 +585,38 @@ export default {
 	doingTimeSet(){
 		let params;
 		let that = this;
-		that.isshowtimedialog = false;
-		// prompt.showToast({message:"saqsa"+this.hours+this.minute})
+		// prompt.showToast({message:"saqsa:"+this.hours+"sas:"+this.minute+"kkk:"+that.selectData})
 		if(this.power === 'on'){
 			let offhonr = '';
 			let offminute = '';
-			if(that.selectData != '--' && that.selectData != 'clean'){
+			if(that.isSwitch){
+				if((that.hours.toString() === '0' || that.hours.toString() === '') && (that.minute.toString() === '0' || that.minute.toString() === '')){
+					prompt.showToast({message: "请设置定时时间",duration:1})
+				}else{
+					that.isshowtimedialog = false;
+					offhonr = that.hours;
+					offminute = that.minute;
+					params = {
+						timer_off_minute: '0',
+						timer_off_hour: offhonr.toString(),
+						timer_on_minute: "0",
+						timer_on_hour: '0'
+					}
+					let status = this.FAdata;
+					delete status.timer_on_minute;
+					delete status.timer_on_hour;
+					delete status.timer_off_minute;
+					delete status.timer_off_hour;
+					that.startControlDevice(params,status)
+				}
+			}else{
+				that.isshowtimedialog = false;
 				offhonr = that.hours;
 				offminute = that.minute;
 				params = {
-					timer_off_minute: '0',
+					timer_off_minute: 'clean',
 					timer_off_hour: offhonr.toString(),
-					timer_on_minute: "0",
+					timer_on_minute: "clean",
 					timer_on_hour: '0'
 				}
 				let status = this.FAdata;
@@ -600,17 +625,37 @@ export default {
 				delete status.timer_off_minute;
 				delete status.timer_off_hour;
 				that.startControlDevice(params,status)
-			}else{
-				prompt.showToast({message: "请设置定时时间",duration:1})
 			}
+			
 		}else if(this.power === 'off'){
 			let onhonr = '';
 			let onminute = '';
-			if(that.selectData != '--'){
+			if(that.isSwitch){
+				if((that.hours.toString() === '0' || that.hours.toString() === '') && (that.minute.toString() === '0' || that.minute.toString() === '')){
+					prompt.showToast({message: "请设置定时时间",duration:1})
+				}else{
+					that.isshowtimedialog = false;
+					onhonr = that.hours;
+					onminute = that.minute;
+					params = {
+						timer_on_minute: '0',
+						timer_on_hour: onhonr.toString(),
+						timer_off_minute: "clean",
+						timer_off_hour: '0'
+					}
+					let status = this.FAdata;
+					delete status.timer_on_minute;
+					delete status.timer_on_hour;
+					delete status.timer_off_minute;
+					delete status.timer_off_hour;
+					that.startControlDevice(params,status)
+				}
+			}else{
+				that.isshowtimedialog = false;
 				onhonr = that.hours;
 				onminute = that.minute;
 				params = {
-					timer_on_minute: '0',
+					timer_on_minute: 'clean',
 					timer_on_hour: onhonr.toString(),
 					timer_off_minute: "clean",
 					timer_off_hour: '0'
@@ -621,9 +666,8 @@ export default {
 				delete status.timer_off_minute;
 				delete status.timer_off_hour;
 				that.startControlDevice(params,status)
-			}else{
-				prompt.showToast({message: "请设置定时时间",duration:1})
 			}
+			
 		}
 	},
 	selectMode(item) {
@@ -1107,7 +1151,7 @@ export default {
 // 																				console.log(`handling fail, code = ${code}`)
 // 																			}
 // 																		})
-					// }
+// 					}
 					that.online = res_data.devices[0].properties.online;
 					that.power = res_data.devices[0].properties.power?res_data.devices[0].properties.power:"off";
 					that.mode_n = res_data.devices[0].properties.mode?res_data.devices[0].properties.mode:"";
@@ -1133,10 +1177,7 @@ export default {
 						// anion:res_data.devices[0].properties.anion?res_data.devices[0].properties.anion:'invalid'
 					}
 					if (that.online != 'true') {
-						that.istips = true;
-						setTimeout(function() {
-							that.istips = false;
-						}, 3000)
+						that.isshowclose();
 					}
 					that.select_gear = that.gear;
 					that.timeFilter2();
@@ -1149,17 +1190,11 @@ export default {
 						if(res_data.devices[0].status){
 							str1 = res_data.devices[0].status;
 							if(str1.toString() === '-6'){
-								that.istips = true;
-								setTimeout(function() {
-									that.istips = false;
-								}, 3000)
+								that.isshowclose();
 								return false;
 							}
 							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								that.istips = true;
-								setTimeout(function() {
-									that.istips = false;
-								}, 3000)
+								that.isshowclose();
 							}else{
 								that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
 							}
@@ -1322,18 +1357,12 @@ export default {
 						if(bind_res_data.devices[0].status){
 							str1 = bind_res_data.devices[0].status;
 							if(str1.toString() === '-6'){
-								$this.istips = true;
-								setTimeout(function() {
-									$this.istips = false;
-								}, 3000)
+								$this.isshowclose();
 								return false;
 							}
 							if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
 								// $this.netWorkGet('设备离线');
-								$this.istips = true;
-								setTimeout(function() {
-									$this.istips = false;
-								}, 3000)
+								$this.isshowclose();
 							}else{
 								$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
 							}
@@ -1562,6 +1591,7 @@ export default {
 				},
 				onHide(){
 					let that = this;
+					that.istips = false;
 					that.closeWebsocket();
 				},
 				onShow(){

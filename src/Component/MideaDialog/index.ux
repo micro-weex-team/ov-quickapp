@@ -1,5 +1,5 @@
 <template>
-	<div class="Midea-compont">
+	<div class="Midea-compont" @click="closeDialog">
 		<div class="Midea-dialog">
 			<list class="Midea-list" id="list">
 				<list-item class="Midea-item" type="listItem" for="{{list}}" @click="selectData($item.id)">

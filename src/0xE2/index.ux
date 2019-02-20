@@ -314,10 +314,7 @@
 					prompt.showToast({message: '设备关机状态，不能操作'})
 				}
 			} else {
-				that.istips = true;
-				setTimeout(function() {
-					that.istips = false;
-				}, 3000)
+				that.isshowclose();
 			}
 		},
 		temperatureSelect(index, value) {
@@ -352,10 +349,7 @@
 					})
 				}
 			} else {
-				that.istips = true;
-				setTimeout(function() {
-					that.istips = false;
-				}, 3000)
+				that.isshowclose();
 			}
 			
 		},
@@ -522,10 +516,7 @@
 						that.online = obj.online;
 						that.info = obj;
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose();
 						}
 					}else{
 						that.initData();
@@ -943,6 +934,7 @@
 		},
 		onHide(){
 			let that = this;
+			that.istips = false;
 			that.closeWebsocket();
 		},
 		onShow(){

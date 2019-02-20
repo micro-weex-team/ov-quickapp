@@ -36,6 +36,7 @@ device.getInfo({
 export default {
 	//api接口
 	hostData: {
+		pro:'sit',
 		language: '',
 		getUserToken     : '/v1/iotopen/user/token/get',
 		postDeviceControl: '/v1/iotopen/device/deviceControl',
@@ -164,6 +165,7 @@ export default {
 			"appId"       : appid,
 			"timestamp"   : that.getTimestamp(),
 			"nonce"       : that.createUUID(),
+			// "skipOvCheck":'false',
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignature(objStr,strObj.nonce,strObj.timestamp)
@@ -201,6 +203,7 @@ export default {
 			"timestamp"   : that.getTimestamp(),
 			"nonce"       : that.createUUID(),
 			'accessToken': accessToken,
+			// "skipOvCheck":'false',
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
@@ -239,6 +242,7 @@ export default {
 			"timestamp"   : that.getTimestamp(),
 			"nonce"       : that.createUUID(),
 			'accessToken': accessToken,
+			// "skipOvCheck":'false',
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
@@ -250,6 +254,17 @@ export default {
 				fly.post(host + that.hostData.postDeviceControl, params, {headers:strObj}).then(function (response) {
 					response.code = response.status;
 					console.log("返回信息："+JSON.stringify(response));
+// 					if (response.code && response.code === 200) {
+// 						let bind_res_data = typeof response.data == 'object' ? response.data : JSON.parse(response.data);
+// 						if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
+// 							let obj = (typeof bind_res_data.devices[0].props) == 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
+// 							if(parseInt(obj.error_code)){
+// 								prompt.showToast({
+// 									message:'数据有误，设备可能存在故障，请检查后再操作'
+// 								})
+// 							}
+// 						}
+// 					}
 					resolve(response);
 				}).catch(function (error) {
 					reject(error);
@@ -276,6 +291,7 @@ export default {
 			"timestamp"   : that.getTimestamp(),
 			"nonce"       : that.createUUID(),
 			'accessToken': accessToken,
+			// "skipOvCheck":'false',
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
@@ -287,6 +303,17 @@ export default {
 				fly.post(host + that.hostData.postDeviceStatusQuery, params, {headers:strObj}).then(function (response) {
 					response.code = response.status;
 					console.log("返回信息："+JSON.stringify(response));
+// 					if (response.code && response.code === 200) {
+// 						let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
+// 						if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+// 							let obj =  (typeof data.devices[0].properties) === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+// 							if(parseInt(obj.error_code)){
+// 								prompt.showToast({
+// 									message:'数据有误，设备可能存在故障，请检查后再操作'
+// 								})
+// 							}
+// 						}
+// 					}
 					resolve(response);
 				}).catch(function (error) {
 					console.log(JSON.stringify(error));

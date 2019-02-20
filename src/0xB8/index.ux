@@ -3,67 +3,55 @@
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
+<import name="midea-selectbottom" src="../Component/MideaSelectDiaBottom/index"></import>
 <template>
     <div class="container">
-		<midea-head title="洗碗机" language="{{language}}" power="{{work_status==='power_off'?'off':'on'}}"></midea-head>
+		<midea-head title="吸尘器" language="{{language}}" power="{{online == 'true'?'on':'off'}}"></midea-head>
 		<refresh offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
-			<list onscrollbottom="" id="list" class="E1_list" style="background-color: {{work_status === 'power_off'?'#CCCCCC':'#3191FD'}};">
-				<list-item class="E1_nav" type="listItem">
+			<list onscrollbottom="" id="list" class="B8_list" style="background-color: {{online == 'true'?'#3191FD':'#CCCCCC'}};">
+				<list-item class="B8_nav" type="listItem">
 					<div class="{{language?'E1_nav_list_lock':'E1_nav_list_lock_l'}}" @click="downMeiju()">
-						<image src="./assets/img/{{work_status === 'power_off'?'meijuicon':'loadingMeiju'}}.png" class="E1_nav_list_lock_img"></image>
+						<image src="./assets/img/{{online == 'true'?'loadingMeiju':'meijuicon'}}.png" class="E1_nav_list_lock_img"></image>
 					</div>
 					<text class="E1_nav_list_usemeiju">使用美居</text>
-					<div if="{{wash_stage != 5}}" class="text_list">
-						<text class="E1_nav_standby" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">待机中</text>
-						<text class="E1_nav_warm" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">请选择下方功能</text>
-						<text class="E1_nav_close" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">已关机</text>
-						<text class="E1_nav_warm" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">点击下方开关</text>
-						<text class="E1_nav_data" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{leftTime(left_time)}}</text>
-						<text class="E1_nav_text" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">大约剩余</text>
-						<text class="E1_nav_mode" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}}丨{{washStage(wash_stage)}}</text>
+					<text class="B8_nav_status" style="color: {{online == 'true'?'#ffffff':'#666666'}};">{{online == 'true'?statusTy(work_status):'离线中'}}</text>
+					<text if="{{hide}}" class="B8_nav_battery" style="color: {{online == 'true'?'#ffffff':'#666666'}};">电量：56%</text>
+					<div class="B8_nav_data" if="{{hide}}">
+						<div class="B8_nav_data_left">
+							<text class="B8_nav_data_left_data" style="color: {{online == 'true'?'#ffffff':'#666666'}};">2</text>
+							<text class="B8_nav_data_left_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">已清扫面积</text> -->
+						</div>
+						<div class="B8_nav_data_text">
+							<text class="B8_nav_data_left_dan" style="color: {{online == 'true'?'#ffffff':'#666666'}};">m²</text>
+						</div>
+						<div class="B8_nav_data_center"></div>
+						<div class="B8_nav_data_left">
+							<text class="B8_nav_data_left_data" style="color: {{online == 'true'?'#ffffff':'#666666'}};">124</text>
+							<text class="B8_nav_data_left_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">已清扫时间</text>
+						</div>
+						<div class="B8_nav_data_text">
+							<text class="B8_nav_data_left_dan" style="color: {{online == 'true'?'#ffffff':'#666666'}};">分</text>
+						</div>
 					</div>
-					<text class="E1_nav_standby" if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">保管中</text>
-					<text class="E1_nav_keepend"  if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}} | {{washStage(wash_stage)}}</text>
+					<div class="B8_nav_control">
+						<div class="B8_nav_control_btn">
+							<image src="./assets/img/left_on.png" class="B8_nav_control_btn_img" @click="moveDirection('left')"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">左转圈</text>
+						</div>
+						<div class="B8_nav_control_btn">
+							<image src="./assets/img/line_on.png" class="B8_nav_control_btn_img" @click="moveDirection('forward')"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">直行</text>
+						</div>
+						<div class="B8_nav_control_btn">
+							<image src="./assets/img/right_on.png" class="B8_nav_control_btn_img" @click="moveDirection('right')"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">右转圈</text>
+						</div>
+					</div>
 				</list-item>
 			</list>
 		</refresh>
-		<div if="{{work_status === 'work' && operator === 'pause' && wash_stage != 5}}" class="E1_nav_status">
-			<div class="E1_nav_status_stop" @click="stopDevice()">
-				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
-				<text class="E1_nav_status_text">停止</text>
-			</div>
-			<div class="E1_nav_status_stop" @click="deviceCtr('start')">
-				<image src="./assets/img/start.png" class="E1_nav_status_img"></image>
-				<text class="E1_nav_status_text">继续</text>
-			</div>
-		</div>
-		<div if="{{work_status === 'work' && operator === 'start' && wash_stage != 5}}" class="E1_nav_status">
-			<div class="E1_nav_status_stop" @click="deviceCtr('pause')">
-				<image src="./assets/img/pause.png" class="E1_nav_status_img"></image>
-				<text class="E1_nav_status_text">暂停</text>
-			</div>
-		</div>
-		<div if="{{work_status === 'work' && wash_stage === 5}}" class="E1_nav_status">
-			<div class="E1_nav_status_stop" @click="stopDevice()">
-				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
-				<text class="E1_nav_status_text">结束保管</text>
-			</div>
-		</div>
-		<div class="E1_alert" if="{{isalert}}" @click="closealert">
-			<div class="E1_alert_nav" style="top: {{deviceHeight/2-312}}px;">
-				<text class="E1_alert_nav_head">节能洗</text>
-				<text class="E1_alert_nav_middle">确定启动“节能洗”模式吗</text>
-				<div class="E1_alert_nav_foot">
-					<div class="E1_alert_nav_foot_btn" @click="closealert">
-						<text class="E1_alert_nav_foot_btn_left">取消</text>
-					</div>
-					<div class="E1_alert_nav_foot_btn" @click="startDevice">
-						<text class="E1_alert_nav_foot_btn_right">启动</text>
-					</div>
-				</div>
-			</div>
-		</div>
-		<midea-foot if="{{work_status != 'work'}}" onclick-btn="clickEvent" onclick-alert="showalert" type='1' list-first="{{btnlist}}"></midea-foot>
+		<midea-selectbottom onclose-dia="closedialog" isform="isform" onselect-num="selectdata" if="{{isshow}}" isshow="{{isshow}}" showline="{{lineNum}}" datalist="{{selectlist}}" isselecticon="{{isselectpic}}"></midea-selectbottom>
+		<midea-foot onclick-btn="clickEvent" onclick-alert="showalert" type='1' list-first="{{btnlist}}"></midea-foot>
 		<midea-loading if="{{isloading}}"></midea-loading>
 		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
 		<midea-tips if="{{istips}}"></midea-tips>
@@ -81,39 +69,70 @@ import pkg from '@system.package';
 import network from '@system.network';
 module.exports = {
 	private: {
+		timeTips:'',
+		hide:false,
 		isoffset:'-1000px',
 		isRefreshing:false,
-		isalert:false,
 		language: false,
 		isfirst: false,
+		isselectpic: false,
+		isform:false,
 		iswarm: true,
+		isyellow:true,
+		isshow:false,
+		lineNum:3,
 		isabout: false,
 		istips: false,
 		isloading: false,
 		deviceHeight:0,
-		timeoutInter: '',
+		selectlist:[{
+			name:'弓形模式',
+			select:false,
+			data:'arc',
+			icon:'./assets/img/arc_select_off.png'
+		},{
+			name:'沿边模式',
+			select:false,
+			data:'edge',
+			icon:'./assets/img/edge_select_off.png'
+		},{
+			name:'区域模式',
+			select:false,
+			data:'area',
+			icon:'./assets/img/area_select_off.png'
+		}],
 		openId: '',
-		time:'',
 		accessToken: '',
 		btnlist:[{
-			name:'开关',
-			data:'on',
-			pic:'./assets/img/off.png',
+			name:'启动清扫',
+			data:'stop',
+			textColor:'#666666',
+			pic:'./assets/img/work_on.png',
 			clickAlert:false
 		},{
-			name:'节能洗',
-			data:'eco_wash',
-			pic:'./assets/img/eco_on.png',
+			name:'弓形模式',
+			data:"arc",
+			textColor:'#666666',
+			pic:'./assets/img/arc_on.png',
 			clickAlert:true
+		},{
+			name:'回充',
+			data:"charging",
+			textColor:'#666666',
+			pic:'./assets/img/charge_on.png',
+			clickAlert:false
 		}],
-		E1list:["work_status","operator","mode","wash_stage","left_time"],
-		E1data:{},
-		online:"false",
-		work_status:'power_off',
-		operator:'pause',
-		mode:'eco_wash',
-		wash_stage:0,
-		left_time: 0,
+		B8list:["work_status","work_mode","move_direction",'failure_low_no_dust_box'],
+		B8data:{
+			online:"false",
+			work_status:'work',
+			work_mode:'none',
+			move_direction:'none'
+		},
+		online:"true",
+		work_status:'work',
+		work_mode:'none',
+		move_direction:'none',
 	},
 	public: {
 		deviceSeries: '',
@@ -122,13 +141,13 @@ module.exports = {
 	},
 	isshowclose() {
 		let that = this;
-		that.istips = false;
-		if(that.time != ''){
-			clearTimeout(that.time)
+		if(that.timeTips != ''){
+			that.istips = false;
+			clearTimeout(that.timeTips)
 		}
 		if (that.iswarm) {
 			that.istips = true;
-			that.time = setTimeout(() => {
+			that.timeTips = setTimeout(() => {
 				that.istips = false;
 			}, 3000);
 		}
@@ -136,79 +155,103 @@ module.exports = {
 	onclickFn(e) {
 		this.isabout = false;
 	},
-	leftTime(str){
-		let num = parseInt(str);
-		let hours = "00";
-		let mins = "00";
-		if(num > 0){
-			if(10 > parseInt(num/60) > 0){
-				hours = '0' + parseInt(num/60).toString();
-			}else{
-				hours = parseInt(num/60).toString();
-			}
-			if(10 > parseInt(num%60) > 0){
-				mins = '0' + parseInt(num%60).toString();
-			}else{
-				mins = parseInt(num%60).toString();
-			}
-		}
-		return hours+":"+mins;
+	closedialog(){
+		let that = this;
+		that.isshow = false;
 	},
-	modeShow(str){
-		let name = '';
-		switch(str){
-			case 'auto_wash': 
-				name = '自动洗';
-				break;
-			case 'strong_wash': 
-				name = '强力洗';
-				break;
-			case 'standard_wash': 
-				name = '及时洗';
-				break;
-			case 'eco_wash': 
-				name = '节能洗';
-				break;
-			case 'glass_wash': 
-				name = '玻璃洗';
-				break;
-			case 'fast_wash': 
-				name = '快速洗';
-				break;
-			case 'self_define': 
-				name = '自定义洗';
-				break;
+	modeTy(mode){
+		let that = this;
+		let str = '';
+		switch(mode){
+			case 'none':
+				str = "无操作";
+			break;
+			case 'random':
+				str = "随机模式";
+			break;
+			case 'arc':
+				str = "弓形模式";
+			break;
+			case 'edge':
+				str = "沿边模式";
+			break;
+			case 'emphases':
+				str = "重点模式";
+			break;
+			case 'screw':
+				str = "螺旋模式";
+			break;
+			case 'auto':
+				str = "自动模式";
+			break;
+			case 'bed':
+				str = "床底清扫";
+			break;
+			case 'wide_screw':
+				str = "宽阔地方螺旋";
+			break;
+			case 'area':
+				str = "区域清扫";
+			break;
+			case 'deep':
+				str = "深度清扫";
+			break;
 			default:
-				name = '--';
+				str = "模式";
 		}
-		return name;
+		return str;
 	},
-	washStage(str){
-		let name = '';
-		let num = parseInt(str)
-		switch(num){
-			case 0: 
-				name = '准备中';
-				break;
-			case 1: 
-				name = '预洗';
-				break;
-			case 2: 
-				name = '主洗';
-				break;
-			case 3: 
-				name = '漂洗';
-				break;
-			case 4: 
-				name = '干燥';
-				break;
-			case 5: 
-				name = '已完成';
-				break;
+	statusTy(status){
+		let that = this;
+		let str = '';
+		switch(status){
+			case 'charge':
+				str = '回充中';
+			break;
+			case 'work':
+				str = '打扫中';
+			break;
+			case 'stop':
+				str = '待机中';
+			break;
+			case 'charging':
+				str = '充电中';
+			break;
+			case 'charge_finish':
+				str = '充电完成';
+			break;
+			case 'work_finish':
+				str = '打扫完成';
+			break;
+			case 'set':
+				str = '设置中';
+			break;
 			default:
-				name = '--';
+				str = '--';
 		}
-		return name;
+		return str;
+	},
+	showalert(){
+		let that = this;
+		if(that.online === 'false'){
+			that.isshowclose();
+			return false;
+		}
+		that.isshow = true;
+		let num = 100;
+		that.selectlistInit();
+		that.selectlist.forEach(function(item,i){
+			if(that.selectlist[i].data == that.work_mode){
+				num = i;
+			}
+		})
+		if(num != 100){
+			that.selectlist[num].icon = './assets/img/'+that.work_mode+'_select_on.png';
+			that.selectlist[num].select = true;
+		}
+// 		prompt.showToast({
+// 			message:JSON.stringify(that.selectlist)
+// 		})
 	},
 	downMeiju() {
 		let that = this;
@@ -289,111 +332,96 @@ module.exports = {
 			});
 		}
 	},
-	timeGetData() {
-		let that = this;
-		that.timeoutInter = setInterval(function() {
-			that.iswarm = false;
-			let timestamp = Date.parse(new Date());
-			storage.get({
-				key: 'openidToken',
-				success: function(data) {
-					if (data === '') {
-						that.getdevicelist();
-					} else {
-						let obj = JSON.parse(data);
-						if (parseInt(timestamp) > parseInt(obj.time)) {
-							that.getdevicelist();
-						} else {
-							if (obj.openid === that.openid) {
-								that.openId = obj.openid;
-								that.accessToken = obj.accessToken;
-								that.getDeviceStatus(that.openId);
-							} else {
-								that.getdevicelist();
-							}
-						}
-					}
-					console.log('handling success');
-				},
-				fail: function(data, code) {
-					console.log(`handling fail, code = ${code}`);
-				}
-			});
-		}, 3000);
-	},
 	clickEvent(e){
 		let that = this;
 		let params = {};
-		that.iswarm = true;
+		let status;
 		if(that.online === 'false'){
 			that.isshowclose();
-			return false
+			return false;
 		}
-		if(e.detail.params === "开关"){
-			if(that.work_status != 'power_off'){
-				params = {
-					work_status:'power_off'
-				}
-			}else{
-				params = {
-					work_status:'power_on'
-				}
+		that.isloading = true;
+		if(e.detail.params === "启动清扫"){
+			params = {
+				work_mode:that.work_mode,
+				move_direction:that.move_direction,
+				work_status:'work'
 			}
-			let status = ['work_status'];
-			that.isloading = true;
-			that.postDeviceControl(params,status)
+			that.B8data.work_status = params.work_status;
+			that.B8data.move_direction = params.move_direction;
+			that.B8data.work_mode = params.work_mode;
+			status = ['work_status'];
+		}else if(e.detail.params === '停止清扫' || e.detail.params === '取消回充'){
+			params = {
+				move_direction:'none',
+				work_mode:'none',
+				work_status:'stop'
+			}
+			that.B8data.work_status = params.work_status;
+			that.B8data.work_mode = params.work_mode;
+			that.B8data.move_direction = params.move_direction;
+			status = ['work_status','move_direction','work_mode'];
+		}else if(e.detail.params === '回充'){
+			params = {
+				work_status:'charge'
+			}
+			that.B8data.work_status = params.work_status;
+			status = ['work_status'];
 		}
+		that.postDeviceControl(params,status)
 	},
-	showalert(e){
+	selectdata(e){
 		let that = this;
-		that.iswarm = true;
+		let params = {
+			work_status:'work',
+			move_direction:'none',
+			work_mode:that.selectlist[e.detail.id].data
+		};
+		that.isloading = true;
+		let status;
+		that.B8data.work_mode = params.work_mode;
+		that.B8data.work_status = params.work_status;
+		that.B8data.move_direction = params.move_direction;
+		status = ['work_mode','work_status','move_direction'];
+		that.postDeviceControl(params,status)
+	},
+	moveDirection(str){
+		let that = this;
 		if(that.online === 'false'){
 			that.isshowclose();
-			return false
+			return false;
 		}
-// 		prompt.showToast({
-// 			message:"sasd"
-// 		})
-		if(that.work_status === 'power_off'){
+		if(that.work_status == 'charge'){
 			prompt.showToast({
-				message:"设备关机状态,不能操作"
+				message:"设备回充中，请稍后"
 			})
 			return false;
 		}
-		if(e.detail.params === "节能洗"){
-			that.isalert = true;
-		}
-	},
-	closealert(){
-		this.isalert = false;
-	},
-	startDevice(){
-		let that = this;
-		let params = {
-			mode:'eco_wash',
-			work_status:'work'
-		}
-		let status = ['mode','work_status'];
+		let params = {};
+		let status;
 		that.isloading = true;
-		that.closealert();
-		that.postDeviceControl(params,status)
-	},
-	deviceCtr(str){
-		let that = this;
-		let params = {
-			operator:str
+		if(that.move_direction == str){
+			params = {
+				move_direction:'none',
+				work_mode:'none',
+				work_status:'stop'
+			}
+			that.B8data.work_status = params.work_status;
+			that.B8data.work_mode = params.work_mode;
+			that.B8data.move_direction = params.move_direction;
+			status = ['work_status','move_direction'];
+		}else{
+			params = {
+				// work_status:'work',
+				work_mode:'none',
+				move_direction:str
+			}
+			that.B8data.work_status = params.work_status;
+			that.B8data.work_mode = params.work_mode;
+			that.B8data.move_direction = params.move_direction;
+			status = ['work_mode','move_direction','work_status'];
 		}
-		let status = ['operator'];
-		that.isloading = true;
-		that.postDeviceControl(params,status)
-	},
-	stopDevice(){
-		let that = this;
-		let params = {
-			work_status:'cancel'
-		}
-		let status = ['work_status'];
-		that.isloading = true;
+		
 		that.postDeviceControl(params,status)
 	},
 	//获取第三方登录信息
@@ -464,31 +492,11 @@ module.exports = {
 			devices: [
 				{
 					deviceId: that.deviceId,
-					properties: that.E1list
+					properties: that.B8list
 				}
 			]
 		};
-		if (that.timeoutInter != '') {
-			clearInterval(that.timeoutInter);
-		}
 		api.postDeviceStatusQuery(params, that.accessToken).then(res => {
-// 			prompt.showDialog({
-// 														title:"返回数据",
-// 														message:"返回数据:"+JSON.stringify(res),
-// 														buttons: [{
-// 															text: '取消',
-// 															color: '#33dd44'
-// 														}],
-// 														success: function(data) {
-// 															console.log('handling callback')
-// 														},
-// 														cancel: function() {
-// 															console.log('handling cancel')
-// 														},
-// 													    fail: function(data, code) {
-// 															console.log(`handling fail, code = ${code}`)
-// 														}
-// 													})
 				that.isfirst = true;
 				that.isRefreshing = false;
 				that.isloading = false;
@@ -496,21 +504,32 @@ module.exports = {
 					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 					if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
 						let obj = data.devices[0].properties;
-						that.E1data = obj;
+						prompt.showDialog({
+											title:"返回数据",
+											message:"返回数据:"+JSON.stringify(obj),
+											buttons: [{
+												text: '取消',
+												color: '#33dd44'
+											}],
+											success: function(data) {
+												console.log('handling callback')
+											},
+											cancel: function() {
+												console.log('handling cancel')
+											},
+										    fail: function(data, code) {
+												console.log(`handling fail, code = ${code}`)
+											}
+										})
+						that.B8data = obj;
 						that.online = obj.online;
 						that.work_status = obj.work_status;
-						that.operator = obj.operator;
-						that.mode = obj.mode;
-						that.wash_stage = obj.wash_stage;
-						that.left_time = obj.left_time;
+						that.work_mode = obj.work_mode;
+						that.move_direction = obj.move_direction;
 						if (that.online != 'true') {
 							that.isshowclose();
 						}
-						if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
-							that.timeGetData();
-						}
 					} else {
-						that.initData();
 						that.isstop = true;
 						if (data.msg === '') {
 							let str1 = '';
@@ -541,10 +560,11 @@ module.exports = {
 						// that.netWorkGet(data.msg)
 					}
 				} else {
-					that.initData();
+					
 					that.isstop = true;
 					that.netWorkGet('获取设备状态失败,请稍后重试');
 				}
+				that.initData();
 			})
 			.catch(error => {
 				that.initData();
@@ -563,28 +583,31 @@ module.exports = {
 				{
 					deviceId: that.deviceId,
 					properties: obj,
-					status: that.E1data
+					status: that.B8data
 				}
 			]
 		};
+		prompt.showToast({
+			message:JSON.stringify(params)
+		})
 		api.postDeviceControl(params, that.accessToken).then(res => {
-// 			prompt.showDialog({
-// 								title:"返回数据",
-// 								message:"返回数据:"+JSON.stringify(res),
-// 								buttons: [{
-// 									text: '取消',
-// 									color: '#33dd44'
-// 								}],
-// 								success: function(data) {
-// 									console.log('handling callback')
-// 								},
-// 								cancel: function() {
-// 									console.log('handling cancel')
-// 								},
-// 							    fail: function(data, code) {
-// 									console.log(`handling fail, code = ${code}`)
-// 								}
-// 							})
+			prompt.showDialog({
+								title:"返回数据",
+								message:"返回数据:"+JSON.stringify(res),
+								buttons: [{
+									text: '取消',
+									color: '#33dd44'
+								}],
+								success: function(data) {
+									console.log('handling callback')
+								},
+								cancel: function() {
+									console.log('handling cancel')
+								},
+							    fail: function(data, code) {
+									console.log(`handling fail, code = ${code}`)
+								}
+							})
 				// that.getDeviceStatus(that.openId);
 				if (res.code === 200) {
 					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
@@ -596,42 +619,25 @@ module.exports = {
 						}else{
 							isall = true;
 						}
-						if(obj.operator){
-							that.operator = obj.operator;
+						if(obj.work_mode){
+							that.work_mode = obj.work_mode;
 						}else{
 							isall = true;
 						}
-						if(obj.mode){
-							that.mode = obj.mode;
+						if(obj.move_direction){
+							that.move_direction = obj.move_direction;
 						}else{
 							isall = true;
 						}
-						if(obj.wash_stage.toString()){
-							that.wash_stage = obj.wash_stage;
-						}else{
-							isall = true;
-						}
-						if(obj.left_time.toString()){
-							that.left_time = obj.left_time;
-						}else{
-							isall = true;
-						}
-						that.E1data = obj;
+						that.B8data = obj;
 						if(isall){
 							that.getDeviceStatus(that.openId);
 						}else{
 							that.isRefreshing = false;
 							that.isloading = false;
-							if (that.timeoutInter != '') {
-								clearInterval(that.timeoutInter);
-							}
-							if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
-								that.timeGetData();
-							}
 						}
 						
 					} else {
-						that.initData();
 						that.isRefreshing = false;
 						that.isloading = false;
 						that.isstop = true;
@@ -661,11 +667,11 @@ module.exports = {
 						}
 					}
 				} else {
-					that.initData();
 					that.isRefreshing = false;
 					that.isloading = false;
 					that.netWorkGet('操作设备失败,请稍后重试');
 				}
+				that.initData();
 			})
 			.catch(error => {
 				that.initData();
@@ -675,8 +681,124 @@ module.exports = {
 				that.isloading = false;
 			});
 	},
-	initData() {
-		
+	initData(){
+		let that = this;
+		let status = '';
+		let mode = 'on';
+		let str = '';
+		let textColor1 = '#666666';
+		let textColor2 = '#666666';
+		let textColor3 = '#666666';
+		if(that.work_status === 'work'){
+			status = './assets/img/stop_on.png';
+		}else if(that.work_status === 'charge'){
+			status = './assets/img/work_off.png';
+			mode = 'off';
+			textColor1 = "#D5D5D5";
+			textColor2 = "#D5D5D5";
+		}else{
+			status = './assets/img/work_on.png';
+		}
+		if(that.work_status == 'charging'){
+			str = './assets/img/charge_off.png';
+			textColor3 = "#D5D5D5";
+		}else if(that.work_status == 'charge'){
+			str = './assets/img/stop_on.png';
+		}else{
+			str = './assets/img/charge_on.png';
+		}
+		let pic = ''
+		if(that.modeSelect(that.work_mode)){
+			pic = './assets/img/'+that.work_mode+'_'+mode+'.png';
+		}
+		// that.btnlist = [];
+		that.btnlist = [{
+			name:that.work_status === 'work'?'停止清扫':'启动清扫',
+			data:that.work_status,
+			textColor:textColor1,
+			pic:status,
+			clickAlert:false
+		},{
+			name:that.modeTy(that.work_mode),
+			data:that.modedataTy(that.work_mode),
+			textColor:textColor2,
+			pic:pic,
+			clickAlert:true
+		},{
+			name:that.work_status == 'charge'?'取消回充':'回充',
+			data:that.work_status,
+			textColor:textColor3,
+			pic:str,
+			clickAlert:false
+		}]
+	},
+	modedataTy(mode){
+		let that = this;
+		let str = '';
+		switch(mode){
+			case 'random':
+				str = "随机";
+			break;
+			case 'arc':
+				str = "弓形";
+			break;
+			case 'edge':
+				str = "沿边";
+			break;
+			case 'emphases':
+				str = "重点";
+			break;
+			case 'screw':
+				str = "螺旋";
+			break;
+			case 'auto':
+				str = "自动";
+			break;
+			case 'bed':
+				str = "床底";
+			break;
+			case 'wide_screw':
+				str = "螺旋";
+			break;
+			case 'area':
+				str = "区域";
+			break;
+			case 'deep':
+				str = "深度";
+			break;
+			default:
+				str = "无";
+		}
+		return str;
+	},
+	selectlistInit(){
+		let that = this;
+		that.selectlist= [{
+			name:'弓形模式',
+			select:false,
+			data:'arc',
+			icon:'./assets/img/arc_select_off.png'
+		},{
+			name:'沿边模式',
+			select:false,
+			data:'edge',
+			icon:'./assets/img/edge_select_off.png'
+		},{
+			name:'区域模式',
+			select:false,
+			data:'area',
+			icon:'./assets/img/area_select_off.png'
+		}]
+	},
+	modeSelect(mode){
+		let that = this;
+		let str = '';
+		let arry = ['arc','edge','area'];
+		let src = false;
+		if(arry.includes(mode)){
+			src = true;
+		}
+		return src;
 	},
 	netWorkGet(str) {
 		if (this.iswarm) {
@@ -722,10 +844,6 @@ module.exports = {
 		if (that.ws === '' && that.isws) {
 			// that.webSocketdata();
 		}
-		if (that.timeoutInter != '') {
-			clearInterval(that.timeoutInter);
-		}
-		that.timeGetData();
 	},
 	onInit() {
 		api.getlanguage().then(res => {

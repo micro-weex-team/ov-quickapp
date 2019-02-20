@@ -1,8 +1,8 @@
 {
 	"package": "com.midea.iot.application",
     "name": "Midea-IoT",
-    "versionName": "1.7.0",
-    "versionCode": 170,
+    "versionName": "1.7.2",
+    "versionCode": 172,
     "icon": "/Common/logo.png",
     "minPlatformVersion": 1020,
     "features": [{
@@ -119,7 +119,7 @@
         "designWidth": 1080
     },
     "router": {
-        "entry": "0xB6",
+        "entry": "0xB8",
         "pages": {
             "0xAC": {
                 "component": "index"
@@ -136,6 +136,9 @@
 			"0xE2": {
 				"component": "index"
 			},
+			"0xE3": {
+				"component": "index"
+			},
 			"0xEA": {
 				"component": "index"
 			},
@@ -143,6 +146,9 @@
 				"component": "index"
 			},
 			"0xB6": {
+			    "component": "index"
+			},
+			"0xB8": {
 			    "component": "index"
 			},
             "0xCA": {

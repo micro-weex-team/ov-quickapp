@@ -90,6 +90,7 @@
 	import network from '@system.network'
     module.exports = {
         private: {
+			timeTips:'',
 			isoffset:'-1000px',
 			isRefreshing:false,
 			ws: '',
@@ -331,9 +332,13 @@
 		},
 		isshowclose(){
 			let that = this;
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
 			if(that.iswarm){
 				that.istips = true;
-				let time = setTimeout(() => {
+				that.timeTips = setTimeout(() => {
 					that.istips = false;
 				},3000)
 			}
@@ -404,8 +409,9 @@
 				control_status: 'pause'
 			}
 			let status = this.dataLists;
-			status.control_status = 'pause';
-			// delete status.control_status;
+			// status.control_status = 'pause';
+			status.running_status = 'pause';
+			delete status.control_status;
 			this.postDeviceControl(params,status);
 		},
 		startDevice(){
@@ -413,6 +419,7 @@
 				control_status: 'start'
 			}
 			let status = this.dataLists;
+			status.running_status = 'start';
 			delete status.control_status;
 			this.postDeviceControl(params,status);
 		},
@@ -829,6 +836,23 @@
 // 				duration:1
 // 			})
 			api.postDeviceStatusQuery(params,that.accessToken).then((res) => {
+// 				prompt.showDialog({
+// 										title: '提示',
+// 										message: "aosdg"+JSON.stringify(res),
+// 										buttons: [{
+// 											text: '确定',
+// 											color: '#33dd44'
+// 										}],
+// 										success: function (data) {
+// 											// that.lockDevice();
+// 										},
+// 										cancel: function () {
+// 											console.log('handling cancel')
+// 										},
+// 										fail: function (data, code) {
+// 											console.log(`handling fail, code = ${code}`)
+// 										}
+// 									})
 				this.isfirst = true;
 				this.isloading = false;
 				that.isRefreshing = false;
@@ -848,17 +872,19 @@
 							clearInterval(that.timeoutInter);
 						}
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose()
 						}
 						if(obj.running_status === 'start' || obj.running_status === 'pause'){
 							that.isstop = false;
 							if(obj.running_status === 'start'){
 								that.timeGetData();
 							}
+						}else if(obj.running_status === 'fault'){
+							prompt.showToast({
+								message:'设备运行出错，请检查洗衣机是否故障'
+							})
 						}
+						
 					}else{
 						that.initData();
 						that.isstop = true;
@@ -999,22 +1025,22 @@
 		},
 		initData(){
 			this.isfirst = true;
-			this.dataLists = {
-				power: "off",
-				program: "cotton",
-				control_status: "pause",
-				running_status: "pause",
-				remain_time: 15
-			}
-			this.program = "cotton";
-			this.control_status = "pause";
-			this.running_status = "pause";
-			this.remain_time = 0;
-			this.col = "off";
-			this.online = "false";
-			if(this.timeoutInter != ''){
-				clearInterval(this.timeoutInter);
-			}
+// 			this.dataLists = {
+// 				power: "off",
+// 				program: "cotton",
+// 				control_status: "pause",
+// 				running_status: "pause",
+// 				remain_time: 15
+// 			}
+// 			this.program = "cotton";
+// 			this.control_status = "pause";
+// 			this.running_status = "pause";
+// 			this.remain_time = 0;
+// 			this.col = "off";
+// 			this.online = "false";
+// 			if(this.timeoutInter != ''){
+// 				clearInterval(this.timeoutInter);
+// 			}
 		},
 		netWorkGet(str){
 			if(this.iswarm){
@@ -1135,6 +1161,7 @@
 				},
 				onHide(){
 					let that = this;
+					that.istips = false;
 					that.closeWebsocket();
 				},
 				onShow(){

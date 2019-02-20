@@ -4,16 +4,25 @@
 			<text class="M-dialog-alert-head" if="{{ishead}}">{{headtitle}}</text>
 			<div class="M-dialog-alert-nav" style="height: {{150*showline}}px;">
 				<list onscrollbottom="" class="M-dialog-alert-nav-list" id="list">
-					<list-item type="selectList" class="M-dialog-alert-nav-item {{$idx+1 == listNum && !isfoot?'nofoot':''}}" for="{{datalist}}">
-						<text class="M-dialog-alert-nav-item-name" style="text-align: {{isselecticon?'right':'center'}};color: {{$item.select?color:'#000000'}};">{{$item.name}}</text>
+					<list-item type="selecitem" class="{{$idx+1 == listNum && !isfoot?'nofoot':''}} {{isyellow?'M-dialog-alert-nav-borderItem':'M-dialog-alert-nav-item'}}" for="{{selectList}}" @click="selectData($idx)">
+						<div class="M-dialog-alert-nav-item-img" if="{{$item.icon && $item.icon != ''}}">
+							<image class="M-dialog-alert-nav-item-icon" src="{{$item.icon}}"></image>
+						</div>
+						<text class="M-dialog-alert-nav-item-imgname" if="{{$item.icon && $item.icon != ''}}" style="text-align: left;color: {{$item.select?color:bgColor}};">{{$item.name}}</text>
+						<text class="M-dialog-alert-nav-item-name" if="{{!$item.icon || $item.icon === ''}}" style="text-align: {{isselecticon?'right':'center'}};color: {{$item.select?color:bgColor}};">{{$item.name}}</text>
 						<div class="M-dialog-alert-nav-item-pic" if="{{isselecticon}}">
-							<image class="M-dialog-alert-nav-item-icon" src="../Common/img/{{isyellow?'select-icon':'ic_select'}}.png"></image>
+							<image show="{{$item.select}}" class="M-dialog-alert-nav-item-icon" src="../Common/img/{{isyellow?'select-icon':'ic_select'}}.png"></image>
 						</div>
 					</list-item>
 				</list>
 			</div>
 			<div class="M-dialog-alert-foot" if="{{isfoot}}">
-				
+				<div class="M-dialog-alert-foot-btn" @click="closeDia">
+					<text class="M-dialog-alert-foot-text1" style="color: {{cancel.textColor}};">{{cancel.text}}</text>
+				</div>
+				<div class="M-dialog-alert-foot-btn" @click="comfirmBtn">
+					<text class="M-dialog-alert-foot-text2" style="color: {{comfirm.textColor}};">{{comfirm.text}}</text>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -55,30 +64,46 @@
 				&-list{
 					flex-direction: column;
 				}
-				&-item{
+				&-borderItem{
 					width: 100%;
 					height: 150px;
 					flex-direction: row;
 					border-bottom-color: #E5E5E5;
+					border-bottom-width: 0px;
+				}
+				&-item{
+					width: 100%;
+					height: 150px;
+					flex-direction: row;
+					justify-content: center;
+					border-bottom-color: #E5E5E5;
 					border-bottom-width: 1px;
+					&-imgname{
+						padding-right: 5px;
+						padding-left: 5px;
+						font-size: 60px;
+					}
 					&-name{
 						width: 100%;
-						text-align: right;
-						padding-right: 15px;
-						padding-left: 15px;
-						font-size: 48px;
-						color: #000000;
+						padding-right: 5px;
+						padding-left: 5px;
+						font-size: 60px;
 					}
 					&-pic{
 						width: 100%;
-						padding-left: 15px;
-						padding-right: 15px;
+						padding-left: 25px;
+						padding-right: 25px;
 					}
 					&-icon{
 						margin-top: 50px;
-						width: 50px;
-						height: 50px;
+						width: 60px;
+						height: 60px;
 						resize-mode: cover;
+					}
+					&-img{
+						padding-left: 25px;
+						padding-right: 25px;
+						justify-content: flex-end;
 					}
 				}
 			}
@@ -88,6 +113,26 @@
 				border-top-color: #E5E5E5;
 				border-top-width: 1px;
 				flex-direction: row;
+				&-btn{
+					width: 100%;
+					height: 100%;
+				}
+				&-text1{
+					width: 100%;
+					height: 60px;
+					margin-top: 45px;
+					border-right-color: #E5E5E5;
+					border-right-width: 1px;
+					text-align: center;
+					font-size: 48px;
+				}
+				&-text2{
+					width: 100%;
+					height: 60px;
+					margin-top: 45px;
+					text-align: center;
+					font-size: 48px;
+				}
 			}
 		}
 	}
@@ -121,7 +166,7 @@
 	    transform: translateY(0px);
 	  }
 	  to {
-	    transform: translateY(800px);
+	    transform: translateY(1200px);
 	  }
 	}
 </style>
@@ -158,33 +203,87 @@
 				type: Boolean
 			},
 			headtitle:{
-				default: "大家好",
+				default: "",
 				type: String
 			},
 			isfoot:{
 				default: false,
 				type: Boolean
-			}
+			},
+			cancel:{
+				default: {
+					textColor:"#666666",
+					text:"取消"
+				},
+				type: Array
+			},
+			comfirm:{
+				default: {
+					textColor:"#3191FD",
+					text:"确定"
+				},
+				type: Array
+			},
+			isform:false
 		},
 		data() {
 			return {
 				heightD:0,
 				listNum:0,
 				color:'',
-				showdia:false
+				bgColor:'#000000',
+				showdia:false,
+				selectList:[],
 			}
+		},
+		selectData(id){
+			let that = this;
+			that.selectList.forEach(function(item,i){
+				that.selectList[i].select = false;
+				if(that.selectList[id].icon){
+					that.selectList[id].icon = './assets/img/'+that.selectList[id].name+'_select_off.png';
+				}
+			})
+			that.selectList[id].select = true;
+			if(that.selectList[id].icon){
+				that.selectList[id].icon = './assets/img/'+that.selectList[id].name+'_select_on.png';
+			}
+			if(that.isform){
+				that.$emit("selectNum",{param:that.selectList,id:id})
+				that.closeDia();
+			}else{
+				that.selectList = that.datalist;
+			}
+		},
+		comfirmBtn(){
+			let that = this;
+			let num;
+			that.selectList.forEach(function(item,i){
+				if(that.selectList[i].select){
+					num = i
+				}
+			})
+			that.$emit("selectNum",{param:that.selectList,id:num});
+			// that.selectList = that.datalist;
+			that.closeDia();
 		},
 		closeDia(){
 			let that = this;
 			that.showdia = false;
 			setTimeout(function(){
+				// that.selectList = that.datalist;
 				that.$emit("closeDia",{param:"关闭"})
-			},100)
+			},150)
 		},
 		clickE(){
 		},
+		watchPropsChange (newV, oldV) {
+			let that = this;
+			that.selectList = newV
+		    // this.upperProp1 = newV && newV.toUpperCase();
+		},
 		onInit() {
-			
+			this.$watch('datalist', 'watchPropsChange')
 		},
 		onReady(){
 			let headH = 0;
@@ -198,7 +297,9 @@
 			}
 			that.heightD = that.showline*150+foot+headH;
 			that.listNum = that.datalist.length;
+			that.selectList = that.datalist;
 			that.color = that.isyellow?'#F9CB3D':'#3191FD';
+			that.bgColor = that.isyellow?'#CCCCCC':'#000000';
 			that.showdia = that.isshow;
 		}
 

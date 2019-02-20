@@ -1,5 +1,12 @@
 <script>
+	import prompt from '@system.prompt';
+	import account from '@service.account';
   module.exports = {
     /**manifest**/
+			onInit(){
+				prompt.showToast({
+					message:"sssss"
+				})
+			}
   }
 </script>

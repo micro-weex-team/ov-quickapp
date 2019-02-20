@@ -142,6 +142,7 @@
 
 	export default {
 		private: {
+			timeTips:'',
 			isoffset:'-1000px',
 			isRefreshing:false,
 			warmtime:"",
@@ -274,10 +275,7 @@
 // 				this.initData();
 // 				this.selectMode = str;
 			}else{
-				that.istips = true;
-				setTimeout(function(){
-					that.istips = false;
-				},3000)
+				that.isshowclose()
 			}
 		},
 		// 关闭alert
@@ -793,10 +791,7 @@
 						that.listDevice = obj;
 						that.online = that.EAdata.online;
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose();
 						}
 					} else {
 						if (data.msg === '') {
@@ -982,9 +977,13 @@
 		},
 		isshowclose(){
 			let that = this;
+			that.istips = false;
+			if(that.timeTips != ''){
+				clearTimeout(that.timeTips)
+			}
 			if(that.iswarm){
 				that.istips = true;
-				let warmtime = setTimeout(() => {
+				that.timeTips = setTimeout(() => {
 					that.istips = false;
 				},3000)
 			}
@@ -1232,8 +1231,9 @@
 		},
 		onHide(){
 			let that = this;
+			that.istips = false;
 			that.closeWebsocket();
-			this.isabout = false;
+			// that.isabout = false;
 		},
 		onReady() {
 		  /* 如将 $element('id')获取到内容，赋值给成员变量，则有可能引发堆栈溢出 */

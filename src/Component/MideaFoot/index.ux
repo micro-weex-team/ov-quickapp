@@ -6,16 +6,24 @@
 					<image src="{{$item.pic}}" class="midea-foot-item-img"></image>
 				</div>
 				<div class="midea-foot-item-btn" if="{{$item.pic === ''}}">
-					<div class="midea-foot-item-text" style="background-color: {{$item.data === 'off'?'#ffffff':'#3191FD'}}">
-						<text class="midea-foot-item-data" style="border: {{$item.data === 'off'?'3px solid #D5D5D5':'0px'}};color: {{$item.data === 'off'?'#000000':'#ffffff'}};">{{$item.data}}</text>
+					<div class="midea-foot-item-text" style="background-color: {{$item.data === 'off' || $item.data === '无'?'#ffffff':'#3191FD'}}">
+						<text class="midea-foot-item-data" style="border: {{$item.data === 'off' || $item.data === '无'?'3px solid #D5D5D5':'0px'}};color: {{$item.data === 'off' || $item.data === '无'?'#000000':'#ffffff'}};font-size: {{($item.fontSize && $item.fontSize>0)?$item.fontSize:'48'}}px">{{$item.data}}</text>
+					</div>
+				</div>
+				<text class="midea-foot-item-name" style="color: {{$item.textColor?$item.textColor:'#666666'}};">{{$item.name}}</text>
+			</div>
+		</div>
+		<div if="{{type==='2'}}" class="midea-foot-list2">
+			<div class="midea-foot-item" for="{{listSecond}}" @click="btnClick($item.name,$item.clickAlert)">
+				<div class="midea-foot-item-btn" if="{{$item.pic != ''}}">
+					<image src="{{$item.pic}}" class="midea-foot-item-img"></image>
+				</div>
+				<div class="midea-foot-item-btn" if="{{$item.pic === ''}}">
+					<div class="midea-foot-item-text" style="background-color: {{$item.data === 'off' || $item.data === '无'?'#ffffff':'#3191FD'}}">
+						<text class="midea-foot-item-data" style="border: {{$item.data === 'off' || $item.data === '无'?'3px solid #D5D5D5':'0px'}};color: {{$item.data === 'off' || $item.data === '无'?'#000000':'#ffffff'}};">{{$item.data}}</text>
 					</div>
 				</div>
 				<text class="midea-foot-item-name">{{$item.name}}</text>
-			</div>
-		</div>
-		<div if="{{type==='2'}}" class="midea-foot-list1">
-			<div class="midea-foot-item" for="{{listFirst}}">
-				
 			</div>
 		</div>
     </div>
@@ -30,10 +38,18 @@
 	&-list1 {
 		width: 100%;
 		// height: 350px;
-		padding-left: 30px;
-		padding-right: 30px;
+		padding-left: 96px;
+		padding-right: 96px;
 		flex-direction: row;
 		justify-content: center;
+	}
+	&-list2{
+		width: 100%;
+		// height: 350px;
+		padding-left: 96px;
+		padding-right: 96px;
+		flex-direction: row;
+		justify-content: flex-start;
 	}
 	&-item {
 		width: 222px;
@@ -56,12 +72,13 @@
 			width: 100%;
 			height: 100%;
 			border-radius: 150px;
+			border: 1px solid #D5D5D5;
 			background-color: #FFFFFF;
 		}
 		&-data{
 			width: 100%;
 			text-align: center;
-			font-size: 60px;
+			font-size: 48px;
 			color: #CCCCCC;
 		}
 		&-name{
@@ -111,6 +128,8 @@ export default {
 	btnClick(str,bol){
 		let that = this;
 		if(bol){
+			that.$emit('clickAlert',{ params:  str})
+		}else{
 			that.$emit('clickBtn',{ params:  str})
 		}
 	}

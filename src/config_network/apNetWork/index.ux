@@ -419,9 +419,9 @@
 								action: 'startConfigDevice',
 								data: params,
 								success: function(data) {
-									// prompt.showToast({message:JSON.stringify(data)});
 									let res = (typeof data != 'object') ? JSON.parse(data) : data;
 									if(!res.code || res.code.toString() == '0'){
+										// prompt.showToast({message:JSON.stringify(res)});
 										$this.deviceType = JSON.parse(res.message).deviceType
 										$this.modelNumber = JSON.parse(res.message).deviceSubType
 										$this.deviceName = JSON.parse(res.message).deviceName
@@ -474,7 +474,8 @@
 				quickAppPackage: $this.quickAppPackage,
 				deviceName: $this.deviceName,
 				deviceCategory: $this.deviceType,
-				deviceSeries: $this.sn.substring($this.sn.length-8,$this.sn.length),
+				deviceSeries:$this.sn.substring(9,17),
+				// deviceSeries: $this.sn.substring($this.sn.length-8,$this.sn.length),
 				deviceUuid: $this.binddeviceid,
 				resultCode: bol,
 				extraJson: {
@@ -484,7 +485,8 @@
 					deviceSN: $this.sn
 				}
 			}
-			// prompt.showToast({message:"完成：" + JSON.stringify(params),duration:1})
+			console.log(JSON.stringify(params))
+			// prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
 			setTimeout(function(){
 				$this.$page.finish()
 			},300)

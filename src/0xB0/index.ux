@@ -154,6 +154,7 @@
 
 	export default {
 		private: {
+			timeTips:'',
 			isoffset:'-1000px',
 			isRefreshing:false,
 			ws: '',
@@ -242,10 +243,11 @@
 					})
 				}
 			} else {
-				that.istips = true;
-				setTimeout(function() {
-					that.istips = false;
-				}, 3000)
+				that.isshowclose();
+// 				that.istips = true;
+// 				setTimeout(function() {
+// 					that.istips = false;
+// 				}, 3000)
 			}
 		},
 		//首次启动
@@ -342,10 +344,11 @@
 					})
 				}
 			} else {
-				that.istips = true;
-				setTimeout(function() {
-					that.istips = false;
-				}, 3000)
+				that.isshowclose();
+// 				that.istips = true;
+// 				setTimeout(function() {
+// 					that.istips = false;
+// 				}, 3000)
 			}
 		},
 		//火力过滤
@@ -492,9 +495,12 @@
 			this.power = this.listdata.power;
 			this.online = this.listdata.online;
 			this.startOrpause();
-			if(that.work_status === 'work' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
-				that.headTime();
+			if(that.power === 'on'){
+				if(that.work_status === 'work' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
+					that.headTime();
+				}
 			}
+			
 		},
 		//选择
 		selectData(data, str) {
@@ -639,9 +645,13 @@
 		//显示离线提醒
 		isshowclose() {
 			let that = this;
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
 			if(that.iswarm){
 				that.istips = true;
-				setTimeout(function() {
+				that.timeTips = setTimeout(function() {
 					that.istips = false;
 				}, 3000)
 			}
@@ -770,15 +780,12 @@
 				if (res.code === 200) {
 					let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
 					if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
-						let obj = data.devices[0].properties;
+						let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
 						that.listdata = obj;
 						that.listDevice = obj;
 						that.online = that.listdata.online;
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose();
 						}
 					} else {
 						that.isworking = true;
@@ -1149,6 +1156,7 @@
 		},
 		onHide(){
 			let that = this;
+			that.istips = false;
 			that.closeWebsocket();
 		},
 		onShow(){
@@ -1170,7 +1178,6 @@
 			// this.dataCan();
 			this.getSecMin();
 			let that = this;
-			this.isshowLoading = true;
 			api.getlanguage().then((res) => {
 				if (res === 'ug') {
 					that.language = false;
@@ -1198,6 +1205,7 @@
 			storage.get({
 				key: 'openidToken',
 				success: function(data) {
+					that.isshowLoading = true;
 					if (data === '') {
 						that.getAuthor();
 					} else {

@@ -114,6 +114,7 @@
 	import network from '@system.network'
     export default {
         private: {
+			timeTips:'',
 			isoffset:'-1000px',
 			isRefreshing:false,
 			ws: '',
@@ -227,6 +228,7 @@
 		},
 		onHide(){
 			let that = this;
+			that.istips = false;
 			that.closeWebsocket();
 		},
 		onShow(){
@@ -241,8 +243,12 @@
 		},
 		isshowclose(){
 			let that = this;
-			this.istips = true;
-			let time = setTimeout(() => {
+			that.istips = false;
+			if(that.timeTips != ""){
+				clearTimeout(that.timeTips)
+			}
+			that.istips = true;
+			that.timeTips = setTimeout(() => {
 				that.istips = false;
 			},3000)
 		},
@@ -559,10 +565,7 @@
 						that.listDevice = res_data.devices[0].properties;
 						that.online = res_data.devices[0].properties.online;
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose();
 						}
 						that.setdata();
 					}else{

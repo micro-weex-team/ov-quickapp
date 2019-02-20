@@ -144,7 +144,7 @@
 		},
 		getapp(){
 			let obj = app.getInfo();
-			prompt.showToast({message:"版本号：V "+obj.versionName,duration:1})
+			prompt.showToast({message:"版本号"+api.hostData.pro+"：V "+obj.versionName,duration:1})
 		},
 		backPage(){
 			router.back();

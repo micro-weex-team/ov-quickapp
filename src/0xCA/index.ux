@@ -153,6 +153,7 @@ import pkg from '@system.package';
 import network from '@system.network'
 export default {
     private: {
+		timeTips:'',
 		isoffset:'-1000px',
 		isRefreshing:false,
 			ws: '',
@@ -226,6 +227,7 @@ export default {
 	},
 	onHide(){
 		let that = this;
+		that.istips = false;
 		that.closeWebsocket();
 	},
 	onShow(){
@@ -343,8 +345,12 @@ export default {
 	},
 	isshowclose(){
 			let that = this;
-			this.istips = true;
-			let time = setTimeout(() => {
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
+			that.istips = true;
+			that.timeTips = setTimeout(() => {
 				that.istips = false;
 			},3000)
 		},
@@ -704,10 +710,7 @@ export default {
 						that.freezing_temperature = obj.freezing_temperature;
 						that.online = obj.online;
 						if (that.online != 'true') {
-							that.istips = true;
-							setTimeout(function() {
-								that.istips = false;
-							}, 3000)
+							that.isshowclose()
 						}
 					}else{
 						that.initData();
