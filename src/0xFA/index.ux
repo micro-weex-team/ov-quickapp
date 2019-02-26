@@ -15,11 +15,11 @@
 				<text class="child-lock-text" style="color:{{power + online === 'ontrue'?'#ffffff':'#666666'}}">使用美居</text>
 				<div class="gear">
 					<text class="gear-grade" if="{{!language}}" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">档</text>
-					<text class="gear-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{gear?gear:'--'}}</text>
+					<text class="gear-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{gear && mode_n != 'sleep'?gear:'--'}}</text>
 					<text class="gear-grade" if="{{language}}" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">档</text>
 				</div>
 				<div class="wind">
-					<text class="wind-type" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{showData(mode,mode_n,'')}} </text>
+					<text class="wind-type" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}} </text>
 					<text class="wind-action" style="color: {{ power === 'on'? '#ffffff':'#666666'}};" if="{{swing === 'on'}}">{{showData(swing_angle,swing_angle_n,'swing') + showData(swing_direction,swing_direction,'swingdirection')}}{{showData(swing_direction,swing_direction) === ''?'摇头':''}}</text>
 				</div>
 				<div class="timeout">
@@ -40,18 +40,18 @@
 			</text>
 		</div>
 		<div class="footer-wind" @click="change()">
-			<image src="./assets/img/{{power === 'on'?'highlight/':'gray/'}}wind-{{mode_n?mode_n:'normal'}}-{{power === 'on'?'highlight':'gray'}}.png" class="footer-wind-img"></image>
-			<text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(mode,mode_n,'')}}</text>
+			<image src="./assets/img/{{power === 'on'?'highlight/':'gray/'}}wind-{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}-{{power === 'on'?'highlight':'gray'}}.png" class="footer-wind-img"></image>
+			<text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
 		</div>
 		<div class="footer-shake" @click="showDialog_()">
 			<image src="./assets/img/{{power + swing === 'onon'?'highlight':'gray'}}/shake-lr-{{power + swing === 'onon'?'highlight':'gray'}}.png" class="footer-shake-img"></image>
 			<text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
 		</div>
 		<div class="footer-timeout" @click="showTimeDialog()">
-			<div class="footer-timeout-text" style="background-color: {{ (power === 'on' && time1 != 'off')? '#3191FD':'#ffffff'}};">
-				<text class="footer-timeout-text-time" style="color: {{ (power === 'on' && time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
+			<div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">
+				<text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
 			</div>
-			<text class="footer-timeout-desc" style="color: {{ (power === 'on' && time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
+			<text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
 		</div>
 	</div>
 	<div class="footer-down">
@@ -59,7 +59,7 @@
 			<div class="footer-gear-img" style="background-color: {{gear && mode_n === 'normal' && power === 'on'?'#3191FD':'#ffffff'}}">
 				<text class="footer-gear-text" style="color: {{gear && mode_n === 'normal' && power === 'on'?'#ffffff':'#cccccc'}};">{{gear && gear != '--'?gear+'档':'--'}}</text>
 			</div>
-			<text class="footer-gear-title">风速</text>
+			<text class="footer-gear-title" style="color: {{ gear && mode_n === 'normal' && power === 'on'? '#000000':'#cccccc'}};">风速</text>
 		</div>
 	</div>
 	<div class="nav_mark" if="{{isshowDialog}}" @click="closeDialog()">
@@ -165,7 +165,7 @@ export default {
 		selectsec: 'clean',
 		selectData: '10',
 		power: 'off',
-		mode_n: "normal",
+		mode_n: "",
 		swing: 'off',
 		swing_angle_n: '90',
 		timer_off_minute: "clean",
@@ -189,6 +189,35 @@ export default {
 		},
 		listDevice:{},
 		//模式 
+		modeselect:[{
+			name: "normal",
+			value: "正常风",
+			data: "wind-normal-"
+		}, {
+			name: "sleep",
+			value: "睡眠风",
+			data: "wind-sleep-"
+		}, {
+			name: "natural",
+			value: "自然风",
+			data: "wind-natural-"
+		}, {
+			name: "comfort",
+			value: "舒适风",
+			data: "wind-comfort-"
+		}, {
+			name: "feel",
+			value: "人感",
+			data: "wind-feel-"
+		}, {
+			name: "baby",
+			value: "宝宝风",
+			data: "wind-baby-"
+		}, {
+			name: "mute",
+			value: "静音风",
+			data: "wind-mute-"
+		}],
 		mode: [{
 			name: "normal",
 			value: "正常风",
@@ -537,10 +566,10 @@ export default {
 				num = parseInt(min)/60;
 			}
 			if(num === 0){
-				that.time1 = hour + '.0';
+				that.time1 = hour;
 				// return hour + '.0';
 			}else if(num.toFixed(1).toString() === '1.0'){
-				that.time1 = (parseInt(hour) + 1).toString() + '.0';
+				that.time1 = (parseInt(hour) + 1).toString();
 				// return (parseInt(hour) + 1).toString() + '.0';
 			}else{
 				that.time1 = hour + num.toFixed(1).toString().substring(1,3);
@@ -953,7 +982,7 @@ export default {
 	showData(obj, str,type) {
 		let data = '';
 		if(type === ''){
-			data = '正常风';
+			data = '';
 		}
 		obj.forEach(function(item, i) {
 			if (item.name === str) {
@@ -1244,6 +1273,9 @@ export default {
 				obj.gear = parseInt(obj.gear)
 			}
 		}
+		if(control_params.mode == 'sleep'){
+			delete obj.gear
+		}
 		let params = {
 			'openId': this.openId,
 			'devices': [{
@@ -1253,7 +1285,6 @@ export default {
 				// "status":status_params
 			}]
 		}
-		
 		console.log("操作参数："+ JSON.stringify(params));
 		// prompt.showToast({message:"请求数据：" + JSON.stringify(obj)})
 		api.postDeviceControl(params, this.accessToken).then((res) => {
@@ -1262,6 +1293,9 @@ export default {
 				if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
 					let isall = false;
 					$this.online = 'true';
+					$this.FAdata.gear = '--';
+					$this.gear = '--';
+					$this.select_gear = 0;
 					let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
 					if(obj.power){
 						$this.FAdata.power = obj.power;
@@ -1295,25 +1329,26 @@ export default {
 						$this.swing_angle_n = "unknown";
 						$this.FAdata.swing_angle = "unknown";
 					}
-					if(obj.timer_off_minute.toString()){
+					
+					if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
 						$this.FAdata.timer_off_minute = obj.timer_off_minute
 						$this.timer_off_minute = obj.timer_off_minute
 					}else{
 						isall = true;
 					}
-					if(obj.timer_off_hour.toString()){
+					if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
 						$this.timer_off_hour = obj.timer_off_hour
 						$this.FAdata.timer_off_hour = obj.timer_off_hour
 					}else{
 						isall = true;
 					}
-					if(obj.timer_on_hour.toString()){
+					if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
 						$this.FAdata.timer_on_hour = obj.timer_on_hour
 						$this.timer_on_hour = obj.timer_on_hour
 					}else{
 						isall = true;
 					}
-					if(obj.gear.toString()){
+					if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
 						$this.FAdata.gear = obj.gear
 						$this.gear = obj.gear;
 						$this.select_gear = obj.gear;
@@ -1398,7 +1433,7 @@ export default {
 		this.loadfirst = true;
 		this.FAdata = {
 			power: "off",
-			mode: "normal",
+			mode: "",
 			// lock: 'invalid',
 			swing: 'off',
 			swing_angle: "unknown",
@@ -1410,7 +1445,7 @@ export default {
 			gear: '--',
 		}
 		this.power = "off";
-		this.mode_n = "normal";
+		this.mode_n = "";
 		this.swing = 'off';
 		this.swing_angle_n = "unknown";
 		this.timer_off_minute = "clean";
@@ -1607,7 +1642,7 @@ export default {
 				},
 				setGear(){
 					let that = this;
-					for(let i = 1;i<27;i++){
+					for(let i = 1;i<13;i++){
 						let data = {
 							"id":i,
 							"data":i+"档"

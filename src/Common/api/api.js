@@ -1,11 +1,11 @@
-const host = "http://ov-sit.smartmidea.net";
-const url = "ws://ovws-sit.smartmidea.net";
-const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
-const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
-// const host = "https://ov-prod.smartmidea.net";
-// const url = "wss://ovws-sit.smartmidea.net";
-// const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
-// const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+// const host = "http://ov-sit.smartmidea.net";
+// const url = "ws://ovws-sit.smartmidea.net";
+// const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
+// const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
+const host = "https://ov-prod.smartmidea.net";
+const url = "wss://ovws-sit.smartmidea.net";
+const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
+const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
 import fetch from '@system.fetch';
 import device from '@system.device';
 import prompt from '@system.prompt';
@@ -36,7 +36,7 @@ device.getInfo({
 export default {
 	//api接口
 	hostData: {
-		pro:'sit',
+		pro:'',
 		language: '',
 		getUserToken     : '/v1/iotopen/user/token/get',
 		postDeviceControl: '/v1/iotopen/device/deviceControl',

@@ -111,3 +111,36 @@
 		}
 	}
 }
+
+.add_Animation{
+	animation-name: doingAn;
+	animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count:infinite;
+}
+.add_AnimationLeft{
+	animation-name: doingAn1;
+	animation-timing-function: linear;
+	animation-duration: 1.5s;
+	animation-iteration-count:infinite;
+}
+/*
+**
+**动画
+*/
+@keyframes doingAn{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes doingAn1{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
+}

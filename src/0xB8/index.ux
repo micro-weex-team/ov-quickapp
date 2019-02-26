@@ -14,7 +14,7 @@
 						<image src="./assets/img/{{online == 'true'?'loadingMeiju':'meijuicon'}}.png" class="E1_nav_list_lock_img"></image>
 					</div>
 					<text class="E1_nav_list_usemeiju">使用美居</text>
-					<text class="B8_nav_status" style="color: {{online == 'true'?'#ffffff':'#666666'}};">{{online == 'true'?statusTy(work_status):'离线中'}}</text>
+					<text class="B8_nav_status" style="color: {{online == 'true'?'#ffffff':'#666666'}};">{{online == 'true'?statusTy(work_status,isdirection):'离线中'}}</text>
 					<text if="{{hide}}" class="B8_nav_battery" style="color: {{online == 'true'?'#ffffff':'#666666'}};">电量：56%</text>
 					<div class="B8_nav_data" if="{{hide}}">
 						<div class="B8_nav_data_left">
@@ -34,17 +34,17 @@
 						</div>
 					</div>
 					<div class="B8_nav_control">
-						<div class="B8_nav_control_btn">
-							<image src="./assets/img/left_on.png" class="B8_nav_control_btn_img" @click="moveDirection('left')"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">左转圈</text>
+						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('left')">
+							<image src="./assets/img/left_{{isdirection == 'left'?'off':'on'}}.png" class="B8_nav_control_btn_img {{isdirection == 'left'?'add_AnimationLeft':''}}"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?leftColor:'#666666'}};">左转圈</text>
 						</div>
-						<div class="B8_nav_control_btn">
-							<image src="./assets/img/line_on.png" class="B8_nav_control_btn_img" @click="moveDirection('forward')"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">直行</text>
+						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('forward')">
+							<image src="./assets/img/line_{{isdirection == 'forward'?'off':'on'}}.png" class="B8_nav_control_btn_img"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?forwardColor:'#666666'}};">直行</text>
 						</div>
-						<div class="B8_nav_control_btn">
-							<image src="./assets/img/right_on.png" class="B8_nav_control_btn_img" @click="moveDirection('right')"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?'#ffffff':'#666666'}};">右转圈</text>
+						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('right')">
+							<image src="./assets/img/right_{{isdirection == 'right'?'off':'on'}}.png" class="B8_nav_control_btn_img {{isdirection == 'right'?'add_Animation':''}}"></image>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?rightColor:'#666666'}};">右转圈</text>
 						</div>
 					</div>
 				</list-item>
@@ -84,6 +84,7 @@ module.exports = {
 		isabout: false,
 		istips: false,
 		isloading: false,
+		isdirection:'none',
 		deviceHeight:0,
 		selectlist:[{
 			name:'弓形模式',
@@ -101,6 +102,9 @@ module.exports = {
 			data:'area',
 			icon:'./assets/img/area_select_off.png'
 		}],
+		leftColor:'#ffffff',
+		forwardColor:'#ffffff',
+		rightColor:'#ffffff',
 		openId: '',
 		accessToken: '',
 		btnlist:[{
@@ -138,6 +142,11 @@ module.exports = {
 		deviceSeries: '',
 		deviceId: '',
 		openid: ''
+	},
+	moveBtn(e){
+		prompt.showToast({
+			message:JSON.stringify(e)
+		})
 	},
 	isshowclose() {
 		let that = this;
@@ -197,14 +206,18 @@ module.exports = {
 				str = "深度清扫";
 			break;
 			default:
-				str = "模式";
+				str = "其他|模式";
 		}
 		return str;
 	},
-	statusTy(status){
+	statusTy(status,isdirection){
 		let that = this;
 		let str = '';
-		switch(status){
+		let string = status;
+		if(status == 'work' && isdirection != 'none'){
+			string = 'direction';
+		}
+		switch(string){
 			case 'charge':
 				str = '回充中';
 			break;
@@ -226,10 +239,38 @@ module.exports = {
 			case 'set':
 				str = '设置中';
 			break;
+			case 'direction':
+				str = '工作中';
+			break;
 			default:
 				str = '--';
 		}
 		return str;
+	},
+	getColor(str){
+		let that = this;
+		switch(str){
+			case 'left':
+				that.leftColor = '#D5D5D5';
+				that.forwardColor = '#ffffff';
+				that.rightColor = '#ffffff';
+			break;
+			case 'right':
+				that.leftColor = '#ffffff';
+				that.forwardColor = '#ffffff';
+				that.rightColor = '#D5D5D5';
+			break;
+			case 'forward':
+				that.leftColor = '#ffffff';
+				that.forwardColor = '#D5D5D5';
+				that.rightColor = '#ffffff';
+			break;
+			case 'none':
+				that.leftColor = '#ffffff';
+				that.forwardColor = '#ffffff';
+				that.rightColor = '#ffffff';
+			break;
+		}
 	},
 	showalert(){
 		let that = this;
@@ -343,9 +384,9 @@ module.exports = {
 		that.isloading = true;
 		if(e.detail.params === "启动清扫"){
 			params = {
-				work_mode:that.work_mode,
-				move_direction:that.move_direction,
-				work_status:'work'
+				work_status:'work',
+				work_mode:that.work_mode == 'none'?'arc':that.work_mode,
+				move_direction:'none',
 			}
 			that.B8data.work_status = params.work_status;
 			that.B8data.move_direction = params.move_direction;
@@ -353,9 +394,9 @@ module.exports = {
 			status = ['work_status'];
 		}else if(e.detail.params === '停止清扫' || e.detail.params === '取消回充'){
 			params = {
+				work_status:'stop',
 				move_direction:'none',
-				work_mode:'none',
-				work_status:'stop'
+				// work_mode:'none',
 			}
 			that.B8data.work_status = params.work_status;
 			that.B8data.work_mode = params.work_mode;
@@ -363,6 +404,7 @@ module.exports = {
 			status = ['work_status','move_direction','work_mode'];
 		}else if(e.detail.params === '回充'){
 			params = {
+				move_direction:'none',
 				work_status:'charge'
 			}
 			that.B8data.work_status = params.work_status;
@@ -374,8 +416,8 @@ module.exports = {
 		let that = this;
 		let params = {
 			work_status:'work',
-			move_direction:'none',
-			work_mode:that.selectlist[e.detail.id].data
+			work_mode:that.selectlist[e.detail.id].data,
+			move_direction:'none'
 		};
 		that.isloading = true;
 		let status;
@@ -397,31 +439,63 @@ module.exports = {
 			})
 			return false;
 		}
+		if(that.work_status == 'charging'){
+			prompt.showToast({
+				message:"设备充电中，请稍后"
+			})
+			return false;
+		}
+		if(that.work_status == 'charge_finish'){
+			prompt.showToast({
+				message:"充电已完成，请启动清扫后再调整方向"
+			})
+			return false;
+		}
 		let params = {};
 		let status;
-		that.isloading = true;
-		if(that.move_direction == str){
-			params = {
-				move_direction:'none',
-				work_mode:'none',
-				work_status:'stop'
-			}
-			that.B8data.work_status = params.work_status;
-			that.B8data.work_mode = params.work_mode;
-			that.B8data.move_direction = params.move_direction;
-			status = ['work_status','move_direction'];
-		}else{
-			params = {
-				// work_status:'work',
-				work_mode:'none',
-				move_direction:str
-			}
-			that.B8data.work_status = params.work_status;
-			that.B8data.work_mode = params.work_mode;
-			that.B8data.move_direction = params.move_direction;
-			status = ['work_mode','move_direction','work_status'];
+		params = {
+			work_status:'work',
+			work_mode:'none',
+			move_direction:str
 		}
 		
+		that.B8data.work_status = params.work_status;
+		that.B8data.work_mode = params.work_mode;
+		that.B8data.move_direction = params.move_direction;
+		status = ['work_mode','move_direction','work_status'];
+		that.postDeviceControl(params,status)
+// 		if(that.isdirection === 'none'){
+// 			that.postDeviceControl(params,status)
+// 		}else{
+// 			that.doneDirection();
+// 		}
+	},
+	doneDirection(str){
+		let that = this;
+		if(that.online === 'false'){
+			that.isshowclose();
+			return false;
+		}
+		if(that.work_status == 'charge' || that.work_status == 'charging'|| that.work_status == 'charge_finish'){
+			return false;
+		}
+		let params = {};
+		let status;
+		if(str == 'cel'){
+			that.isloading = true;
+		}
+		// that.isloading = true;
+		params = {
+			work_status:'stop',
+			work_mode:'none',
+			move_direction:'none'
+		}
+		// that.isdirection = 'none';
+		// that.getColor(that.isdirection);
+		that.B8data.work_status = params.work_status;
+		that.B8data.work_mode = params.work_mode;
+		that.B8data.move_direction = params.move_direction;
+		status = ['work_mode','move_direction','work_status'];
 		that.postDeviceControl(params,status)
 	},
 	//获取第三方登录信息
@@ -504,28 +578,33 @@ module.exports = {
 					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 					if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
 						let obj = data.devices[0].properties;
-						prompt.showDialog({
-											title:"返回数据",
-											message:"返回数据:"+JSON.stringify(obj),
-											buttons: [{
-												text: '取消',
-												color: '#33dd44'
-											}],
-											success: function(data) {
-												console.log('handling callback')
-											},
-											cancel: function() {
-												console.log('handling cancel')
-											},
-										    fail: function(data, code) {
-												console.log(`handling fail, code = ${code}`)
-											}
-										})
+// 						prompt.showDialog({
+// 											title:"返回数据",
+// 											message:"返回数据:"+JSON.stringify(obj),
+// 											buttons: [{
+// 												text: '取消',
+// 												color: '#33dd44'
+// 											}],
+// 											success: function(data) {
+// 												console.log('handling callback')
+// 											},
+// 											cancel: function() {
+// 												console.log('handling cancel')
+// 											},
+// 										    fail: function(data, code) {
+// 												console.log(`handling fail, code = ${code}`)
+// 											}
+// 										})
 						that.B8data = obj;
 						that.online = obj.online;
 						that.work_status = obj.work_status;
 						that.work_mode = obj.work_mode;
 						that.move_direction = obj.move_direction;
+						if(that.work_status == 'work' && that.work_mode == 'none'){
+							that.isdirection = that.move_direction;
+						}else{
+							that.isdirection = 'none';
+						}
 						if (that.online != 'true') {
 							that.isshowclose();
 						}
@@ -587,27 +666,27 @@ module.exports = {
 				}
 			]
 		};
-		prompt.showToast({
-			message:JSON.stringify(params)
-		})
+// 		prompt.showToast({
+// 			message:JSON.stringify(params)
+// 		})
 		api.postDeviceControl(params, that.accessToken).then(res => {
-			prompt.showDialog({
-								title:"返回数据",
-								message:"返回数据:"+JSON.stringify(res),
-								buttons: [{
-									text: '取消',
-									color: '#33dd44'
-								}],
-								success: function(data) {
-									console.log('handling callback')
-								},
-								cancel: function() {
-									console.log('handling cancel')
-								},
-							    fail: function(data, code) {
-									console.log(`handling fail, code = ${code}`)
-								}
-							})
+// 			prompt.showDialog({
+// 								title:"返回数据",
+// 								message:"返回数据:"+JSON.stringify(res),
+// 								buttons: [{
+// 									text: '取消',
+// 									color: '#33dd44'
+// 								}],
+// 								success: function(data) {
+// 									console.log('handling callback')
+// 								},
+// 								cancel: function() {
+// 									console.log('handling cancel')
+// 								},
+// 							    fail: function(data, code) {
+// 									console.log(`handling fail, code = ${code}`)
+// 								}
+// 							})
 				// that.getDeviceStatus(that.openId);
 				if (res.code === 200) {
 					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
@@ -626,6 +705,11 @@ module.exports = {
 						}
 						if(obj.move_direction){
 							that.move_direction = obj.move_direction;
+							if(that.work_status == 'work' && that.work_mode == 'none'){
+								that.isdirection = that.move_direction;
+							}else{
+								that.isdirection = 'none';
+							}
 						}else{
 							isall = true;
 						}
@@ -707,10 +791,17 @@ module.exports = {
 		}else{
 			str = './assets/img/charge_on.png';
 		}
-		let pic = ''
+		let pic = './assets/img/none_off.png';
 		if(that.modeSelect(that.work_mode)){
 			pic = './assets/img/'+that.work_mode+'_'+mode+'.png';
+		}else{
+			pic = './assets/img/other_'+mode+'.png';
 		}
+// 		if(that.move_direction == 'none'){
+// 			that.isdirection = false;
+// 		}else{
+// 			that.isdirection = true;
+// 		}
 		// that.btnlist = [];
 		that.btnlist = [{
 			name:that.work_status === 'work'?'停止清扫':'启动清扫',
@@ -731,6 +822,7 @@ module.exports = {
 			pic:str,
 			clickAlert:false
 		}]
+		that.getColor(that.isdirection);
 	},
 	modedataTy(mode){
 		let that = this;
@@ -766,8 +858,11 @@ module.exports = {
 			case 'deep':
 				str = "深度";
 			break;
+			case 'none':
+				str = "--";
+			break;
 			default:
-				str = "无";
+				str = "其他";
 		}
 		return str;
 	},
@@ -793,7 +888,7 @@ module.exports = {
 	modeSelect(mode){
 		let that = this;
 		let str = '';
-		let arry = ['arc','edge','area'];
+		let arry = ['arc','edge','area','none'];
 		let src = false;
 		if(arry.includes(mode)){
 			src = true;

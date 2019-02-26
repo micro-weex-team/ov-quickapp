@@ -1,10 +1,10 @@
 {
 	"package": "com.midea.iot.application",
     "name": "Midea-IoT",
-    "versionName": "1.7.2",
-    "versionCode": 172,
+    "versionName": "1.7.3",
+    "versionCode": 173,
     "icon": "/Common/logo.png",
-    "minPlatformVersion": 1020,
+    "minPlatformVersion": 1030,
     "features": [{
             "name": "system.webview"
         },

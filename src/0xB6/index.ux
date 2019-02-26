@@ -14,7 +14,7 @@
 						<image src="./assets/img/{{(power === 'on' || power === 'delay_off')?'loadingMeiju':'meijuicon'}}.png" class="B6_nav_list_lock_img"></image>
 					</div>
 					<text class="B6_nav_list_usemeiju" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">使用美居</text>
-					<text if="{{(power === 'on' || power === 'delay_off') && gear != 4}}" class="B6_nav_gear" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{(parseInt(gear) > 0 && power == 'on')?gear:'--'}}</text>
+					<text if="{{(power === 'on' || power === 'delay_off') && gear != 4}}" class="B6_nav_gear" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{((10 > parseInt(gear) > 0) && power == 'on')?gear:'--'}}</text>
 					<text if="{{power === 'off'}}" class="B6_nav_close" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">已关机</text>
 					<text if="{{power === 'off'}}" class="B6_nav_warm" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">点击下方开关</text>
 					<text if="{{(power === 'on' || power === 'delay_off') && gear === 4}}" class="B6_nav_height" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{power == 'on'?'爆炒模式':'--'}}</text>
@@ -592,9 +592,9 @@ module.exports = {
 	postDeviceControl(param, status) {
 		let that = this;
 		let status_params = that.B6data;
-		if(param.power){
-			status_params.power = param.power;
-		}
+// 		if(param.power){
+// 			status_params.power = param.power;
+// 		}
 		if(param.light){
 			status_params.light = param.light;
 		}
@@ -616,14 +616,14 @@ module.exports = {
 				{
 					deviceId: that.deviceId,
 					properties: param,
-					// status: status_params
+					status: status_params
 				}
 			]
 		};
 		that.isloading = true;
-// 		prompt.showToast({
-// 			message:JSON.stringify(params)
-// 		})
+		prompt.showToast({
+			message:JSON.stringify(params)
+		})
 		api.postDeviceControl(params, that.accessToken).then(res => {
 				prompt.showDialog({
 					title:"操作设备：",
