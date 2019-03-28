@@ -1,6 +1,8 @@
 <script>
 	import prompt from '@system.prompt';
 	import account from '@service.account';
+	
+	let app = "sasdsad"
   module.exports = {
     /**manifest**/
 			onInit(){

@@ -1,11 +1,13 @@
-const host = "http://ov-sit.smartmidea.net";
-const url = "ws://ovws-sit.smartmidea.net";
-const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
-const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
+
 // const host = "https://ov-prod.smartmidea.net";
 // const url = "wss://ovws-sit.smartmidea.net";
 // const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
 // const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+const sethost = false;  //配置环境
+const host = "http://ov-sit.smartmidea.net";
+const url = "ws://ovws-sit.smartmidea.net";
+const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
+const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
 import fetch from '@system.fetch';
 import device from '@system.device';
 import prompt from '@system.prompt';
@@ -14,36 +16,54 @@ const appidForoppo  = 2149;
 import websocketfactory from '@system.websocketfactory';
 import uuid from './uuid.js';
 import SHA from 'js-sha256';
+import net from './networkAPI.js';
 
 var Fly=require("flyio/dist/npm/hap")
 var fly=new Fly(fetch);
 
-const isvivo = false;  //配置vivo或者oppo环境
 
 let appid  = '';
 let appkey = '';
+let clientId = "";
+let clientSecret = "";
 device.getInfo({
 	success: function (ret) {
 		if(ret.brand === 'vivo'){
 			appid  = appidForvivo;
 			appkey = appkeyForvivo;
+			if(sethost){
+				clientId = "5ae235bbf44ae157689e539437a8b4f1";
+				clientSecret = "68045971e0f8bd4d7d51ed4989c4412a";
+			}else{
+				clientId = "5ae235bbf44ae157689e539437a8b4f1";
+				clientSecret = "916925b48506ce2f17a4b5f80a6d20ec";
+			}
 		}else{
 			appid  = appidForoppo;
 			appkey = appkeyForoppo;
+			if(sethost){
+				clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+				clientSecret = "9e8eb1c20757450c644fabcd8d5cd9c7";
+			}else{
+				clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+				clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
+			}
 		}
 	}
 })
 export default {
 	//api接口
 	hostData: {
-		pro:'sit',
+		pro:sethost?'':'sit',
 		language: '',
 		getUserToken     : '/v1/iotopen/user/token/get',
 		postDeviceControl: '/v1/iotopen/device/deviceControl',
 		postDeviceBind:'/v1/iotopen/device/bind',
 		postDeviceStatusQuery:'/v1/iotopen/device/statusQuery',
+		getcodeUrl:'/v1/open/sn/decode',
 		getConfigWorkHelp: "http://smartbbs.midea.com/msmart.php?mod=zhiyin&op=ovsearch",
 		getcenterHelp:'https://api-sit.smartmidea.net/v1/open/connect/guide/list'
+		// getcenterHelp:'https://api-dev.smartmidea.net:8443/v1/open/connect/guide/list'
 	},
 	//获取语言
 	getlanguage(){
@@ -231,7 +251,7 @@ export default {
 		return p;
 	},
 	//设备控制接口
-	postDeviceControl(params,accessToken){
+	postDeviceControl(params,accessToken,lanonline,deviceid){
 		let that        = this;
 		let objStr      = '';
 		if((typeof params) === 'object'){
@@ -247,41 +267,50 @@ export default {
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
-		var p                = new Promise(function(resolve, reject){
-			if((typeof params) === 'object'){
-				console.log("params:"+JSON.stringify(params))
-				console.log("strObj:"+JSON.stringify(strObj))
-				console.log("url:"+host + that.hostData.postDeviceControl);
-				fly.post(host + that.hostData.postDeviceControl, params, {headers:strObj}).then(function (response) {
-					response.code = response.status;
-					console.log("返回信息："+JSON.stringify(response));
-// 					if (response.code && response.code === 200) {
-// 						let bind_res_data = typeof response.data == 'object' ? response.data : JSON.parse(response.data);
-// 						if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
-// 							let obj = (typeof bind_res_data.devices[0].props) == 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
-// 							if(parseInt(obj.error_code)){
-// 								prompt.showToast({
-// 									message:'数据有误，设备可能存在故障，请检查后再操作'
-// 								})
-// 							}
-// 						}
-// 					}
-					resolve(response);
-				}).catch(function (error) {
-					reject(error);
-				});
+			if(lanonline == 'true'){
+				return net.setDeviceStatus(deviceid,params.devices[0].properties);
 			}else{
-				let obj = {
-					errorCode: "0000",
-					msg      : "参数有误"
-				}
-				reject(obj)
+				var p                = new Promise(function(resolve, reject){
+							if((typeof params) === 'object'){
+								console.log("params:"+JSON.stringify(params))
+								console.log("strObj:"+JSON.stringify(strObj))
+								console.log("url:"+host + that.hostData.postDeviceControl);
+								fly.post(host + that.hostData.postDeviceControl, params, {headers:strObj}).then(function (response) {
+									response.code = response.status;
+									response.lanonline = lanonline;
+									console.log("返回信息："+JSON.stringify(response));
+				// 					if (response.code && response.code === 200) {
+				// 						let bind_res_data = typeof response.data == 'object' ? response.data : JSON.parse(response.data);
+				// 						if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
+				// 							let obj = (typeof bind_res_data.devices[0].props) == 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
+				// 							if(parseInt(obj.error_code)){
+				// 								prompt.showToast({
+				// 									message:'数据有误，设备可能存在故障，请检查后再操作'
+				// 								})
+				// 							}
+				// 						}
+				// 					}
+									resolve(response);
+								}).catch(function (error) {
+									let obj = JSON.parse(error);
+									obj.online = lanonline;
+									reject(obj);
+								});
+							}else{
+								let obj = {
+									errorCode: "0000",
+									msg      : "参数有误",
+									online:lanonline
+								}
+								reject(obj)
+							}
+						});
+						return p;
 			}
-		});
-		return p;
+		
 	},
 	//设备状态查询
-	postDeviceStatusQuery(params,accessToken){
+	postDeviceStatusQuery(params,accessToken,lanonline,deviceid){
 		let that        = this;
 		let objStr      = '';
 		if((typeof params) === 'object'){
@@ -296,39 +325,48 @@ export default {
 			"Content-Type": 'application/json'
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
-		var p = new Promise(function(resolve, reject){
-			if((typeof params) === 'object'){
-				console.log("params:"+JSON.stringify(params))
-				console.log("strObj:"+JSON.stringify(strObj))
-				console.log("url:"+host + that.hostData.postDeviceStatusQuery)
-				fly.post(host + that.hostData.postDeviceStatusQuery, params, {headers:strObj}).then(function (response) {
-					response.code = response.status;
-					console.log("返回信息："+JSON.stringify(response));
-// 					if (response.code && response.code === 200) {
-// 						let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
-// 						if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
-// 							let obj =  (typeof data.devices[0].properties) === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
-// 							if(parseInt(obj.error_code)){
-// 								prompt.showToast({
-// 									message:'数据有误，设备可能存在故障，请检查后再操作'
-// 								})
-// 							}
-// 						}
-// 					}
-					resolve(response);
-				}).catch(function (error) {
-					console.log(JSON.stringify(error));
-					reject(error);
-				});
+			if(lanonline == 'true'){
+				return net.getqueryDeviceStatus(deviceid);
 			}else{
-				let obj = {
-					errorCode: "0000",
-					msg      : "参数有误"
-				}
-				reject(obj)
+				var p = new Promise(function(resolve, reject){
+							if((typeof params) === 'object'){
+								console.log("params:"+JSON.stringify(params))
+								console.log("strObj:"+JSON.stringify(strObj))
+								console.log("url:"+host + that.hostData.postDeviceStatusQuery)
+								fly.post(host + that.hostData.postDeviceStatusQuery, params, {headers:strObj}).then(function (response) {
+									response.code = response.status;
+									response.lanonline = lanonline;
+									console.log("返回信息："+JSON.stringify(response));
+				// 					if (response.code && response.code === 200) {
+				// 						let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
+				// 						if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+				// 							let obj =  (typeof data.devices[0].properties) === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+				// 							if(parseInt(obj.error_code)){
+				// 								prompt.showToast({
+				// 									message:'数据有误，设备可能存在故障，请检查后再操作'
+				// 								})
+				// 							}
+				// 						}
+				// 					}
+									resolve(response);
+								}).catch(function (error) {
+									console.log(JSON.stringify(error));
+									let obj = JSON.parse(error);
+									obj.online = lanonline;
+									reject(obj);
+								});
+							}else{
+								let obj = {
+									errorCode: "0000",
+									msg: "参数有误",
+									online:lanonline
+								}
+								reject(obj)
+							}
+						});
+						return p;
 			}
-		});
-		return p;
+		
 	},
 	//获取配网指引信息
 	getConfigWorkHelp(params){
@@ -364,28 +402,49 @@ export default {
 		let that = this;
 		let obj = params;
 		obj.reqId = that.createUUID();
-		obj.clientId = that.hostData.clientId;
 		obj.stamp = that.getTimestamp();
 		console.log("配网指引请求参数："+JSON.stringify(obj));
 		let strObj = {
 			"Content-Type": 'application/json'
 		}
 		var p    = new Promise(function(resolve, reject){
-			if((typeof params) === 'object'){
-				fly.post(that.hostData.getcenterHelp, params, {headers:strObj}).then(function (data) {
-					console.log("配网指引:"+JSON.stringify(data))
-					resolve(data);
-				}).catch(function (error) {
-					console.log(JSON.stringify(error));
-					reject(error);
-				});
-			}else{
-				let obj = {
-					errorCode: "0000",
-					msg      : "参数有误"
+			device.getInfo({
+				success: function (ret) {
+					if(ret.brand === 'vivo'){
+						if(sethost){
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "68045971e0f8bd4d7d51ed4989c4412a";
+						}else{
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "916925b48506ce2f17a4b5f80a6d20ec";
+						}
+					}else{
+						if(sethost){
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "9e8eb1c20757450c644fabcd8d5cd9c7";
+						}else{
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
+						}
+					}
+					obj.clientId = clientId;
+					if((typeof params) === 'object'){
+						fly.post(that.hostData.getcenterHelp, obj, {headers:strObj}).then(function (data) {
+							console.log("配网指引:"+JSON.stringify(data))
+							resolve(data);
+						}).catch(function (error) {
+							console.log(JSON.stringify(error));
+							reject(error);
+						});
+					}else{
+						let objdata = {
+							errorCode: "0000",
+							msg      : "参数有误"
+						}
+						reject(objdata)
+					}
 				}
-				reject(obj)
-			}
+			})
 		});
 		return p;
 	},

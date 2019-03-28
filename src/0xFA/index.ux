@@ -15,7 +15,7 @@
 				<text class="child-lock-text" style="color:{{power + online === 'ontrue'?'#ffffff':'#666666'}}">使用美居</text>
 				<div class="gear">
 					<text class="gear-grade" if="{{!language}}" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">档</text>
-					<text class="gear-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{gear && mode_n != 'sleep'?gear:'--'}}</text>
+					<text class="gear-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{gear?gear:'--'}}</text>
 					<text class="gear-grade" if="{{language}}" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">档</text>
 				</div>
 				<div class="wind">
@@ -122,9 +122,13 @@ import storage from '@system.storage';
 import barcode from '@system.barcode';
 // import IOT from '@service.iot';
 import pkg from '@system.package';
-import network from '@system.network'
+import network from '@system.network';
+import net from '../Common/api/networkAPI.js';
 export default {
 	private: {
+		isagain:true,
+		lanOnline:'false',
+		isLanInit:false,
 		timeTips:'',
 		isoffset:'-1000px',
 		isRefreshing:false,
@@ -397,6 +401,17 @@ export default {
 			}
 		});
 		},
+		/**
+		 * 局域网初始化
+		 */
+		LanOnlineGet(){
+			let that = this;
+			net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+				that.isLanInit = true;
+			}).catch((error) => {
+				that.isLanInit = false;
+			});
+		},
 	scrollbottom(e){
 		let that = this;
 		that.isRefreshing = e.refreshing;
@@ -418,6 +433,9 @@ export default {
 							if(obj.openid === that.openid){
 								that.openId = obj.openid;
 								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
 								that.getDeviceStatus();
 							}else{
 								that.getdevicelist();
@@ -1103,6 +1121,7 @@ export default {
 									
 								}
 							})
+							$this.LanOnlineGet();
 							$this.getDeviceStatus();
 						} else {
 							$this.loadfirst = true;
@@ -1136,6 +1155,109 @@ export default {
 			}
 		})
 	},
+	/**
+	 * 局域网获取
+	 */
+	getLanData(res){
+		let that = this;
+		let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		if(parseInt(obj.code) == 0){
+			that.loadfirst = true;
+			that.isRefreshing = false;
+			that.isshowLoading = false;
+			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+			that.power = data.power;
+			that.mode_n = data.mode;
+			that.swing = data.swing;
+			that.swing_angle_n= data.swing_angle;
+			that.timer_off_minute= data.timer_off_minute;
+			that.timer_off_hour = data.timer_off_hour;
+			that.timer_on_minute = data.timer_on_minute;
+			that.timer_on_hour = data.timer_on_hour;
+			that.gear = data.gear;
+			that.FAdata = data;
+			that.FAdata.online = "true";
+			that.online = "true";
+			that.select_gear = that.gear;
+			that.timeFilter2();
+			that.listDevice = data;
+			that.listDevice.online = "true";
+		}else{
+			that.isagain = false;
+			that.lanOnline = "false";
+			that.getDeviceStatus();
+		}
+	},
+	/**
+	 * 联网获取
+	 */
+	getdataLan(res){
+		let that = this;
+		that.loadfirst = true;
+		that.isRefreshing = false;
+		that.isshowLoading = false;
+		if (res.code === 200) {
+			let res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+			if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
+				that.online = res_data.devices[0].properties.online;
+				that.power = res_data.devices[0].properties.power?res_data.devices[0].properties.power:"off";
+				that.mode_n = res_data.devices[0].properties.mode?res_data.devices[0].properties.mode:"";
+				that.swing = res_data.devices[0].properties.swing?res_data.devices[0].properties.swing:"off"
+				that.swing_angle_n= res_data.devices[0].properties.swing_angle?res_data.devices[0].properties.swing_angle:"unknown"
+				that.timer_off_minute= res_data.devices[0].properties.timer_off_minute?res_data.devices[0].properties.timer_off_minute:"clean"
+				that.timer_off_hour = res_data.devices[0].properties.timer_off_hour?res_data.devices[0].properties.timer_off_hour:'0'
+				that.timer_on_minute = res_data.devices[0].properties.timer_on_minute?res_data.devices[0].properties.timer_on_minute:'clean'
+				that.timer_on_hour = res_data.devices[0].properties.timer_on_hour?res_data.devices[0].properties.timer_on_hour:"0"
+				that.gear = res_data.devices[0].properties.gear?res_data.devices[0].properties.gear:'--',
+				that.FAdata = {
+					online: res_data.devices[0].properties.online?res_data.devices[0].properties.online:'false',
+					power: res_data.devices[0].properties.power?res_data.devices[0].properties.power:"off",
+					mode: res_data.devices[0].properties.mode?res_data.devices[0].properties.mode:"",
+					lock: res_data.devices[0].properties.lock?res_data.devices[0].properties.lock:"off",
+					swing: res_data.devices[0].properties.swing?res_data.devices[0].properties.swing:"off",
+					swing_angle: res_data.devices[0].properties.swing_angle?res_data.devices[0].properties.swing_angle:"unknown",
+					timer_off_minute: res_data.devices[0].properties.timer_off_minute?res_data.devices[0].properties.timer_off_minute:"clean",
+					timer_off_hour: res_data.devices[0].properties.timer_off_hour?res_data.devices[0].properties.timer_off_hour:0,
+					timer_on_minute: res_data.devices[0].properties.timer_on_minute?res_data.devices[0].properties.timer_on_minute:'clean',
+					timer_on_hour: res_data.devices[0].properties.timer_on_hour?res_data.devices[0].properties.timer_on_hour:0,
+					gear: res_data.devices[0].properties.gear?res_data.devices[0].properties.gear:'--',
+				}
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
+				that.select_gear = that.gear;
+				that.timeFilter2();
+				that.listDevice = typeof res_data.devices[0].properties === 'object'? res_data.devices[0].properties:JSON.parse(res_data.devices[0].properties);
+			}else{
+				if(res_data.msg === ''){
+					let str1 = '';
+					if(res_data.devices[0].status){
+						str1 = res_data.devices[0].status;
+						if(str1.toString() === '-6'){
+							that.isshowclose();
+							return false;
+						}
+						if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+							that.isshowclose();
+						}else{
+							that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+						}
+					}else{
+						str1 = res_data.code;
+						that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
+					}
+				}else{
+					that.netWorkGet(res_data.msg)
+				}
+				that.initData();
+			}
+		}else{
+			if(that.iswarm){
+				that.initData();
+			}
+			that.netWorkGet('获取设备状态失败,请稍后重试')
+		}
+	},
 	datafilter_null(str){
 		if(str){
 			return str;
@@ -1145,7 +1267,6 @@ export default {
 	},
 	//查询状态
 	getDeviceStatus() {
-		console.log("开始查询设备状态")
 		let that = this;
 		let params = {
 			openId: that.openId,
@@ -1154,111 +1275,192 @@ export default {
 				properties: that.FAstatus
 			}]
 		}
-		// that.webSocketdata();
-		api.postDeviceStatusQuery(params, that.accessToken).then((res) => {
-			if(that.timeoutInter != ''){
-				clearInterval(that.timeoutInter)
-			}
-			// that.timeGetData();
-			that.loadfirst = true;
-			that.isRefreshing = false;
-			that.isshowLoading = false;
-			if (res.code === 200) {
-				let res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
-				if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
-					// if(that.iswarm){
-// 						prompt.showDialog({
-// 																			title: '获取设备',
-// 																			message: "获取设备返回的数据："+ JSON.stringify(res_data),
-// 																			buttons: [{
-// 																				text: '确定',
-// 																				color: '#33dd44'
-// 																			}],
-// 																			success: function (data) {
-// 																			},
-// 																			cancel: function () {
-// 																				console.log('handling cancel')
-// 																			},
-// 																			fail: function (data, code) {
-// 																				console.log(`handling fail, code = ${code}`)
-// 																			}
-// 																		})
-// 					}
-					that.online = res_data.devices[0].properties.online;
-					that.power = res_data.devices[0].properties.power?res_data.devices[0].properties.power:"off";
-					that.mode_n = res_data.devices[0].properties.mode?res_data.devices[0].properties.mode:"";
-					that.swing = res_data.devices[0].properties.swing?res_data.devices[0].properties.swing:"off"
-					that.swing_angle_n= res_data.devices[0].properties.swing_angle?res_data.devices[0].properties.swing_angle:"unknown"
-					that.timer_off_minute= res_data.devices[0].properties.timer_off_minute?res_data.devices[0].properties.timer_off_minute:"clean"
-					that.timer_off_hour = res_data.devices[0].properties.timer_off_hour?res_data.devices[0].properties.timer_off_hour:'0'
-					that.timer_on_minute = res_data.devices[0].properties.timer_on_minute?res_data.devices[0].properties.timer_on_minute:'clean'
-					that.timer_on_hour = res_data.devices[0].properties.timer_on_hour?res_data.devices[0].properties.timer_on_hour:"0"
-					that.gear = res_data.devices[0].properties.gear?res_data.devices[0].properties.gear:'--',
-					that.FAdata = {
-						online: res_data.devices[0].properties.online?res_data.devices[0].properties.online:'false',
-						power: res_data.devices[0].properties.power?res_data.devices[0].properties.power:"off",
-						mode: res_data.devices[0].properties.mode?res_data.devices[0].properties.mode:"",
-						lock: res_data.devices[0].properties.lock?res_data.devices[0].properties.lock:"off",
-						swing: res_data.devices[0].properties.swing?res_data.devices[0].properties.swing:"off",
-						swing_angle: res_data.devices[0].properties.swing_angle?res_data.devices[0].properties.swing_angle:"unknown",
-						timer_off_minute: res_data.devices[0].properties.timer_off_minute?res_data.devices[0].properties.timer_off_minute:"clean",
-						timer_off_hour: res_data.devices[0].properties.timer_off_hour?res_data.devices[0].properties.timer_off_hour:0,
-						timer_on_minute: res_data.devices[0].properties.timer_on_minute?res_data.devices[0].properties.timer_on_minute:'clean',
-						timer_on_hour: res_data.devices[0].properties.timer_on_hour?res_data.devices[0].properties.timer_on_hour:0,
-						gear: res_data.devices[0].properties.gear?res_data.devices[0].properties.gear:'--',
-						// anion:res_data.devices[0].properties.anion?res_data.devices[0].properties.anion:'invalid'
-					}
-					if (that.online != 'true') {
-						that.isshowclose();
-					}
-					that.select_gear = that.gear;
-					that.timeFilter2();
-					that.listDevice = typeof res_data.devices[0].properties === 'object'? res_data.devices[0].properties:JSON.parse(res_data.devices[0].properties);
-// 					that.FAdata.online = res_data.devices[0].properties.online;
-// 					that.FAdata = res_data.devices[0].properties;
-				}else{
-					if(res_data.msg === ''){
-						let str1 = '';
-						if(res_data.devices[0].status){
-							str1 = res_data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								that.isshowclose();
-							}else{
-								that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
-							}
-						}else{
-							str1 = res_data.code;
-							that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
-						}
-						// that.netWorkGet('获取设备状态失败')
-					}else{
-						that.netWorkGet(res_data.msg)
-					}
-					that.initData();
-				}
+		console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
+		if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+			that.lanOnline = 'true';
+		}else{
+			that.lanOnline = 'false';
+		}
+		api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+			that.isagain = true;
+			if(res.lanonline){
+				that.getdataLan(res);
 			}else{
+				that.getLanData(res);
+			}
+		}).catch((error) => {
+			console.log("跑这里干嘛来了")
+			if(error.online){
 				if(that.iswarm){
 					that.initData();
 				}
-				that.netWorkGet('获取设备状态失败,请稍后重试')
+				that.netWorkGet('获取设备状态失败,请稍后重试');
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+			}else{
+				that.isagain = false;
+				that.lanOnline = "false";
+				that.getDeviceStatus();
 			}
-		}).catch((error) => {
-			if(that.timeoutInter != ''){
-				clearInterval(that.timeoutInter)
-			}
-			// that.timeGetData();
-			if(that.iswarm){
-				that.initData();
-			}
-			that.netWorkGet('获取设备状态失败,请稍后重试');
-			that.isRefreshing = false;
-			that.isshowLoading = false;
-// 			console.log("获取设备状态失败:error--" + JSON.stringify(error));
 		})
+	},
+	/**
+	 * 局域网控制
+	 */
+	lanControl(res,obj1,status){
+		let $this = this;
+		let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		console.log("局域网："+JSON.stringify(res))
+		if(parseInt(obj.code) == 0){
+			$this.isRefreshing = false;
+			$this.isshowLoading = false;
+			
+			$this.online = 'true';
+			$this.FAdata.gear = '--';
+			$this.gear = '--';
+			$this.select_gear = 0;
+			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+			
+			$this.FAdata.power = data.power;
+			$this.power = data.power;
+			$this.FAdata.mode = data.mode;
+			$this.mode_n = data.mode;
+			$this.swing =  data.swing
+			$this.FAdata.swing = data.swing
+			$this.timer_on_minute = data.timer_on_minute
+			$this.FAdata.timer_on_minute = data.timer_on_minute;
+			$this.swing_angle_n = data.swing_angle;
+			$this.FAdata.swing_angle = data.swing_angle;
+			$this.FAdata.timer_off_minute = data.timer_off_minute
+			$this.timer_off_minute = data.timer_off_minute;
+			$this.timer_off_hour = data.timer_off_hour
+			$this.FAdata.timer_off_hour = data.timer_off_hour;
+			$this.FAdata.timer_on_hour = data.timer_on_hour
+			$this.timer_on_hour = data.timer_on_hour
+			$this.FAdata.gear = data.gear
+			$this.gear = data.gear;
+			$this.select_gear = data.gear;
+			$this.listDevice = data;
+			$this.listDevice.online = "true";
+			$this.FAdata.online = "true";
+			$this.timeFilter2();
+		}else{
+			$this.isagain = false;
+			$this.lanOnline = 'false';
+			$this.startControlDevice(obj1, status);
+		}
+	},
+	/**
+	 * 广域网控制
+	 */
+	wlanControl(res){
+		let $this = this;
+		if (res.code && res.code === 200) {
+			let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+			if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
+				let isall = false;
+				$this.online = 'true';
+				$this.FAdata.gear = '--';
+				$this.gear = '--';
+				$this.select_gear = 0;
+				let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
+				if(obj.power){
+					$this.FAdata.power = obj.power;
+					$this.power = obj.power;
+				}else{
+					isall = true;
+				}
+				if(obj.mode){
+					$this.FAdata.mode = obj.mode;
+					$this.mode_n = obj.mode;
+				}else{
+					isall = true;
+				}
+				if(obj.swing){
+					$this.swing =  obj.swing
+					$this.FAdata.swing = obj.swing
+				}else{
+					isall = true;
+				}
+				if(obj.timer_on_minute.toString()){
+					$this.timer_on_minute = obj.timer_on_minute
+					$this.FAdata.timer_on_minute = obj.timer_on_minute
+				}else{
+					isall = true;
+				}
+				if(obj.swing_angle){
+					$this.swing_angle_n = obj.swing_angle;
+					$this.FAdata.swing_angle = obj.swing_angle;
+				}else{
+					$this.swing_angle_n = "unknown";
+					$this.FAdata.swing_angle = "unknown";
+				}
+				
+				if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
+					$this.FAdata.timer_off_minute = obj.timer_off_minute
+					$this.timer_off_minute = obj.timer_off_minute
+				}else{
+					isall = true;
+				}
+				if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
+					$this.timer_off_hour = obj.timer_off_hour
+					$this.FAdata.timer_off_hour = obj.timer_off_hour
+				}else{
+					isall = true;
+				}
+				if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
+					$this.FAdata.timer_on_hour = obj.timer_on_hour
+					$this.timer_on_hour = obj.timer_on_hour
+				}else{
+					isall = true;
+				}
+				if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
+					$this.FAdata.gear = obj.gear
+					$this.gear = obj.gear;
+					$this.select_gear = obj.gear;
+				}else{
+					isall = true;
+				}
+				if(isall){
+					$this.isshowLoading = true;
+					$this.getDeviceStatus();
+				}else{
+					$this.isRefreshing = false;
+					$this.isshowLoading = false;
+					$this.timeFilter2();
+				}
+				$this.listDevice = obj;
+			}else{
+				$this.isRefreshing = false;
+				$this.isshowLoading = false;
+				$this.initData();
+				if(bind_res_data.msg === ''){
+					let str1 = '';
+					if(bind_res_data.devices[0].status){
+						str1 = bind_res_data.devices[0].status;
+						if(str1.toString() === '-6'){
+							$this.isshowclose();
+							return false;
+						}
+						if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
+							$this.isshowclose();
+						}else{
+							$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+						}
+					}else{
+						str1 = bind_res_data.devices[0].description;
+						$this.netWorkGet(api.getCode(str1,'操作设备失败'))
+					}
+				}else{
+					$this.netWorkGet(bind_res_data.msg)
+				}
+			}
+		} else {
+			$this.isRefreshing = false;
+			$this.isshowLoading = false;
+			$this.initData();
+			$this.netWorkGet('操作设备失败,请稍后重试')
+		}
 	},
 	startControlDevice(control_params,status_params) {
 		let $this = this;
@@ -1288,148 +1490,29 @@ export default {
 				// "status":status_params
 			}]
 		}
-		console.log("操作参数："+ JSON.stringify(params));
-		// prompt.showToast({message:"请求数据：" + JSON.stringify(obj)})
-		api.postDeviceControl(params, this.accessToken).then((res) => {
-			if (res.code && res.code === 200) {
-				let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
-				if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
-					let isall = false;
-					$this.online = 'true';
-					$this.FAdata.gear = '--';
-					$this.gear = '--';
-					$this.select_gear = 0;
-					let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
-					if(obj.power){
-						$this.FAdata.power = obj.power;
-						$this.power = obj.power;
-					}else{
-						isall = true;
-					}
-					if(obj.mode){
-						$this.FAdata.mode = obj.mode;
-						$this.mode_n = obj.mode;
-					}else{
-						isall = true;
-					}
-					if(obj.swing){
-						$this.swing =  obj.swing
-						$this.FAdata.swing = obj.swing
-					}else{
-						isall = true;
-					}
-					
-					if(obj.timer_on_minute.toString()){
-						$this.timer_on_minute = obj.timer_on_minute
-						$this.FAdata.timer_on_minute = obj.timer_on_minute
-					}else{
-						isall = true;
-					}
-					if(obj.swing_angle){
-						$this.swing_angle_n = obj.swing_angle;
-						$this.FAdata.swing_angle = obj.swing_angle;
-					}else{
-						$this.swing_angle_n = "unknown";
-						$this.FAdata.swing_angle = "unknown";
-					}
-					
-					if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
-						$this.FAdata.timer_off_minute = obj.timer_off_minute
-						$this.timer_off_minute = obj.timer_off_minute
-					}else{
-						isall = true;
-					}
-					if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
-						$this.timer_off_hour = obj.timer_off_hour
-						$this.FAdata.timer_off_hour = obj.timer_off_hour
-					}else{
-						isall = true;
-					}
-					if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
-						$this.FAdata.timer_on_hour = obj.timer_on_hour
-						$this.timer_on_hour = obj.timer_on_hour
-					}else{
-						isall = true;
-					}
-					if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
-						$this.FAdata.gear = obj.gear
-						$this.gear = obj.gear;
-						$this.select_gear = obj.gear;
-					}else{
-						isall = true;
-					}
-					if(isall){
-						$this.isshowLoading = true;
-// 						prompt.showDialog({
-// 													title: '操作设备',
-// 													message: "操作设备返回的数据："+ JSON.stringify(obj) + isall,
-// 													// message: "获取设备状态返回的数据："+ that.online,
-// 													buttons: [{
-// 														text: '确定',
-// 														color: '#33dd44'
-// 													}],
-// 													success: function (data) {
-// 													},
-// 													cancel: function () {
-// 														console.log('handling cancel')
-// 													},
-// 													fail: function (data, code) {
-// 														console.log(`handling fail, code = ${code}`)
-// 													}
-// 												})
-						$this.getDeviceStatus();
-					}else{
-						$this.isRefreshing = false;
-						$this.isshowLoading = false;
-						$this.timeFilter2();
-					}
-					$this.listDevice = obj;
-// 					$this.online = bind_res_data.devices[0].online;
-					
-				}else{
-					$this.isRefreshing = false;
-					$this.isshowLoading = false;
-					$this.initData();
-					if(bind_res_data.msg === ''){
-						let str1 = '';
-						if(bind_res_data.devices[0].status){
-							str1 = bind_res_data.devices[0].status;
-							if(str1.toString() === '-6'){
-								$this.isshowclose();
-								return false;
-							}
-							if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
-								// $this.netWorkGet('设备离线');
-								$this.isshowclose();
-							}else{
-								$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-							}
-						}else{
-							str1 = bind_res_data.devices[0].description;
-							$this.netWorkGet(api.getCode(str1,'操作设备失败'))
-						}
-						// $this.netWorkGet('操作设备失败')
-					}else{
-						$this.netWorkGet(bind_res_data.msg)
-					}
-				}
-// 				if (bind_res_data.code) {
-// 					prompt.showToast({message:bind_res_data.message})
-// 				}
-			} else {
-				$this.isRefreshing = false;
-				$this.isshowLoading = false;
-				$this.initData();
-				$this.netWorkGet('操作设备失败,请稍后重试')
+		console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+$this.isagain)
+		if(net.$Lanonline.deviceid == $this.deviceId && net.$Lanonline.isonLan == 'true' && $this.isagain){
+			$this.lanOnline = 'true';
+		}else{
+			$this.lanOnline = 'false';
+		}
+		api.postDeviceControl(params, $this.accessToken,$this.lanOnline,$this.deviceId).then((res) => {
+			$this.isagain = true;
+			if(res.lanonline){
+				$this.wlanControl(res);
+			}else{
+				$this.lanControl(res,control_params,status_params)
 			}
 		}).catch((error) => {
-			$this.initData();
-			$this.isRefreshing = false;
-			// $this.netWorkGet('操作设备失败')
-			$this.isshowLoading = false;
-// 			 prompt.showToast({
-// 			    message: JSON.stringify(error)
-// 			}) 
+			if(error.online){
+				$this.initData();
+				$this.isRefreshing = false;
+				$this.isshowLoading = false;
+			}else{
+				$this.isagain = false;
+				$this.lanOnline = 'false';
+				$this.startControlDevice(control_params,status_params);
+			}
 		})
 	},
 	initData(){
@@ -1481,6 +1564,9 @@ export default {
 							if(obj.openid === that.openid){
 								that.openId = obj.openid;
 								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
 								that.getDeviceStatus();
 							}else{
 								that.getdevicelist();
@@ -1722,6 +1808,7 @@ export default {
 						if(obj.openid === that.openid){
 							that.openId = obj.openid;
 							that.accessToken = obj.accessToken;
+							that.LanOnlineGet();
 							that.getDeviceStatus();
 						}else{
 							that.getdevicelist();

@@ -1,13 +1,10 @@
 import IOT from '@service.iot';
 import prompt from '@system.prompt';
+import device from '@system.device';
 
-const clientId = 'db3924f6431a4c461667bd164a4ab1fb';
-const clientSecret = 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b';
-
-// let $Lanonline = {
-// 	deviceid:'',
-// 	isonLan:"false"
-// }
+let sethost = false;  //配置环境
+let clientId = "";
+let clientSecret = "";
 export default {
 	$Lanonline:{
 		deviceid:'',
@@ -20,24 +17,47 @@ export default {
 	//获取二维码解析
 	lanHelpInit() {
 		let that = this;
-		let params = {
-			token: 'Bearer mideaIotOpenAccessToken',
-			clientId: that.mes.clientId,
-			clientSecret: that.mes.clientSecret
-		}
-		console.log("setAccount:" + JSON.stringify(params))
 		let p = new Promise(function(resolve, reject){
-			IOT.send({
-				action: 'sendAccount',
-				data: params,
-				success: function(res) {
-					console.log("初始化："+JSON.stringify(res));
-					resolve(res)
-				},
-				fail: function(data, code) {
-					reject(data)
+			device.getInfo({
+				success: function (ret) {
+					if(ret.brand === 'vivo'){
+						if(sethost){
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "68045971e0f8bd4d7d51ed4989c4412a";
+						}else{
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "916925b48506ce2f17a4b5f80a6d20ec";
+			// 				clientId: 'db3924f6431a4c461667bd164a4ab1fb';
+			// 				clientSecret: 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b';
+						}
+					}else{
+						if(sethost){
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "9e8eb1c20757450c644fabcd8d5cd9c7";
+						}else{
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
+						}
+					}
+					let params = {
+						token: 'Bearer mideaIotOpenAccessToken',
+						clientId: clientId,
+						clientSecret: clientSecret
+					}
+					console.log("setAccount:" + JSON.stringify(params))
+					IOT.send({
+						action: 'sendAccount',
+						data: params,
+						success: function(res) {
+							console.log("初始化："+JSON.stringify(res));
+							resolve(res)
+						},
+						fail: function(data, code) {
+							reject(data)
+						}
+					});
 				}
-			});
+			})
 		})
 		return p;
 	},
@@ -47,37 +67,59 @@ export default {
 	 */
 	deviceInit(token, deviceID) {
 		let that = this;
-		let params = {
-			token: token,
-			clientId: that.mes.clientId,
-			clientSecret: that.mes.clientSecret
-		}
-		console.log("setAccount:" + JSON.stringify(params))
-		// 		prompt.showToast({
-		// 			message:"params:"+JSON.stringify(params)
-		// 		})
+		
 		let p = new Promise(function(resolve, reject){
-			IOT.send({
-				action: 'sendAccount',
-				data: params,
-				success: function(res) {
-					console.log("初始化："+JSON.stringify(res));
+			device.getInfo({
+				success: function (ret) {
+					if(ret.brand === 'vivo'){
+						if(sethost){
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "68045971e0f8bd4d7d51ed4989c4412a";
+						}else{
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "916925b48506ce2f17a4b5f80a6d20ec";
+			// 				clientId: 'db3924f6431a4c461667bd164a4ab1fb';
+			// 				clientSecret: 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b';
+						}
+					}else{
+						if(sethost){
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "9e8eb1c20757450c644fabcd8d5cd9c7";
+						}else{
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
+						}
+					}
+					let params = {
+						token: token,
+						clientId: clientId,
+						clientSecret: clientSecret
+					}
+					console.log("setAccount:" + JSON.stringify(params))
 					IOT.send({
-						action: 'CustomerHandler.addDevice',
-						data: deviceID,
+						action: 'sendAccount',
+						data: params,
 						success: function(res) {
-							that.LanGetData(deviceID);
-							resolve(res)
+							console.log("初始化："+JSON.stringify(res));
+							IOT.send({
+								action: 'CustomerHandler.addDevice',
+								data: deviceID,
+								success: function(res) {
+									that.LanGetData(deviceID);
+									resolve(res)
+								},
+								fail: function(data, code) {
+									reject(data)
+								}
+							})
 						},
 						fail: function(data, code) {
 							reject(data)
 						}
-					})
-				},
-				fail: function(data, code) {
-					reject(data)
+					});
 				}
-			});
+			})
+			
 		})
 		return p;
 	},
@@ -93,9 +135,6 @@ export default {
 			action: 'CustomerHandler.addDevice',
 			data: deviceID,
 			success: function(res) {
-				// 				prompt.showToast({
-				// 					message:"addDevice:"+JSON.stringify(res)
-				// 				})
 			},
 			fail: function(data, code) {
 				prompt.showToast({
@@ -169,7 +208,6 @@ export default {
 					if(data.message.toString() == '1'){
 						that.$Lanonline.deviceid = deviceId;
 						that.$Lanonline.isonLan = "true";
-						// resolve(data);
 					}else{
 						let obj = {
 							errorCode: "0001",
@@ -177,14 +215,12 @@ export default {
 						}
 						that.$Lanonline.deviceid = deviceId;
 						that.$Lanonline.isonLan = "false";
-						// reject(obj);
 					}
 				},
 				fail: function(data, code) {
 					that.$Lanonline.deviceid = deviceId;
 					that.$Lanonline.isonLan = "false";
 					console.log("失败了"+JSON.stringify(data));
-					// reject(data)
 				}
 			})
 // 		})
@@ -209,9 +245,6 @@ export default {
 				success: function(res) {
 					console.log("设备信息："+JSON.stringify(res));
 					resolve(res)
-					// 				prompt.showToast({
-					// 					message:"addDevice:"+JSON.stringify(res)
-					// 				})
 				},
 				fail: function(data, code) {
 					console.log("设备信息失败了"+JSON.stringify(data));
@@ -222,13 +255,14 @@ export default {
 		return p;
 	},
 	/**
-	 * 设备状态查询
+	 * 设备控制
 	 */
 	setDeviceStatus(deviceId,params){
 		let that = this;
+		console.log("控制参数:"+JSON.stringify(params))
 		let p = new Promise(function(resolve, reject){
 			IOT.send({
-				action: 'updateDeviceStatus,',
+				action: 'updateDeviceStatus',
 				data: {
 					deviceInfo:{
 						deviceUuid:deviceId
@@ -236,11 +270,7 @@ export default {
 					controlData:params
 				},
 				success: function(res) {
-					console.log("控制设备："+JSON.stringify(res));
 					resolve(res)
-					// 				prompt.showToast({
-					// 					message:"addDevice:"+JSON.stringify(res)
-					// 				})
 				},
 				fail: function(data, code) {
 					console.log("控制设备失败了"+JSON.stringify(data));
@@ -256,35 +286,59 @@ export default {
 	getInfoByQrCode(url){
 		console.log("跑到二维码解析了"+url)
 		let that = this;
-		let params = {
-			token: 'Bearer mideaIotOpenAccessToken',
-			clientId: that.mes.clientId,
-			clientSecret: that.mes.clientSecret
-		}
+		
 		let p = new Promise(function(resolve, reject){
-			IOT.send({
-				action: 'sendAccount',
-				data: params,
-				success: function(res) {
-					console.log("二维码解析初始化："+JSON.stringify(res));
+			device.getInfo({
+				success: function (ret) {
+					if(ret.brand === 'vivo'){
+						if(sethost){
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "68045971e0f8bd4d7d51ed4989c4412a";
+						}else{
+							clientId = "5ae235bbf44ae157689e539437a8b4f1";
+							clientSecret = "916925b48506ce2f17a4b5f80a6d20ec";
+			// 				clientId: 'db3924f6431a4c461667bd164a4ab1fb';
+			// 				clientSecret: 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b';
+						}
+					}else{
+						if(sethost){
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "9e8eb1c20757450c644fabcd8d5cd9c7";
+						}else{
+							clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
+							clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
+						}
+					}
+					let params = {
+						token: 'Bearer mideaIotOpenAccessToken',
+						clientId: clientId,
+						clientSecret: clientSecret
+					}
+					console.log("二维码解析参数："+JSON.stringify(params))
 					IOT.send({
-						action: 'CustomerHandler.getDeviceInfoByQrCode',
-						data: url,
+						action: 'sendAccount',
+						data: params,
 						success: function(res) {
-							console.log("解析结果："+JSON.stringify(res));
-							resolve(res)
+							console.log("二维码解析初始化："+JSON.stringify(res));
+							IOT.send({
+								action: 'CustomerHandler.getDeviceInfoByQrCode',
+								data: url,
+								success: function(res) {
+									console.log("解析结果："+JSON.stringify(res));
+									resolve(res)
+								},
+								fail: function(data, code) {
+									console.log("解析失败了"+JSON.stringify(data));
+									reject(data)
+								}
+							})
 						},
 						fail: function(data, code) {
-							console.log("解析失败了"+JSON.stringify(data));
 							reject(data)
 						}
-					})
-				},
-				fail: function(data, code) {
-					reject(data)
+					});
 				}
-			});
-			
+			})
 		})
 		return p;
 	},

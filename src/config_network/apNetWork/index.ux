@@ -8,7 +8,7 @@
 			</text>
 		</div>
 		<list class="nav_list">
-			<list-item class="nav_list_all" type="listItem">
+			<list-item class="nav_list_all" type="listItem1">
 				<div class="seting" if="{{!setSucc}}">
 					<div class="top">
 						<!-- <image class="top_done_1" src="./assets/img/complete.png"></image> -->
@@ -45,7 +45,7 @@
 					</div>
 				</div>
 			</list-item>
-			<list-item class="nav_list_all" type="listItem">
+			<list-item class="nav_list_all" type="listItem2">
 				<div class="seting" if="{{setSucc}}">
 					<div class="top">
 						<image class="top_done_1" src="./assets/img/fail.png"></image>
@@ -104,16 +104,17 @@
 			isfirsTime: false,
 			isloadingDone:false,
 			fisrtCode: 0,
+			// comImg:'',
 			quickAppPackage: "",
 			isstart: false,
 			iswork: false,
 			isdone: false,
 			setFlag: true,
-      setSucc: false,
-      progress: 0,
+			setSucc: false,
+			progress: 0,
 			isloadindone:6,
-      time: 105,
-      condition: [true, false, false],
+			time: 105,
+			condition: [true, false, false],
 			lauchData: {},
 			deviceinfo: '',
 			physicalId: '',
@@ -141,7 +142,8 @@
 			iot_device_ssid:"",
 			iot_wifi_secretType: "",
 			iot_config_type:"",
-			ssidDevice: ''
+			ssidDevice: '',
+			is_ap:''
 		},
 		backPage(){
 			this.stopConfigDevice();
@@ -419,6 +421,7 @@
 								action: 'startConfigDevice',
 								data: params,
 								success: function(data) {
+									console.log(JSON.stringify(data))
 									let res = (typeof data != 'object') ? JSON.parse(data) : data;
 									if(!res.code || res.code.toString() == '0'){
 										// prompt.showToast({message:JSON.stringify(res)});
@@ -517,6 +520,7 @@
 			IOT.send({
 			    action: 'stopConfigDevice', 
 				success: function (data) {
+					console.log("停止配网："+JSON.stringify(data))
 					if(that.iot_call_from === 'AP_SCAN'){
 						that.$app.exit();
 							// router.clear();
@@ -541,6 +545,7 @@
 			// prompt.showToast({message:"绑定开始"})
 			let $this = this;
 			api.postDeviceBind(params, $this.accessToken).then((res) => {
+				console.log("绑定设备"+JSON.stringify(res))
 				// prompt.showToast({message:"绑定：" + JSON.stringify(res)})
 				if (res.code && res.code == 200) {
 					let bind_res_data = (typeof res.data !== 'object') ? JSON.parse(res.data) : res.data;

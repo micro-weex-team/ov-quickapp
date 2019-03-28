@@ -55,6 +55,10 @@
 	import net from '../Common/api/networkAPI.js';
     module.exports = {
         private: {
+			timeNum:[],//空的配网指引集
+			isnonenum:[],//已经搜索的配网指引集
+			suportType:[0,1],//支持的配网方式（0：ap,1：快连）
+			againData:false,
 			isnone:false,
 			language:true,
 			isback: true,
@@ -109,10 +113,10 @@
 					net.getInfoByQrCode(that.iot_url).then((res) => {
 						console.log("二维码信息"+JSON.stringify(res))
 						let str = (typeof res) == 'object'?res:JSON.parse(res);
-						if(!parseInt(str.code)){
+						if(parseInt(str.code) == 0){
 							let data = (typeof str.message) == 'object'?str.message:JSON.parse(str.message);
 							console.log("二维码信息来这里了"+JSON.stringify(str.message))
-							if(data.mode != ''){
+							if(data.mode != '' || parseInt(data.mode) == 0){
 								if(parseInt(data.mode) > 5){
 									that.iot_config_type = 0;
 								}else{
@@ -120,30 +124,33 @@
 								}
 							}else{
 								that.getWifiList();
-								// that.getout();
 								return false;
 							}
 							if(data.sn8 != ""){
 								that.deviceCode = data.sn8;
 							}else{
 								that.getWifiList();
-								// that.getout();
 								return false;
 							}
 							if(data.deviceType != ''){
-								that.ssidDevice = data.deviceType.substring(data.deviceType.length-2,data.deviceType.length)
+								if(data.deviceType.length == 2){
+									that.ssidDevice = data.deviceType
+								}else{
+									that.ssidDevice = data.deviceType.substring(data.deviceType.length-2,data.deviceType.length)
+								}
 							}else{
 								that.getWifiList();
-								// that.getout();
 								return false;
 							}
+							// console.log("mode:"+that.iot_config_type+":::::sn8:"+that.deviceCode+"::::::;ssidDevice:"+that.ssidDevice)
 							that.getConfigDeviceInfo();
 						}else{
 							that.getWifiList();
 							// that.getout();
 						}
 					}).catch((error) => {
-						console.log("出错了"+JSON.stringify(error))
+						that.getWifiList();
+						// console.log("出错了"+JSON.stringify(error))
 					})
 				}else{
 					that.getWifiList();
@@ -165,7 +172,9 @@
 				
 				// console.log(that)
 			}else{
+				console.log("从app传过来的iot_category值："+that.iot_category)
 				that.type.forEach(function(item,i){
+					console.log(that.deviceType)
 					if(item === that.getDeviceType()){
 						num = i;
 					}
@@ -173,6 +182,7 @@
 				if(num === -1){
 					that.is_device = false;
 					that.getout();
+					return false
 				}else{
 					that.is_device = true;
 					if(that.iot_call_from === "AP_SCAN"){
@@ -205,12 +215,12 @@
 			// prompt.showToast({message:'iot_series:' + this.iot_series,duration:1})
 		},
 		/**
-		 * 推出界面
+		 * 退出界面
 		 */
 		getout(){
 			prompt.showDialog({
 						title: '提示',
-						message: "设备不存在，请检查二维码是否正确",
+						message: "该品类暂不支持，敬请期待",
 						buttons: [{
 						text: '确定',
 						color: '#33dd44'
@@ -252,6 +262,10 @@
 		},
 		nextPage(){
 			let that = this;
+			let isap = 'false';
+// 			if(that.iot_config_type.toString() == "0"){
+// 				
+// 			}
 			if(!that.checked){
 				router.push ({
 					uri: "config_network/apNetWork",
@@ -268,97 +282,194 @@
 				})
 			}
 		},
+		/**
+		 * 查找没找过的方式
+		 */
+		getArrDifference(arr1, arr2) {
+			return arr1.concat(arr2).filter(function(v, i, arr) {
+				return arr.indexOf(v) === arr.lastIndexOf(v);
+			});
+		},
+		/**
+		 * json中是否存在
+		 */
+		getItem(arr,n,v) {
+			for (var i = 0; i < arr.length; i++){
+				if (arr[i][n]==v){
+					return i;
+				}
+			}
+		},
 		getConfigDeviceInfo(){
 			let that = this;
 			
 			console.log("设备sn8码："+that.deviceCode)
 			let arry = [];
+			let num = -1
+			that.type.forEach(function(item,i){
+				if(item === that.ssidDevice.toLowerCase()){
+					num = i;
+				}
+			})
+			if(num === -1){
+				that.is_device = false;
+				that.getout();
+				return false
+			}
+			that.isloading = true;
 			arry[0] = that.ssidDevice.toUpperCase();
 				let params = {
 					types: arry,
 					mode: parseInt(that.iot_config_type),
 					// code:that.deviceCode
 				}
-				console.log("配网指引参数："+JSON.stringify(params))
+				console.log("配网指引参数："+JSON.stringify(params));
+				
+				if(that.suportType.indexOf(parseInt(that.iot_config_type)) == -1){
+					prompt.showDialog({
+							title: '提示',
+							message: "暂只支持ap以及快连方式配网",
+							buttons: [{
+							text: '确定',
+							color: '#33dd44'
+						}],
+						success: function (data) {
+							router.back()
+						},
+						cancel: function () {
+							router.back()
+							console.log('handling cancel')
+						},
+						fail: function (data, code) {
+							router.back()
+							console.log(`handling fail, code = ${code}`)
+						}
+					})
+					return false
+				}
 				api.getCenterWorkHelp(params).then((res) => {
-				// api.getConfigWorkHelp(params).then((res) => {
-					that.isloading = false;
-					// console.log("打印data："+JSON.stringify(res.data))
+					if(that.isnonenum.indexOf(parseInt(that.iot_config_type)) == -1){
+						that.isnonenum.push(parseInt(that.iot_config_type));
+					}
 					if(res.data.list){
 						let data = (typeof res.data.list) == 'object'?res.data.list:JSON.parse(res.data.list);
-						// if(data.errorCode === 0){
-							if(data.length === 0){
-								that.isnone = true;
-								if(that.iot_config_type === '0'){
-									that.iot_config_type = '1';
-								}else{
-									that.iot_config_type = '0';
-								}
+						if(data.length === 0){
+							if(that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1){
+								that.timeNum.push(parseInt(that.iot_config_type));
+							}
+							if(that.getArrDifference(that.suportType,that.timeNum).length > 0){
+								that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
 								that.getConfigDeviceInfo();
 							}else{
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印list："+JSON.stringify(data))
-								let isdevice = "0";
-								data.forEach(function(item,i){
-									if(item.code == that.deviceCode && isdevice != '1'){
-										isdevice = '1';
-										that.num = i;
-									}else if(item.code === ''){
-										if(isdevice === "0"){
-											isdevice = '2';
-										}
+								prompt.showDialog({
+										title: '提示',
+										message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+										buttons: [{
+										text: '确定',
+										color: '#33dd44'
+									}],
+									success: function (data) {
+										router.back()
+									},
+									cancel: function () {
+										router.back()
+										console.log('handling cancel')
+									},
+									fail: function (data, code) {
+										router.back()
+										console.log(`handling fail, code = ${code}`)
 									}
 								})
-								if(that.deviceCode === ''){
-									that.num = 0;
-									that.img = data[0].mainModeImg;
-									that.title = data[0].name;
-									that.main_mode_summary = data[0].mainModeSummary;
+								return false
+							}
+						}else{
+							console.log("打印大法==============================================")
+							console.log("打印大法==============================================")
+							console.log("打印大法==============================================")
+							console.log("打印大法==============================================")
+							console.log("打印大法==============================================")
+							console.log("打印大法==============================================")
+							console.log("打印list："+JSON.stringify(data))
+							if(that.deviceCode === '' || that.againData){
+								that.num = 0;
+								that.img = data[0].mainModeImg;
+								that.title = data[0].name;
+								that.main_mode_summary = data[0].mainModeSummary;
+								that.isloading = false;
+							}else{
+								if(that.getItem(data,"code",that.deviceCode) > -1){
+									that.num = that.getItem(data,"code",that.deviceCode);
 								}else{
-// 									if(that.num === -1 && that.iot_config_type.toString() === '0'){
-// 										that.issecondary = true;
-// 										that.isap = "false";
-// 										if(that.iot_config_type.toString() === '0'){
-// 											that.iot_config_type = '1';
-// 											that.num = 0;
-// 											if(!that.isnone){
-// 												that.getConfigDeviceInfo();
-// 											}
-// 										}
-// 									}else{
-										if(that.num === -1){
-											that.num = 0;
+									if(that.getArrDifference(that.suportType,that.isnonenum).length > 0){
+										that.iot_config_type = that.getArrDifference(that.suportType,that.isnonenum)[0];
+										that.getConfigDeviceInfo();
+										return false
+									}else{
+										if(that.getArrDifference(that.suportType,that.timeNum).length > 0){
+											that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
+											that.againData = true;
+											that.getConfigDeviceInfo();
+											return false
+										}else{
+											prompt.showDialog({
+													title: '提示',
+													message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+													buttons: [{
+													text: '确定',
+													color: '#33dd44'
+												}],
+												success: function (data) {
+													router.back()
+												},
+												cancel: function () {
+													router.back()
+													console.log('handling cancel')
+												},
+												fail: function (data, code) {
+													router.back()
+													console.log(`handling fail, code = ${code}`)
+												}
+											})
+											return false
 										}
-										that.isdone = true;
-										that.img = data[that.num].mainModeImg;
-										that.title = data[that.num].name;
-										that.main_mode_summary = data[that.num].mainModeSummary;
-// 										if(that.issecondary){
-// 											that.title = data.data[that.num].name;
-// 											that.img = data.data[that.num].main_mode_img;
-// 											that.main_mode_summary = data.data[that.num].main_mode_summary;
-// 										}else{
-// 											that.img = data.data[that.num].main_mode_img;
-// 											that.title = data.data[that.num].name;
-// 											that.main_mode_summary = data.data[that.num].main_mode_summary;
-// 										}
-									// }
+									}
 								}
-							// }
+								that.img = data[that.num].mainModeImg;
+								that.title = data[that.num].name;
+								that.main_mode_summary = data[that.num].mainModeSummary;
+								that.isloading = false;
+							}
 						}
 					}else{
-						that.isnone = true;
-						if(that.iot_config_type === '0'){
-							that.iot_config_type = '1';
-						}else{
-							that.iot_config_type = '0';
+						if(that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1){
+							that.timeNum.push(parseInt(that.iot_config_type));
 						}
-						that.getConfigDeviceInfo();
+						if(that.getArrDifference(that.suportType,that.timeNum).length > 0){
+							that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
+							that.getConfigDeviceInfo();
+						}else{
+							prompt.showDialog({
+									title: '提示',
+									message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+									buttons: [{
+									text: '确定',
+									color: '#33dd44'
+								}],
+								success: function (data) {
+									router.back()
+								},
+								cancel: function () {
+									router.back()
+									console.log('handling cancel')
+								},
+								fail: function (data, code) {
+									router.back()
+									console.log(`handling fail, code = ${code}`)
+								}
+							})
+							that.isloading = false;
+							return false
+						}
 					}
 				}).catch((error) => {
 					that.isloading = false;
@@ -368,6 +479,7 @@
 		getWifiList(){
 			// this.isloading = true;
 			let that = this;
+			console.log("选择方式"+that.iot_call_from)
 			if(that.iot_device_ssid != '' && that.iot_device_ssid != 'null'){
 				that.ssidDevice = that.iot_device_ssid.substring(6,8).toLowerCase();
 				that.getConfigDeviceInfo();

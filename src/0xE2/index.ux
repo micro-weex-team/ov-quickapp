@@ -145,9 +145,13 @@
 	// import IOT from '@service.iot';
 	import pkg from '@system.package';
 	import network from '@system.network';
+	import net from '../Common/api/networkAPI.js';
 	
 	export default {
 		private: {
+			isagain:true,
+			lanOnline:'false',
+			isLanInit:false,
 			isoffset:'-1000px',
 			isRefreshing:false,
 			mask: false,
@@ -436,6 +440,7 @@
 										
 									}
 								})
+								that.LanOnlineGet();
                                 that.getDeviceStatus();
                             } else {
 								that.isRefreshing = false;
@@ -471,6 +476,80 @@
 				}
 			})
 		},
+		/**
+		 * 局域网获取
+		 */
+		getLanData(res){
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			if(parseInt(obj.code) == 0){
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				that.isfirst = true;
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				that.online = 'true';
+				that.info = data;
+				that.info.online = 'true'
+			}else{
+				that.isagain = false;
+				that.lanOnline = "false";
+				that.getDeviceStatus(that.openId);
+			}
+		},
+		/**
+		 * 联网获取
+		 */
+		getdataLan(res){
+			let that = this;
+			let num = false;
+			that.isRefreshing = false;
+			that.isshowLoading = false;
+			that.isfirst = true;
+			if(res.code === 200){
+				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+				that.status = data.devices[0].status
+				if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
+					num = true;
+					let obj = data.devices[0].properties;
+					that.online = obj.online;
+					that.info = obj;
+					if (that.online != 'true') {
+						that.isshowclose();
+					}
+				}else{
+					that.initData();
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if(str1.toString() === '-6'){
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() != '-100') {
+								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+							} else {
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+								}
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
+						}
+					} else {
+						that.netWorkGet(data.msg)
+					}
+				}
+			}else{
+				that.netWorkGet('获取设备状态失败,请稍后重试');
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				that.initData();
+			}
+		},
         //查询状态
 		getDeviceStatus(){
 			let that = this;
@@ -482,91 +561,179 @@
 				}]
 			}
 			//that.webSocketdata();
-			let num = false;
-			api.postDeviceStatusQuery(params,that.accessToken).then((res) => {
-				that.isRefreshing = false;
-				that.isshowLoading = false;
-				that.isfirst = true;
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
+			api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
 				if(that.timeoutInter != ''){
 					clearInterval(that.timeoutInter);
 				}
-				//that.timeGetData()
-				// prompt.showDialog({
-				// 	title: '获取设备状态',
-				// 	message: "获取设备状态: " + res.data,
-				// 	buttons: [{
-				// 		text: '确定',
-				// 		color: '#33dd44'
-				// 	}],
-				// 	success: function (data) {
-						
-				// 	},
-				// 	cancel: function () {
-				// 		console.log('handling cancel')
-				// 	},
-				// 	fail: function (data, code) {
-				// 		console.log(`handling fail, code = ${code}`)
-				// 	}
-				// })
-				if(res.code === 200){
-					let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
-					that.status = data.devices[0].status
-					if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
-						num = true;
-						let obj = data.devices[0].properties;
-						// that.info.power = 'on'
-						that.online = obj.online;
-						that.info = obj;
-						if (that.online != 'true') {
-							that.isshowclose();
-						}
-					}else{
-						that.initData();
-						if (data.msg === '') {
-							let str1 = '';
-							if (data.devices[0].status) {
-								str1 = data.devices[0].status;
-								if(str1.toString() === '-6'){
-									that.isshowclose();
-									return false;
-								}
-								if (str1.toString() != '-100') {
-									that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
-								} else {
-									if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
-										that.isshowclose();
-									}else{
-										that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
-									}
-								}
-							} else {
-								str1 = data.code;
-								that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
-							}
-						} else {
-							that.netWorkGet(data.msg)
-						}
-					}
+				that.isagain = true;
+				if(res.lanonline){
+					that.getdataLan(res);
 				}else{
+					that.getLanData(res);
+				}
+			}).catch((error) => {
+				if(error.online){
+					if(that.timeoutInter != ''){
+						clearInterval(that.timeoutInter);
+					}
+					that.isfirst = true;
+					if(that.iswarm){
+						that.initData();
+					}
 					that.netWorkGet('获取设备状态失败,请稍后重试');
 					that.isRefreshing = false;
 					that.isshowLoading = false;
-					that.initData();
+				}else{
+					that.isagain = false;
+					that.lanOnline = "false";
+					that.getDeviceStatus(that.openId);
 				}
-			}).catch((error) => {
-				if(that.timeoutInter != ''){
-					clearInterval(that.timeoutInter);
-				}
-				//that.timeGetData()
-				that.isfirst = true;
-				if(that.iswarm){
-					that.initData();
-				}
-				that.netWorkGet('获取设备状态失败,请稍后重试');
-				that.isRefreshing = false;
-				that.isshowLoading = false;
 			})
         },
+		/**
+		 * 局域网控制
+		 */
+		lanControl(res,obj1,status){
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			console.log("局域网："+JSON.stringify(res))
+			if(parseInt(obj.code) == 0){
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				let objdata = {};
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				objdata.power = data.power;
+				objdata.hot_power = data.hot_power;
+				objdata.warm_power = data.warm_power;
+				objdata.cur_temperature = data.cur_temperature;
+				objdata.temperature = data.temperature;
+				that.temperatureList.forEach(function(item,index){
+					if(item === parseInt(data.temperature)){
+						that.temperatureIndex = index;
+					}
+				})
+				objdata.heat_water_level = data.heat_water_level;
+				objdata.end_time_hour = data.end_time_hour;
+				objdata.end_time_minute = data.end_time_minute;
+				that.info = objdata;
+				that.info.online = "true";
+				that.online = "true";
+			}else{
+				that.isagain = false;
+				that.lanOnline = 'false';
+				that.postDeviceControl(obj1, status);
+			}
+		},
+		/**
+		 * 广域网控制
+		 */
+		wlanControl(res){
+			let that = this;
+			if (res.code && res.code == 200){
+				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+				this.status = data.devices[0].status
+				if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
+					let isall = false;
+					that.online = "true";
+					let objdata = {}
+					let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+					if(obj.power){
+						objdata.power = obj.power;
+					}else{
+						isall = true;
+					}
+					if(obj.hot_power){
+						objdata.hot_power = obj.hot_power;
+					}else{
+						isall = true;
+					}
+					if(obj.warm_power){
+						objdata.warm_power = obj.warm_power;
+					}else{
+						isall = true;
+					}
+					if(obj.cur_temperature || parseInt(obj.cur_temperature) == 0){
+						objdata.cur_temperature = obj.cur_temperature;
+					}else{
+						isall = true;
+					}
+					if(obj.temperature || parseInt(obj.temperature) == 0){
+						objdata.temperature = obj.temperature;
+						that.temperatureList.forEach(function(item,index){
+							if(item === parseInt(obj.temperature)){
+								that.temperatureIndex = index;
+							}
+						})
+						
+					}else{
+						isall = true;
+					}
+					if(obj.heat_water_level || parseInt(obj.heat_water_level) == 0){
+						objdata.heat_water_level = obj.heat_water_level;
+					}else{
+						isall = true;
+					}
+					if(obj.end_time_hour || parseInt(obj.end_time_hour) == 0){
+						objdata.end_time_hour = obj.end_time_hour;
+					}else{
+						isall = true;
+					}
+					if(obj.end_time_minute || parseInt(obj.end_time_minute) == 0){
+						objdata.end_time_minute = obj.end_time_minute;
+					}else{
+						isall = true;
+					}
+					
+					that.info = objdata;
+					if(isall){
+						that.isshowLoading = true;
+						that.getDeviceStatus();
+					}else{
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+					}
+				}else{
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.initData();
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if(str1.toString() === '-6'){
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() != '-100') {
+								that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+							} else {
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '操作设备失败'))
+						}
+						// $this.netWorkGet('操作设备失败')
+					} else {
+						that.netWorkGet(data.msg)
+					}
+				}
+			}else{
+				that.isRefreshing = false;
+				that.isshowLoading = false;
+				that.initData();
+				that.netWorkGet('操作设备失败,请稍后重试')
+			}
+		},
         //设备控制接口
         postDeviceControl(obj, status = []){
             this.isshowLoading = true;
@@ -586,130 +753,32 @@
 					status: status_params
 				}]
 			}
+			
+			console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
 			// prompt.showToast({message: "params:" + JSON.stringify(params),duration:1})
-			api.postDeviceControl(params,that.accessToken).then((res) => {
-				// that.getDeviceStatus();
-				//that.isshowLoading = false;
-				// prompt.showDialog({
-				// 			title: '控制设备状态',
-				// 			message: "控制设备状态" + res.data,
-				// 			buttons: [{
-				// 				text: '确定',
-				// 				color: '#33dd44'
-				// 			}],
-				// 			success: function (data) {
-				// 			},
-				// 			cancel: function () {
-				// 				console.log('handling cancel')
-				// 			},
-				// 			fail: function (data, code) {
-				// 				console.log(`handling fail, code = ${code}`)
-				// 			}
-				// 		})
-				if (res.code && res.code == 200){
-					let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
-					this.status = data.devices[0].status
-					if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-						let isall = false;
-						that.online = "true";
-						let objdata = {}
-						let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
-						if(obj.power){
-							objdata.power = obj.power;
-						}else{
-							isall = true;
-						}
-						if(obj.hot_power){
-							objdata.hot_power = obj.hot_power;
-						}else{
-							isall = true;
-						}
-						if(obj.warm_power){
-							objdata.warm_power = obj.warm_power;
-						}else{
-							isall = true;
-						}
-						if(obj.cur_temperature || parseInt(obj.cur_temperature) == 0){
-							objdata.cur_temperature = obj.cur_temperature;
-						}else{
-							isall = true;
-						}
-						if(obj.temperature || parseInt(obj.temperature) == 0){
-							objdata.temperature = obj.temperature;
-							that.temperatureList.forEach(function(item,index){
-								if(item === parseInt(obj.temperature)){
-									that.temperatureIndex = index;
-								}
-							})
-							
-						}else{
-							isall = true;
-						}
-						if(obj.heat_water_level || parseInt(obj.heat_water_level) == 0){
-							objdata.heat_water_level = obj.heat_water_level;
-						}else{
-							isall = true;
-						}
-						if(obj.end_time_hour || parseInt(obj.end_time_hour) == 0){
-							objdata.end_time_hour = obj.end_time_hour;
-						}else{
-							isall = true;
-						}
-						if(obj.end_time_minute || parseInt(obj.end_time_minute) == 0){
-							objdata.end_time_minute = obj.end_time_minute;
-						}else{
-							isall = true;
-						}
-						
-						that.info = objdata;
-						if(isall){
-							that.isshowLoading = true;
-							that.getDeviceStatus();
-						}else{
-							that.isRefreshing = false;
-							that.isshowLoading = false;
-						}
-					}else{
-						that.isRefreshing = false;
-						that.isshowLoading = false;
-						that.initData();
-						if (data.msg === '') {
-							let str1 = '';
-							if (data.devices[0].status) {
-								str1 = data.devices[0].status;
-								if(str1.toString() === '-6'){
-									that.isshowclose();
-									return false;
-								}
-								if (str1.toString() != '-100') {
-									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-								} else {
-									if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
-										that.isshowclose();
-									}else{
-										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-									}
-								}
-							} else {
-								str1 = data.code;
-								that.netWorkGet(api.getCode(str1, '操作设备失败'))
-							}
-							// $this.netWorkGet('操作设备失败')
-						} else {
-							that.netWorkGet(data.msg)
-						}
-					}
+			api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				that.isagain = true;
+				if(res.lanonline){
+					that.wlanControl(res);
 				}else{
-					that.isRefreshing = false;
-					that.isshowLoading = false;
-					that.initData();
-					that.netWorkGet('操作设备失败,请稍后重试')
+					that.lanControl(res,obj,status)
 				}
 			}).catch((error) => {
-				that.initData();
-				that.netWorkGet('操作设备失败,请稍后重试');
-				that.isRefreshing = false;
-				that.isshowLoading = false;
+				if(error.online){
+					that.initData();
+					that.netWorkGet('操作设备失败,请稍后重试');
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+				}else{
+					that.isagain = false;
+					that.lanOnline = 'false';
+					that.postDeviceControl(obj, status);
+				}
 			})
 		},
 		netWorkGet(str){
@@ -777,6 +846,9 @@
 									if (obj.openid === that.openid) {
 										that.openId = obj.openid;
 										that.accessToken = obj.accessToken;
+										if(!that.isLanInit){
+											that.LanOnlineGet();
+										}
 										that.getDeviceStatus();
 									} else {
 										that.getdevicelist();
@@ -808,6 +880,9 @@
 								if (obj.openid === that.openid) {
 									that.openId = obj.openid;
 									that.accessToken = obj.accessToken;
+									if(!that.isLanInit){
+										that.LanOnlineGet();
+									}
 									that.getDeviceStatus();
 								} else {
 									that.getdevicelist();
@@ -934,6 +1009,17 @@
 				})
 			}
 		},
+		/**
+		 * 局域网初始化
+		 */
+		LanOnlineGet(){
+			let that = this;
+			net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+				that.isLanInit = true;
+			}).catch((error) => {
+				that.isLanInit = false;
+			});
+		},
 		onHide(){
 			let that = this;
 			that.istips = false;
@@ -1015,6 +1101,7 @@
 							if(obj.openid === that.openid){
 								that.openId = obj.openid;
 								that.accessToken = obj.accessToken;
+								that.LanOnlineGet();
 								that.getDeviceStatus();
 							}else{
 								that.getdevicelist();

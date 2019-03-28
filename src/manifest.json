@@ -115,11 +115,11 @@
         "origin": "*"
     }],
     "config": {
-        "logLevel": "debug",
+        "logLevel": "",
         "designWidth": 1080
     },
     "router": {
-        "entry": "0xAC",
+        "entry": "config_network",
         "pages": {
             "0xAC": {
                 "component": "index"
@@ -160,12 +160,6 @@
 			"0xFD": {
                 "component": "index"
             },
-			"Network": {
-				"component": "index"
-			},
-			"Network/NetHelp": {
-				"component": "index"
-			},
             "config_network": {
                 "component": "index"
             },
