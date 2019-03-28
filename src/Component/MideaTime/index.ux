@@ -12,7 +12,7 @@
             <text if="{{language}}">设置时间</text>
             <div class="time-r">
                 <text if="{{language}}" class="timeText">{{timeText}}</text>
-                <image src="./assets/img/arow_down.png"></image>
+                <image src="../../Common/img/arow_down.png"></image>
 				<text if="{{!language}}" class="timeText">{{timeText}}</text>
             </div>
 			<text if="{{!language}}">设置时间</text>
@@ -21,7 +21,7 @@
             <block for="listData">
                 <list-item class="item" type="list" @click="{{selectFn($item)}}">
                     <text if="{{language}}" style="color:{{timeValue==$item?hightColor:defaultColor}}; font-size:{{timeValue==$item?hightFontSize:defaultFontSize}}">{{$item}}</text>
-                    <image class="img" style="opacity:{{timeValue==$item?1:0}}" src="./assets/img/icon_selected.png"></image>
+                    <image class="img" style="opacity:{{timeValue==$item?1:0}}" src="../../Common/img/icon_selected.png"></image>
 					<text if="{{!language}}" style="color:{{timeValue==$item?hightColor:defaultColor}}; font-size:{{timeValue==$item?hightFontSize:defaultFontSize}}">{{$item}}</text>
                 </list-item>
             </block>

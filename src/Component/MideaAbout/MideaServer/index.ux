@@ -8,7 +8,7 @@
 			</text>
 		</div>
 		<web src="http://qrcode.midea.com/AboutApp/userAgreement.html" onerror="error()" onpagestart="pagestart()" onpagefinish="pagefinish()"></web>
-		<midea-loading if="{{isloading}}"><midea-loading>
+		<midea-loading if="{{isloading}}"></midea-loading>
 	  <!-- <text class="mdiea_about_self_text">欢迎您与美的平台签署本《美的平台服务协议》（下称“本协议”）并使用美的平台服务！</text>
 		<text class="mdiea_about_self_text">本服务协议自发布之日起，取代之前美的各商城、app客户端之前的用户协议，美的平台各处所称“服务协议”均指本协议。</text>
 		<text class="mdiea_about_self_text">为维护您自身权益，请您仔细阅读各条款具体表述。各服务条款前所列索引关键词仅为表达该条款的主旨之用，不影响或限制本协议条款的含义或解释。</text>

@@ -12,7 +12,7 @@
 				<div class="seting" if="{{!setSucc}}">
 					<div class="top">
 						<!-- <image class="top_done_1" src="./assets/img/complete.png"></image> -->
-						<image class="{{isdone?'top_done_1':'top_done'}}" src="./assets/img/{{isdone?'complete':'wifi_configuration_success_1'}}.png"></image>
+						<image class="{{isdone?'top_done_1':'top_done'}}" src="{{isdone?'./assets/img/complete.png':'./assets/img/wifi_configuration_success_1.png'}}"></image>
 						<text class="progress" if="{{!isdone}}">
 							<span class="nav_progress">{{progress}}</span>
 							<span class="text_progress">%</span>
@@ -24,19 +24,19 @@
 						<!--<text class="seting-tips">请将设备尽量靠近路由器</text>-->
 						<div class="nav_tips">
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
-								<image show="{{language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{isstart?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="{{isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 								<text class="txt">配置家电</text>
-								<image show="{{!language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{isstart?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{!language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="{{isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 							</div>
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
-								<image show="{{language}}" class="{{iswork?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{iswork?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{language}}" class="{{iswork?'nav_tips_list_img':'isanimation'}}" src="{{iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 								<text class="txt">家电加入家庭WiFi</text>
-								<image show="{{!language}}" class="{{iswork?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{iswork?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{!language}}" class="{{iswork?'nav_tips_list_img':'isanimation'}}" src="{{iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 							</div>
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
-								<image show="{{language}}" class="{{isdone?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{isdone?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{language}}" class="{{isdone?'nav_tips_list_img':'isanimation'}}" src="{{isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 								<text class="txt">激活家电</text>
-								<image show="{{!language}}" class="{{isdone?'nav_tips_list_img':'isanimation'}}" src="./assets/img/{{isdone?'wifi_complete':'wifi_refresh'}}.png"></image>
+								<image show="{{!language}}" class="{{isdone?'nav_tips_list_img':'isanimation'}}" src="{{isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
 							</div>
 						</div>
 					</div>
@@ -93,7 +93,7 @@
 	import barcode from '@system.barcode';
 	import network from '@system.network';
 	import IOT from '@service.iot';
-	import api from '../../Common/api/api.js'
+	import api from '../../Common/api/api.js';
     module.exports = {
 		private: {
 			isap: '',

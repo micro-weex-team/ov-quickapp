@@ -11,7 +11,7 @@
 			<list onscrollbottom="" id="list" class="B8_list" style="background-color: {{online == 'true'?'#3191FD':'#CCCCCC'}};">
 				<list-item class="B8_nav" type="listItem">
 					<div class="{{language?'E1_nav_list_lock':'E1_nav_list_lock_l'}}" @click="downMeiju()">
-						<image src="./assets/img/{{online == 'true'?'loadingMeiju':'meijuicon'}}.png" class="E1_nav_list_lock_img"></image>
+						<image src="{{online == 'true'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="E1_nav_list_lock_img"></image>
 					</div>
 					<text class="E1_nav_list_usemeiju">使用美居</text>
 					<text class="B8_nav_status" style="color: {{online == 'true'?'#ffffff':'#666666'}};">{{online == 'true'?statusTy(work_status,isdirection):'离线中'}}</text>
@@ -35,15 +35,15 @@
 					</div>
 					<div class="B8_nav_control">
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('left')">
-							<image src="./assets/img/left_{{isdirection == 'left'?'off':'on'}}.png" class="B8_nav_control_btn_img {{isdirection == 'left'?'add_AnimationLeft':''}}"></image>
+							<image src="{{isdirection == 'left'?'./assets/img/left_off.png':'./assets/img/left_on.png'}}" class="B8_nav_control_btn_img {{isdirection == 'left'?'add_AnimationLeft':''}}"></image>
 							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?leftColor:'#666666'}};">左转圈</text>
 						</div>
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('forward')">
-							<image src="./assets/img/line_{{isdirection == 'forward'?'off':'on'}}.png" class="B8_nav_control_btn_img"></image>
+							<image src="{{isdirection == 'forward'?'./assets/img/line_off.png':'./assets/img/line_on.png'}}" class="B8_nav_control_btn_img"></image>
 							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?forwardColor:'#666666'}};">直行</text>
 						</div>
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('right')">
-							<image src="./assets/img/right_{{isdirection == 'right'?'off':'on'}}.png" class="B8_nav_control_btn_img {{isdirection == 'right'?'add_Animation':''}}"></image>
+							<image src="{{isdirection == 'right'?'./assets/img/right_off.png':'./assets/img/right_on.png'}}" class="B8_nav_control_btn_img {{isdirection == 'right'?'add_Animation':''}}"></image>
 							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?rightColor:'#666666'}};">右转圈</text>
 						</div>
 					</div>
@@ -129,12 +129,12 @@ module.exports = {
 		B8list:["work_status","work_mode","move_direction",'failure_low_no_dust_box'],
 		B8data:{
 			online:"false",
-			work_status:'work',
+			work_status:'stop',
 			work_mode:'none',
 			move_direction:'none'
 		},
-		online:"true",
-		work_status:'work',
+		online:"false",
+		work_status:'stop',
 		work_mode:'none',
 		move_direction:'none',
 	},
@@ -215,7 +215,7 @@ module.exports = {
 		let str = '';
 		let string = status;
 		if(status == 'work' && isdirection != 'none'){
-			string = 'direction';
+			string = isdirection;
 		}
 		switch(string){
 			case 'charge':
@@ -239,8 +239,14 @@ module.exports = {
 			case 'set':
 				str = '设置中';
 			break;
-			case 'direction':
-				str = '工作中';
+			case 'left':
+				str = '左转圈中';
+			break;
+			case 'right':
+				str = '右转圈中';
+			break;
+			case 'forward':
+				str = '直行中';
 			break;
 			default:
 				str = '--';
@@ -296,45 +302,46 @@ module.exports = {
 	},
 	downMeiju() {
 		let that = this;
+		let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+		let str2 = "您还没安装美居app，是否确定下载安装?";
 		pkg.hasInstalled({
 			package: 'com.midea.ai.appliances',
-			success: function(data) {
-				if (data.result) {
-					prompt.showDialog({
-						title: '提示',
-						message: '确定打开美居？（仅支持美居5.2及以上版本）',
-						buttons: [
-							{
-								text: '直接打开',
-								color: '#33dd44'
-							}
-						],
-						success: function(data) {
-							// 													router.clear();
-							// 													that.$app.exit();
+			success: function(res) {
+				prompt.showDialog({
+					title: '提示',
+					message: res.result?str1:str2,
+					buttons: [
+						{
+							text: res.result?'直接打开':'去下载',
+							color: '#33dd44'
+						}
+					],
+					success: function(data) {
+						if (res.result) {
 							router.push({ uri: 'meiju://com.midea.meiju/main' });
-						},
-						cancel: function() {
-							console.log('handling cancel');
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
+						} else {
+							pkg.install({
+								package: 'com.midea.ai.appliances',
+								success: function(resp) {
+									console.log(`handling success: ${resp.result}`);
+								},
+								fail: function(resp, code) {
+									console.log(`handling fail, code = ${code}`);
+								}
+							});
 						}
-					});
-				} else {
-					pkg.install({
-						package: 'com.midea.ai.appliances',
-						success: function(data) {
-							console.log(`handling success: ${data.result}`);
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
-						}
-					});
-				}
-				console.log(`handling success: ${data.result}`);
+					},
+					cancel: function() {
+						console.log('handling cancel');
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`);
+					}
+				});
+				
+				console.log(`handling success: ${res.result}`);
 			},
-			fail: function(data, code) {
+			fail: function(res, code) {
 				console.log(`handling fail, code = ${code}`);
 			}
 		});
@@ -381,7 +388,6 @@ module.exports = {
 			that.isshowclose();
 			return false;
 		}
-		that.isloading = true;
 		if(e.detail.params === "启动清扫"){
 			params = {
 				work_status:'work',
@@ -403,6 +409,18 @@ module.exports = {
 			that.B8data.move_direction = params.move_direction;
 			status = ['work_status','move_direction','work_mode'];
 		}else if(e.detail.params === '回充'){
+			if(that.work_status == 'charging'){
+				prompt.showToast({
+					message:"设备充电中，请稍后..."
+				})
+				return false;
+			}
+			if(that.work_status == 'charge_finish'){
+				prompt.showToast({
+					message:"设备充电已完成"
+				})
+				return false;
+			}
 			params = {
 				move_direction:'none',
 				work_status:'charge'
@@ -410,6 +428,7 @@ module.exports = {
 			that.B8data.work_status = params.work_status;
 			status = ['work_status'];
 		}
+		that.isloading = true;
 		that.postDeviceControl(params,status)
 	},
 	selectdata(e){
@@ -783,7 +802,7 @@ module.exports = {
 		}else{
 			status = './assets/img/work_on.png';
 		}
-		if(that.work_status == 'charging'){
+		if(that.work_status == 'charging' || that.work_status == 'charge_finish'){
 			str = './assets/img/charge_off.png';
 			textColor3 = "#D5D5D5";
 		}else if(that.work_status == 'charge'){

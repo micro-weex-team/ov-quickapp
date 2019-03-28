@@ -11,14 +11,14 @@
 			<list onscrollbottom="" id="list" class="E1_list" style="background-color: {{(power === 'on' || power === 'delay_off')?'#3191FD':'#CCCCCC'}};">
 				<list-item class="B6_nav" type="listItem">
 					<div class="{{language?'B6_nav_list_lock':'B6_nav_list_lock_l'}}" @click="downMeiju()">
-						<image src="./assets/img/{{(power === 'on' || power === 'delay_off')?'loadingMeiju':'meijuicon'}}.png" class="B6_nav_list_lock_img"></image>
+						<image src="{{(power === 'on' || power === 'delay_off')?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="B6_nav_list_lock_img"></image>
 					</div>
 					<text class="B6_nav_list_usemeiju" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">使用美居</text>
-					<text if="{{(power === 'on' || power === 'delay_off') && gear != 4}}" class="B6_nav_gear" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{((10 > parseInt(gear) > 0) && power == 'on')?gear:'--'}}</text>
+					<text if="{{(power === 'on' || power === 'delay_off') && gear < 4}}" class="B6_nav_gear" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{(10 > parseInt(gear) && power == 'on' && parseInt(gear) > 0)?gear:'--'}}</text>
 					<text if="{{power === 'off'}}" class="B6_nav_close" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">已关机</text>
 					<text if="{{power === 'off'}}" class="B6_nav_warm" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">点击下方开关</text>
-					<text if="{{(power === 'on' || power === 'delay_off') && gear === 4}}" class="B6_nav_height" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{power == 'on'?'爆炒模式':'--'}}</text>
-					<!-- <text if="{{(power === 'on' || power === 'delay_off') && intelligent === 'on'}}" class="B6_nav_status" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">将于 秒 后关闭</text> -->
+					<text if="{{(power === 'on' || power === 'delay_off') && gear > 3}}" class="B6_nav_height" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{power == 'on'?'爆炒模式':'--'}}</text>
+					<text if="{{power === 'delay_off'}}" class="B6_nav_status" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">延迟关机中</text>
 				</list-item>
 			</list>
 		</refresh>
@@ -27,17 +27,17 @@
 				<text class="B6_alert_nav_head">延时关机</text>
 				<text class="B6_alert_nav_middle">确定启动“延时关机”吗</text>
 				<div class="B6_alert_nav_foot">
-					<div class="B6_alert_nav_foot_btn">
+					<div class="B6_alert_nav_foot_btn" @click="close()">
 						<text class="B6_alert_nav_foot_btn_left">取消</text>
 					</div>
-					<div class="B6_alert_nav_foot_btn">
+					<div class="B6_alert_nav_foot_btn" @click="delayOff()">
 						<text class="B6_alert_nav_foot_btn_right">启动</text>
 					</div>
 				</div>
 			</div>
 		</div>
 		<midea-selectbottom onclose-dia="closedialog" isform="{{isForm}}" onselect-num="selectdata" isfoot="{{isfoot}}" if="{{isshow}}" isshow="{{isshow}}" showline="{{lingNum}}" datalist="{{selectlist}}" isselecticon="{{isselectpic}}"></midea-selectbottom>
-		<text if="{{power === 'on' && gear != 4}}" class="B6_nav_gear_text" style="color: {{power === 'on'?'#ffffff':'#666666'}};">档</text>
+		<text if="{{power === 'on' && gear < 4}}" class="B6_nav_gear_text" style="color: {{power === 'on'?'#ffffff':'#666666'}};">档</text>
 		<midea-foot type='1' onclick-alert="btnclick" onclick-btn="clickEv" list-first="{{btnlist}}"></midea-foot>
 		<midea-loading if="{{isloading}}"></midea-loading>
 		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
@@ -69,8 +69,9 @@ module.exports = {
 		isabout: false,
 		istips: false,
 		isloading: false,
+		isdelayTips:false,
 		isselectpic: false,
-		lingNum:4,
+		lingNum:3,
 		deviceHeight:0,
 		selectlist:[{
 			name:'01档',
@@ -84,10 +85,10 @@ module.exports = {
 			name:'03档',
 			select:false,
 			data:3
-		},{
-			name:'爆炒',
-			select:false,
-			data:4
+// 		},{
+// 			name:'爆炒',
+// 			select:false,
+// 			data:4
 		}],
 		timeoutInter: '',
 		openId: '',
@@ -153,6 +154,10 @@ module.exports = {
 		let that = this;
 		that.isshow = false;
 	},
+	close(){
+		let that = this;
+		that.isalert = false;
+	},
 	btnclick(e){
 		let that = this;
 		if(that.online === 'false'){
@@ -184,45 +189,46 @@ module.exports = {
 	},
 	downMeiju() {
 		let that = this;
+		let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+		let str2 = "您还没安装美居app，是否确定下载安装?";
 		pkg.hasInstalled({
 			package: 'com.midea.ai.appliances',
-			success: function(data) {
-				if (data.result) {
-					prompt.showDialog({
-						title: '提示',
-						message: '确定打开美居？（仅支持美居5.2及以上版本）',
-						buttons: [
-							{
-								text: '直接打开',
-								color: '#33dd44'
-							}
-						],
-						success: function(data) {
-							// 													router.clear();
-							// 													that.$app.exit();
+			success: function(res) {
+				prompt.showDialog({
+					title: '提示',
+					message: res.result?str1:str2,
+					buttons: [
+						{
+							text: res.result?'直接打开':'去下载',
+							color: '#33dd44'
+						}
+					],
+					success: function(data) {
+						if (res.result) {
 							router.push({ uri: 'meiju://com.midea.meiju/main' });
-						},
-						cancel: function() {
-							console.log('handling cancel');
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
+						} else {
+							pkg.install({
+								package: 'com.midea.ai.appliances',
+								success: function(resp) {
+									console.log(`handling success: ${resp.result}`);
+								},
+								fail: function(resp, code) {
+									console.log(`handling fail, code = ${code}`);
+								}
+							});
 						}
-					});
-				} else {
-					pkg.install({
-						package: 'com.midea.ai.appliances',
-						success: function(data) {
-							console.log(`handling success: ${data.result}`);
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
-						}
-					});
-				}
-				console.log(`handling success: ${data.result}`);
+					},
+					cancel: function() {
+						console.log('handling cancel');
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`);
+					}
+				});
+				
+				console.log(`handling success: ${res.result}`);
 			},
-			fail: function(data, code) {
+			fail: function(res, code) {
 				console.log(`handling fail, code = ${code}`);
 			}
 		});
@@ -323,10 +329,11 @@ module.exports = {
 					})
 					return false;
 				}
-				param = {
-					power:'delay_off'
-				}
-				status = ['power'];
+				that.isalert = true;
+// 				param = {
+// 					power:'delay_off'
+// 				}
+// 				status = ['power'];
 			}else if(e.detail.params == '灯光'){
 // 				if(that.power == 'off'){
 // 					prompt.showToast({
@@ -351,8 +358,9 @@ module.exports = {
 				// that.B6data.light = param.light;
 				status = ['light'];
 			}
-			
-			that.postDeviceControl(param,status)
+			if(!that.isalert){
+				that.postDeviceControl(param,status)
+			}
 		}else{
 			that.isshowclose();
 		}
@@ -368,68 +376,83 @@ module.exports = {
 		let status = ['gear'];
 		that.postDeviceControl(param,status)
 	},
+	delayOff(){
+		let that = this;
+		that.isdelayTips = true;
+		let param = {
+			power:'delay_off'
+		}
+		let status = ['power'];
+		that.isalert = false;
+		that.postDeviceControl(param,status);
+	},
 	workStatus(status){
 		let that = this;
+		let tips = ''
 		switch(status){
 			case 0:
-				return "off";
+				tips = "off";
 			break;
 			case 1:
-				return "off";
+				tips = "off";
 			break;
 			case 2:
-				return "on";
+				tips = "on";
 			break;
 			case 3:
-				prompt.showToast({
-					message:"延迟关机中，请稍后..."
-				})
+				if(!that.isdelayTips){
+					prompt.showToast({
+						message:"延迟关机中，请稍后..."
+					})
+				}
+				that.isdelayTips
 				that.power = 'delay_off';
-				return "delay_off";
+				tips = "delay_off";
 			break;
 			case 4:
 				prompt.showToast({
 					message:"正在开机中，请稍后..."
 				})
-				return "on";
+				tips = "on";
 			break;
 			case 5:
 				prompt.showToast({
 					message:"正在关机中，请稍后..."
 				})
-				return "off";
+				tips = "off";
 			break;
 			case 6:
 				prompt.showToast({
 					message:"正在清洗中，请稍后..."
 				})
-				return "on";
+				tips = "on";
 			break;
 			case 7:
 				prompt.showToast({
 					message:"正在清洗中，请稍后..."
 				})
-				return "on";
+				tips = "on";
 			break;
 			case 8:
 				prompt.showToast({
 					message:"设置时间中，请稍后..."
 				})
-				return "on";
+				tips = "on";
 			break;
 			case 9:
 				prompt.showToast({
 					message:"污浊度检测中，请稍后..."
 				})
-				return "on";
+				tips = "on";
 			break;
 			default:
 				prompt.showToast({
 					message:"设备可能出故障了..."
 				})
-				return "off";
-			
+				tips = "off";
 		}
+		that.isdelayTips = false;
+		return tips;
 	},
 	//获取第三方登录信息
 	getdevicelist() {
@@ -504,23 +527,23 @@ module.exports = {
 			]
 		};
 		api.postDeviceStatusQuery(params, that.accessToken).then(res => {
-			prompt.showDialog({
-				title:"获取状态",
-				message:"获取状态："+JSON.stringify(res),
-				buttons:[{
-					text: '取消',
-					color: '#33dd44'
-				}],
-				success: function(data) {
-					console.log('handling callback')
-				},
-				cancel: function() {
-					console.log('handling cancel')
-				},
-				fail: function(data, code) {
-					console.log(`handling fail, code = ${code}`)
-				}
-			})
+// 			prompt.showDialog({
+// 				title:"获取状态",
+// 				message:"获取状态："+JSON.stringify(res),
+// 				buttons:[{
+// 					text: '取消',
+// 					color: '#33dd44'
+// 				}],
+// 				success: function(data) {
+// 					console.log('handling callback')
+// 				},
+// 				cancel: function() {
+// 					console.log('handling cancel')
+// 				},
+// 				fail: function(data, code) {
+// 					console.log(`handling fail, code = ${code}`)
+// 				}
+// 			})
 				that.isRefreshing = false;
 				that.isfirst = true;
 				that.isloading = false;
@@ -621,31 +644,37 @@ module.exports = {
 			]
 		};
 		that.isloading = true;
-		prompt.showToast({
-			message:JSON.stringify(params)
-		})
+// 		prompt.showToast({
+// 			message:JSON.stringify(params)
+// 		})
 		api.postDeviceControl(params, that.accessToken).then(res => {
-				prompt.showDialog({
-					title:"操作设备：",
-					message:"操作设备返回状态："+JSON.stringify(res),
-					buttons:[{
-						text: '取消',
-						color: '#33dd44'
-					}],
-					success: function(data) {
-						console.log('handling callback')
-					},
-					cancel: function() {
-						console.log('handling cancel')
-					},
-					fail: function(data, code) {
-						console.log(`handling fail, code = ${code}`)
-					},
-				})
+// 				prompt.showDialog({
+// 					title:"操作设备：",
+// 					message:"操作设备返回状态："+JSON.stringify(res),
+// 					buttons:[{
+// 						text: '取消',
+// 						color: '#33dd44'
+// 					}],
+// 					success: function(data) {
+// 						console.log('handling callback')
+// 					},
+// 					cancel: function() {
+// 						console.log('handling cancel')
+// 					},
+// 					fail: function(data, code) {
+// 						console.log(`handling fail, code = ${code}`)
+// 					},
+// 				})
 				that.online = 'true';
 				if (res.code === 200) {
+// 					if(param.gear == 3){
+// 						that.getDeviceStatus(that.openId);
+// 						return false;
+// 					}
 					let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 					if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
+						that.getDeviceStatus(that.openId);
+						return false;
 						let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
 						let isall = false;
 						if(obj.work_status){
@@ -657,12 +686,6 @@ module.exports = {
 							that.power = "on";
 						}
 						if(that.power == 'on' || that.power == 'delay_off'){
-							if(obj.light){
-								that.light = obj.light;
-							}else{
-								that.light = 'off';
-								// isall = true;
-							}
 							if(obj.gear){
 								that.gear = obj.gear;
 							}else{
@@ -674,10 +697,15 @@ module.exports = {
 						}else{
 							that.B6data = obj;
 							that.B6data.gear = 0;
-							that.B6data.light = 'off';
 							that.B6data.power = 'off';
 						}
-						
+						if(obj.light){
+							that.light = obj.light;
+						}else{
+							that.light = 'off';
+							// isall = true;
+						}
+						that.B6data.light = that.light;
 						if(isall){
 							that.getDeviceStatus(that.openId);
 						}else{
@@ -735,20 +763,18 @@ module.exports = {
 			that.light = 'off';
 		}
 		that.gear = parseInt(that.gear)?parseInt(that.gear):0;
-		let gear = parseInt(that.gear)?parseInt(that.gear):0;
+		let gear = that.gear;
 		let gearText = '';
 		let font_Size = 48;
 		if(that.power != 'on'){
 			gearText = "off";
 		}else{
 			if(gear > 0){
-				if(gear == 4){
+				if(gear > 3){
 					gearText = "爆炒";
 					font_Size = 42;
-				}else if(gear < 4){
+				}else {
 					gearText = '0'+gear;
-				}else{
-					gearText = '--'
 				}
 			}else{
 				gearText = "off";

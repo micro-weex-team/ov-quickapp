@@ -10,7 +10,7 @@
 		<list onscroll="" style="background-color: {{ power === 'on'? '#3191FD':'#cccccc'}}" class="main-nav" id="listdeviceNav">
 			<list-item type="deviceNav" class="main-nav-nav">
 				<div class="child-{{language?'lock':'lock-l'}}">
-					<image src="./assets/img/{{power + online === 'ontrue'?'loadingMeiju':'meijuicon'}}.png" @click="downMeiju()" class="child-lock-image"></image>
+					<image src="{{power + online === 'ontrue'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" @click="downMeiju()" class="child-lock-image"></image>
 				</div>
 				<text class="child-lock-text" style="color:{{power + online === 'ontrue'?'#ffffff':'#666666'}}">使用美居</text>
 				<div class="gear">
@@ -40,11 +40,11 @@
 			</text>
 		</div>
 		<div class="footer-wind" @click="change()">
-			<image src="./assets/img/{{power === 'on'?'highlight/':'gray/'}}wind-{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}-{{power === 'on'?'highlight':'gray'}}.png" class="footer-wind-img"></image>
+			<image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
 			<text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
 		</div>
 		<div class="footer-shake" @click="showDialog_()">
-			<image src="./assets/img/{{power + swing === 'onon'?'highlight':'gray'}}/shake-lr-{{power + swing === 'onon'?'highlight':'gray'}}.png" class="footer-shake-img"></image>
+			<image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>
 			<text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
 		</div>
 		<div class="footer-timeout" @click="showTimeDialog()">
@@ -66,7 +66,7 @@
 		<div class="nav_mark_dialog">
 			<div class="{{$idx === (mode.length-1)?'nav_mark_dialog_list':'nav_mark_dialog_list_1'}}" for="mode" @click="selectMode($item.name)">
 				<text class="nav_mark_dialog_list_text" if="{{!language}}" style="color:{{$item.name === mode_n?'#3191FD':'#000000'}}">{{$item.value}}</text>
-				<image src="./assets/img/{{$item.name === mode_n?'highlight/':'single/'}}{{$item.data}}{{$item.name === mode_n?'highlight.png':'single.png'}}" class="nav_mark_dialog_list_img"></image>
+				<image src="{{$item.name === mode_n?'./assets/img/highlight/':'./assets/img/single/'}}{{$item.data}}{{$item.name === mode_n?'highlight.png':'single.png'}}" class="nav_mark_dialog_list_img"></image>
 				<text class="nav_mark_dialog_list_text" if="{{language}}" style="color:{{$item.name === mode_n?'#3191FD':'#000000'}}">{{$item.value}}</text>
 			</div>
 		</div>
@@ -353,46 +353,49 @@ export default {
 	},
 	downMeiju(){
 		let that = this;
+		let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+		let str2 = "您还没安装美居app，是否确定下载安装?";
 		pkg.hasInstalled({
 			package: 'com.midea.ai.appliances',
-			success: function (data) {
-				if(data.result){
-					prompt.showDialog({
-											title: '提示',
-											message: "确定打开美居？（仅支持美居5.2及以上版本）",
-											buttons: [{
-												text: '直接打开',
-												color: '#33dd44'
-											}],
-											success: function (data) {
-// 												router.clear();
-// 												that.$app.exit();
-												router.push({uri:'meiju://com.midea.meiju/main'})
-											},
-											cancel: function () {
-												console.log('handling cancel')
-											},
-											fail: function (data, code) {
-												console.log(`handling fail, code = ${code}`)
-											}
-										})
-				}else{
-					pkg.install({
-						package: 'com.midea.ai.appliances',
-						success: function (data) {
-							console.log(`handling success: ${data.result}`)
-						},
-						fail: function (data, code) {
-							console.log(`handling fail, code = ${code}`)
+			success: function(res) {
+				prompt.showDialog({
+					title: '提示',
+					message: res.result?str1:str2,
+					buttons: [
+						{
+							text: res.result?'直接打开':'去下载',
+							color: '#33dd44'
 						}
-					})
-				}
-				console.log(`handling success: ${data.result}`)
+					],
+					success: function(data) {
+						if (res.result) {
+							router.push({ uri: 'meiju://com.midea.meiju/main' });
+						} else {
+							pkg.install({
+								package: 'com.midea.ai.appliances',
+								success: function(resp) {
+									console.log(`handling success: ${resp.result}`);
+								},
+								fail: function(resp, code) {
+									console.log(`handling fail, code = ${code}`);
+								}
+							});
+						}
+					},
+					cancel: function() {
+						console.log('handling cancel');
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`);
+					}
+				});
+				
+				console.log(`handling success: ${res.result}`);
 			},
-			fail: function (data, code) {
-				console.log(`handling fail, code = ${code}`)
+			fail: function(res, code) {
+				console.log(`handling fail, code = ${code}`);
 			}
-		})
+		});
 		},
 	scrollbottom(e){
 		let that = this;

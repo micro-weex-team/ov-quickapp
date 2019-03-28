@@ -72,15 +72,14 @@ span{
     margin-top: 60px;
 }
 .control_box{
-    position: fixed;
-    left: 0;
-    bottom: 0;
+//     position: fixed;
+//     left: 0;
+//     bottom: 0;
     padding-top: 28px;
     padding-bottom: 28px;
     padding-left: 100px;
     background-color: #fff;
     flex-direction: column;
-    .control1,
     .control2{
         justify-content: center;
         >div{
@@ -93,7 +92,16 @@ span{
         }
     }
     .control1{
+		justify-content: center;
         margin-bottom: 28px;
+		>div{
+		    margin-right: 86px;
+		    flex-direction: column;
+		    align-items: center;
+		}
+		.windclass{
+		    margin-right: 0px;
+		}
     }
     text{
         color: #000;
@@ -106,11 +114,11 @@ span{
         margin-bottom: 12px;
         color: #fff;
     }
-    .textValue1,
-    .textValue2{
+    .textValue1{
         border-radius: 75px;
     }
     .textValue2{
+		border-radius: 75px;
         font-size: 60px;
     }
     .borderclass{
@@ -152,7 +160,7 @@ span{
     flex-direction: column;
 }
 .model_pop{
-    height: 450px;
+    height: 280px;
     transform: translateY(642px);
     .content{
         flex: 1;

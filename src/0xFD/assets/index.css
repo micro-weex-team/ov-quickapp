@@ -3,29 +3,15 @@ span{
     color: #fff;
 }
 .main-nav{
-	/* position: fixed;
-	top: 144px;
-	bottom: 15%;
-	left: 0px;
-	right: 0px; */
 }
 .main-nav-nav{
 	flex-direction: column;
-	/* display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	width: 100%;
-	height: 85%;
-	padding-bottom: 400px; */
 }
 .container{
     flex-direction: column;
-    /*height: 1200px;*/
     text-align: center;
 }
 .content{
-	/*margin-top:144px;*/
     text-align: center;
     flex-direction: column;
 }
@@ -109,8 +95,7 @@ span{
     height: 90px;
 	resize-mode: cover;
 }
-.water_tank text,
-.cur_humidity text{
+.water_tank text{
     font-size: 48px;
 }
 .water_tank image{
@@ -163,11 +148,14 @@ span{
 .control_box .switch_btn text{
     color: #666;
 }
-.control_box image,
 .control_box text{
     text-align: center;
+	margin-top: 16px;
+	font-size: 36px;
+	color: #000;
 }
 .control_box image{
+	text-align: center;
     width: 150px;
     height: 150px;
 	resize-mode: contain;
@@ -180,14 +168,7 @@ span{
     background-color: #3191FD;
     font-size: 48px;
     margin-top: 0px;
-}
-.control_box text{
-    margin-top: 16px;
-    font-size: 36px;
-    color: #000;
-}
-.control_box .humidity_value{
-    color: #fff;
+	color: #FFFFFF;
 }
 .control_box .off{
     color: #ccc;

@@ -83,7 +83,7 @@
 	margin-top: 150px;
 	animation-name: loadingAn;
 	animation-timing-function: linear;
-	animation-duration: 1.5s;
+	animation-duration: 1500ms;
 	animation-iteration-count:infinite;
 }
 .isanimation{
@@ -93,7 +93,7 @@
 	resize-mode: cover;
 	animation-name: loadingAn;
 	animation-timing-function: linear;
-	animation-duration: 1.5s;
+	animation-duration: 1500ms;
 	animation-iteration-count:infinite;
 }
 .top_done_1{
@@ -132,7 +132,7 @@
 	/*color: #C9C9C9;*/
 	animation-name: loadingAn;
 	animation-timing-function: linear;
-	animation-duration: 1.5s;
+	animation-duration: 1500ms;
 	animation-iteration-count:infinite;
 }
 .txt{

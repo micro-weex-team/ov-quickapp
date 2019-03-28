@@ -11,7 +11,7 @@
 						<text class="M-dialog-alert-nav-item-imgname" if="{{$item.icon && $item.icon != ''}}" style="text-align: left;color: {{$item.select?color:bgColor}};">{{$item.name}}</text>
 						<text class="M-dialog-alert-nav-item-name" if="{{!$item.icon || $item.icon === ''}}" style="text-align: {{isselecticon?'right':'center'}};color: {{$item.select?color:bgColor}};">{{$item.name}}</text>
 						<div class="M-dialog-alert-nav-item-pic" if="{{isselecticon}}">
-							<image show="{{$item.select}}" class="M-dialog-alert-nav-item-icon" src="../Common/img/{{isyellow?'select-icon':'ic_select'}}.png"></image>
+							<image show="{{$item.select}}" class="M-dialog-alert-nav-item-icon" src="{{isyellow?'../Common/img/select-icon.png':'../Common/img/ic_select.png'}}"></image>
 						</div>
 					</list-item>
 				</list>

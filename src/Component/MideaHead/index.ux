@@ -3,8 +3,8 @@
         <text class="{{language?'midea-head-title':'l_midea-head-title'}}" style="color:{{power === 'on'?'#ffffff':'#666666'}};">
 			{{title}}
 		</text>
-		<image class="midea-head-back" @click="openMenu" show="{{showMenu}}" src="../Component/MideaHead/assets/menu_ic_more_{{power === 'on'?'white':'normal'}}.png"></image>
-		<image class="midea-head-back" @click="goback" src="../Component/MideaHead/assets/menu_ic_cancel_{{power === 'on'?'online':'normal'}}.png"></image>
+		<image class="midea-head-back" @click="openMenu" show="{{showMenu}}" src="{{power === 'on'?'../Component/MideaHead/assets/menu_ic_more_white.png':'../Component/MideaHead/assets/menu_ic_more_normal.png'}}"></image>
+		<image class="midea-head-back" @click="goback" src="{{power === 'on'?'../Component/MideaHead/assets/menu_ic_cancel_online.png':'../Component/MideaHead/assets/menu_ic_cancel_normal.png'}}"></image>
     </div>
 </template>
 
@@ -86,17 +86,24 @@
 				showMenu: true,
 				power_1:'off',
 				language:true,
-				bgColor: '#3191FD'
+				bgColor: '#3191FD',
+				img1:'../Component/MideaHead/assets/menu_ic_more_normal.png'
             }
         },
         onInit(){
-			if(this.power){
-				this.$watch('power', 'watchPropsChange')
+			let that = this;
+			if(that.power){
+				that.$watch('power', 'watchPropsChange')
 			}
-			if(this.isnew){
-				this.bgColor = "#F9CB3D";
+			if(that.power == 'on'){
+				that.img1 = '../Component/MideaHead/assets/menu_ic_more_white.png';
 			}else{
-				this.bgColor = "#3191FD";
+				that.img1 = '../Component/MideaHead/assets/menu_ic_more_normal.png';
+			}
+			if(that.isnew){
+				that.bgColor = "#F9CB3D";
+			}else{
+				that.bgColor = "#3191FD";
 			}
 			
         },

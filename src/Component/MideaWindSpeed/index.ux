@@ -4,7 +4,7 @@
             <block for="listData">
                 <list-item class="item" type="list" @click="{{selectFn($idx)}}">
                     <text style="color:{{selectedIndex==$idx?hightColor:defaultColor}};font-size:{{selectedIndex==$idx?'72px':'60px'}}">{{$item}}</text>
-                    <image class="img" style="opacity:{{selectedIndex==$idx?1:0}}" src="./assets/img/icon_selected.png"></image>
+                    <image class="img" style="opacity:{{selectedIndex==$idx?1:0}}" src="../../Common/img/icon_selected.png"></image>
 					<!-- <text if="{{language}}" style="color:{{selectedIndex==$idx?hightColor:defaultColor}};font-size:{{selectedIndex==$idx?'72px':'60px'}}">{{$item}}</text> -->
                 </list-item>
             </block>

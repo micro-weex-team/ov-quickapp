@@ -27,12 +27,12 @@
 				<list-item type="product">
 					<div class="nav_tops_btn">
 						<div class="nav_tops_btn_radio">
-							<input type="checkbox" if="{{isdone}}" checked="{{!checked}}" @click="selectData()" class="nav_tops_btn_radio_btn" name="已完成上述操作">
+							<input type="checkbox" if="{{isdone}}" checked="{{!checked}}" @click="selectData()" class="nav_tops_btn_radio_btn" name="已完成上述操作"></input>
 							<text class="nav_tops_btn_radio_text">
 								<span>已完成上述操作</span>
 							</text>
 						</div>
-						<input type="button" if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{btndisabled? '#CCCCCC':'#3191FD'}};" value="下一步" @click="nextPage()" disabled="{{btndisabled}}">
+						<input type="button" if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{btndisabled? '#CCCCCC':'#3191FD'}};" value="下一步" @click="nextPage()" disabled="{{btndisabled}}"></input>
 					</div>
 				</list-item>
 			</block>

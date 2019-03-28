@@ -1,11 +1,11 @@
-// const host = "http://ov-sit.smartmidea.net";
-// const url = "ws://ovws-sit.smartmidea.net";
-// const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
-// const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
-const host = "https://ov-prod.smartmidea.net";
-const url = "wss://ovws-sit.smartmidea.net";
-const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
-const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+const host = "http://ov-sit.smartmidea.net";
+const url = "ws://ovws-sit.smartmidea.net";
+const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
+const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
+// const host = "https://ov-prod.smartmidea.net";
+// const url = "wss://ovws-sit.smartmidea.net";
+// const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
+// const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
 import fetch from '@system.fetch';
 import device from '@system.device';
 import prompt from '@system.prompt';
@@ -36,13 +36,14 @@ device.getInfo({
 export default {
 	//api接口
 	hostData: {
-		pro:'',
+		pro:'sit',
 		language: '',
 		getUserToken     : '/v1/iotopen/user/token/get',
 		postDeviceControl: '/v1/iotopen/device/deviceControl',
 		postDeviceBind:'/v1/iotopen/device/bind',
 		postDeviceStatusQuery:'/v1/iotopen/device/statusQuery',
 		getConfigWorkHelp: "http://smartbbs.midea.com/msmart.php?mod=zhiyin&op=ovsearch",
+		getcenterHelp:'https://api-sit.smartmidea.net/v1/open/connect/guide/list'
 	},
 	//获取语言
 	getlanguage(){
@@ -346,6 +347,38 @@ export default {
 						reject(data + "code:" + code);
 					}
 				})
+			}else{
+				let obj = {
+					errorCode: "0000",
+					msg      : "参数有误"
+				}
+				reject(obj)
+			}
+		});
+		return p;
+	},
+	/**
+	 * 走中台的配网指引
+	 */
+	getCenterWorkHelp(params){
+		let that = this;
+		let obj = params;
+		obj.reqId = that.createUUID();
+		obj.clientId = that.hostData.clientId;
+		obj.stamp = that.getTimestamp();
+		console.log("配网指引请求参数："+JSON.stringify(obj));
+		let strObj = {
+			"Content-Type": 'application/json'
+		}
+		var p    = new Promise(function(resolve, reject){
+			if((typeof params) === 'object'){
+				fly.post(that.hostData.getcenterHelp, params, {headers:strObj}).then(function (data) {
+					console.log("配网指引:"+JSON.stringify(data))
+					resolve(data);
+				}).catch(function (error) {
+					console.log(JSON.stringify(error));
+					reject(error);
+				});
 			}else{
 				let obj = {
 					errorCode: "0000",

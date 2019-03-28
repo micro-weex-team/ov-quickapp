@@ -10,7 +10,7 @@
 				<list onscrollbottom="" onscroll="" class="main-nav" id="listdeviceNav" style="background-color: {{col == 'on'?Color:bgColor}};">
 					<list-item type="deviceNav" class="main-nav-nav">
 						<div class="nav_clock" style="justify-content:{{language?'flex-end':'flex-start'}}">
-							<image src="./assets/img/{{col === 'on'?'loadingMeiju':'meijuicon'}}.png" @click="downMeiju()" class="child-lock-image"></image>
+							<image src="{{col === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" @click="downMeiju()" class="child-lock-image"></image>
 						</div>
 						<text class="child-lock-text" style="color: {{col === 'on'?'#ffffff':'#666666'}};">使用美居</text>
 						<div class="nav_time_show" if="{{col === 'on' && running_status != 'standby'}}">
@@ -38,15 +38,15 @@
                         <text class="nav_control_text">开关</text>
                     </div>
 					<div class="nav_listDetails" @click="openData('cotton')">
-                        <image class="nav_img" src="./assets/img/cotton_{{(col + program) === 'oncotton'?'on':'off'}}.png"></image>
+                        <image class="nav_img" src="{{(col + program) === 'oncotton'?'./assets/img/cotton_on.png':'./assets/img/cotton_off.png'}}"></image>
                         <text class="nav_control_text" style="color: {{(col + program) === 'oncotton'?'#000000':'#cccccc'}};">棉麻洗</text>
                     </div>
 					<div class="nav_listDetails" @click="openData('mixed_wash')">
-                        <image class="nav_img" src="./assets/img/max_{{(col + program) === 'onmixed_wash'?'on':'off'}}.png"></image>
+                        <image class="nav_img" src="{{(col + program) === 'onmixed_wash'?'./assets/img/max_on.png':'./assets/img/max_off.png'}}"></image>
                         <text class="nav_control_text" style="color: {{(col + program) === 'onmixed_wash'?'#000000':'#cccccc'}};">混合洗</text>
                     </div>
 					<div class="nav_listDetails" @click="openData('fast_wash')">
-                        <image class="nav_img" src="./assets/img/fast_{{(col + program) === 'onfast_wash'?'on':'off'}}.png"></image>
+                        <image class="nav_img" src="{{(col + program) === 'onfast_wash'?'./assets/img/fast_on.png':'./assets/img/fast_off.png'}}"></image>
                         <text class="nav_control_text" style="color: {{(col + program) === 'onfast_wash'?'#000000':'#cccccc'}};">快洗</text>
                     </div>
                 </div>
@@ -348,46 +348,49 @@
 		},
 		downMeiju(){
 			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
 			pkg.hasInstalled({
 				package: 'com.midea.ai.appliances',
-				success: function (data) {
-					if(data.result){
-						prompt.showDialog({
-												title: '提示',
-												message: "确定打开美居？（仅支持美居5.2及以上版本）",
-												buttons: [{
-													text: '直接打开',
-													color: '#33dd44'
-												}],
-												success: function (data) {
-// 													router.clear();
-// 													that.$app.exit();
-													router.push({uri:'meiju://com.midea.meiju/main'})
-												},
-												cancel: function () {
-													console.log('handling cancel')
-												},
-												fail: function (data, code) {
-													console.log(`handling fail, code = ${code}`)
-												}
-											})
-					}else{
-						pkg.install({
-							package: 'com.midea.ai.appliances',
-							success: function (data) {
-								console.log(`handling success: ${data.result}`)
-							},
-							fail: function (data, code) {
-								console.log(`handling fail, code = ${code}`)
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
+								color: '#33dd44'
 							}
-						})
-					}
-					console.log(`handling success: ${data.result}`)
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
+							}
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
 				},
-				fail: function (data, code) {
-					console.log(`handling fail, code = ${code}`)
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
 				}
-			})
+			});
 		},
 		lockDevice(){
 			let params;

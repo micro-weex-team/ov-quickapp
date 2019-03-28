@@ -11,10 +11,10 @@
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
 				<list-item type="listItem" class="b0_nav_list">
 					<div class="{{language?'b0_nav_list_lock':'b0_nav_list_lock_l'}}" @click="childLock()">
-						<image src="./assets/img/child-lock-{{power === 'on'?'on':'off'}}-{{lock === 'on'?'on':'off'}}.png" class="b0_nav_list_lock_img"></image>
+						<image src="{{power === 'on'?'./assets/img/child-lock-on-':'./assets/img/child-lock-off-'}}{{lock === 'on'?'on.png':'off.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
 					<div class="{{language?'b0_nav_list_lock':'b0_nav_list_lock_l'}}" @click="isMeiju()">
-						<image src="./assets/img/{{power === 'on'?'loadingMeiju':'meijuicon'}}.png" class="b0_nav_list_lock_img"></image>
+						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
 					<text class="b0_nav_list_usemeiju">使用美居</text>
 					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'end' && work_status != 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
@@ -150,7 +150,6 @@
 	// import IOT from '@service.iot';
 	import pkg from '@system.package';
 	import network from '@system.network';
-
 
 	export default {
 		private: {
@@ -399,46 +398,49 @@
 		//判断是否安装美居
 		isMeiju() {
 			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
 			pkg.hasInstalled({
 				package: 'com.midea.ai.appliances',
-				success: function (data) {
-					if(data.result){
-						prompt.showDialog({
-							title: '提示',
-							message: "确定打开美居？（仅支持美居5.2及以上版本）",
-							buttons: [{
-								text: '直接打开',
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
 								color: '#33dd44'
-							}],
-							success: function (data) {
-// 								router.clear();
-// 								that.$app.exit();
-								router.push({uri:'meiju://com.midea.meiju/main'})
-							},
-							cancel: function () {
-								console.log('handling cancel')
-							},
-							fail: function (data, code) {
-								console.log(`handling fail, code = ${code}`)
 							}
-						})
-					}else{
-						pkg.install({
-							package: 'com.midea.ai.appliances',
-							success: function (data) {
-								console.log(`handling success: ${data.result}`)
-							},
-							fail: function (data, code) {
-								console.log(`handling fail, code = ${code}`)
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
 							}
-						})
-					}
-					console.log(`handling success: ${data.result}`)
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
 				},
-				fail: function (data, code) {
-					console.log(`handling fail, code = ${code}`)
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
 				}
-			})
+			});
 		},
 		// 分钟
 		getSecMin(num) {
@@ -487,14 +489,14 @@
 			that.isshowLoading = false;
 			that.isfirst = true;
 			that.pause_data = false;
-			this.work_status = this.listdata.work_status;
-			this.fire_power = this.listdata.fire_power;
-			this.second = this.listdata.second;
-			this.minutes = this.listdata.minutes;
-			this.lock = this.listdata.lock;
-			this.power = this.listdata.power;
-			this.online = this.listdata.online;
-			this.startOrpause();
+			that.work_status = that.listdata.work_status;
+			that.fire_power = that.listdata.fire_power;
+			that.second = that.listdata.second;
+			that.minutes = that.listdata.minutes;
+			that.lock = that.listdata.lock;
+			that.power = that.listdata.power;
+			that.online = that.listdata.online;
+			that.startOrpause();
 			if(that.power === 'on'){
 				if(that.work_status === 'work' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
 					that.headTime();
@@ -771,6 +773,7 @@
 				if(that.headtimeout != ''){
 					clearTimeout(that.headtimeout)
 				}
+				
 // 				prompt.showToast({
 // 					message:"sasasddas"
 // 				})
@@ -1185,7 +1188,6 @@
 					that.language = true;
 				}
 			})
-
 			this.deviceHeight = this.$app.options.env.deviceHeight;
 			router.clear();
 			// this.isMeiju();
@@ -1206,6 +1208,7 @@
 				key: 'openidToken',
 				success: function(data) {
 					that.isshowLoading = true;
+					console.log("token过期:"+JSON.stringify(data))
 					if (data === '') {
 						that.getAuthor();
 					} else {

@@ -1,7 +1,7 @@
 <!--<import name="midea-loading" src="../../Component/MideaLoading/index"></import>-->
 <template>
     <div class="midea-title">
-		<image class="{{language?'midea-title-back':'midea-title-back-l'}}" @click="backPage()" src="../Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"></image>
+		<image class="{{language?'midea-title-back':'midea-title-back-l'}}" @click="backPage()" src="./assets/menu_ic_arrow_back_normal.png"></image>
 		<text class="midea-title-text">
 			{{title}}
 		</text>

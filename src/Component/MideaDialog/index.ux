@@ -5,7 +5,7 @@
 				<list-item class="Midea-item" type="listItem" for="{{list}}" @click="selectData($item.id)">
 					<text class="Midea-text" if="{{language}}" style="color: {{selectgear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}</text>
 					<div class="Midea-{{language?'imgage':'imgage_l'}}">
-						<image class="Midea-img" show="{{selectgear === $item.id}}" src="./assets/img/ic_select.png"></image>
+						<image class="Midea-img" show="{{selectgear === $item.id}}" src="../../Common/img/ic_select.png"></image>
 					</div>
 					<text class="Midea-text" if="{{!language}}" style="color: {{selectgear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}</text>
 				</list-item>

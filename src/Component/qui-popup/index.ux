@@ -20,32 +20,32 @@
   }
 
   .box-top {
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0px;
+    left: 0px;
+    right: 0px;
     flex-direction: column;
     justify-content: flex-end;
   }
 
   .box-bottom {
-    bottom: 60;
-    left: 30;
-    right: 30;
+    bottom: 60px;
+    left: 30px;
+    right: 30px;
     flex-direction: column;
   }
 
   .box-left {
-    top: 0;
-    bottom: 0;
-    left: 0;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
     flex-direction: row;
     justify-content: flex-end;
   }
 
   .box-right {
-    top: 0;
-    bottom: 0;
-    right: 0;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
     flex-direction: row;
   }
 

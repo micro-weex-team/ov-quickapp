@@ -1,8 +1,6 @@
 <template>
     <div class="container-loading">
-       <div class="container-mark">
-		   
-	   </div>
+       <div class="container-mark"></div>
 	   <div class="container-img">
 		   <progress class="progerss_circular_progerss" type="circular"></progress>
 	   </div>

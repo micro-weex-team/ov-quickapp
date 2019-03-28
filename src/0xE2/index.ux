@@ -12,10 +12,9 @@
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
 				<list-item type="listItem" class="EA_nav_list">
 					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}" @click="isMeiju()">
-						<image src="./assets/img/{{info.power == 'on'?'loadingMeiju':'meijuicon'}}.png" class="EA_nav_list_lock_img"></image>
+						<image src="{{info.power == 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="EA_nav_list_lock_img"></image>
 					</div>
 					<text class="EA_nav_list_usemeiju {{info.power == 'on'?'':'EA_nav_list_usemeiju2'}">使用美居</text>
-					<!-- 增加新的显示内容在下面 -->
 					<div class="temperature">
 						<text class="temperature-num {{info.power == 'on'?'':'off-color'}}">{{info.power == 'on'?info.cur_temperature:'--'}}</text>
 						<text class="text-icon {{info.power == 'on'?'':'off-color'}}">°</text>
@@ -51,8 +50,8 @@
 						</div>
 					</div>
 					<!-- <div class="btn-box">
-						<image class="btn-del" @click="del" src="./assets/img/{{info.power == 'on'?'del':'del2'}}.png"></image>
-						<image class="btn-add" @click="add" src="./assets/img/{{info.power == 'on'?'add':'add2'}}.png"></image>
+						<image class="btn-del" @click="del" src="{{info.power == 'on'?'./assets/img/del.png':'./assets/img/del2.png'}}"></image>
+						<image class="btn-add" @click="add" src="{{info.power == 'on'?'./assets/img/add.png':'./assets/img/add2.png'}}"></image>
 					</div> -->
 				</list-item>
 			</list>
@@ -65,11 +64,11 @@
 				<text>开关</text>
 			</div>
 			<div class="control-cell temperature-box-btn" @click="controlTemperatureBox">
-				<image src="./assets/img/{{info.power == 'on'?'tem':'tem-off'}}.png"></image>
+				<image src="{{info.power == 'on'?'./assets/img/tem.png':'./assets/img/tem-off.png'}}"></image>
 				<text style="opacity:{{info.power == 'on'?'1':'0.3'}}">温度</text>
 			</div>
 			<!-- <div class="control-cell time-box" @click="controlAppointmentBox">
-				<image src="./assets/img/{{info.power == 'on'?'time-on':'time'}}.png"></image>
+				<image src="{{info.power == 'on'?'./assets/img/time-on.png':'./assets/img/time.png'}}"></image>
 				<text>{{info.power == 'on'?info.yuyue?'预约 | 关':'预约':info.yuyue?'预约 | 开':'预约'}}</text>
 			</div> -->
 		</div>
@@ -97,11 +96,11 @@
 			</div>
 			<div class="appointment-off">
 				<text class="h3">预约关机</text>
-				<image class="img" @click="appointmentOffClick" src="./assets/img/{{offSelected?'select':'unselect'}}.png"></image>
+				<image class="img" @click="appointmentOffClick" src="{{offSelected?'./assets/img/select.png':'./assets/img/unselect.png'}}"></image>
 			</div>
 			<div class="appointment-open">
 				<text class="h3">预约开机</text>
-				<image class="img" @click="appointmentOpenClick" src="./assets/img/{{openSelected?'select':'unselect'}}.png"></image>
+				<image class="img" @click="appointmentOpenClick" src="{{openSelected?'./assets/img/select.png':'./assets/img/unselect.png'}}"></image>
 			</div>
 			<div class="appointment-time">
 				<text class="h3">预约时间</text>
@@ -199,50 +198,53 @@
 		//判断是否安装美居
 		isMeiju() {
 			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
 			pkg.hasInstalled({
 				package: 'com.midea.ai.appliances',
-				success: function (data) {
-					if(data.result){
-						prompt.showDialog({
-												title: '提示',
-												message: "确定打开美居？（仅支持美居5.2及以上版本）",
-												buttons: [{
-													text: '直接打开',
-													color: '#33dd44'
-												}],
-												success: function (data) {
-													//router.clear();
-													//that.$app.exit();
-													router.push({uri:'meiju://com.midea.meiju/main'})
-												},
-												cancel: function () {
-													console.log('handling cancel')
-												},
-												fail: function (data, code) {
-													console.log(`handling fail, code = ${code}`)
-												}
-											})
-					}else{
-						pkg.install({
-							package: 'com.midea.ai.appliances',
-							success: function (data) {
-								console.log(`handling success: ${data.result}`)
-							},
-							fail: function (data, code) {
-								console.log(`handling fail, code = ${code}`)
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
+								color: '#33dd44'
 							}
-						})
-					}
-					console.log(`handling success: ${data.result}`)
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
+							}
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
 				},
-				fail: function (data, code) {
-					console.log(`handling fail, code = ${code}`)
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
 				}
-			})
+			});
 		},
 		contronlPower() {
 			let that = this;
-			if (that.online == 'false' || !this.online) {
+			if (that.online == 'false' || !that.online) {
 				that.isshowclose();
 			} else {
 				if (that.info.power == 'off') {

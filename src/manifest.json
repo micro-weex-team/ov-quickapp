@@ -119,7 +119,7 @@
         "designWidth": 1080
     },
     "router": {
-        "entry": "0xB8",
+        "entry": "0xAC",
         "pages": {
             "0xAC": {
                 "component": "index"

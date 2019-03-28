@@ -10,7 +10,8 @@
 			<list onscrollbottom="" onscroll="" class="main-nav" id="listdeviceNav">
 				<list-item type="deviceNav" class="main-nav-nav">
 					<div class="child-{{language?'lock':'lock-l'}}">
-						<image src="./assets/img/loadingMeiju.png" @click="downMeiju()" class="child-lock-image"></image>
+						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}"  @click="downMeiju()" class="child-lock-image"></image>
+						<!-- <image src="./assets/img/loadingMeiju.png" class="child-lock-image"></image> -->
 					</div>
 					<text class="child-lock-text">使用美居</text>
 					<div class="humidity_content">
@@ -44,7 +45,7 @@
 					<text>开关</text>
 				</div>
 				<div class="{{language?'':'wind_contr'}}">
-					<image src="./assets/img/wind_{{power + online === 'ontrue'?'on':'off'}}_{{wind_speed?windData(wind_speed):'1'}}.png" @click="windPop"></image>
+					<image src="{{power + online === 'ontrue'?'./assets/img/wind_on_':'./assets/img/wind_off_'}}{{wind_speed?windData(wind_speed) + '.png':'1.png'}}" @click="windPop"></image>
 					<text class="{{power === 'on'?'':'off'}}">{{wind_speed?windDataFilter(wind_speed):'--'}}</text>
 				</div>
 				<div class="humidity_contr">
@@ -254,46 +255,49 @@
 		},
 		downMeiju(){
 			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
 			pkg.hasInstalled({
 				package: 'com.midea.ai.appliances',
-				success: function (data) {
-					if(data.result){
-						prompt.showDialog({
-												title: '提示',
-												message: "确定打开美居？（仅支持美居5.2及以上版本）",
-												buttons: [{
-													text: '直接打开',
-													color: '#33dd44'
-												}],
-												success: function (data) {
-// 													router.clear();
-// 													that.$app.exit();
-													router.push({uri:'meiju://com.midea.meiju/main'})
-												},
-												cancel: function () {
-													console.log('handling cancel')
-												},
-												fail: function (data, code) {
-													console.log(`handling fail, code = ${code}`)
-												}
-											})
-					}else{
-						pkg.install({
-							package: 'com.midea.ai.appliances',
-							success: function (data) {
-								console.log(`handling success: ${data.result}`)
-							},
-							fail: function (data, code) {
-								console.log(`handling fail, code = ${code}`)
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
+								color: '#33dd44'
 							}
-						})
-					}
-					console.log(`handling success: ${data.result}`)
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
+							}
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
 				},
-				fail: function (data, code) {
-					console.log(`handling fail, code = ${code}`)
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
 				}
-			})
+			});
 		},
 		humidityDataFilter(str){
 			if(this.online === 'true'){

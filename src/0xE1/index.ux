@@ -10,7 +10,7 @@
 			<list onscrollbottom="" id="list" class="E1_list" style="background-color: {{work_status === 'power_off'?'#CCCCCC':'#3191FD'}};">
 				<list-item class="E1_nav" type="listItem">
 					<div class="{{language?'E1_nav_list_lock':'E1_nav_list_lock_l'}}" @click="downMeiju()">
-						<image src="./assets/img/{{work_status === 'power_off'?'meijuicon':'loadingMeiju'}}.png" class="E1_nav_list_lock_img"></image>
+						<image src="{{work_status === 'power_off'?'./assets/img/meijuicon.png':'./assets/img/loadingMeiju.png'}}" class="E1_nav_list_lock_img"></image>
 					</div>
 					<text class="E1_nav_list_usemeiju">使用美居</text>
 					<div if="{{wash_stage != 5}}" class="text_list">
@@ -212,45 +212,46 @@ module.exports = {
 	},
 	downMeiju() {
 		let that = this;
+		let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+		let str2 = "您还没安装美居app，是否确定下载安装?";
 		pkg.hasInstalled({
 			package: 'com.midea.ai.appliances',
-			success: function(data) {
-				if (data.result) {
-					prompt.showDialog({
-						title: '提示',
-						message: '确定打开美居？（仅支持美居5.2及以上版本）',
-						buttons: [
-							{
-								text: '直接打开',
-								color: '#33dd44'
-							}
-						],
-						success: function(data) {
-							// 													router.clear();
-							// 													that.$app.exit();
+			success: function(res) {
+				prompt.showDialog({
+					title: '提示',
+					message: res.result?str1:str2,
+					buttons: [
+						{
+							text: res.result?'直接打开':'去下载',
+							color: '#33dd44'
+						}
+					],
+					success: function(data) {
+						if (res.result) {
 							router.push({ uri: 'meiju://com.midea.meiju/main' });
-						},
-						cancel: function() {
-							console.log('handling cancel');
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
+						} else {
+							pkg.install({
+								package: 'com.midea.ai.appliances',
+								success: function(resp) {
+									console.log(`handling success: ${resp.result}`);
+								},
+								fail: function(resp, code) {
+									console.log(`handling fail, code = ${code}`);
+								}
+							});
 						}
-					});
-				} else {
-					pkg.install({
-						package: 'com.midea.ai.appliances',
-						success: function(data) {
-							console.log(`handling success: ${data.result}`);
-						},
-						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
-						}
-					});
-				}
-				console.log(`handling success: ${data.result}`);
+					},
+					cancel: function() {
+						console.log('handling cancel');
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`);
+					}
+				});
+				
+				console.log(`handling success: ${res.result}`);
 			},
-			fail: function(data, code) {
+			fail: function(res, code) {
 				console.log(`handling fail, code = ${code}`);
 			}
 		});
