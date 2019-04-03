@@ -201,6 +201,7 @@
 						})
 					}else{
 						if(that.iot_call_from === "MANUAL_SELECT"){
+							console.log("sn8码来了："+that.iot_series)
 							that.ssidDevice = that.iot_category.substring(that.iot_category.length-2,that.iot_category.length).toLowerCase();
 							that.deviceCode = that.iot_series;
 							that.iot_config_type = '0';

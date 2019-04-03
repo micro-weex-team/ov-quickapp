@@ -1106,6 +1106,12 @@
 		//爱心3秒倒计时
 		headTime(){
 			let that = this;
+			let str = 3000;
+			if(that.lanOnline == 'true'){
+				str = 1000;
+			}else{
+				str = 3000;
+			}
 			that.timeoutInter = setInterval(function(){
 				that.iswarm = false;
 				let timestamp = Date.parse(new Date());
@@ -1136,21 +1142,7 @@
 							console.log(`handling fail, code = ${code}`)
 						}
 					})
-			},3000)
-// 			if(str === 'three'){
-// 				if(that.headtimeout != ''){
-// 					clearTimeout(that.headtimeout)
-// 				}
-// 				that.isworking = false;
-// 				that.headtimeout = setTimeout(function(){
-// 					if(that.num < 3){
-// 						that.num = that.num + 1;
-// 						that.headTime(str);
-// 					}else{
-// 						that.getDeviceList();
-// 					}
-// 				},1000)
-// 			}
+			},str)
 		},
 		//websocket
 		webSocketdata() {

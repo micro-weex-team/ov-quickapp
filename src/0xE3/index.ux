@@ -15,7 +15,7 @@
 					</div>
 					<text class="E1_nav_list_usemeiju">使用美居</text>
 					<text class="E3_nav_data" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{temperatureTy(temperature)}}</text>
-					<text class="E3_nav_text" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?dataTy(mode):'已关机'}}</text>
+					<!-- <text class="E3_nav_text" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?dataTy(mode):'已关机'}}</text> -->
 					<!-- <text class="E3_nav_statusText" if="{{power === 'on' && mode != 'invalid' && mode != ''}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">当前加热温度:{{temperature}}°</text> -->
 					<div class="E3_nav_addDel" if="{{power === 'on'}}">
 						<image src="./assets/img/add.png" @click="addTem()" class="E3_nav_addDel_add"></image>

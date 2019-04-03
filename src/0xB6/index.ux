@@ -85,10 +85,10 @@ module.exports = {
 			name:'02档',
 			select:false,
 			data:2
-		},{
-			name:'03档',
-			select:false,
-			data:3
+// 		},{
+// 			name:'03档',
+// 			select:false,
+// 			data:3
 // 		},{
 // 			name:'爆炒',
 // 			select:false,
