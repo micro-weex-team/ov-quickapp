@@ -1,8 +1,15 @@
 
+/**
+ * 正式环境配置
+ */
+// const sethost = true;  //配置环境
 // const host = "https://ov-prod.smartmidea.net";
 // const url = "wss://ovws-sit.smartmidea.net";
 // const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
 // const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+/**
+ * 测试环境配置
+ */
 const sethost = false;  //配置环境
 const host = "http://ov-sit.smartmidea.net";
 const url = "ws://ovws-sit.smartmidea.net";

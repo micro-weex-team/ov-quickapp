@@ -2,7 +2,7 @@ import IOT from '@service.iot';
 import prompt from '@system.prompt';
 import device from '@system.device';
 
-let sethost = false;  //配置环境
+let sethost = false;  //配置环境（测试环境：false;正式环境：true）
 let clientId = "";
 let clientSecret = "";
 export default {

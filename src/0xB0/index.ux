@@ -423,26 +423,19 @@
 								pkg.install({
 									package: 'com.midea.ai.appliances',
 									success: function(resp) {
-										console.log(`handling success: ${resp.result}`);
 									},
 									fail: function(resp, code) {
-										console.log(`handling fail, code = ${code}`);
 									}
 								});
 							}
 						},
 						cancel: function() {
-							console.log('handling cancel');
 						},
 						fail: function(data, code) {
-							console.log(`handling fail, code = ${code}`);
 						}
 					});
-					
-					console.log(`handling success: ${res.result}`);
 				},
 				fail: function(res, code) {
-					console.log(`handling fail, code = ${code}`);
 				}
 			});
 		},

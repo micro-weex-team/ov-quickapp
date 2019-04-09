@@ -119,7 +119,7 @@
         "designWidth": 1080
     },
     "router": {
-        "entry": "config_network",
+        "entry": "Demo",
         "pages": {
             "0xAC": {
                 "component": "index"
@@ -174,7 +174,10 @@
             },
 			"Component/MideaAbout/MideaServer": {
                 "component": "index"
-            }
+            },
+			"Demo": {
+			    "component": "index"
+			}
         }
     },
     "display": {

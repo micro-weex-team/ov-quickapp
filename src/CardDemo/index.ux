@@ -1,9 +1,7 @@
+<import name="midea-head" src="../Component/MideaHead/index"></import>
 <template>
   <!-- template里只能有一个根节点 -->
-  <div class="demo-page">
-    <text>{{text}}</text>
-    <text>{{des}}</text>
-  </div>
+	<midea-head title="微波炉" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 </template>
 
 <script>
@@ -16,9 +14,5 @@ export default {
 </script>
 
 <style>
-  .demo-page {
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-  }
+ 
 </style>

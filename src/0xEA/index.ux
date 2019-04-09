@@ -430,7 +430,7 @@
 				case 'hot_spring_egg':
 					mode_data = "温泉蛋";
 					break;
-				case 'millet_congee ':
+				case 'millet_congee':
 					mode_data = "小米粥";
 					break;
 				case 'firewood_rice':

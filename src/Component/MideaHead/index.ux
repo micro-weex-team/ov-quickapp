@@ -1,5 +1,5 @@
 <template>
-    <div class="midea-head" style="background-color:{{power === 'on'?bgColor:defaultColor}}">
+    <div class="midea-head" style="background-color:{{changColor(power,hightColor)}}">
         <text class="{{language?'midea-head-title':'l_midea-head-title'}}" style="color:{{power === 'on'?'#ffffff':'#666666'}};">
 			{{title}}
 		</text>
@@ -48,8 +48,16 @@
 	import router from '@system.router';
     import prompt from '@system.prompt';
     export default {
-        name: 'midea-time',
+        name: 'midea-head',
         props: {
+			coloron:{
+				default: '',
+				type: String
+			},
+			coloroff:{
+				default: '#CCCCCC',
+				type: String
+			},
 			title:{
 				default: '',
 				type: String
@@ -65,14 +73,6 @@
 			isnew: {
 				default: false,
 				type: Boolean
-			},
-			hightColor: {
-				default: '#3191FD',
-				type: String
-			},
-			defaultColor: {
-				default: '#CCCCCC',
-				type: String
 			},
 			language: {
 				default: true,
@@ -105,11 +105,23 @@
 			}else{
 				that.bgColor = "#3191FD";
 			}
-			
         },
-		watchbgColorChange(newV, oldV){
-			this.bgColor = this.hightColor;
+		changColor(power,str){
+			let that = this;
+			if(power == 'on'){
+				if(that.coloron != ''){
+					return that.coloron;
+				}else{
+					return that.bgColor;
+				}
+			}else{
+				return that.coloroff;
+			}
+			
 		},
+// 		watchbgColorChange(newV, oldV){
+// 			this.bgColor = this.coloron;
+// 		},
 		watchPropsChange(newV, oldV){
 			this.power_1 = newV;
 		},

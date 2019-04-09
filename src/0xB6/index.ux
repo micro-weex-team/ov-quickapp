@@ -75,7 +75,7 @@ module.exports = {
 		isloading: false,
 		isdelayTips:false,
 		isselectpic: false,
-		lingNum:3,
+		lingNum:2,
 		deviceHeight:0,
 		selectlist:[{
 			name:'01档',
