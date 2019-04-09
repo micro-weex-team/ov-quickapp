@@ -1,5 +1,5 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
@@ -65,7 +65,7 @@
 		</div>
 		<midea-foot if="{{work_status != 'work'}}" onclick-btn="clickEvent" onclick-alert="showalert" type='1' list-first="{{btnlist}}"></midea-foot>
 		<midea-loading if="{{isloading}}"></midea-loading>
-		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 		<midea-tips if="{{istips}}"></midea-tips>
     </div>
 </template>

@@ -1,29 +1,75 @@
 <import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-foot" src="../Component/MideaFoot/index"></import>
 <template>
   <!-- template里只能有一个根节点 -->
 	
   <div class="nav">
-  	<midea-head title="微波炉" language="{{language}}" isnew="{{bgColor}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" showMenu="{{showMenu}}" power="{{power}}"></midea-head>
-		<text class="btn" @click="clickBtn()">按钮</text>
+  	<midea-head title="标题" show-menu="{{showMenu}}" isnew="{{bgColor}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
+	<list onscrollbottom="" id="list" class="E1_list">
+		<list-item class="center" type="listItem">
+		</list-item>
+	</list>
+	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
   </div>
 </template>
 
 <script>
 export default {
-  private: {
+	private: {
+		offset:'-1000px',
+		isRefreshing:false,
 		power:'on',
-		language:true,
-		isnew:true,
 		showMenu:true,
+		isnew:true,
 		hight_Color:"#3191FD",
 		defaultColor:'#CCCCCC',
-  },
+		type:'2',
+		btnlist:[{
+			name:'开关',
+			data:'on',
+			pic:'',
+			btnColor:'',
+			dataColor:'',
+			textColor:""
+		},{
+			name:'档位',
+			data:'off',
+			pic:'',
+		},{
+			name:'延迟关机',
+			data:'on',
+			pic:'',
+		},{
+			name:'灯光',
+			data:'off',
+			pic:'./assets/img/light_off.png',
+		}],
+		listSecond:[
+		{
+			name:'执行',
+			data:'on',
+			pic:'./assets/img/off.png',
+		},{
+			name:'更多',
+			data:'off',
+			pic:'',
+		},{
+			name:'其他',
+			data:'off',
+			pic:'',
+		}]
+	},
 	clickBtn(){
 		 if(this.power == 'on'){
 			 this.power = 'off';
 		 }else{
 			 this.power = 'on';
 		 }
+	},
+	btnclick(){
+	},
+	clickEv(e){
+		console.log(e)
 	}
 }
 </script>
@@ -33,9 +79,12 @@ export default {
 		flex-direction: column;
 		justify-content: flex-start;
 	}
- .btn{
-	 width: 100px;
-	 font-size: 40px;
-	 height: 100px;
- }
+	.E1_list{
+		background-color: red;
+	}
+	.btn{
+		width: 100px;
+		font-size: 40px;
+		height: 100px;
+	}
 </style>

@@ -1,6 +1,6 @@
 <!-- 组件引入 -->
 <import name="midea-head" src="../Component/MideaHead/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
 
@@ -124,7 +124,7 @@
 			</div>
 		</div>
 		<!-- 组件 -->
-		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 		<midea-loading if="{{isshowLoading}}"></midea-loading>
 		<midea-tips if="{{istips}}"></midea-tips>
 	</div>

@@ -1,7 +1,7 @@
 <import name="qui-popup" src="../Component/qui-popup/index"></import>
 <import name='qui-switch' src='../Component/qui-switch/index'></import>
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <template>
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	<midea-loading if="{{isloading}}"></midea-loading>
-	<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+	<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 	<midea-tips if="{{istips}}"></midea-tips>
 </div>
 </template>

@@ -1,5 +1,5 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
@@ -40,7 +40,7 @@
 		<text if="{{power === 'on' && gear < 4}}" class="B6_nav_gear_text" style="color: {{power === 'on'?'#ffffff':'#666666'}};">档</text>
 		<midea-foot type='1' onclick-alert="btnclick" onclick-btn="clickEv" list-first="{{btnlist}}"></midea-foot>
 		<midea-loading if="{{isloading}}"></midea-loading>
-		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 		<midea-tips if="{{istips}}"></midea-tips>
     </div>
 </template>

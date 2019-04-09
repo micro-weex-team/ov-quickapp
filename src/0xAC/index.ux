@@ -2,7 +2,7 @@
 <import name="midea-logo" src="../Component/MideaLogo/index"></import>
 <!-- <import name="midea-wind-speed" src="../Component/MideaWindSpeed/index"></import> -->
 <import name="midea-time" src="../Component/MideaTime/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 
@@ -166,7 +166,7 @@
 			</div>
         <!-- </div> -->
 		<midea-loading if="{{isshowLoading}}"></midea-loading>
-		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 		<midea-tips if="{{istips}}"></midea-tips>
     </div>
 </template>

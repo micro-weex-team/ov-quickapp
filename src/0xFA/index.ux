@@ -1,5 +1,5 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
-<import name="midea-about" src="../Component/MideaAbout/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-dialog" src="../Component/MideaDialog/index"></import>
@@ -108,7 +108,7 @@
 	</div>
 	<midea-dialog if="{{isGeardialog}}" list="{{listGear}}" language="{{language}}" data="{{select_gear}}" oncon-Data="conData" onclose-Dia="closeDia" onselect-Gear="selectGear"></midea-dialog>
 	<midea-loading if="{{isshowLoading}}"></midea-loading>
-	<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+	<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 	<midea-tips if="{{istips}}"></midea-tips>
 </div>
 </template>

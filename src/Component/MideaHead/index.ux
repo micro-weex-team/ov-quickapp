@@ -1,3 +1,4 @@
+<import name="midea-about" src="../MideaAbout/index"></import>
 <template>
     <div class="midea-head" style="background-color:{{changColor(power,hightColor)}}">
         <text class="{{language?'midea-head-title':'l_midea-head-title'}}" style="color:{{power === 'on'?'#ffffff':'#666666'}};">
@@ -5,7 +6,8 @@
 		</text>
 		<image class="midea-head-back" @click="openMenu" show="{{showMenu}}" src="{{power === 'on'?'../Component/MideaHead/assets/menu_ic_more_white.png':'../Component/MideaHead/assets/menu_ic_more_normal.png'}}"></image>
 		<image class="midea-head-back" @click="goback" src="{{power === 'on'?'../Component/MideaHead/assets/menu_ic_cancel_online.png':'../Component/MideaHead/assets/menu_ic_cancel_normal.png'}}"></image>
-    </div>
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+	</div>
 </template>
 
 <style lang="less">
@@ -81,6 +83,7 @@
 		},
         data(){
             return {
+				isabout:false,
                 value: '',
                 txt: this.text,
 				showMenu: true,
@@ -132,7 +135,12 @@
 			this.$app.exit();
 		},
 		openMenu(){
-			this.$dispatch('openmenu', { params: "菜单" })
+			if(!this.isabout){
+				this.isabout = true;
+			}
+		},
+		onclickFn(){
+			this.isabout = false;
 		}
     }
 </script>
