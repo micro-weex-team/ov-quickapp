@@ -44,16 +44,7 @@
 				<text class="b0_ctr_text">取消</text>
 			</div>
 		</div>
-		<!-- <div class="b0_ctr" if="{{pause}}">
-			<div class="b0_contrl_btn" @click="stopDevice()">
-				<image src="./assets/img/stop.png" class="b0_contrl_btn_img"></image>
-				<text class="b0_ctr_text">取消</text>
-			</div>
-			<div class="b0_contrl_btn" @click="restartDevice()">
-				<image src="./assets/img/start.png" class="b0_contrl_btn_img"></image>
-				<text class="b0_ctr_text">继续</text>
-			</div>
-		</div> -->
+		
 		<div class="b0_ctr" if="{{power === 'on' && work_status === 'end'}}">
 			<div class="b0_contrl_btn" @click="stopDevice()">
 				<image src="./assets/img/confirm.png" class="b0_contrl_btn_img"></image>

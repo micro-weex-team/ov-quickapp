@@ -1063,20 +1063,20 @@
 			let that = this;
 			that.deviceModel = data.mode;
 			that.isRefreshing = false;
-			this.isshowLoading = false;
-			this.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
-			this.listDevice = data;
-			this.dataLists = data;
-			if(this.online == 'true'){
+			that.isshowLoading = false;
+			that.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
+			that.listDevice = data;
+			that.dataLists = data;
+			if(that.online == 'true'){
 				if(data.power == 'on'){
-					this.isopen = true;
-					this.dataLists = data;
-					this.value = data.temperature;
-					this.humidity = data.indoor_temperature?data.indoor_temperature:'--';
-					this.indoor = data.indoor_temperature?data.indoor_temperature:'--';
-					this.switchMode(data.mode,'on');
-					this.windBgcolor = '#3191FD';
-					this.windcolor = '#ffffff';
+					that.isopen = true;
+					that.dataLists = data;
+					that.value = data.temperature;
+					that.humidity = data.indoor_temperature?data.indoor_temperature:'--';
+					that.indoor = data.indoor_temperature?data.indoor_temperature:'--';
+					that.switchMode(data.mode,'on');
+					that.windBgcolor = '#3191FD';
+					that.windcolor = '#ffffff';
 					// if(data.wind_speed == 101){
 					// 	this.selected_type = 0;
 					// 	this.selected_content = 0;
@@ -1088,15 +1088,15 @@
 					// 	this.selected_content = parseInt(data.wind_speed) - 1;
 					// }
 					if(parseInt(data.wind_speed) == 102){
-						this.productList[2].data = 'AUTO';
-						this.windIndex = 0;
-						this.windTypeIndex = 1;
-						this.tabContentShow = 1;
+						that.productList[2].data = 'AUTO';
+						that.windIndex = 0;
+						that.windTypeIndex = 1;
+						that.tabContentShow = 1;
 					}else{
-						this.productList[2].data = data.wind_speed;
-						this.windIndex = this.windList.indexOf(parseInt(data.wind_speed));
-						this.windTypeIndex = 0;
-						this.tabContentShow = 0;
+						that.productList[2].data = data.wind_speed;
+						that.windIndex = that.windList.indexOf(parseInt(data.wind_speed));
+						that.windTypeIndex = 0;
+						that.tabContentShow = 0;
 					}
 					if(data.power_off_timer == 'on'){
 						// let time = Math.round(parseInt(data.power_off_time_value)/60);
@@ -1109,40 +1109,40 @@
 						// }else{
 						// 	time = time+'分钟';
 						// }
-						this.timeValue = time2;
-						this.productList[3].data = time2+'h';
-						this.productList[3].id = time;
-						this.productList[3].name = time2+'小时关';
-						this.fixed_time = `将于${time2}小时后关闭`;
-						this.timeBgcolor = "#3191FD";
-						this.timecolor = "#ffffff";
-						this.timeIndex = this.timeList.indexOf(time);
-						this.switchFlag = true;
+						that.timeValue = time2;
+						that.productList[3].data = time2+'h';
+						that.productList[3].id = time;
+						that.productList[3].name = time2+'小时关';
+						that.fixed_time = `将于${time2}小时后关闭`;
+						that.timeBgcolor = "#3191FD";
+						that.timecolor = "#ffffff";
+						that.timeIndex = that.timeList.indexOf(time);
+						that.switchFlag = true;
 					}else{
-						this.productList[3].data = 'off';
-						this.productList[3].name = '定时关';
-						this.productList[3].id = 0;
-						this.fixed_time = '定时关：关';
-						this.timeBgcolor = "#ffffff";
-						this.timeIndex = -1;
-						this.switchFlag = false;
+						that.productList[3].data = 'off';
+						that.productList[3].name = '定时关';
+						that.productList[3].id = 0;
+						that.fixed_time = '定时关：关';
+						that.timeBgcolor = "#ffffff";
+						that.timeIndex = -1;
+						that.switchFlag = false;
 					}
 					// this.productList[3].name = '定时关';
-					this.timeText = '定时关机';
+					that.timeText = '定时关机';
 					if(data.wind_swing_ud == 'off'){
-						this.productList_in[0].icon = "./assets/img/windDe_1.png";
+						that.productList_in[0].icon = "./assets/img/windDe_1.png";
 					}else{
-						this.productList_in[0].icon = "./assets/img/windDe_on_1.png";
+						that.productList_in[0].icon = "./assets/img/windDe_on_1.png";
 					}
 					if(data.wind_swing_lr == 'off'){
-						this.productList_in[1].icon = "./assets/img/windDe_2.png";
+						that.productList_in[1].icon = "./assets/img/windDe_2.png";
 					}else{
-						this.productList_in[1].icon = "./assets/img/windDe_on_2.png";
+						that.productList_in[1].icon = "./assets/img/windDe_on_2.png";
 					}
 					if(data.ptc == 'off'){
-						this.productList_in[2].icon = "./assets/img/elecHeat.png";
+						that.productList_in[2].icon = "./assets/img/elecHeat.png";
 					}else{
-						this.productList_in[2].icon = "./assets/img/elecHeat_on.png";
+						that.productList_in[2].icon = "./assets/img/elecHeat_on.png";
 					}
 					// if(data.eco == 'off'){
 					// 	this.productList_[2].icon = "./assets/img/ECO.png";
@@ -1150,8 +1150,8 @@
 					// 	this.productList_[2].icon = "./assets/img/ECO_on.png";
 					// }
 				}else{
-					this.defaultData(data);
-					this.switchMode(data.mode,'off');
+					that.defaultData(data);
+					that.switchMode(data.mode,'off');
 					if(data.power_on_timer == 'on'){
 						// let time = Math.round(parseInt(data.power_on_time_value)/60);
 						let time = parseInt(data.power_on_time_value), time2 = time/60;
@@ -1163,35 +1163,35 @@
 						// }else{
 						// 	time = time+'分钟';
 						// }
-						this.timeValue = time2;
-						this.productList[3].data = time2+'h';
-						this.productList[3].name = time2+'小时开';
-						this.fixed_time = `将于${time2}小时后开机`;
-						this.productList[3].id = time;
-						this.timeBgcolor = "#3191FD";
-						this.timecolor = "#ffffff";
-						this.timeIndex = this.timeList.indexOf(time);
-						this.switchFlag = true;
+						that.timeValue = time2;
+						that.productList[3].data = time2+'h';
+						that.productList[3].name = time2+'小时开';
+						that.fixed_time = `将于${time2}小时后开机`;
+						that.productList[3].id = time;
+						that.timeBgcolor = "#3191FD";
+						that.timecolor = "#ffffff";
+						that.timeIndex = that.timeList.indexOf(time);
+						that.switchFlag = true;
 					}else{
-						this.productList[3].data = 'off';
-						this.productList[3].name = '定时开';
-						this.fixed_time = '定时开：关';
-						this.productList[3].id = 0;
-						this.timeIndex = -1;
-						this.switchFlag = false;
-						this.timeBgcolor = "#ffffff";
+						that.productList[3].data = 'off';
+						that.productList[3].name = '定时开';
+						that.fixed_time = '定时开：关';
+						that.productList[3].id = 0;
+						that.timeIndex = -1;
+						that.switchFlag = false;
+						that.timeBgcolor = "#ffffff";
 					}
 					// this.productList[3].name = '定时开';
-					this.timeText = '定时开机';
+					that.timeText = '定时开机';
 				}
 			}else{
 				// this.isshowclose();
-				this.defaultData(data);
-				this.fixed_time = `定时开：关`;
-				this.timeBgcolor = "#ffffff";
-				this.timecolor = "#666666";
-				this.productList[3].data = 'off';
-				this.productList[1].icon = './assets/img/model_off_1.png';
+				that.defaultData(data);
+				that.fixed_time = `定时开：关`;
+				that.timeBgcolor = "#ffffff";
+				that.timecolor = "#666666";
+				that.productList[3].data = 'off';
+				that.productList[1].icon = './assets/img/model_off_1.png';
 				
 			}
 		},

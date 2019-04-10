@@ -1,5 +1,6 @@
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
+<import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
 <template>
   <!-- template里只能有一个根节点 -->
 	
@@ -7,9 +8,11 @@
   	<midea-head title="标题" show-menu="{{showMenu}}" isnew="{{bgColor}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
 	<list onscrollbottom="" id="list" class="E1_list">
 		<list-item class="center" type="listItem">
+			<midea-meiju power="{{power}}"></midea-meiju>
 		</list-item>
 	</list>
 	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
+	
   </div>
 </template>
 
@@ -18,7 +21,7 @@ export default {
 	private: {
 		offset:'-1000px',
 		isRefreshing:false,
-		power:'on',
+		power:'off',
 		showMenu:true,
 		isnew:true,
 		hight_Color:"#3191FD",
@@ -80,7 +83,10 @@ export default {
 		justify-content: flex-start;
 	}
 	.E1_list{
-		background-color: red;
+		background-color:#cccccc;
+	}
+	.center{
+		flex-direction: column;
 	}
 	.btn{
 		width: 100px;
