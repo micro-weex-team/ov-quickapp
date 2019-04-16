@@ -55,6 +55,7 @@
 	import net from '../Common/api/networkAPI.js';
     module.exports = {
         private: {
+			firsType:'',
 			timeNum:[],//空的配网指引集
 			isnonenum:[],//已经搜索的配网指引集
 			suportType:[0,1],//支持的配网方式（0：ap,1：快连）
@@ -107,6 +108,7 @@
 			let num = -1;
 			let mode = '';
 			if(that.iot_url != ""){
+				console.log("二维码url："+that.iot_url)
 				console.log("二维码"+api.getUrlCan(that.iot_url,"cd"));
 				// prompt.showToast({message:'url'+that.iot_url})
 				if(api.getUrlCan(that.iot_url,"cd")){
@@ -142,6 +144,7 @@
 								that.getWifiList();
 								return false;
 							}
+							that.firsType = that.iot_config_type;
 							// console.log("mode:"+that.iot_config_type+":::::sn8:"+that.deviceCode+"::::::;ssidDevice:"+that.ssidDevice)
 							that.getConfigDeviceInfo();
 						}else{
@@ -167,6 +170,7 @@
 					if(api.getUrlCan(that.iot_url,'type')){
 						that.deviceCode = api.getUrlCan(that.iot_url,'type').substring(9,17)
 					}
+					that.firsType = that.iot_config_type;
 					that.getConfigDeviceInfo();
 				}
 				
@@ -205,6 +209,7 @@
 							that.ssidDevice = that.iot_category.substring(that.iot_category.length-2,that.iot_category.length).toLowerCase();
 							that.deviceCode = that.iot_series;
 							that.iot_config_type = '0';
+							that.firsType = that.iot_config_type;
 							that.getConfigDeviceInfo();
 						}else{
 							that.getWifiList();
@@ -402,7 +407,13 @@
 									that.num = that.getItem(data,"code",that.deviceCode);
 								}else{
 									if(that.getArrDifference(that.suportType,that.isnonenum).length > 0){
-										that.iot_config_type = that.getArrDifference(that.suportType,that.isnonenum)[0];
+										if(that.getArrDifference(that.suportType,that.timeNum).indexOf(parseInt(that.firsType)) > -1){
+											that.iot_config_type = that.firsType;
+										}else{
+											that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
+										}
+										console.log("先看一下配网模式："+that.iot_config_type)
+										// that.iot_config_type = that.getArrDifference(that.suportType,that.isnonenum)[0];
 										that.getConfigDeviceInfo();
 										return false
 									}else{
@@ -483,6 +494,7 @@
 			console.log("选择方式"+that.iot_call_from)
 			if(that.iot_device_ssid != '' && that.iot_device_ssid != 'null'){
 				that.ssidDevice = that.iot_device_ssid.substring(6,8).toLowerCase();
+				that.firsType = that.iot_config_type;
 				that.getConfigDeviceInfo();
 			}else{
 				let type = api.getDeviceInformation(that.iot_url);
@@ -490,9 +502,11 @@
 				if(type || ssid){
 					let str = type.substring(type.length-2,type.length).toLowerCase() || ssid.substring(6,8);
 					that.ssidDevice = str;
+					that.firsType = that.iot_config_type;
 					that.getConfigDeviceInfo();
 				}else{
 					if(that.iot_call_from === "MANUAL_SELECT"){
+						that.firsType = that.iot_config_type;
 						that.getConfigDeviceInfo();
 					}else{
 						prompt.showDialog({

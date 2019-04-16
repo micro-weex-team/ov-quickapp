@@ -970,34 +970,37 @@
 			let obj = (typeof res) == 'object'?res:JSON.parse(res);
 			console.log("局域网："+JSON.stringify(res))
 			if(parseInt(obj.code) == 0){
-				that.isRefreshing = false;
-				that.isloading = false;
-				that.isstop = true;
-				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
-				that.stopData = data.running_status;
-				that.running_status = data.running_status;
-				that.col = data.power;
-				that.online = "true";
-				that.remain_time = data.remain_time;
-				that.program = data.program;
-				that.dataLists = data;
-				that.listDevice = data;
-				that.dataLists.online = "true";
-				that.listDevice.online = "true";
-				if(that.timeoutInter != ''){
-					clearInterval(that.timeoutInter);
-				}
-				if(data.running_status === 'start' || data.running_status === 'pause'){
-					that.isstop = false;
-					if(data.running_status === 'start'){
-						that.timeGetData();
-					}
-				}else if(data.running_status === 'fault'){
-					prompt.showToast({
-						message:'设备运行出错，请检查洗衣机是否故障'
-					})
-				}
-				console.log("开关："+that.col)
+				setTimeout(function(){
+					that.getDeviceStatus(that.openId);
+				},1000)
+// 				that.isRefreshing = false;
+// 				that.isloading = false;
+// 				that.isstop = true;
+// 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+// 				that.stopData = data.running_status;
+// 				that.running_status = data.running_status;
+// 				that.col = data.power;
+// 				that.online = "true";
+// 				that.remain_time = data.remain_time;
+// 				that.program = data.program;
+// 				that.dataLists = data;
+// 				that.listDevice = data;
+// 				that.dataLists.online = "true";
+// 				that.listDevice.online = "true";
+// 				if(that.timeoutInter != ''){
+// 					clearInterval(that.timeoutInter);
+// 				}
+// 				if(data.running_status === 'start' || data.running_status === 'pause'){
+// 					that.isstop = false;
+// 					if(data.running_status === 'start'){
+// 						that.timeGetData();
+// 					}
+// 				}else if(data.running_status === 'fault'){
+// 					prompt.showToast({
+// 						message:'设备运行出错，请检查洗衣机是否故障'
+// 					})
+// 				}
+// 				console.log("开关："+that.col)
 // 				that.CAdata.storage_power = data.storage_power;
 // 				that.storage_power = data.storage_power;
 // 				that.freezing_power = data.freezing_power;
@@ -1025,7 +1028,9 @@
 			if(res.code === 200){
 				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
 				if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-					that.getDeviceStatus(that.openId);
+					setTimeout(function(){
+						that.getDeviceStatus(that.openId);
+					},1000)
 				}else{
 					that.initData();
 					that.isRefreshing = false;
