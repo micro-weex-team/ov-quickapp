@@ -119,7 +119,7 @@
         "designWidth": 1080
     },
     "router": {
-        "entry": "Demo",
+        "entry": "0xAC",
         "pages": {
             "0xAC": {
                 "component": "index"
