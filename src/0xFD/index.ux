@@ -948,6 +948,7 @@
 			storage.get({
 				key: 'openidToken',
 				success: function (data) {
+					that.isshowLoading = true;
 					// prompt.showToast({message:"data"+JSON.stringify(data)})
 					if(data === ''){
 						that.getdevicelist();
