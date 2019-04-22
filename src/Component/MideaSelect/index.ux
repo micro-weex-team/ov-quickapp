@@ -1,0 +1,34 @@
+<template>
+  <div class="doc-page">
+    <image class="loadingIMG" src="../MideaSelect/assets/img/loading.gif"></image>
+  </div>
+</template>
+
+<script>
+  export default {
+    private: {
+     
+    },
+    onInit () {
+      this.$page.setTitleBar({text: 'Swiper'})
+    }
+  }
+</script>
+
+
+<style>
+.doc-page{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+.loadingIMG{
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  left: 440px;
+  top: 600px;
+}
+</style>

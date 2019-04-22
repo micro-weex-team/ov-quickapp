@@ -1,9 +1,9 @@
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
 <import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
+<import name="midea-select" src="../Component/MideaSelect/index"></import>
 <template>
   <!-- template里只能有一个根节点 -->
-	
   <div class="nav">
   	<midea-head title="标题" show-menu="{{showMenu}}" isnew="{{bgColor}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
 	<list onscrollbottom="" id="list" class="E1_list">
@@ -11,16 +11,34 @@
 			<midea-meiju power="{{power}}"></midea-meiju>
 		</list-item>
 	</list>
+	<midea-select></midea-select>
 	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
-	
   </div>
 </template>
-
+<style>
+	.nav{
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+	.E1_list{
+		background-color:#cccccc;
+	}
+	.center{
+		height: 100%;
+		width: 100%;
+		flex-direction: column;
+		background-color: #00ffff;
+	}
+	.btn{
+		width: 100px;
+		font-size: 40px;
+		height: 100px;
+	}
+</style>
 <script>
+import prompt from '@system.prompt';
 export default {
 	private: {
-		offset:'-1000px',
-		isRefreshing:false,
 		power:'off',
 		showMenu:true,
 		isnew:true,
@@ -77,20 +95,4 @@ export default {
 }
 </script>
 
-<style>
-	.nav{
-		flex-direction: column;
-		justify-content: flex-start;
-	}
-	.E1_list{
-		background-color:#cccccc;
-	}
-	.center{
-		flex-direction: column;
-	}
-	.btn{
-		width: 100px;
-		font-size: 40px;
-		height: 100px;
-	}
-</style>
+

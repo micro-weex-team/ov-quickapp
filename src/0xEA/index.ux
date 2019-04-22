@@ -6,7 +6,7 @@
 
 <template>
 	<div class="container" id="container_body">
-		<text if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};left: {{fenClassname?'850px':'750px'}};">分</text>
+		<text if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:{{padingLeft(left_time_hour,left_time_min)}}px;">分</text>
 		<midea-head title="电饭煲" onclose-websocket="closeWebsocket" language="{{language}}" isnew="{{bgColor}}" power="{{online === 'true'?'on':'false'}}"></midea-head>
 		<refresh class="EA_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{online === 'true'?'#F9CB3D':'#cccccc'}};" class="EA_nav" id="list">
@@ -16,7 +16,7 @@
 					</div>
 					<text class="EA_nav_list_usemeiju" style="color: {{online === 'true'?'#ffffff':'#666666'}};">使用美居</text>
 					<div class="EA_nav_list_data" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}">
-						<text class="{{language?className:className_l}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status === 'cooking'?tiemData(left_time_hour,left_time_min):'--'}}</text>
+						<text class="EA_nav_list_data_data_change" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status === 'cooking'?tiemData(left_time_hour,left_time_min):'--'}}</text>
 					</div>
 					<text class="EA_nav_list_text" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">大约{{mode === 'heat_rice'?'还剩':'需要'}}</text>
 					<text class="EA_nav_list_status" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{mode === 'heat_rice'?'加热中':work_status_fun(mode,work_status)}}</text>
@@ -539,6 +539,32 @@
 					break;
 			}
 			return status;
+		},
+		//样式过滤
+		padingLeft(hour,min){
+			let Len = this.tiemData(hour, min).toString().length;
+			console.log("他的值"+this.tiemData(hour, min))
+			console.log("长度"+Len)
+			switch (Len) {
+				case 1:
+					return '250'
+					break;
+				case 2:
+					return '450'
+					break;
+				case 3:
+					return '600'
+					break;
+				case 4:
+					return '750'
+					break;
+				case 5:
+					return '950'
+					break;
+				default:
+					return false;
+					break;
+			}
 		},
 		//根据大小切换样式
 		styleChange(num){

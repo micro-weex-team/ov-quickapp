@@ -67,7 +67,7 @@ export default {
 	 */
 	deviceInit(token, deviceID) {
 		let that = this;
-		
+		console.log("初始化开始")
 		let p = new Promise(function(resolve, reject){
 			device.getInfo({
 				success: function (ret) {
