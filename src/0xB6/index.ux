@@ -528,6 +528,7 @@ module.exports = {
 	 * 局域网获取
 	 */
 	getLanData(res){
+		console.log("局域网了+++++++++++++")
 		let that = this;
 		let obj = (typeof res) == 'object'?res:JSON.parse(res);
 		if(parseInt(obj.code) == 0){
@@ -581,10 +582,12 @@ module.exports = {
 				if(obj.power){
 					that.power = obj.power;
 				}else{
-					if(obj.work_status.toString()){
-						that.work_status = obj.work_status;
+					if(obj.work_status){
+						if(obj.work_status.toString()){
+							that.work_status = obj.work_status;
+							that.power = that.workStatus(obj.work_status);
+						}
 					}
-					that.power = that.workStatus(obj.work_status);
 				}
 				that.B6data = obj;
 				that.B6data.power = that.power;
@@ -607,7 +610,6 @@ module.exports = {
 							str1.toString() === '-100' &&
 							res_data.devices[0].description.toString() === '3123'
 						) {
-							// that.netWorkGet('设备离线')
 							that.isshowclose();
 						} else {
 							that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
@@ -649,13 +651,13 @@ module.exports = {
 				that.isRefreshing = false;
 				that.isfirst = true;
 				that.isloading = false;
-				
 				if(res.lanonline){
 					that.getdataLan(res);
 				}else{
 					that.getLanData(res);
 				}
 			}).catch((error) => {
+				console.log("报错了")
 				if(error.online){
 					that.isRefreshing = false;
 					that.initData();
@@ -682,7 +684,9 @@ module.exports = {
 		if(parseInt(obj.code) == 0){
 			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 			that.online = 'true';
-			that.getDeviceStatus(that.openId);
+			setTimeout(function(){
+				that.getDeviceStatus(that.openId);
+			},1000)
 			return false
 			if(obj1.power == 'on'){
 				that.getDeviceStatus(that.openId);
@@ -735,7 +739,9 @@ module.exports = {
 		if (res.code === 200) {
 			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 			if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
-				that.getDeviceStatus(that.openId);
+				setTimeout(function(){
+					that.getDeviceStatus(that.openId);
+				},700)
 				return false;
 				let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
 				let isall = false;

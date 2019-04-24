@@ -1,5 +1,5 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
-<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
+<import name="midea-about" src="../Component/MideaAbout/index"></import>
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-foot" src="../Component/MideaFoot/index"></import>
@@ -36,15 +36,15 @@
 					<div class="B8_nav_control">
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('left')">
 							<image src="{{isdirection == 'left'?'./assets/img/left_off.png':'./assets/img/left_on.png'}}" class="B8_nav_control_btn_img {{isdirection == 'left'?'add_AnimationLeft':''}}"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?leftColor:'#666666'}};">左转圈</text>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?leftColor:'#666666'}};">左转</text>
 						</div>
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('forward')">
 							<image src="{{isdirection == 'forward'?'./assets/img/line_off.png':'./assets/img/line_on.png'}}" class="B8_nav_control_btn_img"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?forwardColor:'#666666'}};">直行</text>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?forwardColor:'#666666'}};">向前</text>
 						</div>
 						<div class="B8_nav_control_btn" @touchcancel="doneDirection('can')" @touchend="doneDirection('cel')" @touchstart="moveDirection('right')">
 							<image src="{{isdirection == 'right'?'./assets/img/right_off.png':'./assets/img/right_on.png'}}" class="B8_nav_control_btn_img {{isdirection == 'right'?'add_Animation':''}}"></image>
-							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?rightColor:'#666666'}};">右转圈</text>
+							<text class="B8_nav_control_btn_text" style="color: {{online == 'true'?rightColor:'#666666'}};">右转</text>
 						</div>
 					</div>
 				</list-item>
@@ -53,7 +53,7 @@
 		<midea-selectbottom onclose-dia="closedialog" isform="isform" onselect-num="selectdata" if="{{isshow}}" isshow="{{isshow}}" showline="{{lineNum}}" datalist="{{selectlist}}" isselecticon="{{isselectpic}}"></midea-selectbottom>
 		<midea-foot onclick-btn="clickEvent" onclick-alert="showalert" type='1' list-first="{{btnlist}}"></midea-foot>
 		<midea-loading if="{{isloading}}"></midea-loading>
-		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
 		<midea-tips if="{{istips}}"></midea-tips>
     </div>
 </template>
@@ -227,7 +227,7 @@ module.exports = {
 				str = '回充中';
 			break;
 			case 'work':
-				str = '打扫中';
+				str = '清扫中';
 			break;
 			case 'stop':
 				str = '待机中';
@@ -236,22 +236,22 @@ module.exports = {
 				str = '充电中';
 			break;
 			case 'charge_finish':
-				str = '充电完成';
+				str = '直流充电完成';
 			break;
 			case 'work_finish':
-				str = '打扫完成';
+				str = '清扫完成';
 			break;
 			case 'set':
 				str = '设置中';
 			break;
 			case 'left':
-				str = '左转圈中';
+				str = '左转中';
 			break;
 			case 'right':
-				str = '右转圈中';
+				str = '右转中';
 			break;
 			case 'forward':
-				str = '直行中';
+				str = '向前中';
 			break;
 			default:
 				str = '--';

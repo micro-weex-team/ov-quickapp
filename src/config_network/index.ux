@@ -55,6 +55,7 @@
 	import net from '../Common/api/networkAPI.js';
     module.exports = {
         private: {
+			isap_lan:'fasle',
 			firsType:'',
 			timeNum:[],//空的配网指引集
 			isnonenum:[],//已经搜索的配网指引集
@@ -270,6 +271,11 @@
 		nextPage(){
 			let that = this;
 			let isap = 'false';
+			if(that.timeNum.indexOf(0) == -1 || that.timeNum.indexOf("0") == -1 || that.isap_lan == 'true'){
+				that.isap = "false";
+			}else{
+				that.isap = "true";
+			}
 // 			if(that.iot_config_type.toString() == "0"){
 // 				
 // 			}
@@ -417,6 +423,9 @@
 									if(that.getItem(data,"code",that.deviceCode) > -1){
 										that.num = that.getItem(data,"code",that.deviceCode);
 									}else{
+										if(that.iot_config_type.toString() == "0"){
+											that.isap_lan = "true";
+										}
 										if(that.getArrDifference(that.suportType,that.isnonenum).length > 0){
 											that.iot_config_type = that.getArrDifference(that.suportType,that.isnonenum)[0];
 											that.getConfigDeviceInfo();

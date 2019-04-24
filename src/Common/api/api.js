@@ -359,14 +359,15 @@ export default {
 								}).catch(function (error) {
 									console.log(JSON.stringify(error));
 									let obj = JSON.parse(error);
-									obj.online = lanonline;
+									obj.online = "false";
 									reject(obj);
 								});
 							}else{
+								console.log("asdassdasssssssssssssd==============================")
 								let obj = {
 									errorCode: "0000",
 									msg: "参数有误",
-									online:lanonline
+									online:"false"
 								}
 								reject(obj)
 							}
