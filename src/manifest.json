@@ -1,8 +1,8 @@
 {
 	"package": "com.midea.iot.application",
     "name": "Midea-IoT",
-    "versionName": "1.7.7",
-    "versionCode": 177,
+    "versionName": "1.7.8",
+    "versionCode": 178,
     "icon": "/Common/logo.png",
     "minPlatformVersion": 1030,
     "features": [{
@@ -116,10 +116,13 @@
     }],
     "config": {
         "logLevel": "",
-        "designWidth": 1080
+        "designWidth": 1080,
+        "data":{
+            "winHight":0
+        }
     },
     "router": {
-        "entry": "0xAC",
+        "entry": "Demo",
         "pages": {
             "0xAC": {
                 "component": "index"

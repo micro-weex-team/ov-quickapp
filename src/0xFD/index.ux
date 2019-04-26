@@ -691,42 +691,68 @@
 		wlanControl(res){
 			let $this = this;
 			if (res.code && res.code == 200) {
-				let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data)
-				if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
-					let isall = false;
-					let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
-					$this.listDevice = obj;
-					$this.online = 'true';
-					if(obj.power){
-						$this.FDdata.power = obj.power;
-						$this.power = obj.power;
+				let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+				if(parseInt(bind_res_data.code) == 0){
+					if(!parseInt(bind_res_data.devices[0].status)){
+						let isall = false;
+						let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
+						$this.listDevice = obj;
+						$this.online = 'true';
+						if(obj.power){
+							$this.FDdata.power = obj.power;
+							$this.power = obj.power;
+						}else{
+							isall = true;
+						}
+						if(obj.wind_speed){
+							$this.FDdata.wind_speed = obj.wind_speed;
+						}else{
+							isall = true;
+						}
+						if(obj.humidity){
+							$this.FDdata.humidity = obj.humidity;
+						}else{
+							isall = true;
+						}
+						if(obj.tank_status){
+							$this.FDdata.tank_status = obj.tank_status;
+						}
+						if(obj.cur_humidity){
+							$this.FDdata.cur_humidity = obj.cur_humidity;
+						}else{
+							isall = true;
+						}
+						if(isall){
+							$this.isshowLoading = true;
+							$this.getDeviceStatus();
+						}else{
+							$this.isRefreshing = false;
+							$this.isshowLoading = false;
+						}
 					}else{
-						isall = true;
-					}
-					if(obj.wind_speed){
-						$this.FDdata.wind_speed = obj.wind_speed;
-					}else{
-						isall = true;
-					}
-					if(obj.humidity){
-						$this.FDdata.humidity = obj.humidity;
-					}else{
-						isall = true;
-					}
-					if(obj.tank_status){
-						$this.FDdata.tank_status = obj.tank_status;
-					}
-					if(obj.cur_humidity){
-						$this.FDdata.cur_humidity = obj.cur_humidity;
-					}else{
-						isall = true;
-					}
-					if(isall){
-						$this.isshowLoading = true;
-						$this.getDeviceStatus();
-					}else{
+						$this.initData();
 						$this.isRefreshing = false;
 						$this.isshowLoading = false;
+						if(bind_res_data.msg === ''){
+							let str1 = '';
+							if(bind_res_data.devices[0].status){
+								str1 = bind_res_data.devices[0].status;
+								if(str1.toString() === '-6'){
+									$this.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
+									$this.isshowclose();
+								}else{
+									$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}     
+							}else{
+								str1 = bind_res_data.code;
+								$this.netWorkGet(api.getCode(str1,'操作设备失败'))
+							}
+						}else{
+							$this.netWorkGet(bind_res_data.msg)
+						}
 					}
 				}else{
 					$this.initData();
@@ -734,25 +760,13 @@
 					$this.isshowLoading = false;
 					if(bind_res_data.msg === ''){
 						let str1 = '';
-						if(bind_res_data.devices[0].status){
-							str1 = bind_res_data.devices[0].status;
-							if(str1.toString() === '-6'){
-								$this.isshowclose();
-								return false;
-							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								$this.isshowclose();
-							}else{
-								$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-							}     
-						}else{
-							str1 = bind_res_data.code;
-							$this.netWorkGet(api.getCode(str1,'操作设备失败'))
-						}
+						str1 = bind_res_data.code;
+						$this.netWorkGet(api.getCode(str1,'操作设备失败'))
 					}else{
 						$this.netWorkGet(bind_res_data.msg)
 					}
 				}
+				
 				$this.setdata();
 			} else {
 				$this.isRefreshing = false;

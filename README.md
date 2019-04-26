@@ -101,5 +101,5 @@ src结构：
 4、mainfest.json文件用来编写接口引入声明以及路由的定义等（具体说明请参考[快应用manifest.json说明](https://doc.quickapp.cn/framework/manifest.html)）；
 
 
-
+注意：此文档只做快应用入门开发文档使用，如果想要了解更多项目的开发流程，请移步到：![](http://confluence.msmart.com/pages/viewpage.action?pageId=21523619)
 

@@ -837,10 +837,10 @@
 								that.isshowclose();
 								return false;
 							}
-							if (str1.toString() != '-100') {
-								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
-							} else {
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 								that.isshowclose();
+							} else {
+								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
 							}
 						} else {
 							str1 = data.code;
@@ -936,88 +936,102 @@
 			
 			if (res.code && res.code === 200) {
 				let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-				if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
-					that.EAdata.online = 'true';
-					that.online = 'true';
-					let isall = false;
-					let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
-					if (obj.mode) {
-						that.EAdata.mode = obj.mode
-					} else {
-						isall = true;
-					}
-					if (obj.order_time_hour.toString()) {
-						that.EAdata.order_time_hour = obj.order_time_hour
-					} else {
-						isall = true;
-					}
-					if (obj.order_time_min.toString()) {
-						that.EAdata.order_time_min = obj.order_time_min
-					} else {
-						isall = true;
-					}
-					if(obj.left_time_hour.toString()){
-						that.EAdata.left_time_hour = obj.left_time_hour;
-						that.left_time_hour = obj.left_time_hour;
-					} else {
-						isall = true;
-					}
-					if(obj.left_time_min.toString()){
-						that.EAdata.left_time_min = obj.left_time_min;
-						that.left_time_min = obj.left_time_min;
-					} else {
-						isall = true;
-					}
-					if(obj.warm_time_hour.toString()){
-						that.EAdata.warm_time_hour = obj.warm_time_hour;
-						that.warm_time_hour = obj.warm_time_hour;
-					} else {
-						isall = true;
-					}
-					if(obj.warm_time_min.toString()){
-						that.EAdata.warm_time_min = obj.warm_time_min;
-						that.warm_time_min = obj.warm_time_min;
-					} else {
-						isall = true;
-					}
-					if (obj.work_status) {
-						that.EAdata.work_status = obj.work_status
-					} else {
-						isall = true;
-					}
-					that.listDevice = obj;
-					if (isall) {
-						that.isshowLoading = true;
-						that.getDeviceList();
+				if(parseInt(bind_res_data.code) == 0){
+					if (!parseInt(bind_res_data.devices[0].status)) {
+						that.EAdata.online = 'true';
+						that.online = 'true';
+						let isall = false;
+						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
+						if (obj.mode) {
+							that.EAdata.mode = obj.mode
+						} else {
+							isall = true;
+						}
+						if (obj.order_time_hour.toString()) {
+							that.EAdata.order_time_hour = obj.order_time_hour
+						} else {
+							isall = true;
+						}
+						if (obj.order_time_min.toString()) {
+							that.EAdata.order_time_min = obj.order_time_min
+						} else {
+							isall = true;
+						}
+						if(obj.left_time_hour.toString()){
+							that.EAdata.left_time_hour = obj.left_time_hour;
+							that.left_time_hour = obj.left_time_hour;
+						} else {
+							isall = true;
+						}
+						if(obj.left_time_min.toString()){
+							that.EAdata.left_time_min = obj.left_time_min;
+							that.left_time_min = obj.left_time_min;
+						} else {
+							isall = true;
+						}
+						if(obj.warm_time_hour.toString()){
+							that.EAdata.warm_time_hour = obj.warm_time_hour;
+							that.warm_time_hour = obj.warm_time_hour;
+						} else {
+							isall = true;
+						}
+						if(obj.warm_time_min.toString()){
+							that.EAdata.warm_time_min = obj.warm_time_min;
+							that.warm_time_min = obj.warm_time_min;
+						} else {
+							isall = true;
+						}
+						if (obj.work_status) {
+							that.EAdata.work_status = obj.work_status
+						} else {
+							isall = true;
+						}
+						that.listDevice = obj;
+						if (isall) {
+							that.isshowLoading = true;
+							that.getDeviceList();
+						} else {
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+						}
 					} else {
 						that.isRefreshing = false;
 						that.isshowLoading = false;
+						if (bind_res_data.msg === '') {
+							let str1 = '';
+							if (bind_res_data.devices[0].status) {
+								str1 = bind_res_data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+									that.isshowclose();
+								} else {
+									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+								}
+							} else {
+								str1 = bind_res_data.code;
+								that.netWorkGet(api.getCode(str1, '操作设备失败'))
+							}
+							// $this.netWorkGet('操作设备失败')
+						} else {
+							that.netWorkGet(bind_res_data.msg)
+						}
 					}
-				} else {
+				}else{
 					that.isRefreshing = false;
 					that.isshowLoading = false;
 					if (bind_res_data.msg === '') {
 						let str1 = '';
-						if (bind_res_data.devices[0].status) {
-							str1 = bind_res_data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if (str1.toString() != '-100') {
-								that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-							} else {
-								that.isshowclose();
-							}
-						} else {
-							str1 = bind_res_data.code;
-							that.netWorkGet(api.getCode(str1, '操作设备失败'))
-						}
+						str1 = bind_res_data.code;
+						that.netWorkGet(api.getCode(str1, '操作设备失败'))
 						// $this.netWorkGet('操作设备失败')
 					} else {
 						that.netWorkGet(bind_res_data.msg)
 					}
 				}
+				
 			} else {
 				that.isRefreshing = false;
 				that.isshowLoading = false;

@@ -1357,104 +1357,118 @@ export default {
 		let $this = this;
 		if (res.code && res.code === 200) {
 			let bind_res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
-			if(!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)){
-				let isall = false;
-				$this.online = 'true';
-				$this.FAdata.gear = '--';
-				$this.gear = '--';
-				$this.select_gear = 0;
-				let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
-				if(obj.power){
-					$this.FAdata.power = obj.power;
-					$this.power = obj.power;
-				}else{
-					isall = true;
-				}
-				if(obj.mode){
-					$this.FAdata.mode = obj.mode;
-					$this.mode_n = obj.mode;
-				}else{
-					isall = true;
-				}
-				if(obj.swing){
-					$this.swing =  obj.swing
-					$this.FAdata.swing = obj.swing
-				}else{
-					isall = true;
-				}
-				if(obj.timer_on_minute.toString()){
-					$this.timer_on_minute = obj.timer_on_minute
-					$this.FAdata.timer_on_minute = obj.timer_on_minute
-				}else{
-					isall = true;
-				}
-				if(obj.swing_angle){
-					$this.swing_angle_n = obj.swing_angle;
-					$this.FAdata.swing_angle = obj.swing_angle;
-				}else{
-					$this.swing_angle_n = "unknown";
-					$this.FAdata.swing_angle = "unknown";
-				}
-				
-				if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
-					$this.FAdata.timer_off_minute = obj.timer_off_minute
-					$this.timer_off_minute = obj.timer_off_minute
-				}else{
-					isall = true;
-				}
-				if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
-					$this.timer_off_hour = obj.timer_off_hour
-					$this.FAdata.timer_off_hour = obj.timer_off_hour
-				}else{
-					isall = true;
-				}
-				if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
-					$this.FAdata.timer_on_hour = obj.timer_on_hour
-					$this.timer_on_hour = obj.timer_on_hour
-				}else{
-					isall = true;
-				}
-				if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
-					$this.FAdata.gear = obj.gear
-					$this.gear = obj.gear;
-					$this.select_gear = obj.gear;
-				}else{
-					isall = true;
-				}
-				if(isall){
-					$this.isshowLoading = true;
-					$this.getDeviceStatus();
+			if(parseInt(bind_res_data.code) == 0){
+				if(!parseInt(bind_res_data.devices[0].status)){
+					let isall = false;
+					$this.online = 'true';
+					$this.FAdata.gear = '--';
+					$this.gear = '--';
+					$this.select_gear = 0;
+					let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
+					if(obj.power){
+						$this.FAdata.power = obj.power;
+						$this.power = obj.power;
+					}else{
+						isall = true;
+					}
+					if(obj.mode){
+						$this.FAdata.mode = obj.mode;
+						$this.mode_n = obj.mode;
+					}else{
+						isall = true;
+					}
+					if(obj.swing){
+						$this.swing =  obj.swing
+						$this.FAdata.swing = obj.swing
+					}else{
+						isall = true;
+					}
+					if(obj.timer_on_minute.toString()){
+						$this.timer_on_minute = obj.timer_on_minute
+						$this.FAdata.timer_on_minute = obj.timer_on_minute
+					}else{
+						isall = true;
+					}
+					if(obj.swing_angle){
+						$this.swing_angle_n = obj.swing_angle;
+						$this.FAdata.swing_angle = obj.swing_angle;
+					}else{
+						$this.swing_angle_n = "unknown";
+						$this.FAdata.swing_angle = "unknown";
+					}
+					
+					if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
+						$this.FAdata.timer_off_minute = obj.timer_off_minute
+						$this.timer_off_minute = obj.timer_off_minute
+					}else{
+						isall = true;
+					}
+					if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
+						$this.timer_off_hour = obj.timer_off_hour
+						$this.FAdata.timer_off_hour = obj.timer_off_hour
+					}else{
+						isall = true;
+					}
+					if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
+						$this.FAdata.timer_on_hour = obj.timer_on_hour
+						$this.timer_on_hour = obj.timer_on_hour
+					}else{
+						isall = true;
+					}
+					if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
+						$this.FAdata.gear = obj.gear
+						$this.gear = obj.gear;
+						$this.select_gear = obj.gear;
+					}else{
+						isall = true;
+					}
+					if(isall){
+						$this.isshowLoading = true;
+						$this.getDeviceStatus();
+					}else{
+						$this.isRefreshing = false;
+						$this.isshowLoading = false;
+						$this.timeFilter2();
+					}
+					$this.listDevice = obj;
 				}else{
 					$this.isRefreshing = false;
 					$this.isshowLoading = false;
-					$this.timeFilter2();
+					$this.initData();
+					if(bind_res_data.msg === ''){
+						let str1 = '';
+						if(bind_res_data.devices[0].status){
+							str1 = bind_res_data.devices[0].status;
+							if(str1.toString() === '-6'){
+								$this.isshowclose();
+								return false;
+							}
+							if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
+								$this.isshowclose();
+							}else{
+								$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+							}
+						}else{
+							str1 = bind_res_data.devices[0].description;
+							$this.netWorkGet(api.getCode(str1,'操作设备失败'))
+						}
+					}else{
+						$this.netWorkGet(bind_res_data.msg)
+					}
 				}
-				$this.listDevice = obj;
 			}else{
 				$this.isRefreshing = false;
 				$this.isshowLoading = false;
 				$this.initData();
 				if(bind_res_data.msg === ''){
 					let str1 = '';
-					if(bind_res_data.devices[0].status){
-						str1 = bind_res_data.devices[0].status;
-						if(str1.toString() === '-6'){
-							$this.isshowclose();
-							return false;
-						}
-						if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
-							$this.isshowclose();
-						}else{
-							$this.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-						}
-					}else{
-						str1 = bind_res_data.devices[0].description;
-						$this.netWorkGet(api.getCode(str1,'操作设备失败'))
-					}
+					str1 = bind_res_data.devices[0].description;
+					$this.netWorkGet(api.getCode(str1,'操作设备失败'))
 				}else{
 					$this.netWorkGet(bind_res_data.msg)
 				}
 			}
+			
 		} else {
 			$this.isRefreshing = false;
 			$this.isshowLoading = false;

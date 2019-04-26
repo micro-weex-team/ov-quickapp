@@ -11,7 +11,7 @@
 			<midea-meiju power="{{power}}"></midea-meiju>
 		</list-item>
 	</list>
-	<midea-select></midea-select>
+	<!-- <midea-select></midea-select> -->
 	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
   </div>
 </template>
@@ -91,6 +91,15 @@ export default {
 	},
 	clickEv(e){
 		console.log(e)
+		console.log(this.$app.$data)
+	},
+	onInit() {
+		// console.log(app.getInfo())
+		
+		console.log("配置信息："+JSON.stringify(this.$app.options))
+	},
+	onShow() {
+		// console.log(this.$app.options.env)
 	}
 }
 </script>

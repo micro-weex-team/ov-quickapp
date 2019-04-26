@@ -606,10 +606,7 @@ module.exports = {
 							that.isshowclose();
 							return false;
 						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
+						if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 							that.isshowclose();
 						} else {
 							that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
@@ -738,75 +735,85 @@ module.exports = {
 		that.online = 'true';
 		if (res.code === 200) {
 			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-			if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
-				setTimeout(function(){
-					that.getDeviceStatus(that.openId);
-				},700)
-				return false;
-				let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
-				let isall = false;
-				if(obj.work_status){
-					that.work_status = obj.work_status;
-				}
-				if(obj.power){
-					that.power = obj.power;
-				}else{
-					that.power = "on";
-				}
-				if(that.power == 'on' || that.power == 'delay_off'){
-					if(obj.gear){
-						that.gear = obj.gear;
+			if(parseInt(data.code) == 0){
+				if (!parseInt(data.devices[0].status)) {
+					setTimeout(function(){
+						that.getDeviceStatus(that.openId);
+					},700)
+					return false;
+					let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
+					let isall = false;
+					if(obj.work_status){
+						that.work_status = obj.work_status;
+					}
+					if(obj.power){
+						that.power = obj.power;
 					}else{
-						that.gear = 0;
+						that.power = "on";
+					}
+					if(that.power == 'on' || that.power == 'delay_off'){
+						if(obj.gear){
+							that.gear = obj.gear;
+						}else{
+							that.gear = 0;
+							// isall = true;
+						}
+						that.B6data = obj;
+						that.B6data.power = 'on';
+					}else{
+						that.B6data = obj;
+						that.B6data.gear = 0;
+						that.B6data.power = 'off';
+					}
+					if(obj.light){
+						that.light = obj.light;
+					}else{
+						that.light = 'off';
 						// isall = true;
 					}
-					that.B6data = obj;
-					that.B6data.power = 'on';
-				}else{
-					that.B6data = obj;
-					that.B6data.gear = 0;
-					that.B6data.power = 'off';
-				}
-				if(obj.light){
-					that.light = obj.light;
-				}else{
-					that.light = 'off';
-					// isall = true;
-				}
-				that.B6data.light = that.light;
-				if(isall){
-					that.getDeviceStatus(that.openId);
-				}else{
-					that.isRefreshing = false;
+					that.B6data.light = that.light;
+					if(isall){
+						that.getDeviceStatus(that.openId);
+					}else{
+						that.isRefreshing = false;
+						that.isloading = false;
+					}
+				} else {
 					that.isloading = false;
+					that.isstop = true;
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if (str1.toString() === '-6') {
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+								that.isshowclose();
+							} else {
+								that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '操作设备失败'));
+						}
+					} else {
+						that.netWorkGet(data.msg);
+					}
 				}
-			} else {
+			}else{
 				that.isloading = false;
 				that.isstop = true;
 				if (data.msg === '') {
 					let str1 = '';
-					if (data.devices[0].status) {
-						str1 = data.devices[0].status;
-						if (str1.toString() === '-6') {
-							that.isshowclose();
-							return false;
-						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
-							that.isshowclose();
-						} else {
-							that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
-						}
-					} else {
-						str1 = data.code;
-						that.netWorkGet(api.getCode(str1, '操作设备失败'));
-					}
+					str1 = data.code;
+					that.netWorkGet(api.getCode(str1, '操作设备失败'));
 				} else {
 					that.netWorkGet(data.msg);
 				}
 			}
+			
 		} else {
 			that.isRefreshing = false;
 			that.isloading = false;

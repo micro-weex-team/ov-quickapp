@@ -154,26 +154,13 @@
 						}
 					}).catch((error) => {
 						that.getWifiList();
-						// console.log("出错了"+JSON.stringify(error))
+						console.log("出错了"+JSON.stringify(error))
 					})
 				}else{
 					that.getWifiList();
-					mode = api.getUrlCan(that.iot_url,'mode');
-					console.log(mode)
-					// if(that.iot_config_type.toString() === '-1' || that.iot_config_type === ''){
-						if(mode && mode != ''){
-							let str = mode.toString();
-							mode = str.substring(str.length-1,str.length);
-							that.iot_config_type = str.substring(str.length-1,str.length);
-						}else{
-							that.iot_config_type = '0';
-						}
-					// }
-					if(api.getUrlCan(that.iot_url,'type')){
-						that.deviceCode = api.getUrlCan(that.iot_url,'type').substring(9,17);
-					}
-					that.firsType = that.iot_config_type;
-					that.getConfigDeviceInfo();
+					
+					// that.firsType = that.iot_config_type;
+					// that.getConfigDeviceInfo();
 				}
 				
 				// console.log(that)
@@ -276,9 +263,17 @@
 			}else{
 				that.isap = "true";
 			}
-// 			if(that.iot_config_type.toString() == "0"){
-// 				
-// 			}
+			let params = {
+						iot_wifi_ssid: that.iot_wifi_ssid,
+						iot_wifi_password: that.iot_wifi_password,
+						iot_url:that.iot_url,
+						ssidDevice: that.ssidDevice,
+						iot_device_ssid:that.iot_device_ssid,
+						iot_wifi_secretType: that.iot_wifi_secretType,
+						iot_config_type:that.iot_config_type,
+						is_ap:that.isap
+					}
+			console.log("跳转到配网页面的信息:"+JSON.stringify(params))
 			if(!that.checked){
 				router.push ({
 					uri: "config_network/apNetWork",
@@ -320,6 +315,7 @@
 			let arry = [];
 			let num = -1
 			that.type.forEach(function(item,i){
+				console.log("deviceType:"+that.deviceType)
 				if(item === that.ssidDevice.toLowerCase()){
 					num = i;
 				}
@@ -383,6 +379,7 @@
 								if(that.getArrDifference(that.suportType,that.timeNum).length > 0){
 									that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
 									that.getConfigDeviceInfo();
+									return false
 								}else{
 									prompt.showDialog({
 											title: '提示',
@@ -406,12 +403,6 @@
 									return false
 								}
 							}else{
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
-								console.log("打印大法==============================================")
 								console.log("打印list："+JSON.stringify(data))
 								if(that.deviceCode === '' || that.againData){
 									that.num = 0;
@@ -460,7 +451,7 @@
 														console.log(`handling fail, code = ${code}`)
 													}
 												})
-												return false
+												return false;
 											}
 										}
 									}
@@ -474,9 +465,12 @@
 							if(that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1){
 								that.timeNum.push(parseInt(that.iot_config_type));
 							}
+							console.log("已经出现空值的："+JSON.stringify(that.timeNum))
+							console.log("不出现空值的:"+JSON.stringify(that.getArrDifference(that.suportType,that.timeNum)))
 							if(that.getArrDifference(that.suportType,that.timeNum).length > 0){
 								that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
 								that.getConfigDeviceInfo();
+								return false;
 							}else{
 								prompt.showDialog({
 										title: '提示',
@@ -511,7 +505,28 @@
 		getWifiList(){
 			// this.isloading = true;
 			let that = this;
-			console.log("选择方式"+that.iot_call_from)
+			console.log("选择方式"+that.iot_call_from);
+			let mode = "";
+			if(that.iot_url != ''){
+				mode = api.getUrlCan(that.iot_url,'mode');
+				console.log(mode)
+				if(mode && mode != ''){
+					let str = mode.toString();
+					mode = str.substring(str.length-1,str.length);
+					that.iot_config_type = str.substring(str.length-1,str.length);
+				}else{
+					that.iot_config_type = '0';
+				}
+				if(api.getUrlCan(that.iot_url,"tsn") || api.getUrlCan(that.iot_url,"sn") || api.getUrlCan(that.iot_url,"type")){
+					if(api.getUrlCan(that.iot_url,"tsn")){
+						that.deviceCode = api.getUrlCan(that.iot_url,"tsn").substring(10,17);
+					}else if(api.getUrlCan(that.iot_url,"type")){
+						that.deviceCode = api.getUrlCan(that.iot_url,"type").substring(10,17);
+					}else{
+						that.deviceCode = api.getUrlCan(that.iot_url,"sn").substring(10,17);
+					}
+				}
+			}
 			if(that.iot_device_ssid != '' && that.iot_device_ssid != 'null'){
 				that.ssidDevice = that.iot_device_ssid.substring(6,8).toLowerCase();
 				that.firsType = that.iot_config_type;

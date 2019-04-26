@@ -1,29 +1,35 @@
+const sethost = false;  //配置环境（true：pro环境；false：sit环境）
 
-/**
- * 正式环境配置
- */
-// const sethost = true;  //配置环境
-// const host = "https://ov-prod.smartmidea.net";
-// const url = "wss://ovws-sit.smartmidea.net";
-// const appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
-// const appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+
+let host = "";
+let url = '';
+let appkeyForvivo = '';
+let appkeyForoppo = '';
 /**
  * 测试环境配置
  */
-const sethost = false;  //配置环境
-const host = "http://ov-sit.smartmidea.net";
-const url = "ws://ovws-sit.smartmidea.net";
-const appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
-const appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
+if(sethost){
+	host = "https://ov-prod.smartmidea.net";
+	url = "wss://ovws-sit.smartmidea.net";
+	appkeyForvivo = "00498c1bb52ad5d4d81eca53dae47fd1";
+	appkeyForoppo = "ddb2668091508e243cc3b9570d094164";
+}else{
+	host = "http://ov-sit.smartmidea.net";
+	url = "ws://ovws-sit.smartmidea.net";
+	appkeyForvivo = "c2db6cbc7609febb7c54f0df5234506c";
+	appkeyForoppo = "b37142d426c90ddc1b28d1182f363384";
+}
 import fetch from '@system.fetch';
 import device from '@system.device';
 import prompt from '@system.prompt';
+import router from '@system.router';
 const appidForvivo  = 2150;
 const appidForoppo  = 2149;
 import websocketfactory from '@system.websocketfactory';
 import uuid from './uuid.js';
 import SHA from 'js-sha256';
 import net from './networkAPI.js';
+// import main from "./main.js";
 
 var Fly=require("flyio/dist/npm/hap")
 var fly=new Fly(fetch);
@@ -320,6 +326,7 @@ export default {
 	postDeviceStatusQuery(params,accessToken,lanonline,deviceid){
 		let that        = this;
 		let objStr      = '';
+		// console.log("")
 		if((typeof params) === 'object'){
 			objStr = JSON.stringify(params);
 		}
@@ -578,6 +585,7 @@ export default {
 				data = msg+',请稍后重试'
 			break;
 		}
+		console.log("失败信息"+data)
 		return data;
 	}
 }
@@ -590,6 +598,29 @@ fly.interceptors.response.use(
     },
     (err) => {
 			console.log("请求失败信息："+JSON.stringify(err));
+			prompt.showDialog({
+			    title: '请求失败',
+			    message: '连接不上服务器，请检查网络后重试！',
+			    buttons: [{
+				  text: '确定',
+				  color: '#33dd44'
+				}],
+				success: function(data) {
+					router.clear();
+				    router.back();
+					console.log('handling callback')
+				},
+				cancel: function() {
+					router.clear();
+					router.back()
+					console.log('handling cancel')
+				},
+				fail: function(data, code) {
+					router.clear();
+					router.back()
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
 			// that.showDialog(err);
     }
 )
