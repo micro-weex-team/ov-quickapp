@@ -5,7 +5,7 @@
 需安装6.0以上版本的Node.jS，请从[Node.js官网](https://nodejs.org/en/)下载
 #### 通过git下载项目
 在命令行中执行以下命令下载项目：
-> git clone git@10.16.28.73:IT-MobileDivision/huawei-quickapp.git  
+> git clone http://10.16.28.73/IT-MobileDivision/ov-quickapp.git
 
 #### 手机安装调试器
 调试器是一个Android应用程序，下载[调试器APK](https://statres.quickapp.cn/quickapp/quickapp/201806/file/quickapp_debugger.apk)
