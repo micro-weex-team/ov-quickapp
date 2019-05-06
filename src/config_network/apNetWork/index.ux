@@ -323,6 +323,7 @@
 						iot_device_ssid:that.iot_device_ssid,
 						iot_wifi_secretType: that.iot_wifi_secretType,
 						iot_config_type:iot_config,
+						iot_apLan:that.isap
 					}
 				})
 		},
