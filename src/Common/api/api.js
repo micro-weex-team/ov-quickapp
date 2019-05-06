@@ -6,7 +6,7 @@ let url = '';
 let appkeyForvivo = '';
 let appkeyForoppo = '';
 /**
- * 测试环境配置
+ * 环境配置
  */
 if(sethost){
 	host = "https://ov-prod.smartmidea.net";
@@ -30,6 +30,7 @@ import uuid from './uuid.js';
 import SHA from 'js-sha256';
 import net from './networkAPI.js';
 // import main from "./main.js";
+
 
 var Fly=require("flyio/dist/npm/hap")
 var fly=new Fly(fetch);
@@ -64,7 +65,9 @@ device.getInfo({
 		}
 	}
 })
+
 export default {
+	
 	//api接口
 	hostData: {
 		pro:sethost?'':'sit',

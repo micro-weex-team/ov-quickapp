@@ -9,6 +9,9 @@
 				prompt.showToast({
 					message:"sssss"
 				})
+			},
+			publicData:{
+				mes:"dasdasd"
 			}
   }
 </script>

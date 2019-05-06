@@ -417,7 +417,7 @@ module.exports = {
 		if(e.detail.params === "启动清扫"){
 			if(that.work_status == 'charge'){
 				prompt.showToast({
-					message:"设备回充中，请稍后..."
+					message:"设备回充中，请稍后"
 				})
 				return false;
 			}
@@ -443,7 +443,7 @@ module.exports = {
 		}else if(e.detail.params === '回充'){
 			if(that.work_status == 'charging' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 				prompt.showToast({
-					message:"设备充电中，请稍后..."
+					message:"设备充电中，请稍后"
 				})
 				return false;
 			}
@@ -527,7 +527,7 @@ module.exports = {
 			that.isshowclose();
 			return false;
 		}
-		if(that.work_status == 'charge' || that.work_status == 'charging'|| that.work_status == 'charge_finish'){
+		if(that.work_status == 'charge' || that.work_status == 'charging'|| that.work_status == 'charge_finish' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 			return false;
 		}
 		let params = {};
@@ -615,6 +615,7 @@ module.exports = {
 	 */
 	getLanData(res){
 		let that = this;
+		that.istips = false;
 		let obj = (typeof res) == 'object'?res:JSON.parse(res);
 		if(parseInt(obj.code) == 0){
 			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
@@ -1078,7 +1079,7 @@ module.exports = {
 			}
 		});
 		let that = this;
-		that.deviceHeight = that.$app.options.env.deviceHeight;
+		// that.deviceHeight = that.$app.options.env.deviceHeight;
 		router.clear();
 		that.$on('cancel', function(e) {
 			that.isabout = false;

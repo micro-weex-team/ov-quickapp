@@ -120,6 +120,7 @@ import fetch from '@system.fetch';
 import account from '@service.account';
 import storage from '@system.storage';
 import barcode from '@system.barcode';
+import device from '@system.device';
 // import IOT from '@service.iot';
 import pkg from '@system.package';
 import network from '@system.network';
@@ -1281,6 +1282,7 @@ export default {
 		}else{
 			that.lanOnline = 'false';
 		}
+		that.istips = false;
 		api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
 			that.isagain = true;
 			if(res.lanonline){
@@ -1763,7 +1765,14 @@ export default {
 			}
 		})
 		that.setGear();
-		this.deviceHeight = this.$app.options.env.deviceHeight;
+		// this.deviceHeight = this.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
 		router.clear();
 		this.$page.setTitleBar({
 			text: '电风扇'

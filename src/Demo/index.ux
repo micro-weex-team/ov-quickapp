@@ -37,6 +37,7 @@
 </style>
 <script>
 import prompt from '@system.prompt';
+import index from "./assets/index.js";
 export default {
 	private: {
 		power:'off',
@@ -90,13 +91,12 @@ export default {
 	btnclick(){
 	},
 	clickEv(e){
-		console.log(e)
-		console.log(this.$app.$data)
+		
+		//console.log("配置信息："+JSON.stringify(this.$app.$def))
 	},
 	onInit() {
 		// console.log(app.getInfo())
 		
-		console.log("配置信息："+JSON.stringify(this.$app.options))
 	},
 	onShow() {
 		// console.log(this.$app.options.env)

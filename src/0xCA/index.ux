@@ -71,6 +71,7 @@ import prompt from '@system.prompt';
 import fetch from '@system.fetch';
 import account from '@service.account';
 import storage from '@system.storage';
+import device from '@system.device';
 import barcode from '@system.barcode';
 // import IOT from '@service.iot';
 import pkg from '@system.package';
@@ -167,15 +168,22 @@ export default {
 		}
 	},
     onInit() {
-			api.getlanguage().then((res) => {
-				if(res === 'ug'){
-					this.language = false;
-				}else{
-					this.language = true;
-				}
-			})
-			let that = this;
-		this.deviceHeight = this.$app.options.env.deviceHeight;
+		api.getlanguage().then((res) => {
+			if(res === 'ug'){
+				this.language = false;
+			}else{
+				this.language = true;
+			}
+		})
+		let that = this;
+		// this.deviceHeight = this.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
 		router.clear();
 		that.$on('cancel', function(e){
 			that.isabout = false;
@@ -708,6 +716,7 @@ export default {
 					properties: that.CAlist
 				}]
 			}
+			that.istips = false;
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
 			}else{

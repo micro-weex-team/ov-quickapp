@@ -55,6 +55,7 @@
 	import net from '../Common/api/networkAPI.js';
     module.exports = {
         private: {
+			isall:false,
 			isap_lan:'fasle',
 			firsType:'',
 			timeNum:[],//空的配网指引集
@@ -329,6 +330,7 @@
 			arry[0] = that.ssidDevice.toUpperCase();
 			if(parseInt(that.iot_config_type) == -1){
 				that.iot_config_type = 0;
+				that.firsType = that.iot_config_type;
 			}
 				let params = {
 					types: arry,
@@ -428,8 +430,11 @@
 												}else{
 													that.iot_config_type = that.getArrDifference(that.suportType,that.timeNum)[0];
 												}
-												that.againData = true;
+												if(that.isall){
+													that.againData = true;
+												}
 												that.getConfigDeviceInfo();
+												that.isall = true;
 												return false;
 											}else{
 												prompt.showDialog({
@@ -519,11 +524,11 @@
 				}
 				if(api.getUrlCan(that.iot_url,"tsn") || api.getUrlCan(that.iot_url,"sn") || api.getUrlCan(that.iot_url,"type")){
 					if(api.getUrlCan(that.iot_url,"tsn")){
-						that.deviceCode = api.getUrlCan(that.iot_url,"tsn").substring(10,17);
+						that.deviceCode = api.getUrlCan(that.iot_url,"tsn").substring(9,17);
 					}else if(api.getUrlCan(that.iot_url,"type")){
-						that.deviceCode = api.getUrlCan(that.iot_url,"type").substring(10,17);
+						that.deviceCode = api.getUrlCan(that.iot_url,"type").substring(9,17);
 					}else{
-						that.deviceCode = api.getUrlCan(that.iot_url,"sn").substring(10,17);
+						that.deviceCode = api.getUrlCan(that.iot_url,"sn").substring(9,17);
 					}
 				}
 			}

@@ -793,6 +793,7 @@
 		 */
 		getLanData(res){
 			let that = this;
+			that.istips = false;
 			let obj = (typeof res) == 'object'?res:JSON.parse(res);
 			console.log(obj.code)
 			if(parseInt(obj.code) == 0){
@@ -1257,7 +1258,7 @@
 					that.language = true;
 				}
 			})
-			this.deviceHeight = this.$app.options.env.deviceHeight;
+			// this.deviceHeight = this.$app.options.env.deviceHeight;
 			router.clear();
 			// this.isMeiju();
 			//组件控制

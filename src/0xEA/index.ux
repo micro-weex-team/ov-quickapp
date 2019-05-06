@@ -864,6 +864,7 @@
 					properties: that.EAlist
 				}]
 			}
+			that.istips = false;
 			that.pause_data = true;
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
@@ -1374,7 +1375,7 @@
 		  this.setTime();
 		  //初始化
 		  this.initData();
-		  this.deviceHeight = this.$app.options.env.deviceHeight;
+		  // this.deviceHeight = this.$app.options.env.deviceHeight;
 		  let that = this;
 		  api.getlanguage().then((res) => {
 		  	if (res === 'ug') {

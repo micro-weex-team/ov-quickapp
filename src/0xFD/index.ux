@@ -633,6 +633,7 @@
 					properties: that.FDlist
 				}]
 			}
+			that.istips = false;
 			that.isfirst = true;
 			// that.webSocketdata();
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
@@ -945,7 +946,7 @@
 				}
 			})
 			let that = this;
-			this.deviceHeight = this.$app.options.env.deviceHeight;
+			// this.deviceHeight = this.$app.options.env.deviceHeight;
 			// prompt.showToast({message:"deviceId"+this.deviceId + ":::openid:"+this.openid})
 			router.clear();
             this.$page.setTitleBar({text: '加湿器'});

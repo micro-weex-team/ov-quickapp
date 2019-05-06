@@ -936,6 +936,7 @@
 					properties: that.DBdata
 				}]
 			}
+			that.istips = false;
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
 			}else{

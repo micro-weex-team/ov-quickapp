@@ -127,6 +127,7 @@
     import account from '@service.account';
     import router from '@system.router';
 	import storage from '@system.storage';
+	import device from '@system.device';
     // import IOT from '@service.iot';
     import api from '../Common/api/api.js';
     import network from '@system.network';
@@ -508,6 +509,7 @@
 					properties: that.DBdata
 				}]
 			}
+			that.istips = false;
 			// that.webSocketdata();
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
@@ -1073,7 +1075,14 @@
 				}
 			})
 			let that = this;
-			this.deviceHeight = this.$app.options.env.deviceHeight;
+			// this.deviceHeight = this.$app.options.env.deviceHeight;
+			device.getInfo({
+				success: function(ret) {
+					console.log(`handling success， brand = ${ret.brand}`);
+					console.log("屏幕高度："+ret.screenHeight);
+					that.deviceHeight = ret.screenHeight;
+				}
+			})
 			router.clear();
             this.$page.setTitleBar({text: '空气净化器'});
             for(let i=100; i>0; i--){
