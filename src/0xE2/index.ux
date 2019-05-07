@@ -559,6 +559,7 @@
 					properties: that.E2data
 				}]
 			}
+			that.istips = false;
 			//that.webSocketdata();
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
@@ -635,66 +636,97 @@
 			let that = this;
 			if (res.code && res.code == 200){
 				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
-				this.status = data.devices[0].status
-				if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-					let isall = false;
-					that.online = "true";
-					let objdata = {}
-					let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
-					if(obj.power){
-						objdata.power = obj.power;
-					}else{
-						isall = true;
-					}
-					if(obj.hot_power){
-						objdata.hot_power = obj.hot_power;
-					}else{
-						isall = true;
-					}
-					if(obj.warm_power){
-						objdata.warm_power = obj.warm_power;
-					}else{
-						isall = true;
-					}
-					if(obj.cur_temperature || parseInt(obj.cur_temperature) == 0){
-						objdata.cur_temperature = obj.cur_temperature;
-					}else{
-						isall = true;
-					}
-					if(obj.temperature || parseInt(obj.temperature) == 0){
-						objdata.temperature = obj.temperature;
-						that.temperatureList.forEach(function(item,index){
-							if(item === parseInt(obj.temperature)){
-								that.temperatureIndex = index;
-							}
-						})
+				if(parseInt(data.code) == 0){
+					that.status = data.devices[0].status
+					if(!parseInt(data.devices[0].status)){
+						let isall = false;
+						that.online = "true";
+						let objdata = {}
+						let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+						if(obj.power){
+							objdata.power = obj.power;
+						}else{
+							isall = true;
+						}
+						if(obj.hot_power){
+							objdata.hot_power = obj.hot_power;
+						}else{
+							isall = true;
+						}
+						if(obj.warm_power){
+							objdata.warm_power = obj.warm_power;
+						}else{
+							isall = true;
+						}
+						if(obj.cur_temperature || parseInt(obj.cur_temperature) == 0){
+							objdata.cur_temperature = obj.cur_temperature;
+						}else{
+							isall = true;
+						}
+						if(obj.temperature || parseInt(obj.temperature) == 0){
+							objdata.temperature = obj.temperature;
+							that.temperatureList.forEach(function(item,index){
+								if(item === parseInt(obj.temperature)){
+									that.temperatureIndex = index;
+								}
+							})
+							
+						}else{
+							isall = true;
+						}
+						if(obj.heat_water_level || parseInt(obj.heat_water_level) == 0){
+							objdata.heat_water_level = obj.heat_water_level;
+						}else{
+							isall = true;
+						}
+						if(obj.end_time_hour || parseInt(obj.end_time_hour) == 0){
+							objdata.end_time_hour = obj.end_time_hour;
+						}else{
+							isall = true;
+						}
+						if(obj.end_time_minute || parseInt(obj.end_time_minute) == 0){
+							objdata.end_time_minute = obj.end_time_minute;
+						}else{
+							isall = true;
+						}
 						
-					}else{
-						isall = true;
-					}
-					if(obj.heat_water_level || parseInt(obj.heat_water_level) == 0){
-						objdata.heat_water_level = obj.heat_water_level;
-					}else{
-						isall = true;
-					}
-					if(obj.end_time_hour || parseInt(obj.end_time_hour) == 0){
-						objdata.end_time_hour = obj.end_time_hour;
-					}else{
-						isall = true;
-					}
-					if(obj.end_time_minute || parseInt(obj.end_time_minute) == 0){
-						objdata.end_time_minute = obj.end_time_minute;
-					}else{
-						isall = true;
-					}
-					
-					that.info = objdata;
-					if(isall){
-						that.isshowLoading = true;
-						that.getDeviceStatus();
+						that.info = objdata;
+						if(isall){
+							that.isshowLoading = true;
+							that.getDeviceStatus();
+						}else{
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+						}
 					}else{
 						that.isRefreshing = false;
 						that.isshowLoading = false;
+						that.initData();
+						if (data.msg === '') {
+							let str1 = '';
+							if (data.devices[0].status) {
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if (str1.toString() != '-100') {
+									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+								} else {
+									if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+										that.isshowclose();
+									}else{
+										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+									}
+								}
+							} else {
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1, '操作设备失败'))
+							}
+							// $this.netWorkGet('操作设备失败')
+						} else {
+							that.netWorkGet(data.msg)
+						}
 					}
 				}else{
 					that.isRefreshing = false;
@@ -702,30 +734,14 @@
 					that.initData();
 					if (data.msg === '') {
 						let str1 = '';
-						if (data.devices[0].status) {
-							str1 = data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if (str1.toString() != '-100') {
-								that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-							} else {
-								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
-									that.isshowclose();
-								}else{
-									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-								}
-							}
-						} else {
-							str1 = data.code;
-							that.netWorkGet(api.getCode(str1, '操作设备失败'))
-						}
+						str1 = data.code;
+						that.netWorkGet(api.getCode(str1, '操作设备失败'))
 						// $this.netWorkGet('操作设备失败')
 					} else {
 						that.netWorkGet(data.msg)
 					}
 				}
+				
 			}else{
 				that.isRefreshing = false;
 				that.isshowLoading = false;
@@ -1042,7 +1058,7 @@
 			this.$app.exit();
 		},
 		onInit() {
-			this.deviceHeight = this.$app.options.env.deviceHeight;
+			//this.deviceHeight = this.$app.options.env.deviceHeight;
 			api.getlanguage().then((res) => {
 				if (res === 'ug') {
 					this.language = false;

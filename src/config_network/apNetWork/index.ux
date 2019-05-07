@@ -176,11 +176,20 @@
 			let that = this;
 			if(this.iot_device_ssid != '' && that.iot_device_ssid != 'null'){
 				that.startConfigDevice();
-				
+				IOT.send({
+					action: 'getWifiList', 
+					success: function (data) {
+						
+					},
+					fail: function (data, code) {
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
 			}else{
 				IOT.send({
 					action: 'getWifiList', 
 					success: function (data) {
+						console.log("配网wifi列表:"+JSON.stringify(data))
 						let res = (typeof data) === "object"? data:JSON.parse(data);
 						if(!res.code){
 								let wifilist = (typeof res.message) === "object"? res.message.wifiList:JSON.parse(res.message).wifiList;
@@ -200,7 +209,8 @@
 												if(item.ssid.substring(6,8).toLowerCase() === str){
 													let param = {
 														ssid:item.ssid,
-														level:item.level
+														level:item.level,
+														capabilities:item.capabilities
 													}
 													obj.push(param);
 												}
@@ -275,7 +285,9 @@
 													index = n;
 												}
 											})
+											console.log("设备热点的加密方式:"+JSON.stringify(obj[index]));
 											that.iot_device_ssid = obj[index].ssid;
+											
 											that.startConfigDevice();
 										}
 									}else{
@@ -311,6 +323,7 @@
 						iot_device_ssid:that.iot_device_ssid,
 						iot_wifi_secretType: that.iot_wifi_secretType,
 						iot_config_type:iot_config,
+						iot_apLan:that.isap
 					}
 				})
 		},
@@ -494,7 +507,7 @@
 				$this.$page.finish()
 			},300)
 			if(bol === -1){
-				this.stopConfigDevice();
+				$this.stopConfigDevice();
 				// router.clear();
 				router.back();
 				// this.$app.exit();

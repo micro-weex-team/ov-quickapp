@@ -346,6 +346,7 @@
 					that.istips = false;
 				},3000)
 			}
+			return false;
 		},
 		onclickFn(e){
 			this.isabout = false;
@@ -638,10 +639,14 @@
 		},
 		openData1(){
 			let that = this;
-			that.isloading = true;
+			if(that.online === 'false'){
+				that.isshowclose();
+				return false;
+			}
 			let params;
 			let status = that.dataLists;
-			if(that.dataLists.power === "on"){
+			console.log("为什么跑到这里")
+			if(that.col === "on"){
 				params = {
 					power: "off"
 				}
@@ -652,6 +657,7 @@
 				}
 				delete status.control_status
 			}
+			that.isloading = true;
 			delete status.running_status;
 			delete status.power;
 			that.postDeviceControl(params,status);
@@ -857,6 +863,9 @@
 		 */
 		getdataLan(res){
 			let that = this;
+			if(that.timeoutInter != ''){
+				clearInterval(that.timeoutInter);
+			}
 			if(res.code === 200){
 				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
 				if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
@@ -869,9 +878,7 @@
 					that.program = obj.program;
 					that.dataLists = obj;
 					that.listDevice = obj;
-					if(that.timeoutInter != ''){
-						clearInterval(that.timeoutInter);
-					}
+					
 					if (that.online != 'true') {
 						that.isshowclose()
 					}
@@ -897,8 +904,7 @@
 								that.isshowclose();
 								return false;
 							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								// that.netWorkGet('设备离线')
+							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 								that.isshowclose();
 							}else{
 								that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
@@ -930,6 +936,7 @@
 					properties: that.DBdata
 				}]
 			}
+			that.istips = false;
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
 			}else{
@@ -1027,10 +1034,38 @@
 			let that = this;
 			if(res.code === 200){
 				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
-				if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-					setTimeout(function(){
-						that.getDeviceStatus(that.openId);
-					},1000)
+				if(parseInt(data.code) == 0){
+					if(!parseInt(data.devices[0].status)){
+						setTimeout(function(){
+							that.getDeviceStatus(that.openId);
+						},1000)
+					}else{
+						that.initData();
+						that.isRefreshing = false;
+						that.isloading = false;
+						that.isstop = true;
+						if(data.msg === ''){
+							let str1 = '';
+							if(data.devices[0].status){
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}
+							}else{
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1,'操作设备失败'))
+							}
+						}else{
+							that.netWorkGet(data.msg)
+						}
+					}
 				}else{
 					that.initData();
 					that.isRefreshing = false;
@@ -1038,22 +1073,8 @@
 					that.isstop = true;
 					if(data.msg === ''){
 						let str1 = '';
-						if(data.devices[0].status){
-							str1 = data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								// that.netWorkGet('设备离线')
-								that.isshowclose();
-							}else{
-								that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-							}
-						}else{
-							str1 = data.code;
-							that.netWorkGet(api.getCode(str1,'操作设备失败'))
-						}
+						str1 = data.code;
+						that.netWorkGet(api.getCode(str1,'操作设备失败'))
 					}else{
 						that.netWorkGet(data.msg)
 					}

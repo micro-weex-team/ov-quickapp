@@ -53,6 +53,7 @@ import account from '@service.account';
 import storage from '@system.storage';
 import push from '@service.push';
 import pkg from '@system.package';
+import device from '@system.device';
 import network from '@system.network';
 import net from '../Common/api/networkAPI.js';
 module.exports = {
@@ -332,7 +333,7 @@ module.exports = {
 				}
 				if(that.power === 'delay_off'){
 					prompt.showToast({
-						message:"延迟关机中，请稍后..."
+						message:"延迟关机中，请稍后"
 					})
 					return false;
 				}
@@ -362,6 +363,7 @@ module.exports = {
 						light:'on'
 					}
 				}
+				that.isdelayTips = true;
 				// that.B6data.light = param.light;
 				status = ['light'];
 			}
@@ -375,6 +377,7 @@ module.exports = {
 	selectdata(e){
 		let that = this;
 		let i = e.detail.id;
+		console.log("选择的："+JSON.stringify(e))
 		let param = {
 			gear:that.selectlist[i].data
 		}
@@ -411,52 +414,52 @@ module.exports = {
 			case 3:
 				if(!that.isdelayTips){
 					prompt.showToast({
-						message:"延迟关机中，请稍后..."
+						message:"延迟关机中，请稍后"
 					})
 				}
-				that.isdelayTips
+				// that.isdelayTips
 				that.power = 'delay_off';
 				tips = "delay_off";
 			break;
 			case 4:
 				prompt.showToast({
-					message:"正在开机中，请稍后..."
+					message:"正在开机中，请稍后"
 				})
 				tips = "on";
 			break;
 			case 5:
 				prompt.showToast({
-					message:"正在关机中，请稍后..."
+					message:"正在关机中，请稍后"
 				})
 				tips = "off";
 			break;
 			case 6:
 				prompt.showToast({
-					message:"正在清洗中，请稍后..."
+					message:"正在清洗中，请稍后"
 				})
 				tips = "on";
 			break;
 			case 7:
 				prompt.showToast({
-					message:"正在清洗中，请稍后..."
+					message:"正在清洗中，请稍后"
 				})
 				tips = "on";
 			break;
 			case 8:
 				prompt.showToast({
-					message:"设置时间中，请稍后..."
+					message:"设置时间中，请稍后"
 				})
 				tips = "on";
 			break;
 			case 9:
 				prompt.showToast({
-					message:"污浊度检测中，请稍后..."
+					message:"污浊度检测中，请稍后"
 				})
 				tips = "on";
 			break;
 			default:
 				prompt.showToast({
-					message:"设备可能出故障了..."
+					message:"设备可能出故障了"
 				})
 				tips = "off";
 		}
@@ -606,10 +609,7 @@ module.exports = {
 							that.isshowclose();
 							return false;
 						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
+						if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 							that.isshowclose();
 						} else {
 							that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
@@ -632,6 +632,7 @@ module.exports = {
 	getDeviceStatus(opid) {
 		// net.deviceInit(this.accessToken)
 		let that = this;
+		that.istips = false;
 		let params = {
 			openId: opid,
 			devices: [
@@ -738,75 +739,84 @@ module.exports = {
 		that.online = 'true';
 		if (res.code === 200) {
 			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-			if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
-				setTimeout(function(){
-					that.getDeviceStatus(that.openId);
-				},700)
-				return false;
-				let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
-				let isall = false;
-				if(obj.work_status){
-					that.work_status = obj.work_status;
-				}
-				if(obj.power){
-					that.power = obj.power;
-				}else{
-					that.power = "on";
-				}
-				if(that.power == 'on' || that.power == 'delay_off'){
-					if(obj.gear){
-						that.gear = obj.gear;
+			if(parseInt(data.code) == 0){
+				if (!parseInt(data.devices[0].status)) {
+					setTimeout(function(){
+						that.getDeviceStatus(that.openId);
+					},1000)
+					return false;
+					let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
+					let isall = false;
+					if(obj.work_status){
+						that.work_status = obj.work_status;
+					}
+					if(obj.power){
+						that.power = obj.power;
 					}else{
-						that.gear = 0;
+						that.power = "on";
+					}
+					if(that.power == 'on' || that.power == 'delay_off'){
+						if(obj.gear){
+							that.gear = obj.gear;
+						}else{
+							that.gear = 0;
+						}
+						that.B6data = obj;
+						that.B6data.power = 'on';
+					}else{
+						that.B6data = obj;
+						that.B6data.gear = 0;
+						that.B6data.power = 'off';
+					}
+					if(obj.light){
+						that.light = obj.light;
+					}else{
+						that.light = 'off';
 						// isall = true;
 					}
-					that.B6data = obj;
-					that.B6data.power = 'on';
-				}else{
-					that.B6data = obj;
-					that.B6data.gear = 0;
-					that.B6data.power = 'off';
-				}
-				if(obj.light){
-					that.light = obj.light;
-				}else{
-					that.light = 'off';
-					// isall = true;
-				}
-				that.B6data.light = that.light;
-				if(isall){
-					that.getDeviceStatus(that.openId);
-				}else{
-					that.isRefreshing = false;
+					that.B6data.light = that.light;
+					if(isall){
+						that.getDeviceStatus(that.openId);
+					}else{
+						that.isRefreshing = false;
+						that.isloading = false;
+					}
+				} else {
 					that.isloading = false;
+					that.isstop = true;
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if (str1.toString() === '-6') {
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+								that.isshowclose();
+							} else {
+								that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '操作设备失败'));
+						}
+					} else {
+						that.netWorkGet(data.msg);
+					}
 				}
-			} else {
+			}else{
 				that.isloading = false;
 				that.isstop = true;
 				if (data.msg === '') {
 					let str1 = '';
-					if (data.devices[0].status) {
-						str1 = data.devices[0].status;
-						if (str1.toString() === '-6') {
-							that.isshowclose();
-							return false;
-						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
-							that.isshowclose();
-						} else {
-							that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
-						}
-					} else {
-						str1 = data.code;
-						that.netWorkGet(api.getCode(str1, '操作设备失败'));
-					}
+					str1 = data.code;
+					that.netWorkGet(api.getCode(str1, '操作设备失败'));
 				} else {
 					that.netWorkGet(data.msg);
 				}
 			}
+			
 		} else {
 			that.isRefreshing = false;
 			that.isloading = false;
@@ -993,7 +1003,14 @@ module.exports = {
 			}
 		});
 		let that = this;
-		that.deviceHeight = that.$app.options.env.deviceHeight;
+		// that.deviceHeight = that.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
 		router.clear();
 		that.$on('cancel', function(e) {
 			that.isabout = false;

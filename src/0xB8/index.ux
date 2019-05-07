@@ -235,11 +235,23 @@ module.exports = {
 			case 'charging':
 				str = '充电中';
 			break;
+			case 'charging_on_dock':
+				str = '充电中';
+			break;
 			case 'charge_finish':
 				str = '直流充电完成';
 			break;
 			case 'work_finish':
 				str = '清扫完成';
+			break;
+			case 'reserve_task_finished':
+				str = '预约任务完成';
+			break;
+			case 'charging_with_wire':
+				str = '直流充电中';
+			break;
+			case 'error':
+				str = '错误';
 			break;
 			case 'set':
 				str = '设置中';
@@ -287,6 +299,12 @@ module.exports = {
 		let that = this;
 		if(that.online === 'false'){
 			that.isshowclose();
+			return false;
+		}
+		if(that.work_status == 'charge'){
+			prompt.showToast({
+				message:"设备回充中，请稍后..."
+			})
 			return false;
 		}
 		that.isshow = true;
@@ -397,6 +415,12 @@ module.exports = {
 			return false;
 		}
 		if(e.detail.params === "启动清扫"){
+			if(that.work_status == 'charge'){
+				prompt.showToast({
+					message:"设备回充中，请稍后"
+				})
+				return false;
+			}
 			params = {
 				work_status:'work',
 				work_mode:that.work_mode == 'none'?'arc':that.work_mode,
@@ -417,9 +441,9 @@ module.exports = {
 			that.B8data.move_direction = params.move_direction;
 			status = ['work_status','move_direction','work_mode'];
 		}else if(e.detail.params === '回充'){
-			if(that.work_status == 'charging'){
+			if(that.work_status == 'charging' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 				prompt.showToast({
-					message:"设备充电中，请稍后..."
+					message:"设备充电中，请稍后"
 				})
 				return false;
 			}
@@ -466,7 +490,7 @@ module.exports = {
 			})
 			return false;
 		}
-		if(that.work_status == 'charging'){
+		if(that.work_status == 'charging' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 			prompt.showToast({
 				message:"设备充电中，请稍后"
 			})
@@ -503,7 +527,7 @@ module.exports = {
 			that.isshowclose();
 			return false;
 		}
-		if(that.work_status == 'charge' || that.work_status == 'charging'|| that.work_status == 'charge_finish'){
+		if(that.work_status == 'charge' || that.work_status == 'charging'|| that.work_status == 'charge_finish' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 			return false;
 		}
 		let params = {};
@@ -591,6 +615,7 @@ module.exports = {
 	 */
 	getLanData(res){
 		let that = this;
+		that.istips = false;
 		let obj = (typeof res) == 'object'?res:JSON.parse(res);
 		if(parseInt(obj.code) == 0){
 			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
@@ -643,10 +668,7 @@ module.exports = {
 							that.isshowclose();
 							return false;
 						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
+						if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 							that.isshowclose();
 						} else {
 							that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
@@ -744,66 +766,77 @@ module.exports = {
 		let that = this;
 		if (res.code === 200) {
 			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-			if (!parseInt(data.devices[0].status) && !parseInt(data.code)) {
-				let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
-				let isall = false;
-				if(obj.work_status){
-					that.work_status = obj.work_status;
-				}else{
-					isall = true;
-				}
-				if(obj.work_mode){
-					that.work_mode = obj.work_mode;
-				}else{
-					isall = true;
-				}
-				if(obj.move_direction){
-					that.move_direction = obj.move_direction;
-					if(that.work_status == 'work' && that.work_mode == 'none'){
-						that.isdirection = that.move_direction;
+			if(parseInt(data.code) == 0){
+				if (!parseInt(data.devices[0].status)) {
+					let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
+					let isall = false;
+					if(obj.work_status){
+						that.work_status = obj.work_status;
 					}else{
-						that.isdirection = 'none';
+						isall = true;
 					}
-				}else{
-					isall = true;
-				}
-				that.B8data = obj;
-				if(isall){
-					that.getDeviceStatus(that.openId);
-				}else{
+					if(obj.work_mode){
+						that.work_mode = obj.work_mode;
+					}else{
+						isall = true;
+					}
+					if(obj.move_direction){
+						that.move_direction = obj.move_direction;
+						if(that.work_status == 'work' && that.work_mode == 'none'){
+							that.isdirection = that.move_direction;
+						}else{
+							that.isdirection = 'none';
+						}
+					}else{
+						isall = true;
+					}
+					that.B8data = obj;
+					if(isall){
+						that.getDeviceStatus(that.openId);
+					}else{
+						that.isRefreshing = false;
+						that.isloading = false;
+					}
+					
+				} else {
 					that.isRefreshing = false;
 					that.isloading = false;
+					that.isstop = true;
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if (str1.toString() === '-6') {
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+								// that.netWorkGet('设备离线')
+								that.isshowclose();
+							} else {
+								that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '操作设备失败'));
+						}
+					} else {
+						that.netWorkGet(data.msg);
+					}
 				}
-				
-			} else {
+			}else{
 				that.isRefreshing = false;
 				that.isloading = false;
 				that.isstop = true;
 				if (data.msg === '') {
 					let str1 = '';
-					if (data.devices[0].status) {
-						str1 = data.devices[0].status;
-						if (str1.toString() === '-6') {
-							that.isshowclose();
-							return false;
-						}
-						if (
-							str1.toString() === '-100' &&
-							res_data.devices[0].description.toString() === '3123'
-						) {
-							// that.netWorkGet('设备离线')
-							that.isshowclose();
-						} else {
-							that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
-						}
-					} else {
-						str1 = data.code;
-						that.netWorkGet(api.getCode(str1, '操作设备失败'));
-					}
+					str1 = data.code;
+					that.netWorkGet(api.getCode(str1, '操作设备失败'));
 				} else {
 					that.netWorkGet(data.msg);
 				}
 			}
+			
 		} else {
 			that.isRefreshing = false;
 			that.isloading = false;
@@ -869,7 +902,7 @@ module.exports = {
 		}else{
 			status = './assets/img/work_on.png';
 		}
-		if(that.work_status == 'charging' || that.work_status == 'charge_finish'){
+		if(that.work_status == 'charging' || that.work_status == 'charge_finish' || that.work_status == 'charging_on_dock' || that.work_status == 'charging_with_wire'){
 			str = './assets/img/charge_off.png';
 			textColor3 = "#D5D5D5";
 		}else if(that.work_status == 'charge'){
@@ -1046,7 +1079,7 @@ module.exports = {
 			}
 		});
 		let that = this;
-		that.deviceHeight = that.$app.options.env.deviceHeight;
+		// that.deviceHeight = that.$app.options.env.deviceHeight;
 		router.clear();
 		that.$on('cancel', function(e) {
 			that.isabout = false;

@@ -770,7 +770,7 @@
 							if (str1.toString() != '-100') {
 								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
 							} else {
-								if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 									that.isshowclose();
 								}else{
 									that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
@@ -793,6 +793,7 @@
 		 */
 		getLanData(res){
 			let that = this;
+			that.istips = false;
 			let obj = (typeof res) == 'object'?res:JSON.parse(res);
 			console.log(obj.code)
 			if(parseInt(obj.code) == 0){
@@ -954,79 +955,92 @@
 			let that = this;
 			if (res.code && res.code === 200) {
 				let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-				if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
-					that.listdata.online = 'true';
-					that.online = 'true';
-					let isall = false;
-					let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
-						bind_res_data.devices[0].props);
-					if (obj.power) {
-						that.listdata.power = obj.power
-					} else {
-						isall = true;
-					}
-					if (obj.lock) {
-						that.listdata.lock = obj.lock
-					} else {
-						isall = true;
-					}
-					if (obj.minutes.toString()) {
-						that.listdata.minutes = obj.minutes
-					} else {
-						isall = true;
-					}
-					if (obj.second.toString()) {
-						that.listdata.second = obj.second
-					} else {
-						isall = true;
-					}
-					if (obj.fire_power) {
-						that.listdata.fire_power = obj.fire_power
-					} else {
-						isall = true;
-					}
-					if (obj.work_status) {
-						that.listdata.work_status = obj.work_status
-					} else {
-						isall = true;
-					}
-					that.listDevice = obj;
-					if (isall) {
-						that.isshowLoading = true;
-						that.getDeviceList();
+				if(parseInt(bind_res_data.code) == 0){
+					if (!parseInt(bind_res_data.devices[0].status)) {
+						that.listdata.online = 'true';
+						that.online = 'true';
+						let isall = false;
+						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
+							bind_res_data.devices[0].props);
+						if (obj.power) {
+							that.listdata.power = obj.power
+						} else {
+							isall = true;
+						}
+						if (obj.lock) {
+							that.listdata.lock = obj.lock
+						} else {
+							isall = true;
+						}
+						if (obj.minutes.toString()) {
+							that.listdata.minutes = obj.minutes
+						} else {
+							isall = true;
+						}
+						if (obj.second.toString()) {
+							that.listdata.second = obj.second
+						} else {
+							isall = true;
+						}
+						if (obj.fire_power) {
+							that.listdata.fire_power = obj.fire_power
+						} else {
+							isall = true;
+						}
+						if (obj.work_status) {
+							that.listdata.work_status = obj.work_status
+						} else {
+							isall = true;
+						}
+						that.listDevice = obj;
+						if (isall) {
+							that.isshowLoading = true;
+							that.getDeviceList();
+						} else {
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+						}
 					} else {
 						that.isRefreshing = false;
 						that.isshowLoading = false;
+						if (bind_res_data.msg === '') {
+							let str1 = '';
+							if (bind_res_data.devices[0].status) {
+								str1 = bind_res_data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if (str1.toString() != '-100') {
+									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+								} else {
+									if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
+										that.isshowclose();
+									}else{
+										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+									}
+								}
+							} else {
+								str1 = bind_res_data.code;
+								that.netWorkGet(api.getCode(str1, '操作设备失败'))
+							}
+							// $this.netWorkGet('操作设备失败')
+						} else {
+							that.netWorkGet(bind_res_data.msg)
+						}
 					}
-				} else {
+				}else{
 					that.isRefreshing = false;
 					that.isshowLoading = false;
 					if (bind_res_data.msg === '') {
 						let str1 = '';
-						if (bind_res_data.devices[0].status) {
-							str1 = bind_res_data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if (str1.toString() != '-100') {
-								that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-							} else {
-								if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
-									that.isshowclose();
-								}else{
-									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-								}
-							}
-						} else {
-							str1 = bind_res_data.code;
-							that.netWorkGet(api.getCode(str1, '操作设备失败'))
-						}
-						// $this.netWorkGet('操作设备失败')
+						str1 = bind_res_data.code;
+						that.netWorkGet(api.getCode(str1, '操作设备失败'))
 					} else {
 						that.netWorkGet(bind_res_data.msg)
 					}
 				}
+				
 			} else {
 				that.isRefreshing = false;
 				that.isshowLoading = false;
@@ -1244,7 +1258,7 @@
 					that.language = true;
 				}
 			})
-			this.deviceHeight = this.$app.options.env.deviceHeight;
+			// this.deviceHeight = this.$app.options.env.deviceHeight;
 			router.clear();
 			// this.isMeiju();
 			//组件控制

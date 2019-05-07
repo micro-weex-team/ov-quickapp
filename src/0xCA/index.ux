@@ -71,6 +71,7 @@ import prompt from '@system.prompt';
 import fetch from '@system.fetch';
 import account from '@service.account';
 import storage from '@system.storage';
+import device from '@system.device';
 import barcode from '@system.barcode';
 // import IOT from '@service.iot';
 import pkg from '@system.package';
@@ -167,15 +168,22 @@ export default {
 		}
 	},
     onInit() {
-			api.getlanguage().then((res) => {
-				if(res === 'ug'){
-					this.language = false;
-				}else{
-					this.language = true;
-				}
-			})
-			let that = this;
-		this.deviceHeight = this.$app.options.env.deviceHeight;
+		api.getlanguage().then((res) => {
+			if(res === 'ug'){
+				this.language = false;
+			}else{
+				this.language = true;
+			}
+		})
+		let that = this;
+		// this.deviceHeight = this.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
 		router.clear();
 		that.$on('cancel', function(e){
 			that.isabout = false;
@@ -676,7 +684,7 @@ export default {
 								that.isshowclose();
 								return false;
 							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 								// that.netWorkGet('设备离线')
 								that.isshowclose();
 							}else{
@@ -708,6 +716,7 @@ export default {
 					properties: that.CAlist
 				}]
 			}
+			that.istips = false;
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
 			}else{
@@ -770,76 +779,89 @@ export default {
 		 */
 		wlanControl(res){
 			let that = this;
-			let data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+			
 							if(res.code === 200){
-								if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-									let isall = false;
-									that.online = "true";
-									let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
-									if(obj.storage_power){
-										 that.CAdata.storage_power = obj.storage_power;
-										 that.storage_power = obj.storage_power;
-									}else{
-										isall = true;
-									}
-									if(obj.freezing_power){
-										that.freezing_power = obj.freezing_power;
-										that.CAdata.freezing_power = obj.freezing_power;
-									}else{
-										isall = true;
-									}
-									if(obj.storage_temperature){
-										that.storage_temperature = obj.storage_temperature;
-										that.CAdata.storage_temperature = obj.storage_temperature;
-									}else{
-										isall = true;
-									}
-									if(obj.freezing_temperature){
-										that.freezing_temperature = obj.freezing_temperature;
-										that.CAdata.freezing_temperature = obj.freezing_temperature;
-									}else{
-										isall = true;
-									}
-									if(isall){
-										that.isloading = true;
-										 that.getDeviceStatus(that.openId);
+								let data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+								if(parseInt(data.code) == 0){
+									if(!parseInt(data.devices[0].status)){
+										let isall = false;
+										that.online = "true";
+										let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+										if(obj.storage_power){
+											 that.CAdata.storage_power = obj.storage_power;
+											 that.storage_power = obj.storage_power;
+										}else{
+											isall = true;
+										}
+										if(obj.freezing_power){
+											that.freezing_power = obj.freezing_power;
+											that.CAdata.freezing_power = obj.freezing_power;
+										}else{
+											isall = true;
+										}
+										if(obj.storage_temperature){
+											that.storage_temperature = obj.storage_temperature;
+											that.CAdata.storage_temperature = obj.storage_temperature;
+										}else{
+											isall = true;
+										}
+										if(obj.freezing_temperature){
+											that.freezing_temperature = obj.freezing_temperature;
+											that.CAdata.freezing_temperature = obj.freezing_temperature;
+										}else{
+											isall = true;
+										}
+										if(isall){
+											that.isloading = true;
+											 that.getDeviceStatus(that.openId);
+										}else{
+											that.isRefreshing = false;
+											that.isloading = false;
+											if(that.CAdata.storage_power === 'on'){
+												that.isselect = true;
+											}else{
+												that.isselect = false;
+											}
+										}
+										that.listDevice = obj;
 									}else{
 										that.isRefreshing = false;
 										that.isloading = false;
-										if(that.CAdata.storage_power === 'on'){
-											that.isselect = true;
+										that.initData();
+										if(data.msg === ''){
+											let str1 = '';
+											if(data.devices[0].status){
+												str1 = data.devices[0].status;
+												if(str1.toString() === '-6'){
+													that.isshowclose();
+													return false;
+												}
+												if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+													that.netWorkGet('设备离线')
+												}else{
+													that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+												}
+											}else{
+												str1 = data.code;
+												that.netWorkGet(api.getCode(str1,'操作设备失败'))
+											}
 										}else{
-											that.isselect = false;
+											that.netWorkGet(data.msg)
 										}
 									}
-									that.listDevice = obj;
 								}else{
 									that.isRefreshing = false;
 									that.isloading = false;
 									that.initData();
 									if(data.msg === ''){
 										let str1 = '';
-										if(data.devices[0].status){
-											str1 = data.devices[0].status;
-											if(str1.toString() === '-6'){
-												that.isshowclose();
-												return false;
-											}
-											if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-												that.netWorkGet('设备离线')
-											}else{
-												that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-											}
-										}else{
-											str1 = data.code;
-											that.netWorkGet(api.getCode(str1,'操作设备失败'))
-										}
-										// that.netWorkGet('操作设备失败')
+										str1 = data.code;
+										that.netWorkGet(api.getCode(str1,'操作设备失败'))
 									}else{
 										that.netWorkGet(data.msg)
 									}
-									// that.netWorkGet(data.msg)
 								}
+								
 							}else{
 								that.isloading = false;
 								that.isRefreshing = false;

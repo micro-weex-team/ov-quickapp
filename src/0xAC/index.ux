@@ -181,6 +181,7 @@
 	import fetch from '@system.fetch';
 	import account from '@service.account';
 	import storage from '@system.storage';
+	import device from '@system.device';
 	// import IOT from '@service.iot';
 	import api from '../Common/api/api.js';
 	import network from '@system.network';
@@ -734,6 +735,7 @@
 							that.netWorkGet('获取访问令牌失败,请稍后重试');
                         }
                     }).catch((error) => {
+						console.log("获取访问令牌失败,请稍后重试")
 						that.isfirst = true;
 						that.isRefreshing = false;
 						that.isshowLoading = false;
@@ -785,7 +787,7 @@
 									that.isshowclose();
 									return false;
 								}
-								if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 									// that.netWorkGet('设备离线')
 									that.isshowclose();
 								}else{
@@ -839,6 +841,7 @@
 					properties: that.DBdata
 				}]
 			}
+			that.istips = false;
 			// that.webSocketdata();
 			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
 				that.lanOnline = 'true';
@@ -895,100 +898,113 @@
 			let that = this;
 			if (res.code && res.code == 200){
 				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
-				if(!parseInt(data.devices[0].status) && !parseInt(data.code)){
-					// prompt.showToast({message:"赛哦谁"+JSON.stringify(data),duration:1})
-					let isall = false;
-					let objdata = {};
-					objdata.online = 'true';
-					that.online = "true";
-					let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
-					if(obj.power){
-						objdata.power = obj.power;
+				if(parseInt(data.code) == 0){
+					if(!parseInt(data.devices[0].status)){
+						// prompt.showToast({message:"赛哦谁"+JSON.stringify(data),duration:1})
+						let isall = false;
+						let objdata = {};
+						objdata.online = 'true';
+						that.online = "true";
+						let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+						if(obj.power){
+							objdata.power = obj.power;
+						}else{
+							isall = true;
+						}
+						if(obj.mode){
+							objdata.mode = obj.mode;
+						}else{
+							isall = true;
+						}
+						if(obj.wind_speed){
+							objdata.wind_speed = obj.wind_speed;
+						}else{
+							isall = true;
+						}
+						if(obj.temperature){
+							objdata.temperature = obj.temperature;
+						}else{
+							isall = true;
+						}
+						if(obj.indoor_temperature){
+							objdata.indoor_temperature = obj.indoor_temperature;
+						}else{
+							isall = true;
+						}
+						if(obj.power_on_timer){
+							objdata.power_on_timer = obj.power_on_timer;
+						}else{
+							isall = true;
+						}
+						if(obj.power_on_time_value){
+							objdata.power_on_time_value = obj.power_on_time_value;
+						}else{
+							isall = true;
+						}
+						if(obj.power_off_timer){
+							objdata.power_off_timer = obj.power_off_timer;
+						}else{
+							isall = true;
+						}
+						if(obj.power_off_time_value){
+							objdata.power_off_time_value = obj.power_off_time_value;
+						}else{
+							isall = true;
+						}
+						if(obj.wind_swing_lr){
+							objdata.wind_swing_lr = obj.wind_swing_lr;
+						}else{
+							isall = true;
+						}
+						if(obj.wind_swing_ud){
+							objdata.wind_swing_ud = obj.wind_swing_ud;
+						}else{
+							isall = true;
+						}
+						if(obj.ptc){
+							objdata.ptc = obj.ptc;
+						}else{
+							isall = true;
+						}
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.dataFormat(objdata);
 					}else{
-						isall = true;
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.initData();
+						if(data.msg === ''){
+							let str1 = '';
+							if(data.devices[0].status){
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}
+							}else{
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1,'操作设备失败'))
+							}
+						}else{
+							that.netWorkGet(data.msg)
+						}
 					}
-					if(obj.mode){
-						objdata.mode = obj.mode;
-					}else{
-						isall = true;
-					}
-					if(obj.wind_speed){
-						objdata.wind_speed = obj.wind_speed;
-					}else{
-						isall = true;
-					}
-					if(obj.temperature){
-						objdata.temperature = obj.temperature;
-					}else{
-						isall = true;
-					}
-					if(obj.indoor_temperature){
-						objdata.indoor_temperature = obj.indoor_temperature;
-					}else{
-						isall = true;
-					}
-					if(obj.power_on_timer){
-						objdata.power_on_timer = obj.power_on_timer;
-					}else{
-						isall = true;
-					}
-					if(obj.power_on_time_value){
-						objdata.power_on_time_value = obj.power_on_time_value;
-					}else{
-						isall = true;
-					}
-					if(obj.power_off_timer){
-						objdata.power_off_timer = obj.power_off_timer;
-					}else{
-						isall = true;
-					}
-					if(obj.power_off_time_value){
-						objdata.power_off_time_value = obj.power_off_time_value;
-					}else{
-						isall = true;
-					}
-					if(obj.wind_swing_lr){
-						objdata.wind_swing_lr = obj.wind_swing_lr;
-					}else{
-						isall = true;
-					}
-					if(obj.wind_swing_ud){
-						objdata.wind_swing_ud = obj.wind_swing_ud;
-					}else{
-						isall = true;
-					}
-					if(obj.ptc){
-						objdata.ptc = obj.ptc;
-					}else{
-						isall = true;
-					}
-					that.isRefreshing = false;
-					that.isshowLoading = false;
-					that.dataFormat(objdata);
 				}else{
 					that.isRefreshing = false;
 					that.isshowLoading = false;
 					that.initData();
-					if(data.msg === ''){
-						let str1 = '';
-						if(data.devices[0].status){
-							str1 = data.devices[0].status;
-							if(str1.toString() === '-6'){
-								that.isshowclose();
-								return false;
-							}
-							if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-								// that.netWorkGet('设备离线')
-								that.isshowclose();
-							}else{
-								that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-							}
-						}else{
-							str1 = data.code;
-							that.netWorkGet(api.getCode(str1,'操作设备失败'))
-						}
+					let str1 = '';
+					if (data.msg === '') {
+						str1 = data.code;
+						that.netWorkGet(api.getCode(str1, '操作设备失败'));
 					}else{
-						that.netWorkGet(data.msg)
+						that.netWorkGet(data.msg);
 					}
 				}
 			}else{
@@ -1530,8 +1546,16 @@
 				}
 			})
 			// this.webSocketdata();
-			this.deviceHeight = this.$app.options.env.deviceHeight;
 			let that = this;
+			// that.deviceHeight = that.$app.options.env.deviceHeight;
+			device.getInfo({
+				success: function(ret) {
+					console.log(`handling success， brand = ${ret.brand}`);
+					console.log("屏幕高度："+ret.screenHeight);
+					that.deviceHeight = ret.screenHeight;
+				}
+			})
+			// console.log()
 			router.clear();
 			that.$page.setTitleBar({ text: '空调' })
 			for(let i=1;i<25;i++){

@@ -11,7 +11,7 @@
 			<midea-meiju power="{{power}}"></midea-meiju>
 		</list-item>
 	</list>
-	<midea-select></midea-select>
+	<!-- <midea-select></midea-select> -->
 	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
   </div>
 </template>
@@ -37,6 +37,7 @@
 </style>
 <script>
 import prompt from '@system.prompt';
+import index from "./assets/index.js";
 export default {
 	private: {
 		power:'off',
@@ -90,7 +91,15 @@ export default {
 	btnclick(){
 	},
 	clickEv(e){
-		console.log(e)
+		
+		//console.log("配置信息："+JSON.stringify(this.$app.$def))
+	},
+	onInit() {
+		// console.log(app.getInfo())
+		
+	},
+	onShow() {
+		// console.log(this.$app.options.env)
 	}
 }
 </script>

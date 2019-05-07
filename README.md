@@ -5,7 +5,7 @@
 需安装6.0以上版本的Node.jS，请从[Node.js官网](https://nodejs.org/en/)下载
 #### 通过git下载项目
 在命令行中执行以下命令下载项目：
-> git clone git@10.16.28.73:IT-MobileDivision/huawei-quickapp.git  
+> git clone http://10.16.28.73/IT-MobileDivision/ov-quickapp.git
 
 #### 手机安装调试器
 调试器是一个Android应用程序，下载[调试器APK](https://statres.quickapp.cn/quickapp/quickapp/201806/file/quickapp_debugger.apk)
@@ -101,5 +101,5 @@ src结构：
 4、mainfest.json文件用来编写接口引入声明以及路由的定义等（具体说明请参考[快应用manifest.json说明](https://doc.quickapp.cn/framework/manifest.html)）；
 
 
-
+注意：此文档只做快应用入门开发文档使用，如果想要了解更多项目的开发流程，请移步到：[OPPO/vivo快应用](http://confluence.msmart.com/pages/viewpage.action?pageId=21523619)
 
