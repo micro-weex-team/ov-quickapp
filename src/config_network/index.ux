@@ -216,6 +216,7 @@
 		 * 退出界面
 		 */
 		getout(){
+			let that = this;
 			prompt.showDialog({
 						title: '提示',
 						message: "该品类暂不支持，敬请期待",
