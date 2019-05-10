@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="slot_shadow" @click="clickBtn1()"></div>
+        <div class="slot_shadow" @click="clickshadow()"></div>
         <div class="slot_nav">
             <div class="slot_alert">
                 <div class="slot_header" if="{{header.title != '' || data.text != ''}}">
@@ -57,6 +57,10 @@ export default {
         let that = this;
         that.$emit('clickEvent2')
     },
+	clickshadow(){
+		let that = this;
+		that.$emit('clickEvent3')
+	},
     onInit() {
         console.log(this.footer[0].hasOwnProperty('disabled'));
     },
