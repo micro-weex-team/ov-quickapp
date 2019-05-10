@@ -2,7 +2,7 @@
 	import prompt from '@system.prompt';
 	import account from '@service.account';
 	
-	let app = "sasdsad"
+	const app = "sasdsad";
   module.exports = {
     /**manifest**/
 			onInit(){

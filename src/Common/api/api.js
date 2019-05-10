@@ -1,5 +1,6 @@
-const sethost = false;  //配置环境（true：pro环境；false：sit环境）
-const type = ["ac","ca","b0","db","e2","ea","fa","fc","fd","e1","e3","b8","b6"]//支持的设备
+import util from "../../util.js";
+const sethost = util.hostData.setHost;  //配置环境（true：pro环境；false：sit环境）
+const type = util.hostData.type//支持的设备
 
 let host = "";
 let url = '';
@@ -29,6 +30,7 @@ import websocketfactory from '@system.websocketfactory';
 import uuid from './uuid.js';
 import SHA from 'js-sha256';
 import net from './networkAPI.js';
+
 // import main from "./main.js";
 
 
