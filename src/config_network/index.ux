@@ -169,7 +169,7 @@
 				// console.log(that)
 			}else{
 				console.log("从app传过来的iot_category值："+that.iot_category)
-				that.type.forEach(function(item,i){
+				api.hostData.type.forEach(function(item,i){
 					console.log(that.deviceType)
 					if(item === that.getDeviceType()){
 						num = i;
@@ -309,7 +309,7 @@
 			let that = this;
 			
 			let num = -1
-			that.type.forEach(function(item,i){
+			api.hostData.type.forEach(function(item,i){
 				console.log("deviceType:"+that.deviceType)
 				if(item === that.ssidDevice.toLowerCase()){
 					num = i;
