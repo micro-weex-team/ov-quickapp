@@ -78,7 +78,7 @@ export default {
 		postDeviceStatusQuery:'/v1/iotopen/device/statusQuery',
 		getcodeUrl:'/v1/open/sn/decode',
 		getConfigWorkHelp: "http://smartbbs.midea.com/msmart.php?mod=zhiyin&op=ovsearch",
-		getcenterHelp:'https://api-sit.smartmidea.net/v1/open/connect/guide/list'
+		getcenterHelp:'https://api-prod.smartmidea.net/v1/open/connect/guide/list'
 		// getcenterHelp:'https://api-dev.smartmidea.net:8443/v1/open/connect/guide/list'
 	},
 	//获取语言

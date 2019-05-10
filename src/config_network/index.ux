@@ -110,6 +110,7 @@
 			let that = this;
 			let num = -1;
 			let mode = '';
+			console.log("app传过来的sn8："+that.iot_series)
 			if(that.iot_url != ""){
 				console.log("二维码url："+that.iot_url)
 				console.log("二维码"+api.getUrlCan(that.iot_url,"cd"));
