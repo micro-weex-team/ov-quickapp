@@ -1,0 +1,16 @@
+# Created by IDE
+.idea/
+*.iml
+.DS_Store
+
+#dist
+entry
+
+# Node
+logs
+*.log
+npm-debug.log*
+node_modules
+.npm
+dist
+
