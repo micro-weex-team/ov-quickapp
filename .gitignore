@@ -3,9 +3,6 @@
 *.iml
 .DS_Store
 
-#dist
-entry
-
 # Node
 logs
 *.log
@@ -14,3 +11,6 @@ node_modules
 .npm
 dist
 
+
+build
+.ide/
