@@ -84,647 +84,15 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page");
+/******/ 	return __webpack_require__(__webpack_require__.s = "../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".midea-title": {
-    "width": "100%",
-    "height": "144px",
-    "backgroundColor": "#ffffff",
-    "borderBottomColor": "#cccccc",
-    "borderBottomWidth": "1px",
-    "flexDirection": "row"
-  },
-  ".midea-title-back": {
-    "width": "66px",
-    "height": "66px",
-    "marginTop": "50px",
-    "marginLeft": "40px"
-  },
-  ".l_midea-title-back": {
-    "width": "66px",
-    "height": "66px",
-    "marginTop": "50px",
-    "marginRight": "40px",
-    "transform": "{\"rotate\":\"180deg\"}"
-  },
-  ".midea-title-text": {
-    "width": "848px",
-    "height": "144px",
-    "textAlign": "center",
-    "fontSize": "50px",
-    "color": "#000000",
-    "fontWeight": "bold"
-  },
-  ".mdiea_about_server": {
-    "width": "100%",
-    "height": "100%",
-    "flexDirection": "column",
-    "backgroundColor": "#F2F2F2"
-  },
-  ".mdiea_about_self_nav": {
-    "width": "100%",
-    "paddingTop": "40px",
-    "paddingRight": "40px",
-    "paddingBottom": "40px",
-    "paddingLeft": "40px",
-    "marginTop": "36px",
-    "flexDirection": "column",
-    "backgroundColor": "#ffffff"
-  },
-  ".mdiea_about_self_title": {
-    "width": "100%",
-    "fontSize": "36px",
-    "color": "#333333"
-  },
-  ".mdiea_about_self_title_self": {
-    "width": "100%",
-    "fontSize": "36px",
-    "color": "#3191FD"
-  },
-  ".mdiea_about_self_text": {
-    "marginTop": "36px",
-    "width": "100%",
-    "marginBottom": "20px",
-    "fontSize": "40px",
-    "color": "#000000",
-    "textAlign": "left"
-  },
-  ".mdiea_about_self_title1": {
-    "width": "100%",
-    "fontSize": "36px",
-    "fontWeight": "bold",
-    "color": "#000000",
-    "textAlign": "left",
-    "paddingBottom": "15px"
-  },
-  ".mdiea_about_self_text1": {
-    "width": "100%",
-    "fontSize": "36px",
-    "fontWeight": "bold",
-    "color": "#000000",
-    "textAlign": "left",
-    "textDecoration": "underline"
-  },
-  ".mdiea_about_self_kong": {
-    "width": "100%",
-    "height": "100px"
-  }
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".container-loading": {
-    "position": "fixed",
-    "top": "0px",
-    "left": "0px",
-    "right": "0px",
-    "bottom": "0px"
-  },
-  ".container-mark": {
-    "position": "fixed",
-    "top": "0px",
-    "left": "0px",
-    "right": "0px",
-    "bottom": "0px",
-    "backgroundColor": "#333333",
-    "opacity": 0.7
-  },
-  ".progerss_circular_progerss": {
-    "position": "fixed",
-    "top": "600px",
-    "left": "505px",
-    "strokeWidth": "10px",
-    "color": "#cccccc",
-    "width": "70px",
-    "height": "70px"
-  }
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "mdiea_about_server"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "midea-title"
-      ],
-      "children": [
-        {
-          "type": "image",
-          "attr": {
-            "src": "/Component/MideaAbout/assets/menu_ic_arrow_back_normal.png"
-          },
-          "classList": function () {return [this.language?'midea-title-back':'l_midea-title-back']},
-          "events": {
-            "click": function (evt) {this.backPage(evt)}
-          }
-        },
-        {
-          "type": "text",
-          "attr": {
-            "value": " 服务协议 "
-          },
-          "classList": [
-            "midea-title-text"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "web",
-      "attr": {
-        "src": "http://qrcode.midea.com/AboutApp/userAgreement.html"
-      },
-      "events": {
-        "error": function (evt) {this.error(evt)},
-        "pagestart": function (evt) {this.pagestart(evt)},
-        "pagefinish": function (evt) {this.pagefinish(evt)}
-      }
-    },
-    {
-      "type": "midea-loading",
-      "attr": {},
-      "shown": function () {return this.isloading}
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&":
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "container-loading"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "container-mark"
-      ]
-    },
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "container-img"
-      ],
-      "children": [
-        {
-          "type": "progress",
-          "attr": {
-            "type": "circular"
-          },
-          "classList": [
-            "progerss_circular_progerss"
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
-
-var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
-
-var _api = _interopRequireDefault(__webpack_require__(/*! .../../../Common/api/api.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-module.exports = {
-  data: function () {return {
-    isloading: false,
-    language: true
-  }},
-  onInit: function onInit() {
-    var _this = this;
-
-    this.$page.setTitleBar({
-      text: '服务协议'
-    });
-
-    _api["default"].getlanguage().then(function (res) {
-      if (res === 'ug') {
-        _this.language = false;
-      } else {
-        _this.language = true;
-      }
-    });
-  },
-  openUrl: function openUrl() {
-    _system["default"].push({
-      uri: "Component/MideaAbout/MideaSelf"
-    });
-  },
-  backPage: function backPage() {
-    _system["default"].back();
-  },
-  pagestart: function pagestart() {},
-  pagefinish: function pagefinish() {},
-  error: function error() {}
-};
-var moduleOwn = exports["default"] || module.exports;
-var accessors = ['public', 'protected', 'private'];
-
-if (moduleOwn.data && accessors.some(function (acc) {
-  return moduleOwn[acc];
-})) {
-  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
-} else if (!moduleOwn.data) {
-  moduleOwn.data = {};
-  moduleOwn._descriptor = {};
-  accessors.forEach(function (acc) {
-    var accType = _typeof(moduleOwn[acc]);
-
-    if (accType === 'object') {
-      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
-
-      for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = {
-          access: acc
-        };
-      }
-    } else if (accType === 'function') {
-      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
-    }
-  });
-}}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-module.exports = {
-  data: function () {return {
-    list: []
-  }},
-  onInit: function onInit(e) {}
-};}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../index.ux?uxType=comp& */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&")
-var $app_style$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../index.ux?uxType=comp */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
-var $app_script$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!.../../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../index.ux?uxType=comp */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
-
-$app_define$('@app-component/midea-loading', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js":
-/*!****************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
-  \****************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
-
-/* WEBPACK VAR INJECTION */}.call(this, {}))
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (module) {
-  if (!module.webpackPolyfill) {
-    module.deprecate = function () {};
-
-    module.paths = []; // module.parent = undefined by default
-
-    if (!module.children) module.children = [];
-    Object.defineProperty(module, "loaded", {
-      enumerable: true,
-      get: function get() {
-        return module.l;
-      }
-    });
-    Object.defineProperty(module, "id", {
-      enumerable: true,
-      get: function get() {
-        return module.i;
-      }
-    });
-    module.webpackPolyfill = 1;
-  }
-
-  return module;
-};
-
-/***/ }),
-
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
-/*!****************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
-  \****************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
+/*!*******************************************************************************************!*\
+  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1780,14 +1148,14 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
     }])
   );
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ../../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
-/*!*********************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
-  \*********************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
+/*!************************************************************************************************!*\
+  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1827,7 +1195,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }
 
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && ( false ? undefined : _typeof(module)) === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
+  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -2339,14 +1707,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   }
 })();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js":
-/*!*************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js ***!
-  \*************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js":
+/*!****************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2358,7 +1726,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _util = _interopRequireDefault(__webpack_require__(/*! .../../util.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
 
 var _system = _interopRequireDefault($app_require$("@app-module/system.fetch"));
 
@@ -2370,11 +1738,11 @@ var _system4 = _interopRequireDefault($app_require$("@app-module/system.router")
 
 var _system5 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
 
-var _uuid = _interopRequireDefault(__webpack_require__(/*! ../uuid.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js"));
+var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js"));
 
-var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
+var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
 
-var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ../networkAPI.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js"));
+var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ./networkAPI.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -2408,7 +1776,7 @@ var appidForvivo = 2150;
 var appidForoppo = 2149;
 
 // import main from "./main.js";
-var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
+var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
 
 var fly = new Fly(_system["default"]);
 var appid = '';
@@ -3070,10 +2438,10 @@ fly.interceptors.response.use(function (response) {//只将请求结果的data�
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js":
-/*!********************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js ***!
-  \********************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js":
+/*!***********************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3091,7 +2459,7 @@ var _system = _interopRequireDefault($app_require$("@app-module/system.prompt"))
 
 var _system2 = _interopRequireDefault($app_require$("@app-module/system.device"));
 
-var _util = _interopRequireDefault(__webpack_require__(/*! .../../util.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -3505,10 +2873,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js":
-/*!**************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js ***!
-  \**************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js":
+/*!*****************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3773,17 +3141,17 @@ module.exports = UUIDjs;
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
-/*!*************************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
-  \*************************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
+/*!****************************************************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! !.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!.../../MideaLoading/index.ux?uxType=comp&name=midea-loading */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading")
-var $app_template$ = __webpack_require__(/*! !.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../index.ux?uxType=page&importNames[]=midea-loading */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading")
-var $app_style$ = __webpack_require__(/*! !.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../index.ux?uxType=page */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page")
-var $app_script$ = __webpack_require__(/*! !.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!.../../../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!.../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../index.ux?uxType=page */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page")
+__webpack_require__(/*! !../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!../../MideaLoading/index.ux?uxType=comp&name=midea-loading */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading")
+var $app_template$ = __webpack_require__(/*! !../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page&importNames[]=midea-loading */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading")
+var $app_style$ = __webpack_require__(/*! !../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page")
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -3799,10 +3167,10 @@ $app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js":
-/*!***************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js ***!
-  \***************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/util.js":
+/*!******************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/util.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3826,6 +3194,638 @@ var _default = {
   }
 };
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".midea-title": {
+    "width": "100%",
+    "height": "144px",
+    "backgroundColor": "#ffffff",
+    "borderBottomColor": "#cccccc",
+    "borderBottomWidth": "1px",
+    "flexDirection": "row"
+  },
+  ".midea-title-back": {
+    "width": "66px",
+    "height": "66px",
+    "marginTop": "50px",
+    "marginLeft": "40px"
+  },
+  ".l_midea-title-back": {
+    "width": "66px",
+    "height": "66px",
+    "marginTop": "50px",
+    "marginRight": "40px",
+    "transform": "{\"rotate\":\"180deg\"}"
+  },
+  ".midea-title-text": {
+    "width": "848px",
+    "height": "144px",
+    "textAlign": "center",
+    "fontSize": "50px",
+    "color": "#000000",
+    "fontWeight": "bold"
+  },
+  ".mdiea_about_server": {
+    "width": "100%",
+    "height": "100%",
+    "flexDirection": "column",
+    "backgroundColor": "#F2F2F2"
+  },
+  ".mdiea_about_self_nav": {
+    "width": "100%",
+    "paddingTop": "40px",
+    "paddingRight": "40px",
+    "paddingBottom": "40px",
+    "paddingLeft": "40px",
+    "marginTop": "36px",
+    "flexDirection": "column",
+    "backgroundColor": "#ffffff"
+  },
+  ".mdiea_about_self_title": {
+    "width": "100%",
+    "fontSize": "36px",
+    "color": "#333333"
+  },
+  ".mdiea_about_self_title_self": {
+    "width": "100%",
+    "fontSize": "36px",
+    "color": "#3191FD"
+  },
+  ".mdiea_about_self_text": {
+    "marginTop": "36px",
+    "width": "100%",
+    "marginBottom": "20px",
+    "fontSize": "40px",
+    "color": "#000000",
+    "textAlign": "left"
+  },
+  ".mdiea_about_self_title1": {
+    "width": "100%",
+    "fontSize": "36px",
+    "fontWeight": "bold",
+    "color": "#000000",
+    "textAlign": "left",
+    "paddingBottom": "15px"
+  },
+  ".mdiea_about_self_text1": {
+    "width": "100%",
+    "fontSize": "36px",
+    "fontWeight": "bold",
+    "color": "#000000",
+    "textAlign": "left",
+    "textDecoration": "underline"
+  },
+  ".mdiea_about_self_kong": {
+    "width": "100%",
+    "height": "100px"
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".container-loading": {
+    "position": "fixed",
+    "top": "0px",
+    "left": "0px",
+    "right": "0px",
+    "bottom": "0px"
+  },
+  ".container-mark": {
+    "position": "fixed",
+    "top": "0px",
+    "left": "0px",
+    "right": "0px",
+    "bottom": "0px",
+    "backgroundColor": "#333333",
+    "opacity": 0.7
+  },
+  ".progerss_circular_progerss": {
+    "position": "fixed",
+    "top": "600px",
+    "left": "505px",
+    "strokeWidth": "10px",
+    "color": "#cccccc",
+    "width": "70px",
+    "height": "70px"
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page&importNames[]=midea-loading ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "mdiea_about_server"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "midea-title"
+      ],
+      "children": [
+        {
+          "type": "image",
+          "attr": {
+            "src": "/Component/MideaAbout/assets/menu_ic_arrow_back_normal.png"
+          },
+          "classList": function () {return [this.language?'midea-title-back':'l_midea-title-back']},
+          "events": {
+            "click": function (evt) {this.backPage(evt)}
+          }
+        },
+        {
+          "type": "text",
+          "attr": {
+            "value": " 服务协议 "
+          },
+          "classList": [
+            "midea-title-text"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "web",
+      "attr": {
+        "src": "http://qrcode.midea.com/AboutApp/userAgreement.html"
+      },
+      "events": {
+        "error": function (evt) {this.error(evt)},
+        "pagestart": function (evt) {this.pagestart(evt)},
+        "pagefinish": function (evt) {this.pagefinish(evt)}
+      }
+    },
+    {
+      "type": "midea-loading",
+      "attr": {},
+      "shown": function () {return this.isloading}
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "container-loading"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "container-mark"
+      ]
+    },
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "container-img"
+      ],
+      "children": [
+        {
+          "type": "progress",
+          "attr": {
+            "type": "circular"
+          },
+          "classList": [
+            "progerss_circular_progerss"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaAbout/MideaServer/index.ux?uxType=page ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
+
+var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
+
+var _api = _interopRequireDefault(__webpack_require__(/*! ../../../Common/api/api.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+module.exports = {
+  data: function () {return {
+    isloading: false,
+    language: true
+  }},
+  onInit: function onInit() {
+    var _this = this;
+
+    this.$page.setTitleBar({
+      text: '服务协议'
+    });
+
+    _api["default"].getlanguage().then(function (res) {
+      if (res === 'ug') {
+        _this.language = false;
+      } else {
+        _this.language = true;
+      }
+    });
+  },
+  openUrl: function openUrl() {
+    _system["default"].push({
+      uri: "Component/MideaAbout/MideaSelf"
+    });
+  },
+  backPage: function backPage() {
+    _system["default"].back();
+  },
+  pagestart: function pagestart() {},
+  pagefinish: function pagefinish() {},
+  error: function error() {}
+};
+var moduleOwn = exports["default"] || module.exports;
+var accessors = ['public', 'protected', 'private'];
+
+if (moduleOwn.data && accessors.some(function (acc) {
+  return moduleOwn[acc];
+})) {
+  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
+} else if (!moduleOwn.data) {
+  moduleOwn.data = {};
+  moduleOwn._descriptor = {};
+  accessors.forEach(function (acc) {
+    var accType = _typeof(moduleOwn[acc]);
+
+    if (accType === 'object') {
+      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
+      for (var name in moduleOwn[acc]) {
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
+      }
+    } else if (accType === 'function') {
+      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
+    }
+  });
+}}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+module.exports = {
+  data: function () {return {
+    list: []
+  }},
+  onInit: function onInit(e) {}
+};}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
+
+$app_define$('@app-component/midea-loading', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
+/*!****************************************!*\
+  !*** (webpack)/buildin/amd-options.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(this, {}))
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
+/*!**************************************************************************************!*\
+  !*** ./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (module) {
+  if (!module.webpackPolyfill) {
+    module.deprecate = function () {};
+
+    module.paths = []; // module.parent = undefined by default
+
+    if (!module.children) module.children = [];
+    Object.defineProperty(module, "loaded", {
+      enumerable: true,
+      get: function get() {
+        return module.l;
+      }
+    });
+    Object.defineProperty(module, "id", {
+      enumerable: true,
+      get: function get() {
+        return module.i;
+      }
+    });
+    module.webpackPolyfill = 1;
+  }
+
+  return module;
+};
 
 /***/ })
 

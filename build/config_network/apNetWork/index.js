@@ -84,1673 +84,15 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page");
+/******/ 	return __webpack_require__(__webpack_require__.s = "../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".container": {
-    "width": "100%",
-    "flexDirection": "column"
-  },
-  ".nav_list": {
-    "width": "100%"
-  },
-  ".midea-title": {
-    "width": "100%",
-    "height": "144px",
-    "backgroundColor": "#ffffff",
-    "borderBottomColor": "#cccccc",
-    "borderBottomWidth": "1px",
-    "flexDirection": "row"
-  },
-  ".midea-title-back": {
-    "width": "66px",
-    "height": "66px",
-    "marginTop": "50px",
-    "marginLeft": "40px",
-    "marginRight": "40px"
-  },
-  ".midea-title-text": {
-    "width": "848px",
-    "height": "144px",
-    "textAlign": "center",
-    "fontSize": "50px",
-    "color": "#000000",
-    "fontWeight": "bold"
-  },
-  ".nav_list_all": {
-    "width": "100%"
-  },
-  ".seting": {
-    "width": "100%",
-    "flexDirection": "column"
-  },
-  ".top": {
-    "width": "100%",
-    "height": "800px",
-    "flexDirection": "column",
-    "color": "#666666"
-  },
-  ".nav_tips": {
-    "flexDirection": "column",
-    "justifyContent": "center"
-  },
-  ".nav_time": {
-    "width": "100%",
-    "textAlign": "center",
-    "fontSize": "42px",
-    "color": "#2A2A2A"
-  },
-  ".nav_bottom": {
-    "marginTop": "50px",
-    "width": "1000px",
-    "marginLeft": "40px",
-    "marginRight": "40px",
-    "flexDirection": "column"
-  },
-  ".progress": {
-    "color": "#25D4DF",
-    "width": "100%",
-    "marginTop": "-440px",
-    "textAlign": "center",
-    "fontWeight": "bold"
-  },
-  ".nav_tips_list_img": {
-    "width": "40px",
-    "height": "40px",
-    "marginTop": "12px",
-    "resizeMode": "cover"
-  },
-  ".top_done": {
-    "width": "600px",
-    "height": "600px",
-    "resizeMode": "cover",
-    "marginLeft": "240px",
-    "marginRight": "240px",
-    "marginTop": "150px",
-    "animationName": "loadingAn",
-    "animationTimingFunction": "linear",
-    "animationDuration": "1500ms",
-    "animationIterationCount": -1
-  },
-  ".isanimation": {
-    "width": "40px",
-    "height": "40px",
-    "marginTop": "12px",
-    "resizeMode": "cover",
-    "animationName": "loadingAn",
-    "animationTimingFunction": "linear",
-    "animationDuration": "1500ms",
-    "animationIterationCount": -1
-  },
-  ".top_done_1": {
-    "resizeMode": "cover",
-    "width": "600px",
-    "height": "600px",
-    "marginRight": "240px",
-    "marginLeft": "240px",
-    "marginTop": "150px"
-  },
-  ".text_progress": {
-    "fontSize": "50px"
-  },
-  ".nav_progress": {
-    "fontWeight": "bold",
-    "fontSize": "130px"
-  },
-  ".nav_tips_list": {
-    "width": "100%",
-    "marginLeft": "300px",
-    "marginRight": "300px",
-    "flexDirection": "row"
-  },
-  ".seting-tips": {
-    "marginBottom": "30px",
-    "width": "100%",
-    "textAlign": "center",
-    "fontSize": "48px",
-    "color": "#000000"
-  },
-  ".nav_tips_progerss": {
-    "marginTop": "10px",
-    "marginLeft": "300px",
-    "width": "40px",
-    "height": "40px",
-    "animationName": "loadingAn",
-    "animationTimingFunction": "linear",
-    "animationDuration": "1500ms",
-    "animationIterationCount": -1
-  },
-  ".txt": {
-    "marginLeft": "30px",
-    "width": "50%",
-    "fontSize": "42px",
-    "color": "#666666",
-    "lineHeight": "60px"
-  },
-  ".done": {
-    "width": "100%",
-    "flexDirection": "column"
-  },
-  ".btn": {
-    "width": "960px",
-    "height": "120px",
-    "borderRadius": "16px",
-    "fontSize": "48px",
-    "marginTop": "30px"
-  },
-  ".btn-info": {
-    "backgroundColor": "#21D9E5",
-    "color": "#ffffff"
-  },
-  ".btn-cancel": {
-    "borderTopWidth": "3px",
-    "borderRightWidth": "3px",
-    "borderBottomWidth": "3px",
-    "borderLeftWidth": "3px",
-    "borderStyle": "solid",
-    "borderTopColor": "#21D9E5",
-    "borderRightColor": "#21D9E5",
-    "borderBottomColor": "#21D9E5",
-    "borderLeftColor": "#21D9E5",
-    "color": "#21D9E5"
-  },
-  ".set-succ": {
-    "width": "100%",
-    "flexDirection": "column"
-  },
-  ".set_top": {
-    "width": "100%",
-    "flexDirection": "column"
-  },
-  ".nav_btn": {
-    "width": "900px",
-    "marginRight": "90px",
-    "marginLeft": "90px",
-    "marginTop": "200px",
-    "marginBottom": "100px"
-  },
-  ".nav_btn_2": {
-    "width": "900px",
-    "marginRight": "90px",
-    "marginLeft": "90px",
-    "marginTop": "200px"
-  },
-  ".nav_btn_1": {
-    "width": "900px",
-    "marginRight": "90px",
-    "marginLeft": "90px",
-    "marginTop": "40px"
-  },
-  ".nav_btn_3": {
-    "width": "900px",
-    "marginRight": "90px",
-    "marginLeft": "90px",
-    "marginTop": "40px",
-    "marginBottom": "100px"
-  },
-  ".nav_btn_text": {
-    "width": "100%",
-    "height": "120px",
-    "borderRadius": "16px",
-    "fontSize": "48px",
-    "color": "#FFFFFF",
-    "textAlign": "center",
-    "backgroundColor": "#21D9E5"
-  },
-  ".nav_progress_fail": {
-    "fontSize": "150px",
-    "color": "#FF0000"
-  },
-  ".txt_3": {
-    "width": "100%",
-    "textAlign": "left",
-    "fontSize": "42px",
-    "color": "#666666",
-    "lineHeight": "60px"
-  },
-  ".nav_btn_text_1": {
-    "width": "100%",
-    "height": "120px",
-    "borderRadius": "16px",
-    "fontSize": "48px",
-    "color": "#21D9E5",
-    "textAlign": "center",
-    "borderTopWidth": "3px",
-    "borderRightWidth": "3px",
-    "borderBottomWidth": "3px",
-    "borderLeftWidth": "3px",
-    "borderStyle": "solid",
-    "borderTopColor": "#21D9E5",
-    "borderRightColor": "#21D9E5",
-    "borderBottomColor": "#21D9E5",
-    "borderLeftColor": "#21D9E5"
-  },
-  ".txt_remine": {
-    "marginTop": "20px",
-    "fontSize": "40px",
-    "textAlign": "center",
-    "width": "100%",
-    "color": "#3191FD"
-  },
-  "@KEYFRAMES": {
-    "loadingAn": [
-      {
-        "transform": "{\"rotate\":\"0deg\"}",
-        "time": 0
-      },
-      {
-        "transform": "{\"rotate\":\"360deg\"}",
-        "time": 100
-      }
-    ]
-  },
-  ".l_image_back": {
-    "transform": "{\"rotate\":\"180deg\"}"
-  },
-  ".l_nav_tips_list": {
-    "width": "100%",
-    "marginLeft": "400px",
-    "marginRight": "200px",
-    "flexDirection": "row"
-  }
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "container"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "midea-title"
-      ],
-      "children": [
-        {
-          "type": "image",
-          "attr": {
-            "src": "/Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"
-          },
-          "classList": function () {return ['midea-title-back', this.language?'':'l_image_back']},
-          "events": {
-            "click": function (evt) {this.backPage(evt)}
-          }
-        },
-        {
-          "type": "text",
-          "attr": {
-            "value": " 配置设备 "
-          },
-          "classList": [
-            "midea-title-text"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "list",
-      "attr": {},
-      "classList": [
-        "nav_list"
-      ],
-      "children": [
-        {
-          "type": "list-item",
-          "attr": {
-            "type": "listItem1"
-          },
-          "classList": [
-            "nav_list_all"
-          ],
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "seting"
-              ],
-              "shown": function () {return !this.setSucc},
-              "children": [
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "top"
-                  ],
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": function () {return this.isdone?'./assets/img/complete.png':'./assets/img/wifi_configuration_success_1.png'}
-                      },
-                      "classList": function () {return [this.isdone?'top_done_1':'top_done']}
-                    },
-                    {
-                      "type": "text",
-                      "attr": {},
-                      "classList": [
-                        "progress"
-                      ],
-                      "shown": function () {return !this.isdone},
-                      "children": [
-                        {
-                          "type": "span",
-                          "attr": {
-                            "value": function () {return this.progress}
-                          },
-                          "classList": [
-                            "nav_progress"
-                          ]
-                        },
-                        {
-                          "type": "span",
-                          "attr": {
-                            "value": "%"
-                          },
-                          "classList": [
-                            "text_progress"
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": function () {return '' + '大概还需要' + (this.time) + 's'}
-                      },
-                      "classList": [
-                        "nav_time"
-                      ],
-                      "shown": function () {return !this.isdone}
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_bottom"
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "正在努力链接，请耐心等待..."
-                      },
-                      "classList": [
-                        "seting-tips"
-                      ]
-                    },
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": [
-                        "nav_tips"
-                      ],
-                      "children": [
-                        {
-                          "type": "div",
-                          "attr": {},
-                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
-                          "children": [
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return this.language},
-                                "src": function () {return this.isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.isstart?'nav_tips_list_img':'isanimation']}
-                            },
-                            {
-                              "type": "text",
-                              "attr": {
-                                "value": "配置家电"
-                              },
-                              "classList": [
-                                "txt"
-                              ]
-                            },
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return !this.language},
-                                "src": function () {return this.isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.isstart?'nav_tips_list_img':'isanimation']}
-                            }
-                          ]
-                        },
-                        {
-                          "type": "div",
-                          "attr": {},
-                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
-                          "children": [
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return this.language},
-                                "src": function () {return this.iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.iswork?'nav_tips_list_img':'isanimation']}
-                            },
-                            {
-                              "type": "text",
-                              "attr": {
-                                "value": "家电加入家庭WiFi"
-                              },
-                              "classList": [
-                                "txt"
-                              ]
-                            },
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return !this.language},
-                                "src": function () {return this.iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.iswork?'nav_tips_list_img':'isanimation']}
-                            }
-                          ]
-                        },
-                        {
-                          "type": "div",
-                          "attr": {},
-                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
-                          "children": [
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return this.language},
-                                "src": function () {return this.isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.isdone?'nav_tips_list_img':'isanimation']}
-                            },
-                            {
-                              "type": "text",
-                              "attr": {
-                                "value": "激活家电"
-                              },
-                              "classList": [
-                                "txt"
-                              ]
-                            },
-                            {
-                              "type": "image",
-                              "attr": {
-                                "show": function () {return !this.language},
-                                "src": function () {return this.isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
-                              },
-                              "classList": function () {return [this.isdone?'nav_tips_list_img':'isanimation']}
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_btn"
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "完成"
-                      },
-                      "classList": [
-                        "nav_btn_text"
-                      ],
-                      "shown": function () {return this.isdone},
-                      "events": {
-                        "click": function (evt) {this.configFinish(0,evt)}
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "list-item",
-          "attr": {
-            "type": "listItem2"
-          },
-          "classList": [
-            "nav_list_all"
-          ],
-          "children": [
-            {
-              "type": "div",
-              "attr": {},
-              "classList": [
-                "seting"
-              ],
-              "shown": function () {return this.setSucc},
-              "children": [
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "top"
-                  ],
-                  "children": [
-                    {
-                      "type": "image",
-                      "attr": {
-                        "src": "/config_network/apNetWork/assets/img/fail.png"
-                      },
-                      "classList": [
-                        "top_done_1"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_bottom"
-                  ],
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "连接失败，请检查:"
-                      },
-                      "classList": [
-                        "seting-tips"
-                      ]
-                    },
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": [
-                        "nav_tips"
-                      ],
-                      "children": [
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "1、家电是否已进入配网模式；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "2、输入的WiFi密码是否正确；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "3、无线路由器是否为2.4GHz网络；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "查看更多原因"
-                          },
-                          "classList": [
-                            "txt_remine"
-                          ],
-                          "shown": function () {return this.ismore},
-                          "events": {
-                            "click": function (evt) {this.moreRead(evt)}
-                          }
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "4、将无线路由器的模式设置为“802.11bg mixed”或者把频宽设置为“20MHz”后进行配网；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ],
-                          "shown": function () {return !this.ismore}
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "5、无线路由器是否已关闭黑白名单（mac地址过滤）功能；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ],
-                          "shown": function () {return !this.ismore}
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "6、无线网络名称是否包含中文字符（不推荐）；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ],
-                          "shown": function () {return !this.ismore}
-                        },
-                        {
-                          "type": "text",
-                          "attr": {
-                            "value": "7、尝试连接其他无线路由器重新配网；"
-                          },
-                          "classList": [
-                            "txt_3"
-                          ],
-                          "shown": function () {return !this.ismore}
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_btn_2"
-                  ],
-                  "shown": function () {return this.iot_config_type.toString()==='1'&&this.isap==='true'},
-                  "events": {
-                    "click": function (evt) {this.tryOther(evt)}
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "尝试其他方式"
-                      },
-                      "classList": [
-                        "nav_btn_text"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": function () {return [this.iot_config_type.toString()==='1'?'nav_btn_1':'nav_btn_2']},
-                  "events": {
-                    "click": function (evt) {this.tryAgain(evt)}
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "重试"
-                      },
-                      "classList": function () {return [this.iot_config_type.toString()==='1'?'nav_btn_text_1':'nav_btn_text']}
-                    }
-                  ]
-                },
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_btn_3"
-                  ],
-                  "events": {
-                    "click": function (evt) {this.configFinish(-1,evt)}
-                  },
-                  "children": [
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "取消"
-                      },
-                      "classList": [
-                        "nav_btn_text_1"
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-var _system = _interopRequireDefault($app_require$("@app-module/system.app"));
-
-var _system2 = _interopRequireDefault($app_require$("@app-module/system.fetch"));
-
-var _system3 = _interopRequireDefault($app_require$("@app-module/system.router"));
-
-var _system4 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
-
-var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
-
-var _system5 = _interopRequireDefault($app_require$("@app-module/system.storage"));
-
-var _system6 = _interopRequireDefault($app_require$("@app-module/system.barcode"));
-
-var _system7 = _interopRequireDefault($app_require$("@app-module/system.network"));
-
-var _service2 = _interopRequireDefault($app_require$("@app-module/service.iot"));
-
-var _api = _interopRequireDefault(__webpack_require__(/*! .../../Common/api/api.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-module.exports = {
-  "private": {
-    isap: '',
-    ismore: true,
-    language: true,
-    classname: 'top_done',
-    isback: true,
-    isfirsTime: false,
-    isloadingDone: false,
-    fisrtCode: 0,
-    quickAppPackage: "",
-    isstart: false,
-    iswork: false,
-    isdone: false,
-    setFlag: true,
-    setSucc: false,
-    progress: 0,
-    isloadindone: 6,
-    time: 105,
-    condition: [true, false, false],
-    lauchData: {},
-    deviceinfo: '',
-    physicalId: '',
-    binddeviceid: '',
-    inputdeviceid: '',
-    devices: [],
-    modelNumber: '',
-    deviceType: '',
-    deviceSubType: '',
-    deviceName: '',
-    sn: '',
-    openId: '',
-    deviceSSID: '',
-    time_list: [1, 1, 4, 1, 1, 5, 1, 1, 1, 1, 10, 3]
-  },
-  "protected": {
-    accessToken: ''
-  },
-  "public": {
-    iot_call_from: '',
-    iot_wifi_ssid: "",
-    iot_wifi_password: "",
-    iot_url: "",
-    iot_device_ssid: "",
-    iot_wifi_secretType: "",
-    iot_config_type: "",
-    ssidDevice: '',
-    is_ap: ''
-  },
-  backPage: function backPage() {
-    this.stopConfigDevice();
-
-    if (this.iot_call_from != 'AP_SCAN') {
-      _system3["default"].back();
-    } else {
-      this.$app.exit();
-    }
-  },
-  getDeviceinfo: function getDeviceinfo() {
-    this.isloadindone = 4;
-    var that = this;
-
-    if (that.code != '' && that.fisrtCode === 0) {
-      that.getUserToken(that.code);
-    } else {
-      _service["default"].authorize({
-        type: 'code',
-        success: function success(data) {
-          that.getUserToken(data.code);
-        },
-        fail: function fail(data, code) {
-          that.setSucc = true;
-        }
-      });
-    }
-  },
-  getwifiList: function getwifiList() {
-    var that = this;
-
-    if (this.iot_device_ssid != '' && that.iot_device_ssid != 'null') {
-      that.startConfigDevice();
-
-      _service2["default"].send({
-        action: 'getWifiList',
-        success: function success(data) {},
-        fail: function fail(data, code) {
-          console.log("handling fail, code = ".concat(code));
-        }
-      });
-    } else {
-      _service2["default"].send({
-        action: 'getWifiList',
-        success: function success(data) {
-          console.log("配网wifi列表:" + JSON.stringify(data));
-          var res = _typeof(data) === "object" ? data : JSON.parse(data);
-
-          if (!res.code) {
-            var wifilist = _typeof(res.message) === "object" ? res.message.wifiList : JSON.parse(res.message).wifiList;
-
-            if (that.iot_url != '' || that.ssidDevice != '') {
-              var type = _api["default"].getDeviceInformation(that.iot_url);
-
-              if (type || that.ssidDevice != '') {
-                var str = '';
-
-                if (type) {
-                  str = type.substring(type.length - 2, type.length).toLowerCase();
-                } else {
-                  str = that.ssidDevice.toLowerCase();
-                }
-
-                that.ssidDevice = str;
-                var obj = [];
-                wifilist.forEach(function (item, i) {
-                  if (item.level) {
-                    if (item.ssid.substring(6, 8).toLowerCase() === str) {
-                      var param = {
-                        ssid: item.ssid,
-                        level: item.level,
-                        capabilities: item.capabilities
-                      };
-                      obj.push(param);
-                    }
-                  } else {
-                    if (!that.isfirsTime) {
-                      that.isfirsTime = true;
-                      setTimeout(function () {
-                        that.isloadingDone = true;
-                      }, 15000);
-                    }
-
-                    if (that.isloadingDone) {
-                      _system4["default"].showDialog({
-                        title: '查找设备热点失败',
-                        message: "设备热点不存在，请检查后重新连接",
-                        buttons: [{
-                          text: '确定',
-                          color: '#33dd44'
-                        }],
-                        success: function success(data) {
-                          _system3["default"].back();
-                        },
-                        cancel: function cancel() {
-                          _system3["default"].back();
-
-                          console.log('handling cancel');
-                        },
-                        fail: function fail(data, code) {
-                          _system3["default"].back();
-
-                          console.log("handling fail, code = ".concat(code));
-                        }
-                      });
-                    } else {
-                      that.getwifiList();
-                    }
-                  }
-                });
-
-                if (obj.length < 1 || !obj[0].level) {
-                  if (!that.isfirsTime) {
-                    that.isfirsTime = true;
-                    setTimeout(function () {
-                      that.isloadingDone = true;
-                    }, 15000);
-                  }
-
-                  if (that.isloadingDone) {
-                    _system4["default"].showDialog({
-                      title: '查找设备热点失败',
-                      message: "设备热点不存在，请检查后重新连接",
-                      buttons: [{
-                        text: '确定',
-                        color: '#33dd44'
-                      }],
-                      success: function success(data) {
-                        _system3["default"].back();
-                      },
-                      cancel: function cancel() {
-                        _system3["default"].back();
-
-                        console.log('handling cancel');
-                      },
-                      fail: function fail(data, code) {
-                        _system3["default"].back();
-
-                        console.log("handling fail, code = ".concat(code));
-                      }
-                    });
-                  } else {
-                    that.getwifiList();
-                  }
-                } else {
-                  var num = parseInt(obj[0].level);
-                  var index = 0;
-                  obj.forEach(function (item, n) {
-                    if (parseInt(item.level) > num) {
-                      num = parseInt(item.level);
-                      index = n;
-                    }
-                  });
-                  console.log("设备热点的加密方式:" + JSON.stringify(obj[index]));
-                  that.iot_device_ssid = obj[index].ssid;
-                  that.startConfigDevice();
-                }
-              } else {}
-            } else {}
-          } else {}
-        },
-        fail: function fail(data, code) {
-          console.log("handling fail, code = ".concat(code));
-        }
-      });
-    }
-  },
-  moreRead: function moreRead() {
-    this.ismore = false;
-  },
-  tryOther: function tryOther() {
-    var that = this;
-    var iot_config = '0';
-
-    if (that.iot_config_type.toString() === '0') {
-      iot_config = '1';
-    } else {
-      iot_config = '0';
-    }
-
-    _system3["default"].push({
-      uri: "config_network",
-      params: {
-        iot_wifi_ssid: that.iot_wifi_ssid,
-        iot_wifi_password: that.iot_wifi_password,
-        iot_url: that.iot_url,
-        iot_device_ssid: that.iot_device_ssid,
-        iot_wifi_secretType: that.iot_wifi_secretType,
-        iot_config_type: iot_config,
-        iot_apLan: that.isap
-      }
-    });
-  },
-  gettime: function gettime() {
-    var timestamp = Date.parse(new Date());
-    return parseInt(timestamp) + 3600000;
-  },
-  getUserToken: function getUserToken(code) {
-    var params = {
-      thirdUId: code
-    };
-    var $this = this;
-    this.fisrtCode = 1;
-
-    _api["default"].getUserToken(params).then(function (res) {
-      console.log(JSON.stringify(res));
-      var data_accesstoken = res;
-
-      if (data_accesstoken.code && data_accesstoken.code == 200) {
-        var result_data = _typeof(data_accesstoken.data) !== 'object' ? JSON.parse(data_accesstoken.data) : data_accesstoken.data;
-
-        if (!parseInt(result_data.code) && result_data.accessToken) {
-          $this.accessToken = result_data.accessToken;
-          $this.openId = result_data.openId;
-          var obj = {
-            openid: $this.openId,
-            accessToken: $this.accessToken,
-            time: $this.gettime()
-          };
-
-          _system5["default"].set({
-            key: 'openidToken',
-            value: JSON.stringify(obj),
-            success: function success(data) {},
-            fail: function fail(data, code) {}
-          });
-
-          $this.startBindDevice();
-        } else {
-          $this.setSucc = true;
-        }
-      } else {
-        $this.setSucc = true;
-      }
-    })["catch"](function (error) {
-      $this.setSucc = true;
-    });
-  },
-  tryAgain: function tryAgain() {
-    var that = this;
-
-    _system7["default"].getType({
-      callback: function callback(data) {
-        if (data.type === 'none') {
-          that.setSucc = true;
-
-          _system4["default"].showToast({
-            message: "网络异常，请检查网络是否正常再重新尝试"
-          });
-        } else {
-          that.setSucc = false;
-
-          if (that.isloadindone === 4) {
-            that.getDeviceinfo();
-          } else {
-            that.progress = 0;
-
-            if (that.iot_config_type.toString() === '1') {
-              that.startConfigDevice();
-            } else {
-              that.getwifiList();
-            }
-          }
-        }
-
-        console.log('handling callback');
-      }
-    });
-  },
-  startConfigDevice: function startConfigDevice() {
-    this.ismore = true;
-    var $this = this;
-    $this.isloadindone = 1;
-    var ssid = $this.iot_device_ssid;
-
-    if ($this.iot_config_type.toString() === '1' && $this.iot_url != '') {
-      ssid = _api["default"].getUrlCan($this.iot_url, "SSID");
-    }
-
-    if (!ssid) {
-      ssid = _api["default"].getUrlSSid($this.iot_url);
-    }
-
-    _service2["default"].send({
-      action: 'stopConfigDevice',
-      success: function success(data) {
-        _service["default"].authorize({
-          type: 'code',
-          success: function success(data) {
-            $this.code = data.code;
-            var params = {
-              connectData: {
-                deviceSsid: ssid,
-                ssid: $this.iot_wifi_ssid,
-                wifiPassword: $this.iot_wifi_password,
-                secretType: $this.iot_wifi_secretType,
-                configType: $this.iot_config_type
-              },
-              deviceInfo: {
-                deviceName: '',
-                deviceUuid: ''
-              }
-            };
-
-            _service2["default"].send({
-              action: 'startConfigDevice',
-              data: params,
-              success: function success(data) {
-                console.log(JSON.stringify(data));
-                var res = _typeof(data) != 'object' ? JSON.parse(data) : data;
-
-                if (!res.code || res.code.toString() == '0') {
-                  $this.deviceType = JSON.parse(res.message).deviceType;
-                  $this.modelNumber = JSON.parse(res.message).deviceSubType;
-                  $this.deviceName = JSON.parse(res.message).deviceName;
-                  $this.sn = JSON.parse(res.message).deviceSN;
-                  $this.deviceSSID = JSON.parse(res.message).deviceSSID;
-                  $this.iswork = true;
-                  $this.getDeviceinfo();
-                } else if (res.code.toString() === '1') {
-                  var num = 0;
-
-                  for (var i = 0; i < JSON.parse(res.message).currentStep; i++) {
-                    num = num + $this.time_list[i];
-                  }
-
-                  $this.time = 30 - num;
-
-                  if (num / 30 * 100 > 99) {
-                    $this.progress = 99;
-                  } else {
-                    $this.progress = parseInt(num / 30 * 100);
-                  }
-
-                  if (parseInt(JSON.parse(res.message).currentStep) === 1) {
-                    $this.isstart = true;
-                  } else if (parseInt(JSON.parse(res.message).currentStep) > 7) {
-                    $this.iswork = true;
-                  }
-                } else {
-                  $this.setSucc = true;
-                }
-              },
-              fail: function fail(data) {
-                $this.setSucc = true;
-              }
-            });
-          },
-          fail: function fail(data, code) {
-            $this.setSucc = true;
-          }
-        });
-      }
-    });
-  },
-  configFinish: function configFinish(bol) {
-    var $this = this;
-    $this.isloadindone = 2;
-
-    _system3["default"].clear();
-
-    var params = {
-      quickAppPackage: $this.quickAppPackage,
-      deviceName: $this.deviceName,
-      deviceCategory: $this.deviceType,
-      deviceSeries: $this.sn.substring(9, 17),
-      deviceUuid: $this.binddeviceid,
-      resultCode: bol,
-      extraJson: {
-        deviceType: $this.deviceType,
-        deviceSubType: $this.modelNumber,
-        deviceName: $this.deviceName,
-        deviceSN: $this.sn
-      }
-    };
-    console.log(JSON.stringify(params));
-    setTimeout(function () {
-      $this.$page.finish();
-    }, 300);
-
-    if (bol === -1) {
-      $this.stopConfigDevice();
-
-      _system3["default"].back();
-    } else {
-      _service2["default"].send({
-        action: "configNetworkFinish",
-        data: params,
-        success: function success(data) {
-          console.log("handling success: size = ".concat(data.message));
-        },
-        fail: function fail(data, code) {}
-      });
-    }
-  },
-  stopConfigDevice: function stopConfigDevice() {
-    var that = this;
-
-    _service2["default"].send({
-      action: 'stopConfigDevice',
-      success: function success(data) {
-        console.log("停止配网：" + JSON.stringify(data));
-
-        if (that.iot_call_from === 'AP_SCAN') {
-          that.$app.exit();
-        } else {
-          _system3["default"].back();
-        }
-      }
-    });
-  },
-  startBindDevice: function startBindDevice() {
-    this.isloadindone = 3;
-    var params = {
-      'physicalId': this.physicalId,
-      'modelNumber': this.modelNumber,
-      'deviceName': this.deviceName,
-      'deviceType': this.deviceType,
-      'sn': this.sn,
-      'openId': this.openId
-    };
-    var $this = this;
-
-    _api["default"].postDeviceBind(params, $this.accessToken).then(function (res) {
-      console.log("绑定设备" + JSON.stringify(res));
-
-      if (res.code && res.code == 200) {
-        var bind_res_data = _typeof(res.data) !== 'object' ? JSON.parse(res.data) : res.data;
-
-        if (!parseInt(bind_res_data.code) && bind_res_data.deviceId) {
-          $this.binddeviceid = bind_res_data.deviceId;
-          $this.isdone = true;
-          $this.classname = 'top_done_1';
-          $this.progress = 100;
-          $this.time = 0;
-        } else {
-          $this.setSucc = true;
-          console.log("绑定设备失败！" + bind_res_data.msg);
-        }
-      } else {
-        $this.setSucc = true;
-      }
-    })["catch"](function (error) {
-      $this.setSucc = true;
-    });
-  },
-  setOpenid: function setOpenid() {},
-  routePage: function routePage(param) {
-    _system3["default"].push({
-      uri: '' + param
-    });
-  },
-  networkStatas: function networkStatas() {
-    _system7["default"].getType({
-      callback: function callback(data) {
-        if (data.type === 'none') {}
-
-        console.log('handling callback');
-      }
-    });
-  },
-  onInit: function onInit() {
-    var _this = this;
-
-    this.isap = this.is_ap;
-
-    _api["default"].getlanguage().then(function (res) {
-      if (res === 'ug') {
-        _this.language = false;
-      } else {
-        _this.language = true;
-      }
-    });
-
-    if (this.iot_call_from === 'AP_SCAN') {
-      _system3["default"].clear();
-    }
-
-    var app_info = _system["default"].getInfo();
-
-    if (app_info.packageName) {
-      this.quickAppPackage = app_info.packageName;
-    }
-
-    var that = this;
-
-    _system7["default"].getType({
-      callback: function callback(data) {
-        if (data.type === 'none') {
-          that.setSucc = true;
-
-          _system4["default"].showToast({
-            message: "网络异常，请检查网络是否正常再重新尝试"
-          });
-        } else {
-          that.$page.setTitleBar({
-            text: '配置设备'
-          });
-
-          if (that.iot_config_type.toString() === '1') {
-            that.startConfigDevice();
-          } else {
-            that.getwifiList();
-          }
-        }
-
-        console.log('handling callback');
-      }
-    });
-  },
-  onReady: function onReady() {},
-  onBackPress: function onBackPress() {
-    this.stopConfigDevice();
-  },
-  onDestroy: function onDestroy() {}
-};
-var moduleOwn = exports["default"] || module.exports;
-var accessors = ['public', 'protected', 'private'];
-
-if (moduleOwn.data && accessors.some(function (acc) {
-  return moduleOwn[acc];
-})) {
-  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
-} else if (!moduleOwn.data) {
-  moduleOwn.data = {};
-  moduleOwn._descriptor = {};
-  accessors.forEach(function (acc) {
-    var accType = _typeof(moduleOwn[acc]);
-
-    if (accType === 'object') {
-      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
-
-      for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = {
-          access: acc
-        };
-      }
-    } else if (accType === 'function') {
-      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
-    }
-  });
-}}
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js":
-/*!****************************************************************************************************************!*\
-  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
-  \****************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
-
-/* WEBPACK VAR INJECTION */}.call(this, {}))
-
-/***/ }),
-
-/***/ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/module.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (module) {
-  if (!module.webpackPolyfill) {
-    module.deprecate = function () {};
-
-    module.paths = []; // module.parent = undefined by default
-
-    if (!module.children) module.children = [];
-    Object.defineProperty(module, "loaded", {
-      enumerable: true,
-      get: function get() {
-        return module.l;
-      }
-    });
-    Object.defineProperty(module, "id", {
-      enumerable: true,
-      get: function get() {
-        return module.i;
-      }
-    });
-    module.webpackPolyfill = 1;
-  }
-
-  return module;
-};
-
-/***/ }),
-
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
-/*!****************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
-  \****************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
+/*!*******************************************************************************************!*\
+  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
+  \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2806,14 +1148,14 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
     }])
   );
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ../../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
-/*!*********************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
-  \*********************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
+/*!************************************************************************************************!*\
+  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2853,7 +1195,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }
 
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && ( false ? undefined : _typeof(module)) === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
+  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -3365,14 +1707,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   }
 })();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js":
-/*!*************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/api.js ***!
-  \*************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js":
+/*!****************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3384,7 +1726,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _util = _interopRequireDefault(__webpack_require__(/*! .../../util.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
 
 var _system = _interopRequireDefault($app_require$("@app-module/system.fetch"));
 
@@ -3396,11 +1738,11 @@ var _system4 = _interopRequireDefault($app_require$("@app-module/system.router")
 
 var _system5 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
 
-var _uuid = _interopRequireDefault(__webpack_require__(/*! ../uuid.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js"));
+var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js"));
 
-var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
+var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
 
-var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ../networkAPI.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js"));
+var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ./networkAPI.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -3434,7 +1776,7 @@ var appidForvivo = 2150;
 var appidForoppo = 2149;
 
 // import main from "./main.js";
-var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
+var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
 
 var fly = new Fly(_system["default"]);
 var appid = '';
@@ -4096,10 +2438,10 @@ fly.interceptors.response.use(function (response) {//只将请求结果的data�
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js":
-/*!********************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/networkAPI.js ***!
-  \********************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js":
+/*!***********************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4117,7 +2459,7 @@ var _system = _interopRequireDefault($app_require$("@app-module/system.prompt"))
 
 var _system2 = _interopRequireDefault($app_require$("@app-module/system.device"));
 
-var _util = _interopRequireDefault(__webpack_require__(/*! .../../util.js */ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -4531,10 +2873,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js":
-/*!**************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/Common/api/uuid.js ***!
-  \**************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js":
+/*!*****************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4799,16 +3141,16 @@ module.exports = UUIDjs;
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
-/*!*****************************************************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
-  \*****************************************************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
+/*!********************************************************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../index.ux?uxType=page& */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page&")
-var $app_style$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../index.ux?uxType=page */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page")
-var $app_script$ = __webpack_require__(/*! !.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!.../../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!.../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../index.ux?uxType=page */ "./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page")
+var $app_template$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page& */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page&")
+var $app_style$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page")
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -4824,10 +3166,10 @@ $app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
 
 /***/ }),
 
-/***/ "./Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js":
-/*!***************************************************************************!*\
-  !*** /Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp/src/util.js ***!
-  \***************************************************************************/
+/***/ "../../midea_work/美居weex工程/ov-quickapp/src/util.js":
+/*!******************************************************!*\
+  !*** d:/midea_work/美居weex工程/ov-quickapp/src/util.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4851,6 +3193,1670 @@ var _default = {
   }
 };
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".container": {
+    "width": "100%",
+    "flexDirection": "column"
+  },
+  ".nav_list": {
+    "width": "100%"
+  },
+  ".midea-title": {
+    "width": "100%",
+    "height": "144px",
+    "backgroundColor": "#ffffff",
+    "borderBottomColor": "#cccccc",
+    "borderBottomWidth": "1px",
+    "flexDirection": "row"
+  },
+  ".midea-title-back": {
+    "width": "66px",
+    "height": "66px",
+    "marginTop": "50px",
+    "marginLeft": "40px",
+    "marginRight": "40px"
+  },
+  ".midea-title-text": {
+    "width": "848px",
+    "height": "144px",
+    "textAlign": "center",
+    "fontSize": "50px",
+    "color": "#000000",
+    "fontWeight": "bold"
+  },
+  ".nav_list_all": {
+    "width": "100%"
+  },
+  ".seting": {
+    "width": "100%",
+    "flexDirection": "column"
+  },
+  ".top": {
+    "width": "100%",
+    "height": "800px",
+    "flexDirection": "column",
+    "color": "#666666"
+  },
+  ".nav_tips": {
+    "flexDirection": "column",
+    "justifyContent": "center"
+  },
+  ".nav_time": {
+    "width": "100%",
+    "textAlign": "center",
+    "fontSize": "42px",
+    "color": "#2A2A2A"
+  },
+  ".nav_bottom": {
+    "marginTop": "50px",
+    "width": "1000px",
+    "marginLeft": "40px",
+    "marginRight": "40px",
+    "flexDirection": "column"
+  },
+  ".progress": {
+    "color": "#25D4DF",
+    "width": "100%",
+    "marginTop": "-440px",
+    "textAlign": "center",
+    "fontWeight": "bold"
+  },
+  ".nav_tips_list_img": {
+    "width": "40px",
+    "height": "40px",
+    "marginTop": "12px",
+    "resizeMode": "cover"
+  },
+  ".top_done": {
+    "width": "600px",
+    "height": "600px",
+    "resizeMode": "cover",
+    "marginLeft": "240px",
+    "marginRight": "240px",
+    "marginTop": "150px",
+    "animationName": "loadingAn",
+    "animationTimingFunction": "linear",
+    "animationDuration": "1500ms",
+    "animationIterationCount": -1
+  },
+  ".isanimation": {
+    "width": "40px",
+    "height": "40px",
+    "marginTop": "12px",
+    "resizeMode": "cover",
+    "animationName": "loadingAn",
+    "animationTimingFunction": "linear",
+    "animationDuration": "1500ms",
+    "animationIterationCount": -1
+  },
+  ".top_done_1": {
+    "resizeMode": "cover",
+    "width": "600px",
+    "height": "600px",
+    "marginRight": "240px",
+    "marginLeft": "240px",
+    "marginTop": "150px"
+  },
+  ".text_progress": {
+    "fontSize": "50px"
+  },
+  ".nav_progress": {
+    "fontWeight": "bold",
+    "fontSize": "130px"
+  },
+  ".nav_tips_list": {
+    "width": "100%",
+    "marginLeft": "300px",
+    "marginRight": "300px",
+    "flexDirection": "row"
+  },
+  ".seting-tips": {
+    "marginBottom": "30px",
+    "width": "100%",
+    "textAlign": "center",
+    "fontSize": "48px",
+    "color": "#000000"
+  },
+  ".nav_tips_progerss": {
+    "marginTop": "10px",
+    "marginLeft": "300px",
+    "width": "40px",
+    "height": "40px",
+    "animationName": "loadingAn",
+    "animationTimingFunction": "linear",
+    "animationDuration": "1500ms",
+    "animationIterationCount": -1
+  },
+  ".txt": {
+    "marginLeft": "30px",
+    "width": "50%",
+    "fontSize": "42px",
+    "color": "#666666",
+    "lineHeight": "60px"
+  },
+  ".done": {
+    "width": "100%",
+    "flexDirection": "column"
+  },
+  ".btn": {
+    "width": "960px",
+    "height": "120px",
+    "borderRadius": "16px",
+    "fontSize": "48px",
+    "marginTop": "30px"
+  },
+  ".btn-info": {
+    "backgroundColor": "#21D9E5",
+    "color": "#ffffff"
+  },
+  ".btn-cancel": {
+    "borderTopWidth": "3px",
+    "borderRightWidth": "3px",
+    "borderBottomWidth": "3px",
+    "borderLeftWidth": "3px",
+    "borderStyle": "solid",
+    "borderTopColor": "#21D9E5",
+    "borderRightColor": "#21D9E5",
+    "borderBottomColor": "#21D9E5",
+    "borderLeftColor": "#21D9E5",
+    "color": "#21D9E5"
+  },
+  ".set-succ": {
+    "width": "100%",
+    "flexDirection": "column"
+  },
+  ".set_top": {
+    "width": "100%",
+    "flexDirection": "column"
+  },
+  ".nav_btn": {
+    "width": "900px",
+    "marginRight": "90px",
+    "marginLeft": "90px",
+    "marginTop": "200px",
+    "marginBottom": "100px"
+  },
+  ".nav_btn_2": {
+    "width": "900px",
+    "marginRight": "90px",
+    "marginLeft": "90px",
+    "marginTop": "200px"
+  },
+  ".nav_btn_1": {
+    "width": "900px",
+    "marginRight": "90px",
+    "marginLeft": "90px",
+    "marginTop": "40px"
+  },
+  ".nav_btn_3": {
+    "width": "900px",
+    "marginRight": "90px",
+    "marginLeft": "90px",
+    "marginTop": "40px",
+    "marginBottom": "100px"
+  },
+  ".nav_btn_text": {
+    "width": "100%",
+    "height": "120px",
+    "borderRadius": "16px",
+    "fontSize": "48px",
+    "color": "#FFFFFF",
+    "textAlign": "center",
+    "backgroundColor": "#21D9E5"
+  },
+  ".nav_progress_fail": {
+    "fontSize": "150px",
+    "color": "#FF0000"
+  },
+  ".txt_3": {
+    "width": "100%",
+    "textAlign": "left",
+    "fontSize": "42px",
+    "color": "#666666",
+    "lineHeight": "60px"
+  },
+  ".nav_btn_text_1": {
+    "width": "100%",
+    "height": "120px",
+    "borderRadius": "16px",
+    "fontSize": "48px",
+    "color": "#21D9E5",
+    "textAlign": "center",
+    "borderTopWidth": "3px",
+    "borderRightWidth": "3px",
+    "borderBottomWidth": "3px",
+    "borderLeftWidth": "3px",
+    "borderStyle": "solid",
+    "borderTopColor": "#21D9E5",
+    "borderRightColor": "#21D9E5",
+    "borderBottomColor": "#21D9E5",
+    "borderLeftColor": "#21D9E5"
+  },
+  ".txt_remine": {
+    "marginTop": "20px",
+    "fontSize": "40px",
+    "textAlign": "center",
+    "width": "100%",
+    "color": "#3191FD"
+  },
+  "@KEYFRAMES": {
+    "loadingAn": [
+      {
+        "transform": "{\"rotate\":\"0deg\"}",
+        "time": 0
+      },
+      {
+        "transform": "{\"rotate\":\"360deg\"}",
+        "time": 100
+      }
+    ]
+  },
+  ".l_image_back": {
+    "transform": "{\"rotate\":\"180deg\"}"
+  },
+  ".l_nav_tips_list": {
+    "width": "100%",
+    "marginLeft": "400px",
+    "marginRight": "200px",
+    "flexDirection": "row"
+  }
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "container"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "midea-title"
+      ],
+      "children": [
+        {
+          "type": "image",
+          "attr": {
+            "src": "/Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"
+          },
+          "classList": function () {return ['midea-title-back', this.language?'':'l_image_back']},
+          "events": {
+            "click": function (evt) {this.backPage(evt)}
+          }
+        },
+        {
+          "type": "text",
+          "attr": {
+            "value": " 配置设备 "
+          },
+          "classList": [
+            "midea-title-text"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "attr": {},
+      "classList": [
+        "nav_list"
+      ],
+      "children": [
+        {
+          "type": "list-item",
+          "attr": {
+            "type": "listItem1"
+          },
+          "classList": [
+            "nav_list_all"
+          ],
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "seting"
+              ],
+              "shown": function () {return !this.setSucc},
+              "children": [
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "top"
+                  ],
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": function () {return this.isdone?'./assets/img/complete.png':'./assets/img/wifi_configuration_success_1.png'}
+                      },
+                      "classList": function () {return [this.isdone?'top_done_1':'top_done']}
+                    },
+                    {
+                      "type": "text",
+                      "attr": {},
+                      "classList": [
+                        "progress"
+                      ],
+                      "shown": function () {return !this.isdone},
+                      "children": [
+                        {
+                          "type": "span",
+                          "attr": {
+                            "value": function () {return this.progress}
+                          },
+                          "classList": [
+                            "nav_progress"
+                          ]
+                        },
+                        {
+                          "type": "span",
+                          "attr": {
+                            "value": "%"
+                          },
+                          "classList": [
+                            "text_progress"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": function () {return '' + '大概还需要' + (this.time) + 's'}
+                      },
+                      "classList": [
+                        "nav_time"
+                      ],
+                      "shown": function () {return !this.isdone}
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_bottom"
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "正在努力链接，请耐心等待..."
+                      },
+                      "classList": [
+                        "seting-tips"
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": [
+                        "nav_tips"
+                      ],
+                      "children": [
+                        {
+                          "type": "div",
+                          "attr": {},
+                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
+                          "children": [
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return this.language},
+                                "src": function () {return this.isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.isstart?'nav_tips_list_img':'isanimation']}
+                            },
+                            {
+                              "type": "text",
+                              "attr": {
+                                "value": "配置家电"
+                              },
+                              "classList": [
+                                "txt"
+                              ]
+                            },
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return !this.language},
+                                "src": function () {return this.isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.isstart?'nav_tips_list_img':'isanimation']}
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "attr": {},
+                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
+                          "children": [
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return this.language},
+                                "src": function () {return this.iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.iswork?'nav_tips_list_img':'isanimation']}
+                            },
+                            {
+                              "type": "text",
+                              "attr": {
+                                "value": "家电加入家庭WiFi"
+                              },
+                              "classList": [
+                                "txt"
+                              ]
+                            },
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return !this.language},
+                                "src": function () {return this.iswork?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.iswork?'nav_tips_list_img':'isanimation']}
+                            }
+                          ]
+                        },
+                        {
+                          "type": "div",
+                          "attr": {},
+                          "classList": function () {return [this.language?'nav_tips_list':'l_nav_tips_list']},
+                          "children": [
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return this.language},
+                                "src": function () {return this.isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.isdone?'nav_tips_list_img':'isanimation']}
+                            },
+                            {
+                              "type": "text",
+                              "attr": {
+                                "value": "激活家电"
+                              },
+                              "classList": [
+                                "txt"
+                              ]
+                            },
+                            {
+                              "type": "image",
+                              "attr": {
+                                "show": function () {return !this.language},
+                                "src": function () {return this.isdone?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}
+                              },
+                              "classList": function () {return [this.isdone?'nav_tips_list_img':'isanimation']}
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_btn"
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "完成"
+                      },
+                      "classList": [
+                        "nav_btn_text"
+                      ],
+                      "shown": function () {return this.isdone},
+                      "events": {
+                        "click": function (evt) {this.configFinish(0,evt)}
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list-item",
+          "attr": {
+            "type": "listItem2"
+          },
+          "classList": [
+            "nav_list_all"
+          ],
+          "children": [
+            {
+              "type": "div",
+              "attr": {},
+              "classList": [
+                "seting"
+              ],
+              "shown": function () {return this.setSucc},
+              "children": [
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "top"
+                  ],
+                  "children": [
+                    {
+                      "type": "image",
+                      "attr": {
+                        "src": "/config_network/apNetWork/assets/img/fail.png"
+                      },
+                      "classList": [
+                        "top_done_1"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_bottom"
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "连接失败，请检查:"
+                      },
+                      "classList": [
+                        "seting-tips"
+                      ]
+                    },
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": [
+                        "nav_tips"
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "1、家电是否已进入配网模式；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "2、输入的WiFi密码是否正确；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "3、无线路由器是否为2.4GHz网络；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "查看更多原因"
+                          },
+                          "classList": [
+                            "txt_remine"
+                          ],
+                          "shown": function () {return this.ismore},
+                          "events": {
+                            "click": function (evt) {this.moreRead(evt)}
+                          }
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "4、将无线路由器的模式设置为“802.11bg mixed”或者把频宽设置为“20MHz”后进行配网；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ],
+                          "shown": function () {return !this.ismore}
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "5、无线路由器是否已关闭黑白名单（mac地址过滤）功能；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ],
+                          "shown": function () {return !this.ismore}
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "6、无线网络名称是否包含中文字符（不推荐）；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ],
+                          "shown": function () {return !this.ismore}
+                        },
+                        {
+                          "type": "text",
+                          "attr": {
+                            "value": "7、尝试连接其他无线路由器重新配网；"
+                          },
+                          "classList": [
+                            "txt_3"
+                          ],
+                          "shown": function () {return !this.ismore}
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_btn_2"
+                  ],
+                  "shown": function () {return this.iot_config_type.toString()==='1'&&this.isap==='true'},
+                  "events": {
+                    "click": function (evt) {this.tryOther(evt)}
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "尝试其他方式"
+                      },
+                      "classList": [
+                        "nav_btn_text"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": function () {return [this.iot_config_type.toString()==='1'?'nav_btn_1':'nav_btn_2']},
+                  "events": {
+                    "click": function (evt) {this.tryAgain(evt)}
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "重试"
+                      },
+                      "classList": function () {return [this.iot_config_type.toString()==='1'?'nav_btn_text_1':'nav_btn_text']}
+                    }
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_btn_3"
+                  ],
+                  "events": {
+                    "click": function (evt) {this.configFinish(-1,evt)}
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "取消"
+                      },
+                      "classList": [
+                        "nav_btn_text_1"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/apNetWork/index.ux?uxType=page ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+var _system = _interopRequireDefault($app_require$("@app-module/system.app"));
+
+var _system2 = _interopRequireDefault($app_require$("@app-module/system.fetch"));
+
+var _system3 = _interopRequireDefault($app_require$("@app-module/system.router"));
+
+var _system4 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
+
+var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
+
+var _system5 = _interopRequireDefault($app_require$("@app-module/system.storage"));
+
+var _system6 = _interopRequireDefault($app_require$("@app-module/system.barcode"));
+
+var _system7 = _interopRequireDefault($app_require$("@app-module/system.network"));
+
+var _service2 = _interopRequireDefault($app_require$("@app-module/service.iot"));
+
+var _api = _interopRequireDefault(__webpack_require__(/*! ../../Common/api/api.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+module.exports = {
+  "private": {
+    isap: '',
+    ismore: true,
+    language: true,
+    classname: 'top_done',
+    isback: true,
+    isfirsTime: false,
+    isloadingDone: false,
+    fisrtCode: 0,
+    quickAppPackage: "",
+    isstart: false,
+    iswork: false,
+    isdone: false,
+    setFlag: true,
+    setSucc: false,
+    progress: 0,
+    isloadindone: 6,
+    time: 105,
+    condition: [true, false, false],
+    lauchData: {},
+    deviceinfo: '',
+    physicalId: '',
+    binddeviceid: '',
+    inputdeviceid: '',
+    devices: [],
+    modelNumber: '',
+    deviceType: '',
+    deviceSubType: '',
+    deviceName: '',
+    sn: '',
+    openId: '',
+    deviceSSID: '',
+    time_list: [1, 1, 4, 1, 1, 5, 1, 1, 1, 1, 10, 3]
+  },
+  "protected": {
+    accessToken: ''
+  },
+  "public": {
+    iot_call_from: '',
+    iot_wifi_ssid: "",
+    iot_wifi_password: "",
+    iot_url: "",
+    iot_device_ssid: "",
+    iot_wifi_secretType: "",
+    iot_config_type: "",
+    ssidDevice: '',
+    is_ap: ''
+  },
+  backPage: function backPage() {
+    this.stopConfigDevice();
+
+    if (this.iot_call_from != 'AP_SCAN') {
+      _system3["default"].back();
+    } else {
+      this.$app.exit();
+    }
+  },
+  getDeviceinfo: function getDeviceinfo() {
+    this.isloadindone = 4;
+    var that = this;
+
+    if (that.code != '' && that.fisrtCode === 0) {
+      that.getUserToken(that.code);
+    } else {
+      _service["default"].authorize({
+        type: 'code',
+        success: function success(data) {
+          that.getUserToken(data.code);
+        },
+        fail: function fail(data, code) {
+          that.setSucc = true;
+        }
+      });
+    }
+  },
+  getwifiList: function getwifiList() {
+    var that = this;
+
+    if (this.iot_device_ssid != '' && that.iot_device_ssid != 'null') {
+      that.startConfigDevice();
+
+      _service2["default"].send({
+        action: 'getWifiList',
+        success: function success(data) {},
+        fail: function fail(data, code) {
+          console.log("handling fail, code = ".concat(code));
+        }
+      });
+    } else {
+      _service2["default"].send({
+        action: 'getWifiList',
+        success: function success(data) {
+          console.log("配网wifi列表:" + JSON.stringify(data));
+          var res = _typeof(data) === "object" ? data : JSON.parse(data);
+
+          if (!res.code) {
+            var wifilist = _typeof(res.message) === "object" ? res.message.wifiList : JSON.parse(res.message).wifiList;
+
+            if (that.iot_url != '' || that.ssidDevice != '') {
+              var type = _api["default"].getDeviceInformation(that.iot_url);
+
+              if (type || that.ssidDevice != '') {
+                var str = '';
+
+                if (type) {
+                  str = type.substring(type.length - 2, type.length).toLowerCase();
+                } else {
+                  str = that.ssidDevice.toLowerCase();
+                }
+
+                that.ssidDevice = str;
+                var obj = [];
+                wifilist.forEach(function (item, i) {
+                  if (item.level) {
+                    if (item.ssid.substring(6, 8).toLowerCase() === str) {
+                      var param = {
+                        ssid: item.ssid,
+                        level: item.level,
+                        capabilities: item.capabilities
+                      };
+                      obj.push(param);
+                    }
+                  } else {
+                    if (!that.isfirsTime) {
+                      that.isfirsTime = true;
+                      setTimeout(function () {
+                        that.isloadingDone = true;
+                      }, 15000);
+                    }
+
+                    if (that.isloadingDone) {
+                      _system4["default"].showDialog({
+                        title: '查找设备热点失败',
+                        message: "设备热点不存在，请检查后重新连接",
+                        buttons: [{
+                          text: '确定',
+                          color: '#33dd44'
+                        }],
+                        success: function success(data) {
+                          _system3["default"].back();
+                        },
+                        cancel: function cancel() {
+                          _system3["default"].back();
+
+                          console.log('handling cancel');
+                        },
+                        fail: function fail(data, code) {
+                          _system3["default"].back();
+
+                          console.log("handling fail, code = ".concat(code));
+                        }
+                      });
+                    } else {
+                      that.getwifiList();
+                    }
+                  }
+                });
+
+                if (obj.length < 1 || !obj[0].level) {
+                  if (!that.isfirsTime) {
+                    that.isfirsTime = true;
+                    setTimeout(function () {
+                      that.isloadingDone = true;
+                    }, 15000);
+                  }
+
+                  if (that.isloadingDone) {
+                    _system4["default"].showDialog({
+                      title: '查找设备热点失败',
+                      message: "设备热点不存在，请检查后重新连接",
+                      buttons: [{
+                        text: '确定',
+                        color: '#33dd44'
+                      }],
+                      success: function success(data) {
+                        _system3["default"].back();
+                      },
+                      cancel: function cancel() {
+                        _system3["default"].back();
+
+                        console.log('handling cancel');
+                      },
+                      fail: function fail(data, code) {
+                        _system3["default"].back();
+
+                        console.log("handling fail, code = ".concat(code));
+                      }
+                    });
+                  } else {
+                    that.getwifiList();
+                  }
+                } else {
+                  var num = parseInt(obj[0].level);
+                  var index = 0;
+                  obj.forEach(function (item, n) {
+                    if (parseInt(item.level) > num) {
+                      num = parseInt(item.level);
+                      index = n;
+                    }
+                  });
+                  console.log("设备热点的加密方式:" + JSON.stringify(obj[index]));
+                  that.iot_device_ssid = obj[index].ssid;
+                  that.startConfigDevice();
+                }
+              } else {}
+            } else {}
+          } else {}
+        },
+        fail: function fail(data, code) {
+          console.log("handling fail, code = ".concat(code));
+        }
+      });
+    }
+  },
+  moreRead: function moreRead() {
+    this.ismore = false;
+  },
+  tryOther: function tryOther() {
+    var that = this;
+    var iot_config = '0';
+
+    if (that.iot_config_type.toString() === '0') {
+      iot_config = '1';
+    } else {
+      iot_config = '0';
+    }
+
+    _system3["default"].push({
+      uri: "config_network",
+      params: {
+        iot_wifi_ssid: that.iot_wifi_ssid,
+        iot_wifi_password: that.iot_wifi_password,
+        iot_url: that.iot_url,
+        iot_device_ssid: that.iot_device_ssid,
+        iot_wifi_secretType: that.iot_wifi_secretType,
+        iot_config_type: iot_config,
+        iot_apLan: that.isap
+      }
+    });
+  },
+  gettime: function gettime() {
+    var timestamp = Date.parse(new Date());
+    return parseInt(timestamp) + 3600000;
+  },
+  getUserToken: function getUserToken(code) {
+    var params = {
+      thirdUId: code
+    };
+    var $this = this;
+    this.fisrtCode = 1;
+
+    _api["default"].getUserToken(params).then(function (res) {
+      console.log(JSON.stringify(res));
+      var data_accesstoken = res;
+
+      if (data_accesstoken.code && data_accesstoken.code == 200) {
+        var result_data = _typeof(data_accesstoken.data) !== 'object' ? JSON.parse(data_accesstoken.data) : data_accesstoken.data;
+
+        if (!parseInt(result_data.code) && result_data.accessToken) {
+          $this.accessToken = result_data.accessToken;
+          $this.openId = result_data.openId;
+          var obj = {
+            openid: $this.openId,
+            accessToken: $this.accessToken,
+            time: $this.gettime()
+          };
+
+          _system5["default"].set({
+            key: 'openidToken',
+            value: JSON.stringify(obj),
+            success: function success(data) {},
+            fail: function fail(data, code) {}
+          });
+
+          $this.startBindDevice();
+        } else {
+          $this.setSucc = true;
+        }
+      } else {
+        $this.setSucc = true;
+      }
+    })["catch"](function (error) {
+      $this.setSucc = true;
+    });
+  },
+  tryAgain: function tryAgain() {
+    var that = this;
+
+    _system7["default"].getType({
+      callback: function callback(data) {
+        if (data.type === 'none') {
+          that.setSucc = true;
+
+          _system4["default"].showToast({
+            message: "网络异常，请检查网络是否正常再重新尝试"
+          });
+        } else {
+          that.setSucc = false;
+
+          if (that.isloadindone === 4) {
+            that.getDeviceinfo();
+          } else {
+            that.progress = 0;
+
+            if (that.iot_config_type.toString() === '1') {
+              that.startConfigDevice();
+            } else {
+              that.getwifiList();
+            }
+          }
+        }
+
+        console.log('handling callback');
+      }
+    });
+  },
+  startConfigDevice: function startConfigDevice() {
+    this.ismore = true;
+    var $this = this;
+    $this.isloadindone = 1;
+    var ssid = $this.iot_device_ssid;
+
+    if ($this.iot_config_type.toString() === '1' && $this.iot_url != '') {
+      ssid = _api["default"].getUrlCan($this.iot_url, "SSID");
+    }
+
+    if (!ssid) {
+      ssid = _api["default"].getUrlSSid($this.iot_url);
+    }
+
+    _service2["default"].send({
+      action: 'stopConfigDevice',
+      success: function success(data) {
+        _service["default"].authorize({
+          type: 'code',
+          success: function success(data) {
+            $this.code = data.code;
+            var params = {
+              connectData: {
+                deviceSsid: ssid,
+                ssid: $this.iot_wifi_ssid,
+                wifiPassword: $this.iot_wifi_password,
+                secretType: $this.iot_wifi_secretType,
+                configType: $this.iot_config_type
+              },
+              deviceInfo: {
+                deviceName: '',
+                deviceUuid: ''
+              }
+            };
+
+            _service2["default"].send({
+              action: 'startConfigDevice',
+              data: params,
+              success: function success(data) {
+                console.log(JSON.stringify(data));
+                var res = _typeof(data) != 'object' ? JSON.parse(data) : data;
+
+                if (!res.code || res.code.toString() == '0') {
+                  $this.deviceType = JSON.parse(res.message).deviceType;
+                  $this.modelNumber = JSON.parse(res.message).deviceSubType;
+                  $this.deviceName = JSON.parse(res.message).deviceName;
+                  $this.sn = JSON.parse(res.message).deviceSN;
+                  $this.deviceSSID = JSON.parse(res.message).deviceSSID;
+                  $this.iswork = true;
+                  $this.getDeviceinfo();
+                } else if (res.code.toString() === '1') {
+                  var num = 0;
+
+                  for (var i = 0; i < JSON.parse(res.message).currentStep; i++) {
+                    num = num + $this.time_list[i];
+                  }
+
+                  $this.time = 30 - num;
+
+                  if (num / 30 * 100 > 99) {
+                    $this.progress = 99;
+                  } else {
+                    $this.progress = parseInt(num / 30 * 100);
+                  }
+
+                  if (parseInt(JSON.parse(res.message).currentStep) === 1) {
+                    $this.isstart = true;
+                  } else if (parseInt(JSON.parse(res.message).currentStep) > 7) {
+                    $this.iswork = true;
+                  }
+                } else {
+                  $this.setSucc = true;
+                }
+              },
+              fail: function fail(data) {
+                $this.setSucc = true;
+              }
+            });
+          },
+          fail: function fail(data, code) {
+            $this.setSucc = true;
+          }
+        });
+      }
+    });
+  },
+  configFinish: function configFinish(bol) {
+    var $this = this;
+    $this.isloadindone = 2;
+
+    _system3["default"].clear();
+
+    var params = {
+      quickAppPackage: $this.quickAppPackage,
+      deviceName: $this.deviceName,
+      deviceCategory: $this.deviceType,
+      deviceSeries: $this.sn.substring(9, 17),
+      deviceUuid: $this.binddeviceid,
+      resultCode: bol,
+      extraJson: {
+        deviceType: $this.deviceType,
+        deviceSubType: $this.modelNumber,
+        deviceName: $this.deviceName,
+        deviceSN: $this.sn
+      }
+    };
+    console.log(JSON.stringify(params));
+
+    _system4["default"].showToast({
+      message: "参数：" + JSON.stringify(params),
+      duration: 1
+    });
+
+    setTimeout(function () {
+      $this.$page.finish();
+    }, 300);
+
+    if (bol === -1) {
+      $this.stopConfigDevice();
+
+      _system3["default"].back();
+    } else {
+      _service2["default"].send({
+        action: "configNetworkFinish",
+        data: params,
+        success: function success(data) {
+          console.log("handling success: size = ".concat(data.message));
+        },
+        fail: function fail(data, code) {}
+      });
+    }
+  },
+  stopConfigDevice: function stopConfigDevice() {
+    var that = this;
+
+    _service2["default"].send({
+      action: 'stopConfigDevice',
+      success: function success(data) {
+        console.log("停止配网：" + JSON.stringify(data));
+
+        if (that.iot_call_from === 'AP_SCAN') {
+          that.$app.exit();
+        } else {
+          _system3["default"].back();
+        }
+      }
+    });
+  },
+  startBindDevice: function startBindDevice() {
+    this.isloadindone = 3;
+    var params = {
+      'physicalId': this.physicalId,
+      'modelNumber': this.modelNumber,
+      'deviceName': this.deviceName,
+      'deviceType': this.deviceType,
+      'sn': this.sn,
+      'openId': this.openId
+    };
+    var $this = this;
+
+    _api["default"].postDeviceBind(params, $this.accessToken).then(function (res) {
+      console.log("绑定设备" + JSON.stringify(res));
+
+      if (res.code && res.code == 200) {
+        var bind_res_data = _typeof(res.data) !== 'object' ? JSON.parse(res.data) : res.data;
+
+        if (!parseInt(bind_res_data.code) && bind_res_data.deviceId) {
+          $this.binddeviceid = bind_res_data.deviceId;
+          $this.isdone = true;
+          $this.classname = 'top_done_1';
+          $this.progress = 100;
+          $this.time = 0;
+        } else {
+          $this.setSucc = true;
+          console.log("绑定设备失败！" + bind_res_data.msg);
+        }
+      } else {
+        $this.setSucc = true;
+      }
+    })["catch"](function (error) {
+      $this.setSucc = true;
+    });
+  },
+  setOpenid: function setOpenid() {},
+  routePage: function routePage(param) {
+    _system3["default"].push({
+      uri: '' + param
+    });
+  },
+  networkStatas: function networkStatas() {
+    _system7["default"].getType({
+      callback: function callback(data) {
+        if (data.type === 'none') {}
+
+        console.log('handling callback');
+      }
+    });
+  },
+  onInit: function onInit() {
+    var _this = this;
+
+    this.isap = this.is_ap;
+
+    _api["default"].getlanguage().then(function (res) {
+      if (res === 'ug') {
+        _this.language = false;
+      } else {
+        _this.language = true;
+      }
+    });
+
+    if (this.iot_call_from === 'AP_SCAN') {
+      _system3["default"].clear();
+    }
+
+    var app_info = _system["default"].getInfo();
+
+    if (app_info.packageName) {
+      this.quickAppPackage = app_info.packageName;
+    }
+
+    var that = this;
+
+    _system7["default"].getType({
+      callback: function callback(data) {
+        if (data.type === 'none') {
+          that.setSucc = true;
+
+          _system4["default"].showToast({
+            message: "网络异常，请检查网络是否正常再重新尝试"
+          });
+        } else {
+          that.$page.setTitleBar({
+            text: '配置设备'
+          });
+
+          if (that.iot_config_type.toString() === '1') {
+            that.startConfigDevice();
+          } else {
+            that.getwifiList();
+          }
+        }
+
+        console.log('handling callback');
+      }
+    });
+  },
+  onReady: function onReady() {},
+  onBackPress: function onBackPress() {
+    this.stopConfigDevice();
+  },
+  onDestroy: function onDestroy() {}
+};
+var moduleOwn = exports["default"] || module.exports;
+var accessors = ['public', 'protected', 'private'];
+
+if (moduleOwn.data && accessors.some(function (acc) {
+  return moduleOwn[acc];
+})) {
+  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
+} else if (!moduleOwn.data) {
+  moduleOwn.data = {};
+  moduleOwn._descriptor = {};
+  accessors.forEach(function (acc) {
+    var accType = _typeof(moduleOwn[acc]);
+
+    if (accType === 'object') {
+      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
+      for (var name in moduleOwn[acc]) {
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
+      }
+    } else if (accType === 'function') {
+      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
+    }
+  });
+}}
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
+/*!****************************************!*\
+  !*** (webpack)/buildin/amd-options.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(this, {}))
+
+/***/ }),
+
+/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
+/*!**************************************************************************************!*\
+  !*** ./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (module) {
+  if (!module.webpackPolyfill) {
+    module.deprecate = function () {};
+
+    module.paths = []; // module.parent = undefined by default
+
+    if (!module.children) module.children = [];
+    Object.defineProperty(module, "loaded", {
+      enumerable: true,
+      get: function get() {
+        return module.l;
+      }
+    });
+    Object.defineProperty(module, "id", {
+      enumerable: true,
+      get: function get() {
+        return module.i;
+      }
+    });
+    module.webpackPolyfill = 1;
+  }
+
+  return module;
+};
 
 /***/ })
 

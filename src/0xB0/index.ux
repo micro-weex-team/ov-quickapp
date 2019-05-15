@@ -749,6 +749,9 @@
 			that.isfirst = true;
 			if (res.code === 200) {
 				let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
+					prompt.showToast({
+						message: data
+					})
 				if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
 					let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
 					that.listdata = obj;
@@ -1249,6 +1252,19 @@
 		},
 		onInit() {
 			// this.dataCan();
+
+			// //获取sn8，区分
+			// if(this.deviceSeries=='0M3L20A8'){
+			// 	   // 跳转到应用内的对应的sn8目录
+			// 		router.replace({
+			// 			uri: '/0xB0/B0_0M3L20A8'
+			// 		})
+			// 		return;
+			// }
+
+			prompt.showToast({
+						message: this.deviceSeries
+					})
 			this.getSecMin();
 			let that = this;
 			api.getlanguage().then((res) => {

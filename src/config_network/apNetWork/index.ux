@@ -502,7 +502,7 @@
 				}
 			}
 			console.log(JSON.stringify(params))
-			// prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
+			prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
 			setTimeout(function(){
 				$this.$page.finish()
 			},300)
