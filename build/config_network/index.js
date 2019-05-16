@@ -84,15 +84,1550 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/config_network/index.ux?uxType=page");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
-/*!*******************************************************************************************!*\
-  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
-  \*******************************************************************************************/
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaLoading/index.ux?uxType=comp":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaLoading/index.ux?uxType=comp ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".container-loading": {
+    "position": "fixed",
+    "top": "0px",
+    "left": "0px",
+    "right": "0px",
+    "bottom": "0px"
+  },
+  ".container-mark": {
+    "position": "fixed",
+    "top": "0px",
+    "left": "0px",
+    "right": "0px",
+    "bottom": "0px",
+    "backgroundColor": "#333333",
+    "opacity": 0.7
+  },
+  ".progerss_circular_progerss": {
+    "position": "fixed",
+    "top": "600px",
+    "left": "505px",
+    "strokeWidth": "10px",
+    "color": "#cccccc",
+    "width": "70px",
+    "height": "70px"
+  }
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaTitle/index.ux?uxType=comp":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaTitle/index.ux?uxType=comp ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".midea-title": {
+    "width": "100%",
+    "height": "144px",
+    "backgroundColor": "#ffffff",
+    "borderBottomColor": "#cccccc",
+    "borderBottomWidth": "1px",
+    "flexDirection": "row"
+  },
+  ".midea-title-back": {
+    "width": "66px",
+    "height": "66px",
+    "marginTop": "50px",
+    "marginLeft": "40px"
+  },
+  ".midea-title-text": {
+    "width": "848px",
+    "height": "144px",
+    "textAlign": "center",
+    "fontSize": "50px",
+    "color": "#000000",
+    "fontWeight": "bold"
+  },
+  ".midea-title-back-l": {
+    "width": "66px",
+    "height": "66px",
+    "marginTop": "50px",
+    "marginRight": "40px",
+    "transform": "{\"rotate\":\"180deg\"}"
+  }
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/config_network/index.ux?uxType=page":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/config_network/index.ux?uxType=page ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".container": {
+    "flexDirection": "column",
+    "flex": 1
+  },
+  ".nav_divce": {
+    "width": "100%",
+    "flexDirection": "row",
+    "justifyContent": "center"
+  },
+  ".nav_divce_img": {
+    "width": "1000px",
+    "marginTop": "40px"
+  },
+  ".nav_divce_img_l": {
+    "width": "100%",
+    "height": "750px"
+  },
+  ".nav_tops": {
+    "marginTop": "60px",
+    "width": "1000px",
+    "marginLeft": "40px",
+    "marginRight": "40px"
+  },
+  ".nav_tops_title": {
+    "width": "100%",
+    "textAlign": "center",
+    "fontSize": "70px",
+    "fontWeight": "bold"
+  },
+  ".nav_tops_text": {
+    "marginTop": "20px",
+    "fontSize": "43px"
+  },
+  ".nav_tops_img": {
+    "width": "1000px",
+    "height": "600px",
+    "resizeMode": "stretch"
+  },
+  ".nav_tops_img_text": {
+    "fontSize": "43px",
+    "marginTop": "20px"
+  },
+  ".nav_tops_btn": {
+    "width": "900px",
+    "marginLeft": "50px",
+    "marginRight": "50px",
+    "height": "240px",
+    "marginTop": "100px",
+    "flexDirection": "column"
+  },
+  ".nav_tops_btn_radio": {
+    "width": "500px",
+    "marginLeft": "250px",
+    "marginRight": "250px",
+    "textAlign": "center"
+  },
+  ".nav_tops_btn_radio_btn": {
+    "width": "60px",
+    "marginTop": "10px",
+    "height": "60px",
+    "resizeMode": "cover"
+  },
+  ".nav_tops_btn_radio_text": {
+    "marginLeft": "20px",
+    "textAlign": "center",
+    "fontSize": "45px"
+  },
+  ".nav_tops_btn_text": {
+    "marginTop": "25px",
+    "borderRadius": "15px",
+    "fontSize": "50px",
+    "textAlign": "center",
+    "width": "100%",
+    "height": "120px",
+    "color": "#FFFFFF"
+  }
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaLoading/index.ux?uxType=comp&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaLoading/index.ux?uxType=comp& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "container-loading"
+  ],
+  "children": [
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "container-mark"
+      ]
+    },
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "container-img"
+      ],
+      "children": [
+        {
+          "type": "progress",
+          "attr": {
+            "type": "circular"
+          },
+          "classList": [
+            "progerss_circular_progerss"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaTitle/index.ux?uxType=comp&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaTitle/index.ux?uxType=comp& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "midea-title"
+  ],
+  "children": [
+    {
+      "type": "image",
+      "attr": {
+        "src": "/Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"
+      },
+      "classList": function () {return [this.language?'midea-title-back':'midea-title-back-l']},
+      "events": {
+        "click": function (evt) {this.backPage(evt)}
+      }
+    },
+    {
+      "type": "text",
+      "attr": {
+        "value": function () {return this.title}
+      },
+      "classList": [
+        "midea-title-text"
+      ]
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": [
+    "container"
+  ],
+  "children": [
+    {
+      "type": "midea-title",
+      "attr": {
+        "title": "配网帮助",
+        "language": function () {return this.language},
+        "back": function () {return this.isback}
+      }
+    },
+    {
+      "type": "div",
+      "attr": {},
+      "classList": [
+        "nav_divce"
+      ],
+      "shown": function () {return this.is_device},
+      "children": [
+        {
+          "type": "image",
+          "attr": {
+            "src": function () {return this.img},
+            "alt": "./assets/alt.png"
+          },
+          "classList": function () {return [this.img===''?'nav_divce_img_l':'nav_divce_img']}
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "attr": {},
+      "classList": [
+        "nav_tops"
+      ],
+      "children": [
+        {
+          "type": "block",
+          "attr": {},
+          "children": [
+            {
+              "type": "list-item",
+              "attr": {
+                "type": "product"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {},
+                  "classList": [
+                    "nav_tops_title"
+                  ],
+                  "shown": function () {return this.is_device},
+                  "children": [
+                    {
+                      "type": "span",
+                      "attr": {
+                        "value": "操作指引"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "attr": {
+                "type": "product"
+              },
+              "shown": function () {return this.is_device},
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return this.main_mode_summary}
+                  },
+                  "classList": [
+                    "nav_tops_text"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "attr": {
+                "type": "product"
+              },
+              "children": [
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "nav_tops_btn"
+                  ],
+                  "shown": function () {return this.is_device},
+                  "children": [
+                    {
+                      "type": "div",
+                      "attr": {},
+                      "classList": [
+                        "nav_tops_btn_radio"
+                      ],
+                      "events": {
+                        "click": function (evt) {this.selectData(evt)}
+                      },
+                      "children": [
+                        {
+                          "type": "text",
+                          "attr": {},
+                          "classList": [
+                            "nav_tops_btn_radio_text"
+                          ],
+                          "shown": function () {return !this.language},
+                          "children": [
+                            {
+                              "type": "span",
+                              "attr": {
+                                "value": "已完成上述操作"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "image",
+                          "attr": {
+                            "src": function () {return this.checked?'./assets/checked_off.png':'./assets/checked_on.png'}
+                          },
+                          "classList": [
+                            "nav_tops_btn_radio_btn"
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "attr": {},
+                          "classList": [
+                            "nav_tops_btn_radio_text"
+                          ],
+                          "shown": function () {return this.language},
+                          "children": [
+                            {
+                              "type": "span",
+                              "attr": {
+                                "value": "已完成上述操作"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": "下一步"
+                      },
+                      "shown": function () {return this.isdone},
+                      "classList": [
+                        "nav_tops_btn_text"
+                      ],
+                      "style": {
+                        "backgroundColor": function () {return this.checked?'#CCCCCC':'#21D9E5'}
+                      },
+                      "events": {
+                        "click": function (evt) {this.nextPage(evt)}
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "midea-loading",
+      "attr": {},
+      "shown": function () {return this.isloading}
+    }
+  ]
+}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/config_network/index.ux?uxType=page":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/config_network/index.ux?uxType=page ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
+
+var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
+
+var _system3 = _interopRequireDefault($app_require$("@app-module/system.fetch"));
+
+var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
+
+var _system4 = _interopRequireDefault($app_require$("@app-module/system.storage"));
+
+var _system5 = _interopRequireDefault($app_require$("@app-module/system.barcode"));
+
+var _api = _interopRequireDefault(__webpack_require__(/*! ../Common/api/api.js */ "./src/Common/api/api.js"));
+
+var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ../Common/api/networkAPI.js */ "./src/Common/api/networkAPI.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+module.exports = {
+  "private": {
+    isall: false,
+    isap_lan: 'fasle',
+    firsType: '',
+    timeNum: [],
+    isnonenum: [],
+    suportType: [0, 1],
+    againData: false,
+    isnone: false,
+    language: true,
+    isback: true,
+    isloading: false,
+    isdone: true,
+    title: '配网帮助',
+    deviceImg: '',
+    img: '',
+    deviceCode: '',
+    issecondary: false,
+    ssidDevice: '',
+    main_mode_summary: '',
+    secondary_mode_summary: '',
+    btndisabled: true,
+    checked: true,
+    isap: "true",
+    num: -1,
+    is_device: true,
+    deviceType: '',
+    type: ["ac", "ca", "b0", "db", "e2", "ea", "fa", "fc", "fd", "e1", "e3", "b8", "b6"]
+  },
+  "public": {
+    iot_call_from: '',
+    iot_wifi_ssid: "",
+    iot_wifi_password: "",
+    iot_url: "",
+    iot_device_ssid: "",
+    iot_wifi_secretType: "",
+    iot_config_type: "",
+    iot_category: '',
+    iot_series: '',
+    iot_apLan: ''
+  },
+  onInit: function onInit() {
+    var _this = this;
+
+    _api["default"].getlanguage().then(function (res) {
+      if (res === 'ug') {
+        _this.language = false;
+      } else {
+        _this.language = true;
+      }
+    });
+
+    this.$page.setTitleBar({
+      text: this.title
+    });
+    var that = this;
+    var num = -1;
+    var mode = '';
+    console.log("app传过来的sn8：" + that.iot_series);
+
+    if (that.iot_url != "") {
+      console.log("二维码url：" + that.iot_url);
+      console.log("二维码" + _api["default"].getUrlCan(that.iot_url, "cd"));
+
+      if (_api["default"].getUrlCan(that.iot_url, "cd")) {
+        _networkAPI["default"].getInfoByQrCode(that.iot_url).then(function (res) {
+          console.log("二维码信息" + JSON.stringify(res));
+          var str = _typeof(res) == 'object' ? res : JSON.parse(res);
+
+          if (parseInt(str.code) == 0) {
+            var data = _typeof(str.message) == 'object' ? str.message : JSON.parse(str.message);
+            console.log("二维码信息来这里了" + JSON.stringify(str.message));
+
+            if (data.mode != '' || parseInt(data.mode) == 0) {
+              if (parseInt(data.mode) > 5) {
+                that.iot_config_type = 0;
+              } else {
+                that.iot_config_type = data.mode;
+              }
+            } else {
+              that.getWifiList();
+              return false;
+            }
+
+            if (data.sn8 != "") {
+              that.deviceCode = data.sn8;
+            } else {
+              that.getWifiList();
+              return false;
+            }
+
+            if (data.deviceType != '') {
+              if (data.deviceType.length == 2) {
+                that.ssidDevice = data.deviceType;
+              } else {
+                that.ssidDevice = data.deviceType.substring(data.deviceType.length - 2, data.deviceType.length);
+              }
+            } else {
+              that.getWifiList();
+              return false;
+            }
+
+            that.firsType = that.iot_config_type;
+            that.getConfigDeviceInfo();
+          } else {
+            that.getWifiList();
+          }
+        })["catch"](function (error) {
+          that.getWifiList();
+          console.log("出错了" + JSON.stringify(error));
+        });
+      } else {
+        that.getWifiList();
+      }
+    } else {
+      console.log("从app传过来的iot_category值：" + that.iot_category);
+
+      _api["default"].hostData.type.forEach(function (item, i) {
+        console.log(that.deviceType);
+
+        if (item === that.getDeviceType()) {
+          num = i;
+        }
+      });
+
+      if (num === -1) {
+        that.is_device = false;
+        that.getout();
+        return false;
+      } else {
+        that.is_device = true;
+
+        if (that.iot_call_from === "AP_SCAN") {
+          _system["default"].push({
+            uri: "config_network/apNetWork",
+            params: {
+              iot_call_from: that.iot_call_from,
+              iot_wifi_ssid: that.iot_wifi_ssid,
+              iot_wifi_password: that.iot_wifi_password,
+              iot_url: that.iot_url,
+              iot_device_ssid: that.iot_device_ssid,
+              iot_wifi_secretType: that.iot_wifi_secretType,
+              iot_config_type: that.iot_config_type,
+              is_ap: "false"
+            }
+          });
+        } else {
+          if (that.iot_call_from === "MANUAL_SELECT") {
+            console.log("sn8码来了：" + that.iot_series);
+            that.ssidDevice = that.iot_category.substring(that.iot_category.length - 2, that.iot_category.length).toLowerCase();
+            that.deviceCode = that.iot_series;
+            that.iot_config_type = '0';
+            that.firsType = that.iot_config_type;
+            that.getConfigDeviceInfo();
+          } else {
+            that.getWifiList();
+          }
+        }
+      }
+    }
+  },
+  getout: function getout() {
+    var that = this;
+
+    _system2["default"].showDialog({
+      title: '提示',
+      message: "该品类暂不支持，敬请期待",
+      buttons: [{
+        text: '确定',
+        color: '#33dd44'
+      }],
+      success: function success(data) {
+        that.clearData();
+
+        _system["default"].back();
+      },
+      cancel: function cancel() {
+        that.clearData();
+
+        _system["default"].back();
+
+        console.log('handling cancel');
+      },
+      fail: function fail(data, code) {
+        that.clearData();
+
+        _system["default"].back();
+
+        console.log("handling fail, code = ".concat(code));
+      }
+    });
+  },
+  getDeviceType: function getDeviceType() {
+    var that = this;
+
+    if (that.iot_call_from === "MANUAL_SELECT") {
+      that.deviceType = this.iot_category.substring(this.iot_category.length - 2, this.iot_category.length).toLowerCase();
+    } else if (that.iot_call_from === "AP_SCAN") {
+      that.deviceType = that.iot_device_ssid.substring(6, 8).toLowerCase();
+    } else {
+      console.log(that.iot_call_from);
+
+      var type = _api["default"].getDeviceInformation(that.iot_url);
+
+      var ssid = _api["default"].getUrlCan(that.iot_url, 'SSID');
+
+      if (type || ssid) {
+        var str = type.substring(type.length - 2, type.length).toLowerCase() || ssid.substring(6, 8);
+        that.deviceType = str;
+      }
+    }
+
+    return that.deviceType;
+  },
+  selectData: function selectData(e) {
+    var that = this;
+    that.checked = !that.checked;
+  },
+  nextPage: function nextPage() {
+    var that = this;
+    var isap = 'false';
+
+    if (that.isap_lan == 'true') {
+      that.isap = "false";
+    } else {
+      that.isap = "true";
+    }
+
+    var params = {
+      iot_wifi_ssid: that.iot_wifi_ssid,
+      iot_wifi_password: that.iot_wifi_password,
+      iot_url: that.iot_url,
+      ssidDevice: that.ssidDevice,
+      iot_device_ssid: that.iot_device_ssid,
+      iot_wifi_secretType: that.iot_wifi_secretType,
+      iot_config_type: that.iot_config_type,
+      is_ap: that.isap
+    };
+    console.log("跳转到配网页面的信息:" + JSON.stringify(params));
+
+    if (!that.checked) {
+      _system["default"].push({
+        uri: "config_network/apNetWork",
+        params: params
+      });
+    }
+  },
+  getArrDifference: function getArrDifference(arr1, arr2) {
+    return arr1.concat(arr2).filter(function (v, i, arr) {
+      return arr.indexOf(v) === arr.lastIndexOf(v);
+    });
+  },
+  getItem: function getItem(arr, n, v) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i][n] == v) {
+        return i;
+      }
+    }
+  },
+  getConfigDeviceInfo: function getConfigDeviceInfo() {
+    var that = this;
+    var num = -1;
+
+    _api["default"].hostData.type.forEach(function (item, i) {
+      console.log("deviceType:" + that.deviceType);
+
+      if (item === that.ssidDevice.toLowerCase()) {
+        num = i;
+      }
+    });
+
+    if (num === -1) {
+      that.is_device = false;
+      that.getout();
+      return false;
+    }
+
+    that.isloading = true;
+
+    if (parseInt(that.iot_config_type) == -1) {
+      that.iot_config_type = 0;
+      that.firsType = that.iot_config_type;
+    }
+
+    if (that.suportType.indexOf(parseInt(that.iot_config_type)) == -1) {
+      that.isloading = false;
+
+      _system2["default"].showDialog({
+        title: '提示',
+        message: "暂只支持ap以及快连方式配网",
+        buttons: [{
+          text: '确定',
+          color: '#33dd44'
+        }],
+        success: function success(data) {
+          that.clearData();
+
+          _system["default"].back();
+        },
+        cancel: function cancel() {
+          that.clearData();
+
+          _system["default"].back();
+
+          console.log('handling cancel');
+        },
+        fail: function fail(data, code) {
+          that.clearData();
+
+          _system["default"].back();
+
+          console.log("handling fail, code = ".concat(code));
+        }
+      });
+
+      return false;
+    } else {
+      if (that.deviceCode.length < 8 && that.deviceCode != '') {
+        that.deviceCode = ("0000000000000000000000" + that.deviceCode).slice(-8);
+      }
+
+      console.log("设备sn8码：" + that.deviceCode);
+
+      if (that.iot_apLan != '') {
+        _system4["default"].get({
+          key: "secondaryMode",
+          success: function success(resp) {
+            if (resp === '') {
+              that.getDataLanAll();
+            } else {
+              var obj = JSON.parse(resp);
+              that.img = obj.secondaryModeImg;
+              that.title = obj.name;
+              that.main_mode_summary = obj.secondaryModeSummary;
+              that.iot_config_type = obj.auxiMode;
+              that.isloading = false;
+              that.isap_lan = 'false';
+              that.clearData();
+            }
+          }
+        });
+      } else {
+        that.getDataLanAll();
+      }
+    }
+  },
+  getDataLanAll: function getDataLanAll() {
+    var that = this;
+    var arry = [];
+    arry[0] = that.ssidDevice.toUpperCase();
+    var params = {
+      types: arry,
+      mode: parseInt(that.iot_config_type)
+    };
+    console.log("配网指引参数：" + JSON.stringify(params));
+    console.log("asdadasddddddddddd+++++++=");
+
+    _api["default"].getCenterWorkHelp(params).then(function (res) {
+      if (that.isnonenum.indexOf(parseInt(that.iot_config_type)) == -1) {
+        that.isnonenum.push(parseInt(that.iot_config_type));
+      }
+
+      console.log("还没查询的：" + JSON.stringify(that.getArrDifference(that.suportType, that.isnonenum)));
+
+      if (res.data.list) {
+        var data = _typeof(res.data.list) == 'object' ? res.data.list : JSON.parse(res.data.list);
+
+        if (data.length === 0) {
+          if (that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1) {
+            that.timeNum.push(parseInt(that.iot_config_type));
+          }
+
+          if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
+            that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
+            that.getConfigDeviceInfo();
+            return false;
+          } else {
+            _system2["default"].showDialog({
+              title: '提示',
+              message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+              buttons: [{
+                text: '确定',
+                color: '#33dd44'
+              }],
+              success: function success(data) {
+                that.clearData();
+
+                _system["default"].back();
+              },
+              cancel: function cancel() {
+                that.clearData();
+
+                _system["default"].back();
+
+                console.log('handling cancel');
+              },
+              fail: function fail(data, code) {
+                that.clearData();
+
+                _system["default"].back();
+
+                console.log("handling fail, code = ".concat(code));
+              }
+            });
+
+            return false;
+          }
+        } else {
+          console.log("打印list：" + JSON.stringify(data));
+
+          if (that.deviceCode === '' || that.againData) {
+            that.setSecondMode(data, 0);
+          } else {
+            if (that.getItem(data, "code", that.deviceCode) > -1) {
+              that.num = that.getItem(data, "code", that.deviceCode);
+            } else {
+              if (that.iot_config_type.toString() == "0") {
+                that.isap_lan = "true";
+              } else {
+                that.isap_lan = "false";
+              }
+
+              if (that.getArrDifference(that.suportType, that.isnonenum).length > 0) {
+                that.iot_config_type = that.getArrDifference(that.suportType, that.isnonenum)[0];
+                that.getConfigDeviceInfo();
+                return false;
+              } else {
+                if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
+                  if (that.getArrDifference(that.suportType, that.timeNum).indexOf(parseInt(that.firsType)) > -1) {
+                    that.iot_config_type = that.firsType;
+                  } else {
+                    that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
+                  }
+
+                  if (that.isall) {
+                    that.againData = true;
+                  }
+
+                  that.getConfigDeviceInfo();
+                  that.isall = true;
+                  return false;
+                } else {
+                  _system2["default"].showDialog({
+                    title: '提示',
+                    message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+                    buttons: [{
+                      text: '确定',
+                      color: '#33dd44'
+                    }],
+                    success: function success(data) {
+                      that.clearData();
+
+                      _system["default"].back();
+                    },
+                    cancel: function cancel() {
+                      that.clearData();
+
+                      _system["default"].back();
+
+                      console.log('handling cancel');
+                    },
+                    fail: function fail(data, code) {
+                      that.clearData();
+
+                      _system["default"].back();
+
+                      console.log("handling fail, code = ".concat(code));
+                    }
+                  });
+
+                  return false;
+                }
+              }
+            }
+
+            that.setSecondMode(data, that.num);
+          }
+        }
+      } else {
+        if (that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1) {
+          that.timeNum.push(parseInt(that.iot_config_type));
+        }
+
+        console.log("已经出现空值的：" + JSON.stringify(that.timeNum));
+        console.log("不出现空值的:" + JSON.stringify(that.getArrDifference(that.suportType, that.timeNum)));
+
+        if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
+          that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
+          that.getConfigDeviceInfo();
+          return false;
+        } else {
+          _system2["default"].showDialog({
+            title: '提示',
+            message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
+            buttons: [{
+              text: '确定',
+              color: '#33dd44'
+            }],
+            success: function success(data) {
+              that.clearData();
+
+              _system["default"].back();
+            },
+            cancel: function cancel() {
+              that.clearData();
+
+              _system["default"].back();
+
+              console.log('handling cancel');
+            },
+            fail: function fail(data, code) {
+              that.clearData();
+
+              _system["default"].back();
+
+              console.log("handling fail, code = ".concat(code));
+            }
+          });
+
+          that.isloading = false;
+          return false;
+        }
+      }
+    })["catch"](function (error) {
+      that.isloading = false;
+      console.log(error);
+    });
+  },
+  setSecondMode: function setSecondMode(data, num) {
+    var obj = {
+      name: '',
+      secondaryModeImg: '',
+      secondaryModeSummary: '',
+      auxiMode: ''
+    };
+    var that = this;
+    console.log("ahsuiduiasyd" + JSON.stringify(data));
+    console.log("配网方式：" + that.iot_config_type);
+    that.img = data[num].mainModeImg;
+    that.title = data[num].name;
+    that.main_mode_summary = data[num].mainModeSummary;
+    that.isloading = false;
+
+    if (that.iot_config_type.toString() == "1" && data[num].auxiMode.toString() == '0' && data[num].secondaryModeImg != '' && data[num].secondaryModeSummary != '') {
+      that.isap_lan = "false";
+      obj.name = data[num].name;
+      obj.secondaryModeImg = data[num].secondaryModeImg;
+      obj.secondaryModeSummary = data[num].secondaryModeSummary;
+      obj.auxiMode = data[num].auxiMode;
+      console.log("aa==============" + JSON.stringify(obj));
+
+      _system4["default"].set({
+        key: 'secondaryMode',
+        value: JSON.stringify(obj),
+        success: function success(data) {},
+        fail: function fail(data, code) {}
+      });
+    } else {
+      that.isap_lan = "true";
+    }
+  },
+  getWifiList: function getWifiList() {
+    var that = this;
+    console.log("选择方式" + that.iot_call_from);
+    var mode = "";
+
+    if (that.iot_url != '') {
+      mode = _api["default"].getUrlCan(that.iot_url, 'mode');
+      console.log(mode);
+
+      if (mode && mode != '') {
+        var str = mode.toString();
+        mode = str.substring(str.length - 1, str.length);
+        that.iot_config_type = str.substring(str.length - 1, str.length);
+      } else {
+        that.iot_config_type = '0';
+      }
+
+      if (_api["default"].getUrlCan(that.iot_url, "tsn") || _api["default"].getUrlCan(that.iot_url, "sn") || _api["default"].getUrlCan(that.iot_url, "type")) {
+        if (_api["default"].getUrlCan(that.iot_url, "tsn")) {
+          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "tsn").substring(9, 17);
+        } else if (_api["default"].getUrlCan(that.iot_url, "type")) {
+          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "type").substring(9, 17);
+        } else {
+          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "sn").substring(9, 17);
+        }
+      }
+    }
+
+    if (that.iot_device_ssid != '' && that.iot_device_ssid != 'null') {
+      that.ssidDevice = that.iot_device_ssid.substring(6, 8).toLowerCase();
+      that.firsType = that.iot_config_type;
+      that.getConfigDeviceInfo();
+    } else {
+      var type = _api["default"].getDeviceInformation(that.iot_url);
+
+      var ssid = _api["default"].getUrlCan(that.iot_url, 'SSID');
+
+      if (type || ssid) {
+        var _str = type.substring(type.length - 2, type.length).toLowerCase() || ssid.substring(6, 8);
+
+        that.ssidDevice = _str;
+        that.firsType = that.iot_config_type;
+        that.getConfigDeviceInfo();
+      } else {
+        if (that.iot_call_from === "MANUAL_SELECT") {
+          that.firsType = that.iot_config_type;
+          that.getConfigDeviceInfo();
+        } else {
+          _system2["default"].showDialog({
+            title: '提示',
+            message: "设备不存在，请检查二维码是否正确",
+            buttons: [{
+              text: '确定',
+              color: '#33dd44'
+            }],
+            success: function success(data) {
+              that.clearData();
+
+              _system["default"].back();
+            },
+            cancel: function cancel() {
+              that.clearData();
+
+              _system["default"].back();
+
+              console.log('handling cancel');
+            },
+            fail: function fail(data, code) {
+              that.clearData();
+
+              _system["default"].back();
+
+              console.log("handling fail, code = ".concat(code));
+            }
+          });
+        }
+      }
+    }
+  },
+  clearData: function clearData() {
+    _system4["default"]["delete"]({
+      key: 'secondaryMode',
+      success: function success(data) {
+        console.log('handling success');
+      },
+      fail: function fail(data, code) {
+        console.log("handling fail, code = ".concat(code));
+      }
+    });
+  },
+  onBackPress: function onBackPress() {
+    this.clearData();
+
+    _system["default"].clear();
+
+    _system["default"].back();
+  },
+  onDestroy: function onDestroy() {}
+};
+var moduleOwn = exports["default"] || module.exports;
+var accessors = ['public', 'protected', 'private'];
+
+if (moduleOwn.data && accessors.some(function (acc) {
+  return moduleOwn[acc];
+})) {
+  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
+} else if (!moduleOwn.data) {
+  moduleOwn.data = {};
+  moduleOwn._descriptor = {};
+  accessors.forEach(function (acc) {
+    var accType = _typeof(moduleOwn[acc]);
+
+    if (accType === 'object') {
+      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
+
+      for (var name in moduleOwn[acc]) {
+        moduleOwn._descriptor[name] = {
+          access: acc
+        };
+      }
+    } else if (accType === 'function') {
+      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
+    }
+  });
+}}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaLoading/index.ux?uxType=comp":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaLoading/index.ux?uxType=comp ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+module.exports = {
+  data: {
+    list: []
+  },
+  onInit: function onInit(e) {}
+};}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaTitle/index.ux?uxType=comp":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaTitle/index.ux?uxType=comp ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
+
+var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
+
+var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+module.exports = {
+  props: ['title', 'back', 'language'],
+  data: {
+    back: false,
+    language: true
+  },
+  onInit: function onInit() {},
+  backPage: function backPage() {
+    if (this.back) {
+      _system["default"].clear();
+
+      _system["default"].back();
+    } else {
+      _system["default"].clear();
+
+      this.$app.exit();
+    }
+  },
+  onDestroy: function onDestroy() {}
+};}
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaLoading/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaLoading/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaLoading/index.ux?uxType=comp")
+
+$app_define$('@app-component/midea-loading', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/Component/MideaTitle/index.ux?uxType=comp&")
+var $app_style$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/Component/MideaTitle/index.ux?uxType=comp")
+var $app_script$ = __webpack_require__(/*! !../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/Component/MideaTitle/index.ux?uxType=comp")
+
+$app_define$('@app-component/midea-title', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js":
+/*!****************************************************************************************************************!*\
+  !*** /Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
+  \****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
+/*!****************************************!*\
+  !*** (webpack)/buildin/amd-options.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(this, {}))
+
+/***/ }),
+
+/***/ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (module) {
+  if (!module.webpackPolyfill) {
+    module.deprecate = function () {};
+
+    module.paths = []; // module.parent = undefined by default
+
+    if (!module.children) module.children = [];
+    Object.defineProperty(module, "loaded", {
+      enumerable: true,
+      get: function get() {
+        return module.l;
+      }
+    });
+    Object.defineProperty(module, "id", {
+      enumerable: true,
+      get: function get() {
+        return module.i;
+      }
+    });
+    module.webpackPolyfill = 1;
+  }
+
+  return module;
+};
+
+/***/ }),
+
+/***/ "./node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1148,14 +2683,14 @@ function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.itera
     }])
   );
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
-/*!************************************************************************************************!*\
-  !*** D:/midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
-  \************************************************************************************************/
+/***/ "./node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js ***!
+  \***************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1195,7 +2730,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   }
 
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && ( false ? undefined : _typeof(module)) === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
+  var AMD =  true && __webpack_require__(/*! !webpack amd options */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js");
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -1707,14 +3242,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     }
   }
 })();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ./../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/process/browser.js"), __webpack_require__(/*! ./../../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js")(module)))
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js":
-/*!****************************************************************!*\
-  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js ***!
-  \****************************************************************/
+/***/ "./src/Common/api/api.js":
+/*!*******************************!*\
+  !*** ./src/Common/api/api.js ***!
+  \*******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1726,7 +3261,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "./src/util.js"));
 
 var _system = _interopRequireDefault($app_require$("@app-module/system.fetch"));
 
@@ -1738,11 +3273,11 @@ var _system4 = _interopRequireDefault($app_require$("@app-module/system.router")
 
 var _system5 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
 
-var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js"));
+var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "./src/Common/api/uuid.js"));
 
-var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
+var _jsSha = _interopRequireDefault(__webpack_require__(/*! js-sha256 */ "./node_modules/_js-sha256@0.9.0@js-sha256/src/sha256.js"));
 
-var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ./networkAPI.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js"));
+var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ./networkAPI.js */ "./src/Common/api/networkAPI.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -1776,7 +3311,7 @@ var appidForvivo = 2150;
 var appidForoppo = 2149;
 
 // import main from "./main.js";
-var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "../../midea_work/美居weex工程/ov-quickapp/node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
+var Fly = __webpack_require__(/*! flyio/dist/npm/hap */ "./node_modules/_flyio@0.6.14@flyio/dist/npm/hap.js");
 
 var fly = new Fly(_system["default"]);
 var appid = '';
@@ -2438,10 +3973,10 @@ fly.interceptors.response.use(function (response) {//只将请求结果的data�
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js":
-/*!***********************************************************************!*\
-  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js ***!
-  \***********************************************************************/
+/***/ "./src/Common/api/networkAPI.js":
+/*!**************************************!*\
+  !*** ./src/Common/api/networkAPI.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2459,7 +3994,7 @@ var _system = _interopRequireDefault($app_require$("@app-module/system.prompt"))
 
 var _system2 = _interopRequireDefault($app_require$("@app-module/system.device"));
 
-var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "../../midea_work/美居weex工程/ov-quickapp/src/util.js"));
+var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "./src/util.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -2873,10 +4408,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js":
-/*!*****************************************************************!*\
-  !*** d:/midea_work/美居weex工程/ov-quickapp/src/Common/api/uuid.js ***!
-  \*****************************************************************/
+/***/ "./src/Common/api/uuid.js":
+/*!********************************!*\
+  !*** ./src/Common/api/uuid.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3141,18 +4676,18 @@ module.exports = UUIDjs;
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page":
-/*!**********************************************************************************!*\
-  !*** d:/midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page ***!
-  \**********************************************************************************/
+/***/ "./src/config_network/index.ux?uxType=page":
+/*!*************************************************!*\
+  !*** ./src/config_network/index.ux?uxType=page ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! !../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!../Component/MideaLoading/index.ux?uxType=comp&name=midea-loading */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading")
-__webpack_require__(/*! !../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!../Component/MideaTitle/index.ux?uxType=comp&name=midea-title */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title")
-var $app_template$ = __webpack_require__(/*! !../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title")
-var $app_style$ = __webpack_require__(/*! !../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!less-loader!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page")
-var $app_script$ = __webpack_require__(/*! !../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page")
+__webpack_require__(/*! !../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!../Component/MideaLoading/index.ux?uxType=comp&name=midea-loading */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading")
+__webpack_require__(/*! !../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!../Component/MideaTitle/index.ux?uxType=comp&name=midea-title */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/ux-loader.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&type=import!./src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title")
+var $app_template$ = __webpack_require__(/*! !../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/template-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=template!./src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title")
+var $app_style$ = __webpack_require__(/*! !../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!less-loader!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=page */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/json-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/style-loader.js?index=0&type=style!./node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=style!./src/config_network/index.ux?uxType=page")
+var $app_script$ = __webpack_require__(/*! !../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!../../node_modules/babel-loader?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=page */ "../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/script-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/module-loader.js!./node_modules/_babel-loader@8.0.5@babel-loader/lib/index.js?cwd=/Users/parker/midea-data/集团Holaconx项目/ov快应用/ov-quickapp&plugins[]=/Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/babel-plugin-jsx.js&comments=false!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/access-loader.js!../../../../../../Applications/快应用开发工具.app/Contents/Resources/app/extensions/hap-debugger/node_modules/@hap-toolkit/dsl-xvm/lib/loader/fragment-loader.js?index=0&type=script!./src/config_network/index.ux?uxType=page")
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -3163,15 +4698,15 @@ $app_define$('@app-component/index', [], function($app_require$, $app_exports$, 
      $app_module$.exports.style = $app_style$
 })
 
-$app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
+$app_bootstrap$('@app-component/index',{ packagerVersion: '0.4.6'})
 
 
 /***/ }),
 
-/***/ "../../midea_work/美居weex工程/ov-quickapp/src/util.js":
-/*!******************************************************!*\
-  !*** d:/midea_work/美居weex工程/ov-quickapp/src/util.js ***!
-  \******************************************************/
+/***/ "./src/util.js":
+/*!*********************!*\
+  !*** ./src/util.js ***!
+  \*********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3195,1541 +4730,6 @@ var _default = {
   }
 };
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".midea-title": {
-    "width": "100%",
-    "height": "144px",
-    "backgroundColor": "#ffffff",
-    "borderBottomColor": "#cccccc",
-    "borderBottomWidth": "1px",
-    "flexDirection": "row"
-  },
-  ".midea-title-back": {
-    "width": "66px",
-    "height": "66px",
-    "marginTop": "50px",
-    "marginLeft": "40px"
-  },
-  ".midea-title-text": {
-    "width": "848px",
-    "height": "144px",
-    "textAlign": "center",
-    "fontSize": "50px",
-    "color": "#000000",
-    "fontWeight": "bold"
-  },
-  ".midea-title-back-l": {
-    "width": "66px",
-    "height": "66px",
-    "marginTop": "50px",
-    "marginRight": "40px",
-    "transform": "{\"rotate\":\"180deg\"}"
-  }
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".container": {
-    "flexDirection": "column",
-    "flex": 1
-  },
-  ".nav_divce": {
-    "width": "100%",
-    "flexDirection": "row",
-    "justifyContent": "center"
-  },
-  ".nav_divce_img": {
-    "width": "1000px",
-    "marginTop": "40px"
-  },
-  ".nav_divce_img_l": {
-    "width": "100%",
-    "height": "750px"
-  },
-  ".nav_tops": {
-    "marginTop": "60px",
-    "width": "1000px",
-    "marginLeft": "40px",
-    "marginRight": "40px"
-  },
-  ".nav_tops_title": {
-    "width": "100%",
-    "textAlign": "center",
-    "fontSize": "70px",
-    "fontWeight": "bold"
-  },
-  ".nav_tops_text": {
-    "marginTop": "20px",
-    "fontSize": "43px"
-  },
-  ".nav_tops_img": {
-    "width": "1000px",
-    "height": "600px",
-    "resizeMode": "stretch"
-  },
-  ".nav_tops_img_text": {
-    "fontSize": "43px",
-    "marginTop": "20px"
-  },
-  ".nav_tops_btn": {
-    "width": "900px",
-    "marginLeft": "50px",
-    "marginRight": "50px",
-    "height": "240px",
-    "marginTop": "100px",
-    "flexDirection": "column"
-  },
-  ".nav_tops_btn_radio": {
-    "width": "500px",
-    "marginLeft": "250px",
-    "marginRight": "250px",
-    "textAlign": "center"
-  },
-  ".nav_tops_btn_radio_btn": {
-    "width": "60px",
-    "marginTop": "10px",
-    "height": "60px",
-    "resizeMode": "cover"
-  },
-  ".nav_tops_btn_radio_text": {
-    "marginLeft": "20px",
-    "textAlign": "center",
-    "fontSize": "45px"
-  },
-  ".nav_tops_btn_text": {
-    "marginTop": "25px",
-    "borderRadius": "15px",
-    "fontSize": "50px",
-    "textAlign": "center",
-    "width": "100%",
-    "height": "120px",
-    "color": "#FFFFFF"
-  }
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  ".container-loading": {
-    "position": "fixed",
-    "top": "0px",
-    "left": "0px",
-    "right": "0px",
-    "bottom": "0px"
-  },
-  ".container-mark": {
-    "position": "fixed",
-    "top": "0px",
-    "left": "0px",
-    "right": "0px",
-    "bottom": "0px",
-    "backgroundColor": "#333333",
-    "opacity": 0.7
-  },
-  ".progerss_circular_progerss": {
-    "position": "fixed",
-    "top": "600px",
-    "left": "505px",
-    "strokeWidth": "10px",
-    "color": "#cccccc",
-    "width": "70px",
-    "height": "70px"
-  }
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "container-loading"
-  ],
-  "children": [
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "container-mark"
-      ]
-    },
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "container-img"
-      ],
-      "children": [
-        {
-          "type": "progress",
-          "attr": {
-            "type": "circular"
-          },
-          "classList": [
-            "progerss_circular_progerss"
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "midea-title"
-  ],
-  "children": [
-    {
-      "type": "image",
-      "attr": {
-        "src": "/Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"
-      },
-      "classList": function () {return [this.language?'midea-title-back':'midea-title-back-l']},
-      "events": {
-        "click": function (evt) {this.backPage(evt)}
-      }
-    },
-    {
-      "type": "text",
-      "attr": {
-        "value": function () {return this.title}
-      },
-      "classList": [
-        "midea-title-text"
-      ]
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page&importNames[]=midea-loading,importNames[]=midea-title ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = {
-  "type": "div",
-  "attr": {},
-  "classList": [
-    "container"
-  ],
-  "children": [
-    {
-      "type": "midea-title",
-      "attr": {
-        "title": "配网帮助",
-        "language": function () {return this.language},
-        "back": function () {return this.isback}
-      }
-    },
-    {
-      "type": "div",
-      "attr": {},
-      "classList": [
-        "nav_divce"
-      ],
-      "shown": function () {return this.is_device},
-      "children": [
-        {
-          "type": "image",
-          "attr": {
-            "src": function () {return this.img},
-            "alt": "./assets/alt.png"
-          },
-          "classList": function () {return [this.img===''?'nav_divce_img_l':'nav_divce_img']}
-        }
-      ]
-    },
-    {
-      "type": "list",
-      "attr": {},
-      "classList": [
-        "nav_tops"
-      ],
-      "children": [
-        {
-          "type": "block",
-          "attr": {},
-          "children": [
-            {
-              "type": "list-item",
-              "attr": {
-                "type": "product"
-              },
-              "children": [
-                {
-                  "type": "text",
-                  "attr": {},
-                  "classList": [
-                    "nav_tops_title"
-                  ],
-                  "shown": function () {return this.is_device},
-                  "children": [
-                    {
-                      "type": "span",
-                      "attr": {
-                        "value": "操作指引"
-                      }
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "attr": {
-                "type": "product"
-              },
-              "shown": function () {return this.is_device},
-              "children": [
-                {
-                  "type": "text",
-                  "attr": {
-                    "value": function () {return this.main_mode_summary}
-                  },
-                  "classList": [
-                    "nav_tops_text"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "attr": {
-                "type": "product"
-              },
-              "children": [
-                {
-                  "type": "div",
-                  "attr": {},
-                  "classList": [
-                    "nav_tops_btn"
-                  ],
-                  "shown": function () {return this.is_device},
-                  "children": [
-                    {
-                      "type": "div",
-                      "attr": {},
-                      "classList": [
-                        "nav_tops_btn_radio"
-                      ],
-                      "events": {
-                        "click": function (evt) {this.selectData(evt)}
-                      },
-                      "children": [
-                        {
-                          "type": "text",
-                          "attr": {},
-                          "classList": [
-                            "nav_tops_btn_radio_text"
-                          ],
-                          "shown": function () {return !this.language},
-                          "children": [
-                            {
-                              "type": "span",
-                              "attr": {
-                                "value": "已完成上述操作"
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "type": "image",
-                          "attr": {
-                            "src": function () {return this.checked?'./assets/checked_off.png':'./assets/checked_on.png'}
-                          },
-                          "classList": [
-                            "nav_tops_btn_radio_btn"
-                          ]
-                        },
-                        {
-                          "type": "text",
-                          "attr": {},
-                          "classList": [
-                            "nav_tops_btn_radio_text"
-                          ],
-                          "shown": function () {return this.language},
-                          "children": [
-                            {
-                              "type": "span",
-                              "attr": {
-                                "value": "已完成上述操作"
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "attr": {
-                        "value": "下一步"
-                      },
-                      "shown": function () {return this.isdone},
-                      "classList": [
-                        "nav_tops_btn_text"
-                      ],
-                      "style": {
-                        "backgroundColor": function () {return this.checked?'#CCCCCC':'#21D9E5'}
-                      },
-                      "events": {
-                        "click": function (evt) {this.nextPage(evt)}
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "midea-loading",
-      "attr": {},
-      "shown": function () {return this.isloading}
-    }
-  ]
-}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/access-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/config_network/index.ux?uxType=page ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
-
-var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
-
-var _system3 = _interopRequireDefault($app_require$("@app-module/system.fetch"));
-
-var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
-
-var _system4 = _interopRequireDefault($app_require$("@app-module/system.storage"));
-
-var _system5 = _interopRequireDefault($app_require$("@app-module/system.barcode"));
-
-var _api = _interopRequireDefault(__webpack_require__(/*! ../Common/api/api.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/api.js"));
-
-var _networkAPI = _interopRequireDefault(__webpack_require__(/*! ../Common/api/networkAPI.js */ "../../midea_work/美居weex工程/ov-quickapp/src/Common/api/networkAPI.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-module.exports = {
-  "private": {
-    isall: false,
-    isap_lan: 'fasle',
-    firsType: '',
-    timeNum: [],
-    isnonenum: [],
-    suportType: [0, 1],
-    againData: false,
-    isnone: false,
-    language: true,
-    isback: true,
-    isloading: false,
-    isdone: true,
-    title: '配网帮助',
-    deviceImg: '',
-    img: '',
-    deviceCode: '',
-    issecondary: false,
-    ssidDevice: '',
-    main_mode_summary: '',
-    secondary_mode_summary: '',
-    btndisabled: true,
-    checked: true,
-    isap: "true",
-    num: -1,
-    is_device: true,
-    deviceType: '',
-    type: ["ac", "ca", "b0", "db", "e2", "ea", "fa", "fc", "fd", "e1", "e3", "b8", "b6"]
-  },
-  "public": {
-    iot_call_from: '',
-    iot_wifi_ssid: "",
-    iot_wifi_password: "",
-    iot_url: "",
-    iot_device_ssid: "",
-    iot_wifi_secretType: "",
-    iot_config_type: "",
-    iot_category: '',
-    iot_series: '',
-    iot_apLan: ''
-  },
-  onInit: function onInit() {
-    var _this = this;
-
-    _api["default"].getlanguage().then(function (res) {
-      if (res === 'ug') {
-        _this.language = false;
-      } else {
-        _this.language = true;
-      }
-    });
-
-    this.$page.setTitleBar({
-      text: this.title
-    });
-    var that = this;
-    var num = -1;
-    var mode = '';
-    console.log("app传过来的sn8：" + that.iot_series);
-
-    if (that.iot_url != "") {
-      console.log("二维码url：" + that.iot_url);
-      console.log("二维码" + _api["default"].getUrlCan(that.iot_url, "cd"));
-
-      if (_api["default"].getUrlCan(that.iot_url, "cd")) {
-        _networkAPI["default"].getInfoByQrCode(that.iot_url).then(function (res) {
-          console.log("二维码信息" + JSON.stringify(res));
-          var str = _typeof(res) == 'object' ? res : JSON.parse(res);
-
-          if (parseInt(str.code) == 0) {
-            var data = _typeof(str.message) == 'object' ? str.message : JSON.parse(str.message);
-            console.log("二维码信息来这里了" + JSON.stringify(str.message));
-
-            if (data.mode != '' || parseInt(data.mode) == 0) {
-              if (parseInt(data.mode) > 5) {
-                that.iot_config_type = 0;
-              } else {
-                that.iot_config_type = data.mode;
-              }
-            } else {
-              that.getWifiList();
-              return false;
-            }
-
-            if (data.sn8 != "") {
-              that.deviceCode = data.sn8;
-            } else {
-              that.getWifiList();
-              return false;
-            }
-
-            if (data.deviceType != '') {
-              if (data.deviceType.length == 2) {
-                that.ssidDevice = data.deviceType;
-              } else {
-                that.ssidDevice = data.deviceType.substring(data.deviceType.length - 2, data.deviceType.length);
-              }
-            } else {
-              that.getWifiList();
-              return false;
-            }
-
-            that.firsType = that.iot_config_type;
-            that.getConfigDeviceInfo();
-          } else {
-            that.getWifiList();
-          }
-        })["catch"](function (error) {
-          that.getWifiList();
-          console.log("出错了" + JSON.stringify(error));
-        });
-      } else {
-        that.getWifiList();
-      }
-    } else {
-      console.log("从app传过来的iot_category值：" + that.iot_category);
-
-      _api["default"].hostData.type.forEach(function (item, i) {
-        console.log(that.deviceType);
-
-        if (item === that.getDeviceType()) {
-          num = i;
-        }
-      });
-
-      if (num === -1) {
-        that.is_device = false;
-        that.getout();
-        return false;
-      } else {
-        that.is_device = true;
-
-        if (that.iot_call_from === "AP_SCAN") {
-          _system["default"].push({
-            uri: "config_network/apNetWork",
-            params: {
-              iot_call_from: that.iot_call_from,
-              iot_wifi_ssid: that.iot_wifi_ssid,
-              iot_wifi_password: that.iot_wifi_password,
-              iot_url: that.iot_url,
-              iot_device_ssid: that.iot_device_ssid,
-              iot_wifi_secretType: that.iot_wifi_secretType,
-              iot_config_type: that.iot_config_type,
-              is_ap: "false"
-            }
-          });
-        } else {
-          if (that.iot_call_from === "MANUAL_SELECT") {
-            console.log("sn8码来了：" + that.iot_series);
-            that.ssidDevice = that.iot_category.substring(that.iot_category.length - 2, that.iot_category.length).toLowerCase();
-            that.deviceCode = that.iot_series;
-            that.iot_config_type = '0';
-            that.firsType = that.iot_config_type;
-            that.getConfigDeviceInfo();
-          } else {
-            that.getWifiList();
-          }
-        }
-      }
-    }
-  },
-  getout: function getout() {
-    var that = this;
-
-    _system2["default"].showDialog({
-      title: '提示',
-      message: "该品类暂不支持，敬请期待",
-      buttons: [{
-        text: '确定',
-        color: '#33dd44'
-      }],
-      success: function success(data) {
-        that.clearData();
-
-        _system["default"].back();
-      },
-      cancel: function cancel() {
-        that.clearData();
-
-        _system["default"].back();
-
-        console.log('handling cancel');
-      },
-      fail: function fail(data, code) {
-        that.clearData();
-
-        _system["default"].back();
-
-        console.log("handling fail, code = ".concat(code));
-      }
-    });
-  },
-  getDeviceType: function getDeviceType() {
-    var that = this;
-
-    if (that.iot_call_from === "MANUAL_SELECT") {
-      that.deviceType = this.iot_category.substring(this.iot_category.length - 2, this.iot_category.length).toLowerCase();
-    } else if (that.iot_call_from === "AP_SCAN") {
-      that.deviceType = that.iot_device_ssid.substring(6, 8).toLowerCase();
-    } else {
-      console.log(that.iot_call_from);
-
-      var type = _api["default"].getDeviceInformation(that.iot_url);
-
-      var ssid = _api["default"].getUrlCan(that.iot_url, 'SSID');
-
-      if (type || ssid) {
-        var str = type.substring(type.length - 2, type.length).toLowerCase() || ssid.substring(6, 8);
-        that.deviceType = str;
-      }
-    }
-
-    return that.deviceType;
-  },
-  selectData: function selectData(e) {
-    var that = this;
-    that.checked = !that.checked;
-  },
-  nextPage: function nextPage() {
-    var that = this;
-    var isap = 'false';
-
-    if (that.isap_lan == 'true') {
-      that.isap = "false";
-    } else {
-      that.isap = "true";
-    }
-
-    var params = {
-      iot_wifi_ssid: that.iot_wifi_ssid,
-      iot_wifi_password: that.iot_wifi_password,
-      iot_url: that.iot_url,
-      ssidDevice: that.ssidDevice,
-      iot_device_ssid: that.iot_device_ssid,
-      iot_wifi_secretType: that.iot_wifi_secretType,
-      iot_config_type: that.iot_config_type,
-      is_ap: that.isap
-    };
-    console.log("跳转到配网页面的信息:" + JSON.stringify(params));
-
-    if (!that.checked) {
-      _system["default"].push({
-        uri: "config_network/apNetWork",
-        params: params
-      });
-    }
-  },
-  getArrDifference: function getArrDifference(arr1, arr2) {
-    return arr1.concat(arr2).filter(function (v, i, arr) {
-      return arr.indexOf(v) === arr.lastIndexOf(v);
-    });
-  },
-  getItem: function getItem(arr, n, v) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i][n] == v) {
-        return i;
-      }
-    }
-  },
-  getConfigDeviceInfo: function getConfigDeviceInfo() {
-    var that = this;
-    var num = -1;
-
-    _api["default"].hostData.type.forEach(function (item, i) {
-      console.log("deviceType:" + that.deviceType);
-
-      if (item === that.ssidDevice.toLowerCase()) {
-        num = i;
-      }
-    });
-
-    if (num === -1) {
-      that.is_device = false;
-      that.getout();
-      return false;
-    }
-
-    that.isloading = true;
-
-    if (parseInt(that.iot_config_type) == -1) {
-      that.iot_config_type = 0;
-      that.firsType = that.iot_config_type;
-    }
-
-    if (that.suportType.indexOf(parseInt(that.iot_config_type)) == -1) {
-      that.isloading = false;
-
-      _system2["default"].showDialog({
-        title: '提示',
-        message: "暂只支持ap以及快连方式配网",
-        buttons: [{
-          text: '确定',
-          color: '#33dd44'
-        }],
-        success: function success(data) {
-          that.clearData();
-
-          _system["default"].back();
-        },
-        cancel: function cancel() {
-          that.clearData();
-
-          _system["default"].back();
-
-          console.log('handling cancel');
-        },
-        fail: function fail(data, code) {
-          that.clearData();
-
-          _system["default"].back();
-
-          console.log("handling fail, code = ".concat(code));
-        }
-      });
-
-      return false;
-    } else {
-      if (that.deviceCode.length < 8 && that.deviceCode != '') {
-        that.deviceCode = ("0000000000000000000000" + that.deviceCode).slice(-8);
-      }
-
-      console.log("设备sn8码：" + that.deviceCode);
-
-      if (that.iot_apLan != '') {
-        _system4["default"].get({
-          key: "secondaryMode",
-          success: function success(resp) {
-            if (resp === '') {
-              that.getDataLanAll();
-            } else {
-              var obj = JSON.parse(resp);
-              that.img = obj.secondaryModeImg;
-              that.title = obj.name;
-              that.main_mode_summary = obj.secondaryModeSummary;
-              that.iot_config_type = obj.auxiMode;
-              that.isloading = false;
-              that.isap_lan = 'false';
-              that.clearData();
-            }
-          }
-        });
-      } else {
-        that.getDataLanAll();
-      }
-    }
-  },
-  getDataLanAll: function getDataLanAll() {
-    var that = this;
-    var arry = [];
-    arry[0] = that.ssidDevice.toUpperCase();
-    var params = {
-      types: arry,
-      mode: parseInt(that.iot_config_type)
-    };
-    console.log("配网指引参数：" + JSON.stringify(params));
-    console.log("asdadasddddddddddd+++++++=");
-
-    _api["default"].getCenterWorkHelp(params).then(function (res) {
-      if (that.isnonenum.indexOf(parseInt(that.iot_config_type)) == -1) {
-        that.isnonenum.push(parseInt(that.iot_config_type));
-      }
-
-      console.log("还没查询的：" + JSON.stringify(that.getArrDifference(that.suportType, that.isnonenum)));
-
-      if (res.data.list) {
-        var data = _typeof(res.data.list) == 'object' ? res.data.list : JSON.parse(res.data.list);
-
-        if (data.length === 0) {
-          if (that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1) {
-            that.timeNum.push(parseInt(that.iot_config_type));
-          }
-
-          if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
-            that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
-            that.getConfigDeviceInfo();
-            return false;
-          } else {
-            _system2["default"].showDialog({
-              title: '提示',
-              message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
-              buttons: [{
-                text: '确定',
-                color: '#33dd44'
-              }],
-              success: function success(data) {
-                that.clearData();
-
-                _system["default"].back();
-              },
-              cancel: function cancel() {
-                that.clearData();
-
-                _system["default"].back();
-
-                console.log('handling cancel');
-              },
-              fail: function fail(data, code) {
-                that.clearData();
-
-                _system["default"].back();
-
-                console.log("handling fail, code = ".concat(code));
-              }
-            });
-
-            return false;
-          }
-        } else {
-          console.log("打印list：" + JSON.stringify(data));
-
-          if (that.deviceCode === '' || that.againData) {
-            that.setSecondMode(data, 0);
-          } else {
-            if (that.getItem(data, "code", that.deviceCode) > -1) {
-              that.num = that.getItem(data, "code", that.deviceCode);
-            } else {
-              if (that.iot_config_type.toString() == "0") {
-                that.isap_lan = "true";
-              } else {
-                that.isap_lan = "false";
-              }
-
-              if (that.getArrDifference(that.suportType, that.isnonenum).length > 0) {
-                that.iot_config_type = that.getArrDifference(that.suportType, that.isnonenum)[0];
-                that.getConfigDeviceInfo();
-                return false;
-              } else {
-                if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
-                  if (that.getArrDifference(that.suportType, that.timeNum).indexOf(parseInt(that.firsType)) > -1) {
-                    that.iot_config_type = that.firsType;
-                  } else {
-                    that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
-                  }
-
-                  if (that.isall) {
-                    that.againData = true;
-                  }
-
-                  that.getConfigDeviceInfo();
-                  that.isall = true;
-                  return false;
-                } else {
-                  _system2["default"].showDialog({
-                    title: '提示',
-                    message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
-                    buttons: [{
-                      text: '确定',
-                      color: '#33dd44'
-                    }],
-                    success: function success(data) {
-                      that.clearData();
-
-                      _system["default"].back();
-                    },
-                    cancel: function cancel() {
-                      that.clearData();
-
-                      _system["default"].back();
-
-                      console.log('handling cancel');
-                    },
-                    fail: function fail(data, code) {
-                      that.clearData();
-
-                      _system["default"].back();
-
-                      console.log("handling fail, code = ".concat(code));
-                    }
-                  });
-
-                  return false;
-                }
-              }
-            }
-
-            that.setSecondMode(data, that.num);
-          }
-        }
-      } else {
-        if (that.timeNum.indexOf(parseInt(that.iot_config_type)) == -1) {
-          that.timeNum.push(parseInt(that.iot_config_type));
-        }
-
-        console.log("已经出现空值的：" + JSON.stringify(that.timeNum));
-        console.log("不出现空值的:" + JSON.stringify(that.getArrDifference(that.suportType, that.timeNum)));
-
-        if (that.getArrDifference(that.suportType, that.timeNum).length > 0) {
-          that.iot_config_type = that.getArrDifference(that.suportType, that.timeNum)[0];
-          that.getConfigDeviceInfo();
-          return false;
-        } else {
-          _system2["default"].showDialog({
-            title: '提示',
-            message: "找不到该设备配网信息，请检查设备激活二维码是否正确",
-            buttons: [{
-              text: '确定',
-              color: '#33dd44'
-            }],
-            success: function success(data) {
-              that.clearData();
-
-              _system["default"].back();
-            },
-            cancel: function cancel() {
-              that.clearData();
-
-              _system["default"].back();
-
-              console.log('handling cancel');
-            },
-            fail: function fail(data, code) {
-              that.clearData();
-
-              _system["default"].back();
-
-              console.log("handling fail, code = ".concat(code));
-            }
-          });
-
-          that.isloading = false;
-          return false;
-        }
-      }
-    })["catch"](function (error) {
-      that.isloading = false;
-      console.log(error);
-    });
-  },
-  setSecondMode: function setSecondMode(data, num) {
-    var obj = {
-      name: '',
-      secondaryModeImg: '',
-      secondaryModeSummary: '',
-      auxiMode: ''
-    };
-    var that = this;
-    console.log("ahsuiduiasyd" + JSON.stringify(data));
-    console.log("配网方式：" + that.iot_config_type);
-    that.img = data[num].mainModeImg;
-    that.title = data[num].name;
-    that.main_mode_summary = data[num].mainModeSummary;
-    that.isloading = false;
-
-    if (that.iot_config_type.toString() == "1" && data[num].auxiMode.toString() == '0' && data[num].secondaryModeImg != '' && data[num].secondaryModeSummary != '') {
-      that.isap_lan = "false";
-      obj.name = data[num].name;
-      obj.secondaryModeImg = data[num].secondaryModeImg;
-      obj.secondaryModeSummary = data[num].secondaryModeSummary;
-      obj.auxiMode = data[num].auxiMode;
-      console.log("aa==============" + JSON.stringify(obj));
-
-      _system4["default"].set({
-        key: 'secondaryMode',
-        value: JSON.stringify(obj),
-        success: function success(data) {},
-        fail: function fail(data, code) {}
-      });
-    } else {
-      that.isap_lan = "true";
-    }
-  },
-  getWifiList: function getWifiList() {
-    var that = this;
-    console.log("选择方式" + that.iot_call_from);
-    var mode = "";
-
-    if (that.iot_url != '') {
-      mode = _api["default"].getUrlCan(that.iot_url, 'mode');
-      console.log(mode);
-
-      if (mode && mode != '') {
-        var str = mode.toString();
-        mode = str.substring(str.length - 1, str.length);
-        that.iot_config_type = str.substring(str.length - 1, str.length);
-      } else {
-        that.iot_config_type = '0';
-      }
-
-      if (_api["default"].getUrlCan(that.iot_url, "tsn") || _api["default"].getUrlCan(that.iot_url, "sn") || _api["default"].getUrlCan(that.iot_url, "type")) {
-        if (_api["default"].getUrlCan(that.iot_url, "tsn")) {
-          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "tsn").substring(9, 17);
-        } else if (_api["default"].getUrlCan(that.iot_url, "type")) {
-          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "type").substring(9, 17);
-        } else {
-          that.deviceCode = _api["default"].getUrlCan(that.iot_url, "sn").substring(9, 17);
-        }
-      }
-    }
-
-    if (that.iot_device_ssid != '' && that.iot_device_ssid != 'null') {
-      that.ssidDevice = that.iot_device_ssid.substring(6, 8).toLowerCase();
-      that.firsType = that.iot_config_type;
-      that.getConfigDeviceInfo();
-    } else {
-      var type = _api["default"].getDeviceInformation(that.iot_url);
-
-      var ssid = _api["default"].getUrlCan(that.iot_url, 'SSID');
-
-      if (type || ssid) {
-        var _str = type.substring(type.length - 2, type.length).toLowerCase() || ssid.substring(6, 8);
-
-        that.ssidDevice = _str;
-        that.firsType = that.iot_config_type;
-        that.getConfigDeviceInfo();
-      } else {
-        if (that.iot_call_from === "MANUAL_SELECT") {
-          that.firsType = that.iot_config_type;
-          that.getConfigDeviceInfo();
-        } else {
-          _system2["default"].showDialog({
-            title: '提示',
-            message: "设备不存在，请检查二维码是否正确",
-            buttons: [{
-              text: '确定',
-              color: '#33dd44'
-            }],
-            success: function success(data) {
-              that.clearData();
-
-              _system["default"].back();
-            },
-            cancel: function cancel() {
-              that.clearData();
-
-              _system["default"].back();
-
-              console.log('handling cancel');
-            },
-            fail: function fail(data, code) {
-              that.clearData();
-
-              _system["default"].back();
-
-              console.log("handling fail, code = ".concat(code));
-            }
-          });
-        }
-      }
-    }
-  },
-  clearData: function clearData() {
-    _system4["default"]["delete"]({
-      key: 'secondaryMode',
-      success: function success(data) {
-        console.log('handling success');
-      },
-      fail: function fail(data, code) {
-        console.log("handling fail, code = ".concat(code));
-      }
-    });
-  },
-  onBackPress: function onBackPress() {
-    this.clearData();
-
-    _system["default"].clear();
-
-    _system["default"].back();
-  },
-  onDestroy: function onDestroy() {}
-};
-var moduleOwn = exports["default"] || module.exports;
-var accessors = ['public', 'protected', 'private'];
-
-if (moduleOwn.data && accessors.some(function (acc) {
-  return moduleOwn[acc];
-})) {
-  throw new Error('页面VM对象中的属性data不可与"' + accessors.join(',') + '"同时存在，请使用private替换data名称');
-} else if (!moduleOwn.data) {
-  moduleOwn.data = {};
-  moduleOwn._descriptor = {};
-  accessors.forEach(function (acc) {
-    var accType = _typeof(moduleOwn[acc]);
-
-    if (accType === 'object') {
-      moduleOwn.data = Object.assign(moduleOwn.data, moduleOwn[acc]);
-
-      for (var name in moduleOwn[acc]) {
-        moduleOwn._descriptor[name] = {
-          access: acc
-        };
-      }
-    } else if (accType === 'function') {
-      console.warn('页面VM对象中的属性' + acc + '的值不能是函数，请使用对象');
-    }
-  });
-}}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-module.exports = {
-  data: function () {return {
-    list: []
-  }},
-  onInit: function onInit(e) {}
-};}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!D:/midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = function __scriptModule__ (module, exports, $app_require$){"use strict";
-
-var _system = _interopRequireDefault($app_require$("@app-module/system.router"));
-
-var _system2 = _interopRequireDefault($app_require$("@app-module/system.prompt"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-module.exports = {
-  props: ['title', 'back', 'language'],
-  data: function () {return {
-    back: false,
-    language: true
-  }},
-  onInit: function onInit() {},
-  backPage: function backPage() {
-    if (this.back) {
-      _system["default"].clear();
-
-      _system["default"].back();
-    } else {
-      _system["default"].clear();
-
-      this.$app.exit();
-    }
-  },
-  onDestroy: function onDestroy() {}
-};}
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&name=midea-loading ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp&")
-var $app_style$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
-var $app_script$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaLoading/index.ux?uxType=comp")
-
-$app_define$('@app-component/midea-loading', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&type=import!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title":
-/*!************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/ux-loader.js?cwd=d:/midea_work/美居weex工程/ov-quickapp&type=import!d:/midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp&name=midea-title ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $app_template$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!./index.ux?uxType=comp& */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/template-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=template!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp&")
-var $app_style$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!less-loader!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/json-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/style-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/node_modules/_less-loader@4.1.0@less-loader/dist/cjs.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=style!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp")
-var $app_script$ = __webpack_require__(/*! !../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../../node_modules/babel-loader?cwd=d:/midea_work/美居weex工程/ov-quickapp&plugins[]=d:/soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/babel-plugin-jsx.js&comments=false!../../../../../../soft/Quickapp/resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!./index.ux?uxType=comp */ "./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/script-loader.js!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/common/loader/module-loader.js!../../midea_work/美居weex工程/ov-quickapp/node_modules/_babel-loader@8.0.6@babel-loader/lib/index.js?cwd=d:\\midea_work\\美居weex工程\\ov-quickapp&plugins[]=d:\\soft\\Quickapp\\resources\\app\\extensions\\hap-debugger\\node_modules\\hap-toolkit\\packager\\lib\\dsl\\ux\\loader\\babel-plugin-jsx.js&comments=false!./resources/app/extensions/hap-debugger/node_modules/hap-toolkit/packager/lib/dsl/ux/loader/fragment-loader.js?index=0&type=script!../../midea_work/美居weex工程/ov-quickapp/src/Component/MideaTitle/index.ux?uxType=comp")
-
-$app_define$('@app-component/midea-title', [], function($app_require$, $app_exports$, $app_module$){
-     $app_script$($app_module$, $app_exports$, $app_require$)
-     if ($app_exports$.__esModule && $app_exports$.default) {
-            $app_module$.exports = $app_exports$.default
-        }
-     $app_module$.exports.template = $app_template$
-     $app_module$.exports.style = $app_style$
-})
-
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/process/browser.js":
-/*!*******************************************************************************!*\
-  !*** ./resources/app/extensions/hap-debugger/node_modules/process/browser.js ***!
-  \*******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// shim for using process in browser
-var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-  throw new Error('setTimeout has not been defined');
-}
-
-function defaultClearTimeout() {
-  throw new Error('clearTimeout has not been defined');
-}
-
-(function () {
-  try {
-    if (typeof setTimeout === 'function') {
-      cachedSetTimeout = setTimeout;
-    } else {
-      cachedSetTimeout = defaultSetTimout;
-    }
-  } catch (e) {
-    cachedSetTimeout = defaultSetTimout;
-  }
-
-  try {
-    if (typeof clearTimeout === 'function') {
-      cachedClearTimeout = clearTimeout;
-    } else {
-      cachedClearTimeout = defaultClearTimeout;
-    }
-  } catch (e) {
-    cachedClearTimeout = defaultClearTimeout;
-  }
-})();
-
-function runTimeout(fun) {
-  if (cachedSetTimeout === setTimeout) {
-    //normal enviroments in sane situations
-    return setTimeout(fun, 0);
-  } // if setTimeout wasn't available but was latter defined
-
-
-  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-    cachedSetTimeout = setTimeout;
-    return setTimeout(fun, 0);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedSetTimeout(fun, 0);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-      return cachedSetTimeout.call(null, fun, 0);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-      return cachedSetTimeout.call(this, fun, 0);
-    }
-  }
-}
-
-function runClearTimeout(marker) {
-  if (cachedClearTimeout === clearTimeout) {
-    //normal enviroments in sane situations
-    return clearTimeout(marker);
-  } // if clearTimeout wasn't available but was latter defined
-
-
-  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-    cachedClearTimeout = clearTimeout;
-    return clearTimeout(marker);
-  }
-
-  try {
-    // when when somebody has screwed with setTimeout but no I.E. maddness
-    return cachedClearTimeout(marker);
-  } catch (e) {
-    try {
-      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-      return cachedClearTimeout.call(null, marker);
-    } catch (e) {
-      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-      return cachedClearTimeout.call(this, marker);
-    }
-  }
-}
-
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-  if (!draining || !currentQueue) {
-    return;
-  }
-
-  draining = false;
-
-  if (currentQueue.length) {
-    queue = currentQueue.concat(queue);
-  } else {
-    queueIndex = -1;
-  }
-
-  if (queue.length) {
-    drainQueue();
-  }
-}
-
-function drainQueue() {
-  if (draining) {
-    return;
-  }
-
-  var timeout = runTimeout(cleanUpNextTick);
-  draining = true;
-  var len = queue.length;
-
-  while (len) {
-    currentQueue = queue;
-    queue = [];
-
-    while (++queueIndex < len) {
-      if (currentQueue) {
-        currentQueue[queueIndex].run();
-      }
-    }
-
-    queueIndex = -1;
-    len = queue.length;
-  }
-
-  currentQueue = null;
-  draining = false;
-  runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-  var args = new Array(arguments.length - 1);
-
-  if (arguments.length > 1) {
-    for (var i = 1; i < arguments.length; i++) {
-      args[i - 1] = arguments[i];
-    }
-  }
-
-  queue.push(new Item(fun, args));
-
-  if (queue.length === 1 && !draining) {
-    runTimeout(drainQueue);
-  }
-}; // v8 likes predictible objects
-
-
-function Item(fun, array) {
-  this.fun = fun;
-  this.array = array;
-}
-
-Item.prototype.run = function () {
-  this.fun.apply(null, this.array);
-};
-
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) {
-  return [];
-};
-
-process.binding = function (name) {
-  throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () {
-  return '/';
-};
-
-process.chdir = function (dir) {
-  throw new Error('process.chdir is not supported');
-};
-
-process.umask = function () {
-  return 0;
-};
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/amd-options.js":
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
-
-/* WEBPACK VAR INJECTION */}.call(this, {}))
-
-/***/ }),
-
-/***/ "./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js":
-/*!**************************************************************************************!*\
-  !*** ./resources/app/extensions/hap-debugger/node_modules/webpack/buildin/module.js ***!
-  \**************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (module) {
-  if (!module.webpackPolyfill) {
-    module.deprecate = function () {};
-
-    module.paths = []; // module.parent = undefined by default
-
-    if (!module.children) module.children = [];
-    Object.defineProperty(module, "loaded", {
-      enumerable: true,
-      get: function get() {
-        return module.l;
-      }
-    });
-    Object.defineProperty(module, "id", {
-      enumerable: true,
-      get: function get() {
-        return module.i;
-      }
-    });
-    module.webpackPolyfill = 1;
-  }
-
-  return module;
-};
 
 /***/ })
 

@@ -1261,10 +1261,19 @@
 			// 		})
 			// 		return;
 			// }
-
 			prompt.showToast({
 						message: this.deviceSeries
 					})
+			router.replace({
+				uri: '/0xB0/B0_0M3L20A8',
+				params: { 
+					deviceSeries: this.deviceSeries, 
+					deviceId: this.deviceId,
+					openid: this.openid
+					}
+			})
+			return;
+
 			this.getSecMin();
 			let that = this;
 			api.getlanguage().then((res) => {

@@ -129,7 +129,7 @@
     "debug": true
   },
   "router": {
-    "entry": "Demo",
+    "entry": "0xB0",
     "pages": {
       "0xAC": {
         "component": "index"
