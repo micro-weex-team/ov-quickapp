@@ -17,18 +17,18 @@
 						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
 					<text class="b0_nav_list_usemeiju">使用美居</text>
-					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'end' && work_status != 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
-					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'end' && work_status != 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
-					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'end'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
-					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">火力 {{firpower(fire_power)}}档 | {{statusData(work_status)}}</text>
-					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
-					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
+					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
+					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
+					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
+					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">火力 {{firpower(fire_power)}}档 | {{statusData(work_status)}}</text>
+					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
+					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
 					<text class="b0_nav_list_done" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已关机</text>
 					<text class="b0_nav_list_doneText" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">点击下方开关</text>
 				</list-item>
 			</list>
 		</refresh>
-		<div class="b0_contrl" if="{{work_status != 'work' && work_status != 'end'}}">
+		<div class="b0_contrl" if="{{work_status != 'work' && work_status != 'work_finish'}}">
 			<div class="b0_contrl_btn" @click="powerOpen()">
 				<image src="./assets/img/off.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">开关</text>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		
-		<div class="b0_ctr" if="{{power === 'on' && work_status === 'end'}}">
+		<div class="b0_ctr" if="{{power === 'on' && work_status === 'work_finish'}}">
 			<div class="b0_contrl_btn" @click="stopDevice()">
 				<image src="./assets/img/confirm.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_ctr_text">确认</text>
@@ -224,14 +224,14 @@
 					if(that.work_status != 'three'){
 						if (that.power === 'on') {
 							params = {
-								power: 'off',
+								work_status: 'save_power',
 							}
 						} else {
 							params = {
-								power: 'on',
+								work_status: 'start',
 							}
 						}
-						let status = ['power'];
+						let status = ['work_status'];
 						that.ctrDevice(params, status,false);
 					}else{
 						prompt.showToast({
@@ -255,22 +255,17 @@
 		startDevice() {
 			let that = this;
 			let params;
-			if (parseInt(that.min) >= 0 && parseInt(that.fire) > 0) {
-				this.isset = false;
-				params = {
-					minutes: that.min,
-					second: that.sec,
-					fire_power: that.fire,
-					work_status: 'work',
-					mode:'microwave',
-				}
-				let status = ['lock', 'minutes', 'second', 'fire_power', 'work_status','mode'];
-				that.ctrDevice(params, status,false);
-			} else {
-				prompt.showToast({
-					message: "请选择加热时长与火力"
-				})
-			}
+			
+			this.isset = false;
+			params = {
+						work_status: 'work',
+						work_mode: 'above_tube',
+						work_minute: 5,
+						work_second: 0
+					}
+			let status = ['lock', 'minutes', 'second', 'fire_power', 'work_status','mode'];
+			that.ctrDevice(params, status,false);
+			
 		},
 		//暂停
 		pauseDevice() {
@@ -291,7 +286,7 @@
 		//停止&&取消
 		stopDevice() {
 			let params = {
-				work_status: 'cancel'
+				work_status: 'standby'
 			}
 			let status = ['work_status'];
 			if (this.lock === 'off') {
@@ -376,7 +371,7 @@
 				case 'save_power':
 					data = '省电';
 					break;
-				case 'end':
+				case 'work_finish':
 					data = '已完成';
 					break;
 				case 'order':
@@ -486,10 +481,15 @@
 			that.pause_data = false;
 			that.work_status = that.listdata.work_status;
 			that.fire_power = that.listdata.fire_power;
-			that.second = that.listdata.second;
-			that.minutes = that.listdata.minutes;
+			that.second = that.listdata.work_second;
+			that.minutes = that.listdata.work_minute;
 			that.lock = that.listdata.lock;
-			that.power = that.listdata.power;
+			if(this.listdata.work_status === 'save_power'){
+				that.power = 'off';
+			}else{
+				that.power = 'on';
+			}
+			// that.power = that.listdata.power;
 			that.online = that.listdata.online;
 			that.startOrpause();
 			if(that.power === 'on'){
@@ -586,14 +586,16 @@
 			that.timeout = setTimeout(function() {
 				let time = parseInt(that.min) * 60 + parseInt(that.sec) - 1;
 				if (!that.pause_data && that.listdata.work_status === 'work') {
-					that.listdata.minutes = parseInt(time / 60);
-					that.listdata.second = time % 60;
+					that.listdata.work_minute = parseInt(time / 60);
+					that.listdata.seconwork_second = time % 60;
 					that.dataCan();
 				}
 			}, 1000)
 		},
 		//显示弹框
 		showAlert() {
+			this.startDevice();
+			return;
 			let that = this;
 			if (that.online === 'true') {
 				if (that.lock === 'off') {
@@ -604,8 +606,8 @@
 								that.min = "--";
 								that.sec = "--";
 							} else {
-								that.min = parseInt(that.listdata.minutes);
-								that.sec = parseInt(that.listdata.second);
+								that.min = parseInt(that.listdata.work_minute);
+								that.sec = parseInt(that.listdata.work_second);
 								if(that.timeout === ''){
 									// that.setTimeout_data();
 								}
@@ -903,7 +905,13 @@
 			}else{
 				that.lanOnline = 'false';
 			}
+			prompt.showToast({
+						message: JSON.stringify(params) +'：下发参数'
+					})
 			api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				// prompt.showToast({
+				// 		message: JSON.stringify(res) +'：获取控制返回的值'
+				// 	})
 				that.isagain = true;
 				if(that.timeout != ''){
 					clearTimeout(that.timeout)

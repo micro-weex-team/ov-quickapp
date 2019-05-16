@@ -1496,7 +1496,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_data"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status!='end'&&this.work_status!='cancel'},
+                  "shown": function () {return this.power==='on'&&this.work_status!='work_finish'&&this.work_status!='standby'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1509,7 +1509,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_about"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status!='end'&&this.work_status!='cancel'},
+                  "shown": function () {return this.power==='on'&&this.work_status!='work_finish'&&this.work_status!='standby'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1522,7 +1522,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_done"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status==='end'},
+                  "shown": function () {return this.power==='on'&&this.work_status==='work_finish'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1535,7 +1535,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_status"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status!='cancel'},
+                  "shown": function () {return this.power==='on'&&this.work_status!='standby'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1548,7 +1548,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_done"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status==='cancel'},
+                  "shown": function () {return this.power==='on'&&this.work_status==='standby'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1561,7 +1561,7 @@ module.exports = {
                   "classList": [
                     "b0_nav_list_doneText"
                   ],
-                  "shown": function () {return this.power==='on'&&this.work_status==='cancel'},
+                  "shown": function () {return this.power==='on'&&this.work_status==='standby'},
                   "style": {
                     "color": function () {return this.power==='on'?'#ffffff':'#666666'}
                   }
@@ -1604,7 +1604,7 @@ module.exports = {
       "classList": [
         "b0_contrl"
       ],
-      "shown": function () {return this.work_status!='work'&&this.work_status!='end'},
+      "shown": function () {return this.work_status!='work'&&this.work_status!='work_finish'},
       "children": [
         {
           "type": "div",
@@ -1714,7 +1714,7 @@ module.exports = {
       "classList": [
         "b0_ctr"
       ],
-      "shown": function () {return this.power==='on'&&this.work_status==='end'},
+      "shown": function () {return this.power==='on'&&this.work_status==='work_finish'},
       "children": [
         {
           "type": "div",
@@ -2614,15 +2614,15 @@ var _default = {
         if (that.work_status != 'three') {
           if (that.power === 'on') {
             params = {
-              power: 'off'
+              work_status: 'save_power'
             };
           } else {
             params = {
-              power: 'on'
+              work_status: 'start'
             };
           }
 
-          var status = ['power'];
+          var status = ['work_status'];
           that.ctrDevice(params, status, false);
         } else {
           _system["default"].showToast({
@@ -2641,23 +2641,15 @@ var _default = {
   startDevice: function startDevice() {
     var that = this;
     var params;
-
-    if (parseInt(that.min) >= 0 && parseInt(that.fire) > 0) {
-      this.isset = false;
-      params = {
-        minutes: that.min,
-        second: that.sec,
-        fire_power: that.fire,
-        work_status: 'work',
-        mode: 'microwave'
-      };
-      var status = ['lock', 'minutes', 'second', 'fire_power', 'work_status', 'mode'];
-      that.ctrDevice(params, status, false);
-    } else {
-      _system["default"].showToast({
-        message: "请选择加热时长与火力"
-      });
-    }
+    this.isset = false;
+    params = {
+      work_status: 'work',
+      work_mode: 'above_tube',
+      work_minute: 5,
+      work_second: 0
+    };
+    var status = ['lock', 'minutes', 'second', 'fire_power', 'work_status', 'mode'];
+    that.ctrDevice(params, status, false);
   },
   pauseDevice: function pauseDevice() {
     var params = {
@@ -2675,7 +2667,7 @@ var _default = {
   },
   stopDevice: function stopDevice() {
     var params = {
-      work_status: 'cancel'
+      work_status: 'standby'
     };
     var status = ['work_status'];
 
@@ -2759,7 +2751,7 @@ var _default = {
         data = '省电';
         break;
 
-      case 'end':
+      case 'work_finish':
         data = '已完成';
         break;
 
@@ -2870,10 +2862,16 @@ var _default = {
     that.pause_data = false;
     that.work_status = that.listdata.work_status;
     that.fire_power = that.listdata.fire_power;
-    that.second = that.listdata.second;
-    that.minutes = that.listdata.minutes;
+    that.second = that.listdata.work_second;
+    that.minutes = that.listdata.work_minute;
     that.lock = that.listdata.lock;
-    that.power = that.listdata.power;
+
+    if (this.listdata.work_status === 'save_power') {
+      that.power = 'off';
+    } else {
+      that.power = 'on';
+    }
+
     that.online = that.listdata.online;
     that.startOrpause();
 
@@ -2979,13 +2977,15 @@ var _default = {
       var time = parseInt(that.min) * 60 + parseInt(that.sec) - 1;
 
       if (!that.pause_data && that.listdata.work_status === 'work') {
-        that.listdata.minutes = parseInt(time / 60);
-        that.listdata.second = time % 60;
+        that.listdata.work_minute = parseInt(time / 60);
+        that.listdata.seconwork_second = time % 60;
         that.dataCan();
       }
     }, 1000);
   },
   showAlert: function showAlert() {
+    this.startDevice();
+    return;
     var that = this;
 
     if (that.online === 'true') {
@@ -2998,8 +2998,8 @@ var _default = {
               that.min = "--";
               that.sec = "--";
             } else {
-              that.min = parseInt(that.listdata.minutes);
-              that.sec = parseInt(that.listdata.second);
+              that.min = parseInt(that.listdata.work_minute);
+              that.sec = parseInt(that.listdata.work_second);
 
               if (that.timeout === '') {}
             }
@@ -3311,6 +3311,10 @@ var _default = {
     } else {
       that.lanOnline = 'false';
     }
+
+    _system["default"].showToast({
+      message: JSON.stringify(params) + '：下发参数'
+    });
 
     _api["default"].postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then(function (res) {
       that.isagain = true;
