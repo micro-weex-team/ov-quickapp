@@ -12,7 +12,7 @@
 			<midea-meiju power="{{power}}"></midea-meiju>
 		</list-item>
 	</list>
-	<midea-showdialog header="{{head}}" data="{{setdata}}" footer="{{foot}}" onclick-event1="closeAlert()" onclick-event2="comfirm()" onclick-event3="closeDialog()">
+	<midea-showdialog if="{{showd}}" header="{{head}}" data="{{setdata}}" footer="{{foot}}" onclick-event3="closeDialog()" onclick-event1="closeAlert()" onclick-event2="comfirm()">
 	    <div class="nav_dialog" style="height:{{isup?453:heightNav}}px;" >
 	        <div class="item" @click="selectPower()">
 	            <text class="text1">预约开机</text>
@@ -148,9 +148,11 @@
 </style>
 <script>
 import prompt from '@system.prompt';
+// import api from '../Common/api/api.js';
 import index from "./assets/index.js";
 export default {
 	private: {
+		showd:true,
 		power:'off',
 		showMenu:true,
 		isnew:true,
@@ -235,17 +237,21 @@ export default {
 	btnclick(){
 	},
 	clickEv(e){
-		
 		//console.log("配置信息："+JSON.stringify(this.$app.$def))
 	},
 	closeAlert(){
-	    console.log("asdasdasdasdsad")
+		this.showd = false;
+	    console.log("取消按钮")
 	},
 	comfirm(){
 	    console.log("确定按钮")
 	},
 	closeDialog(){
+		this.showd = false;
 		console.log("点击弹框以外的阴影部分")
+		// prompt.showToast({
+		// 	message:"ssssssssssss"
+		// })
 	},
 	selectPower(){
 	    let that = this;
@@ -285,11 +291,11 @@ export default {
 	    }else{
 	        that.setdata.text = "";
 	    }
-	    
 	},
 	onInit() {
 	    let that = this;
-	    console.log(that.selectdata.substring(3,5))
+		// index.getHeight();
+		// console.log("配置信息："+JSON.stringify(this.$app.$def))
 	    for (let time = 1; time < 24; time++) {
 	        let obj = {
 	            name:'',
@@ -317,7 +323,7 @@ export default {
 	        that.minList.push(obj)
 	    }
 	    that.getTime();
-		console.log("信息来了"+JSON.stringify(that.$app))
+		// console.log("信息来了"+JSON.stringify(that.$app))
 	    // console.log(that.hourList)
 	},
 }

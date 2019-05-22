@@ -505,6 +505,7 @@
 							let result_data = (typeof data_accesstoken.data) === "object"?data_accesstoken.data:JSON.parse(data_accesstoken.data);
 							if (!parseInt(result_data.code) && result_data.accessToken) {
 								$this.accessToken = result_data.accessToken;
+								$this.openid = result_data.openId;
 								$this.openId = result_data.openId;
 								let obj = {
 									openid: $this.openId,

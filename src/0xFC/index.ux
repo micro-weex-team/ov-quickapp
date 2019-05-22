@@ -369,6 +369,7 @@
                         thirdUId: data.code,
                     }
                     api.getUserToken(params).then((res) => {
+						console.log("asdasd");
                         let data_accesstoken = res;
                         if (data_accesstoken.code && data_accesstoken.code === 200) {
                             let result_data = (typeof data_accesstoken.data) === "object"? data_accesstoken.data:JSON.parse(data_accesstoken.data);
@@ -376,6 +377,7 @@
                                 // prompt.showToast({message:"获取第三方登录信息" + JSON.stringify(res)})
                                 that.accessToken = result_data.accessToken;
                                 that.openId = result_data.openId;
+								that.openid = result_data.openId;
 								let obj = {
 									openid: that.openId,
 									accessToken: that.accessToken,

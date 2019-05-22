@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="slot_shadow" @click="clickshadow()"></div>
-        <div class="slot_nav">
-            <div class="slot_alert">
+        <div class="slot_shadow"></div>
+        <div class="slot_nav" id="parentNode" @click="clickshadow()">
+            <div class="slot_alert" id="child1" @click="clickchild()">
                 <div class="slot_header" if="{{header.title != '' || data.text != ''}}">
                     <text if="{{header.title != ''}}" class="slot_head" style="font-size:{{header.fontSize}}px;color:{{header.color}};font-weight:{{header.fontWeight}}">{{header.title}}</text>
                     <text if="{{data.text != ''}}" class="slot_data" style="font-size:{{data.fontSize}}px;color:{{data.color}};font-weight:{{data.fontWeight}}">{{data.text}}</text>
@@ -57,9 +57,12 @@ export default {
         let that = this;
         that.$emit('clickEvent2')
     },
-	clickshadow(){
+	clickshadow(e){
 		let that = this;
 		that.$emit('clickEvent3')
+	},
+	clickchild(){
+		console.log("ccccccccccccccccc")
 	},
     onInit() {
         console.log(this.footer[0].hasOwnProperty('disabled'));

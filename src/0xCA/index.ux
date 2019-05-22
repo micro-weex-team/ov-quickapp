@@ -563,6 +563,7 @@ export default {
 							let result_data = typeof data_accesstoken.data === "object"? data_accesstoken.data:JSON.parse(data_accesstoken.data);
 							if (!parseInt(result_data.code)) {
 								that.openId = result_data.openId;
+								that.openid = result_data.openId;
 								that.accessToken = result_data.accessToken;
 								let obj = {
 									openid: that.openId,

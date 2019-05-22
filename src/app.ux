@@ -1,17 +1,20 @@
 <script>
 	import prompt from '@system.prompt';
 	import account from '@service.account';
-	
+	// import api from './Common/api/api.js';
 	const app = "sasdsad";
   module.exports = {
     /**manifest**/
-			onInit(){
-				prompt.showToast({
-					message:"sssss"
-				})
-			},
-			publicData:{
-				mes:"dasdasd"
-			}
+	onInit(){
+		prompt.showToast({
+			message:"sssss"
+		})
+	},
+	devices:{
+		devicesHeight:0
+	},
+	publicData:{
+		mes:"dasdasd"
+	}
   }
 </script>

@@ -701,6 +701,7 @@
 					let result_data = typeof data_accesstoken.data === 'object'?data_accesstoken.data:JSON.parse(data_accesstoken.data);
 					if (!parseInt(result_data.code)) {
 						that.openId = result_data.openId;
+						that.openid = result_data.openId;
 						that.accessToken = result_data.accessToken;
 						let obj = {
 							openid: that.openId,
@@ -1278,7 +1279,8 @@
 				key: 'openidToken',
 				success: function(data) {
 					that.isshowLoading = true;
-					console.log("token过期:"+JSON.stringify(data))
+					console.log("token过期:"+JSON.stringify(data));
+					console.log("传过来的openid:"+that.openid)
 					if (data === '') {
 						that.getAuthor();
 					} else {

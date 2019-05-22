@@ -24,12 +24,15 @@ import fetch from '@system.fetch';
 import device from '@system.device';
 import prompt from '@system.prompt';
 import router from '@system.router';
+import account from '@service.account';
+import storage from '@system.storage';
 const appidForvivo  = 2150;
 const appidForoppo  = 2149;
 import websocketfactory from '@system.websocketfactory';
 import uuid from './uuid.js';
 import SHA from 'js-sha256';
 import net from './networkAPI.js';
+
 
 // import main from "./main.js";
 
@@ -69,7 +72,6 @@ device.getInfo({
 })
 
 export default {
-	
 	//api接口
 	hostData: {
 		pro:sethost?'':'sit',
@@ -208,6 +210,7 @@ export default {
 			// "skipOvCheck":'false',
 			"Content-Type": 'application/json'
 		}
+		console.log("拿第三方token")
 		    strObj.signature = that.getSignature(objStr,strObj.nonce,strObj.timestamp)
 		var p                = new Promise(function(resolve, reject){
 			if((typeof params) === 'object'){
@@ -331,6 +334,7 @@ export default {
 	//设备状态查询
 	postDeviceStatusQuery(params,accessToken,lanonline,deviceid){
 		let that        = this;
+		util.setHeight();
 		let objStr      = '';
 		// console.log("")
 		if((typeof params) === 'object'){
@@ -502,6 +506,9 @@ export default {
 	},
 	//错误码code
 	getCode(code,msg){
+		prompt.showToast({
+			message:"aosydigasuigduiasfgudg"
+		})
 		let str = code.toString();
 		let data = '';
 		switch(str){
@@ -624,9 +631,49 @@ fly.interceptors.response.use(
 				fail: function(data, code) {
 					router.clear();
 					router.back()
-					console.log(`handling fail, code = ${code}`)
 				}
 			})
 			// that.showDialog(err);
     }
 )
+
+/**
+ * 定时刷新token
+ */
+function setTimeGetToken(appid,appkey){
+	// 生成UUID字符串
+	let len = uuid.create().toString().length;
+	let s   = uuid.create().toString();
+	let str = s.substring(0,8) + s.substring(9,13) + s.substring(14,18) + s.substring(19,23) + s.substring(24,len);
+	// 获取时间戳
+	let timestamp = (new Date()).valueOf();
+	let num = new Number(timestamp);
+	// 获取消息签名
+	let sign = 'appid=' + appid + "&nonce=" + str + "&timestamp=" + num.toString();
+	
+	account.authorize({
+		type: 'code',
+		success: function(data) {
+			let params = {
+				thirdUId: data.code,
+				type:1
+			}
+			let strObj = {
+				"appId"       : appid,
+				"timestamp"   : num.toString(),
+				"nonce"       : str,
+				"Content-Type": 'application/json'
+			}
+			strObj.signature  = SHA.sha256(sign + JSON.stringify(params) + appkey);
+			fly.post(host + '/v1/iotopen/user/token/get', params, {headers:strObj}).then(function (response) {
+				prompt.showToast({
+					message:"信息："+JSON.stringify(response)
+				})
+			}).catch(function (error) {
+			});
+		},
+		fail: function(data, code) {
+				console.log("授权接口：data"+data+":::code"+code)
+		}
+	})
+}

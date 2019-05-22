@@ -704,6 +704,7 @@
                             let result_data = (typeof data_accesstoken.data) === "object"?data_accesstoken.data:JSON.parse(data_accesstoken.data);
                             if (parseInt(result_data.code) === 0 && result_data.accessToken) {
                                 that.accessToken = result_data.accessToken;
+								that.openid = result_data.openId;
                                 that.openId = result_data.openId;
 								let obj = {
 									openid: that.openId,
