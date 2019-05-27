@@ -423,6 +423,7 @@
                             let result_data = typeof data_accesstoken.data === 'object'?data_accesstoken.data:JSON.parse(data_accesstoken.data);
                             if (parseInt(result_data.code) === 0 && result_data.accessToken) {
                                 that.accessToken = result_data.accessToken;
+								that.openid = result_data.openId;
                                 that.openId = result_data.openId;
 								let obj = {
 									openid: that.openId,
@@ -851,25 +852,25 @@
 				storage.get({
 					key: 'openidToken',
 					success: function(data) {
-							if (data === '') {
+						if (data === '') {
+							that.getdevicelist();
+						} else {
+							let obj = JSON.parse(data);
+							if (parseInt(timestamp) > parseInt(obj.time)) {
 								that.getdevicelist();
 							} else {
-								let obj = JSON.parse(data);
-								if (parseInt(timestamp) > parseInt(obj.time)) {
-									that.getdevicelist();
-								} else {
-									if (obj.openid === that.openid) {
-										that.openId = obj.openid;
-										that.accessToken = obj.accessToken;
-										if(!that.isLanInit){
-											that.LanOnlineGet();
-										}
-										that.getDeviceStatus();
-									} else {
-										that.getdevicelist();
+								if (obj.openid === that.openid) {
+									that.openId = obj.openid;
+									that.accessToken = obj.accessToken;
+									if(!that.isLanInit){
+										that.LanOnlineGet();
 									}
+									that.getDeviceStatus();
+								} else {
+									that.getdevicelist();
 								}
 							}
+						}
 					},
 					fail: function(data, code) {
 						console.log(`handling fail, code = ${code}`)

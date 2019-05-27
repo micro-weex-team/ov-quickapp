@@ -172,19 +172,19 @@
 				})
 			}
 		},
-		getwifiList(){
+		getwifiList(time){
 			let that = this;
 			if(this.iot_device_ssid != '' && that.iot_device_ssid != 'null'){
 				that.startConfigDevice();
-				IOT.send({
-					action: 'getWifiList', 
-					success: function (data) {
-						
-					},
-					fail: function (data, code) {
-						console.log(`handling fail, code = ${code}`)
-					}
-				})
+				// IOT.send({
+				// 	action: 'getWifiList', 
+				// 	success: function (data) {
+				// 		
+				// 	},
+				// 	fail: function (data, code) {
+				// 		console.log(`handling fail, code = ${code}`)
+				// 	}
+				// })
 			}else{
 				IOT.send({
 					action: 'getWifiList', 
@@ -219,7 +219,7 @@
 													that.isfirsTime = true;
 													setTimeout(function(){
 														that.isloadingDone = true;
-													},15000)
+													},time)
 												}
 												if(that.isloadingDone){
 													prompt.showDialog({
@@ -242,7 +242,7 @@
 														}
 													})
 												}else{
-													that.getwifiList();
+													that.getwifiList(time);
 												}
 											}
 										})
@@ -251,7 +251,7 @@
 												that.isfirsTime = true;
 												setTimeout(function(){
 													that.isloadingDone = true;
-												},15000)
+												},time)
 											}
 											if(that.isloadingDone){
 												prompt.showDialog({
@@ -274,7 +274,7 @@
 													}
 												})
 											}else{
-												that.getwifiList();
+												that.getwifiList(time);
 											}
 										}else{
 											let num = parseInt(obj[0].level);
@@ -386,11 +386,12 @@
 							that.getDeviceinfo();
 						}else{
 							that.progress = 0;
-							if(that.iot_config_type.toString() === '1'){
-								that.startConfigDevice();
-							}else{
-								that.getwifiList();
-							}
+							that.getwifiList(15000);
+							// if(that.iot_config_type.toString() === '1'){
+							// 	that.startConfigDevice();
+							// }else{
+							// 	that.getwifiList();
+							// }
 						}
 				  }
 				console.log('handling callback')
@@ -501,8 +502,13 @@
 					deviceSN: $this.sn
 				}
 			}
+<<<<<<< HEAD
 			console.log(JSON.stringify(params))
 			prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
+=======
+			console.log("完成的参数："+JSON.stringify(params))
+			// prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
+>>>>>>> 05967bd0573a4127cdbbc55944e39ef61b8674c7
 			setTimeout(function(){
 				$this.$page.finish()
 			},300)
@@ -628,7 +634,7 @@
 						if(that.iot_config_type.toString() === '1'){
 							that.startConfigDevice();
 						}else{
-							that.getwifiList();
+							that.getwifiList(15000);
 						}
 				  }
 				console.log('handling callback')
