@@ -1665,36 +1665,6 @@ module.exports = {
               ]
             }
           ]
-        },
-        {
-          "type": "div",
-          "attr": {},
-          "classList": [
-            "b0_contrl_btn"
-          ],
-          "events": {
-            "click": function (evt) {this.showAlert(evt)}
-          },
-          "children": [
-            {
-              "type": "image",
-              "attr": {
-                "src": "/0xB0/B0_0M3L20A8/assets/img/doing.png"
-              },
-              "classList": [
-                "b0_contrl_btn_img"
-              ]
-            },
-            {
-              "type": "text",
-              "attr": {
-                "value": "启动"
-              },
-              "classList": [
-                "b0_contrl_btn_text"
-              ]
-            }
-          ]
         }
       ]
     },
@@ -2171,7 +2141,7 @@ module.exports = {
                               ],
                               "shown": function () {return this.language},
                               "style": {
-                                "color": function () {return this.fire-1===this.$idx?'#F9CB3D':'#CCCCCC'}
+                                "color": function () {return this.temperature===this.$item.data?'#F9CB3D':'#CCCCCC'}
                               }
                             },
                             {
@@ -2183,7 +2153,7 @@ module.exports = {
                                   "type": "image",
                                   "attr": {
                                     "src": "/0xB0/B0_0M3L20A8/assets/img/select.png",
-                                    "show": function () {return this.fire-1===this.$idx}
+                                    "show": function () {return this.temperature===this.$item.data}
                                   },
                                   "classList": [
                                     "b0_alert_nav_list_select_list_item_img"
@@ -2201,7 +2171,7 @@ module.exports = {
                               ],
                               "shown": function () {return !this.language},
                               "style": {
-                                "color": function () {return this.fire-1===this.$idx?'#F9CB3D':'#CCCCCC'}
+                                "color": function () {return this.temperature===this.$item.data?'#F9CB3D':'#CCCCCC'}
                               }
                             }
                           ]
@@ -3068,6 +3038,8 @@ var _default = {
   },
   showAlert: function showAlert() {
     var that = this;
+    that.doanimat = '';
+    that.doneanimat = '';
 
     if (that.online === 'true') {
       if (that.lock === 'off') {

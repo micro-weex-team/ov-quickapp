@@ -37,10 +37,10 @@
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">烧烤</text>
 			</div>
-			<div class="b0_contrl_btn" @click="showAlert()">
+			<!-- <div class="b0_contrl_btn" @click="showAlert()">
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">启动</text>
-			</div>
+			</div> -->
 		</div>
 		<div class="b0_ctr" if="{{power === 'on' && start}}">
 			<div class="b0_contrl_btn" @click="stopDevice()">
@@ -106,11 +106,11 @@
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{getTemp(50,200,5)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{temperature === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 								<div class="bo_kong{{language?'':'_l'}}">
-									<image src="./assets/img/select.png" show="{{fire-1 === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
+									<image src="./assets/img/select.png" show="{{temperature === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{temperature === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 							</list-item>
 						</list>
 					</div>
@@ -646,8 +646,9 @@
 		},
 		//显示弹框
 		showAlert() {
-			// this.startDevice();
 			let that = this;
+			that.doanimat = '';
+			that.doneanimat = '';
 			if (that.online === 'true') {
 				if (that.lock === 'off') {
 					if (that.power === 'on') {
