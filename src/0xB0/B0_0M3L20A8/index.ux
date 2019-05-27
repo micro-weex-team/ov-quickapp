@@ -20,7 +20,7 @@
 					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
-					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">火力 {{firpower(fire_power)}}档 | {{statusData(work_status)}}</text>
+					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{firpower(fire_power)}} | {{statusData(work_status)}}</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
 					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
 					<text class="b0_nav_list_done" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已关机</text>
@@ -32,6 +32,10 @@
 			<div class="b0_contrl_btn" @click="powerOpen()">
 				<image src="./assets/img/off.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">开关</text>
+			</div>
+			<div class="b0_contrl_btn" @click="showAlert()">
+				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
+				<text class="b0_contrl_btn_text">烧烤</text>
 			</div>
 			<div class="b0_contrl_btn" @click="showAlert()">
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
@@ -91,13 +95,13 @@
 						</list>
 					</div>
 					<div class="b0_alert_nav_list_item" @click="doingAnimation('fire')">
-						<text if="{{language}}" class="b0_alert_nav_list_item_title">火力</text>
+						<text if="{{language}}" class="b0_alert_nav_list_item_title">温度</text>
 						<div class="b0_alert_nav_list_item_status{{language?'':'_l'}}">
 							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{fire?fire:'--'}}档</text>
 							<image class="b0_alert_nav_list_item_status_img" src="./assets/img/arow_down.png"></image>
 							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{fire?fire:'--'}}档</text>
 						</div>
-						<text if="{{!language}}" class="b0_alert_nav_list_item_title">火力</text>
+						<text if="{{!language}}" class="b0_alert_nav_list_item_title">温度</text>
 					</div>
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
@@ -232,7 +236,7 @@
 							}
 						}
 						let status = ['work_status'];
-						that.ctrDevice(params, status,false);
+						that.ctrDevice(params,status,false);
 					}else{
 						prompt.showToast({
 							message: "设备正在启动中,请稍后"
@@ -263,8 +267,8 @@
 						work_minute: 5,
 						work_second: 0
 					}
-			let status = ['lock', 'minutes', 'second', 'fire_power', 'work_status','mode'];
-			that.ctrDevice(params, status,false);
+					let status = ['lock', 'work_minute', 'work_second', 'work_status','work_mode'];
+			that.ctrDevice(params,status,true);
 			
 		},
 		//暂停
@@ -276,7 +280,7 @@
 			// this.pause_data = true;
 			// clearTimeout(this.timeout);
 			if (this.lock === 'off') {
-				this.ctrDevice(params, status,false);
+				this.ctrDevice(params,status,false);
 			} else {
 				prompt.showToast({
 					message: "童锁打开状态,请关闭童锁在进行操作"
@@ -290,7 +294,7 @@
 			}
 			let status = ['work_status'];
 			if (this.lock === 'off') {
-				this.ctrDevice(params, status,false);
+				this.ctrDevice(params,status,false);
 			} else {
 				prompt.showToast({
 					message: "童锁打开状态,请关闭童锁在进行操作"
@@ -310,7 +314,7 @@
 			// let status = ['lock', 'power', 'minutes', 'second', 'fire_power', 'work_status','mode'];
 			let status = [];
 			if (this.lock === 'off') {
-				this.ctrDevice(params, status,true);
+				this.ctrDevice(params,status,true);
 			} else {
 				prompt.showToast({
 					message: "童锁打开状态"
@@ -333,7 +337,7 @@
 						}
 					}
 					let status = ['lock'];
-					that.ctrDevice(params, status,false);
+					that.ctrDevice(params,status,false);
 				}else{
 					prompt.showToast({
 						message: "程序运行中不能操作童锁"
@@ -594,15 +598,14 @@
 		},
 		//显示弹框
 		showAlert() {
-			this.startDevice();
-			return;
+			// this.startDevice();
 			let that = this;
 			if (that.online === 'true') {
 				if (that.lock === 'off') {
 					if (that.power === 'on') {
 						if(that.work_status != 'three'){
 							that.isset = true;
-							if (parseInt(that.listdata.minutes) === 0 && parseInt(that.listdata.second) === 0) {
+							if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_second) === 0) {
 								that.min = "--";
 								that.sec = "--";
 							} else {
@@ -756,12 +759,12 @@
 			that.isshowLoading = false;
 			that.isRefreshing = false;
 			that.isfirst = true;
-			if (res.code === 200) {
-				let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
-					prompt.showToast({
-						message: data
-					})
-				if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+			let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
+			if (parseInt(data.code) == 0) {
+					// prompt.showToast({
+					// 	message: data
+					// })
+				if (!parseInt(data.code)) {
 					let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
 					that.listdata = obj;
 					that.listDevice = obj;
@@ -879,7 +882,7 @@
 			})
 		},
 		//控制家电
-		ctrDevice(obj, status,bol) {
+		ctrDevice(obj,status,bol) {
 			let that = this;
 			that.isshowLoading = true;
 			let status_params = that.listDevice;
@@ -905,9 +908,10 @@
 			}else{
 				that.lanOnline = 'false';
 			}
-			prompt.showToast({
-						message: JSON.stringify(params) +'：下发参数'
-					})
+			// prompt.showToast({
+			// 			message: JSON.stringify(params) +'：11下发参数'
+			// 		})
+			console.log('下发参数'+JSON.stringify(params));
 			api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
 				// prompt.showToast({
 				// 		message: JSON.stringify(res) +'：获取控制返回的值'
@@ -921,11 +925,23 @@
 				}
 				that.isfirst = true;
 				if(res.lanonline){
-					that.wlanControl(res);
+					// prompt.showToast({
+					// 	message: '广域网：'+JSON.stringify(res) 
+					// })
+					console.log('广域网：'+JSON.stringify(res) );
+					// that.wlanControl(res);
+					
+				
 				}else{
-					that.lanControl(res,obj,status,bol)
+					// prompt.showToast({
+					// 	message: '局域网：'+JSON.stringify(res) 
+					// })
+					console.log('局域网：'+JSON.stringify(res) );
+					// that.lanControl(res,obj,status,bol)
 				}
-				that.dataCan();
+				that.getDeviceList();
+				// that.dataCan();
+
 			}).catch((error) => {
 				if(error.online){
 					if(that.timeout != ''){
@@ -943,6 +959,7 @@
 					that.isagain = false;
 					that.lanOnline = 'false';
 					that.ctrDevice(obj, status,bol);
+					// that.netWorkGet('获取设备状态失败,请稍后重试');
 				}
 			})
 		},
@@ -963,7 +980,8 @@
 			}else{
 				that.isagain = false;
 				that.lanOnline = 'false';
-				that.ctrDevice(obj1, status,bol);
+				that.ctrDevice(obj1,status,bol);
+				// that.netWorkGet('获取设备状态失败,请稍后重试');
 			}
 		},
 		/**
@@ -971,8 +989,9 @@
 		 */
 		wlanControl(res){
 			let that = this;
-			if (res.code && res.code === 200) {
-				let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+			let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+
+			if (parseInt(bind_res_data.code) == 0 || parseInt(bind_res_data.code) == 200) {
 				if(parseInt(bind_res_data.code) == 0){
 					if (!parseInt(bind_res_data.devices[0].status)) {
 						that.listdata.online = 'true';
@@ -980,8 +999,8 @@
 						let isall = false;
 						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
 							bind_res_data.devices[0].props);
-						if (obj.power) {
-							that.listdata.power = obj.power
+						if (obj.save_power) {
+							that.listdata.power = obj.save_power
 						} else {
 							isall = true;
 						}
@@ -990,13 +1009,13 @@
 						} else {
 							isall = true;
 						}
-						if (obj.minutes.toString()) {
-							that.listdata.minutes = obj.minutes
+						if (obj.work_minute.toString()) {
+							that.listdata.work_minute = obj.work_minute
 						} else {
 							isall = true;
 						}
-						if (obj.second.toString()) {
-							that.listdata.second = obj.second
+						if (obj.work_second.toString()) {
+							that.listdata.work_second = obj.work_second
 						} else {
 							isall = true;
 						}
@@ -1011,13 +1030,15 @@
 							isall = true;
 						}
 						that.listDevice = obj;
-						if (isall) {
-							that.isshowLoading = true;
-							that.getDeviceList();
-						} else {
-							that.isRefreshing = false;
-							that.isshowLoading = false;
-						}
+						// if (isall) {
+						// 	that.isshowLoading = true;
+						// 	that.getDeviceList();
+						// } else {
+						// 	that.isRefreshing = false;
+						// 	that.isshowLoading = false;
+						// }
+						that.isRefreshing = false;
+						that.isshowLoading = false;
 					} else {
 						that.isRefreshing = false;
 						that.isshowLoading = false;
@@ -1130,6 +1151,7 @@
 			}
 			that.timeoutInter = setInterval(function(){
 				that.iswarm = false;
+				console.log(111);
 				let timestamp = Date.parse(new Date());
 					storage.get({
 						key: 'openidToken',
@@ -1261,6 +1283,7 @@
 					that.headTime();
 				}
 			}
+			// that.headTime();
 			if(that.ws === '' && that.isws){
 				// that.webSocketdata();
 			}
@@ -1333,6 +1356,7 @@
 					console.log(`handling fail, code = ${code}`)
 				}
 			})
+		// that.headTime();
 		},
 		onBackPress() {
 			let that = this;

@@ -1530,7 +1530,7 @@ module.exports = {
                 {
                   "type": "text",
                   "attr": {
-                    "value": function () {return '' + '火力 ' + (this.firpower(this.fire_power)) + '档 | ' + (this.statusData(this.work_status))}
+                    "value": function () {return '' + '温度 ' + (this.firpower(this.fire_power)) + ' | ' + (this.statusData(this.work_status))}
                   },
                   "classList": [
                     "b0_nav_list_status"
@@ -1629,6 +1629,36 @@ module.exports = {
               "type": "text",
               "attr": {
                 "value": "开关"
+              },
+              "classList": [
+                "b0_contrl_btn_text"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "attr": {},
+          "classList": [
+            "b0_contrl_btn"
+          ],
+          "events": {
+            "click": function (evt) {this.showAlert(evt)}
+          },
+          "children": [
+            {
+              "type": "image",
+              "attr": {
+                "src": "/0xB0/B0_0M3L20A8/assets/img/doing.png"
+              },
+              "classList": [
+                "b0_contrl_btn_img"
+              ]
+            },
+            {
+              "type": "text",
+              "attr": {
+                "value": "烧烤"
               },
               "classList": [
                 "b0_contrl_btn_text"
@@ -2048,7 +2078,7 @@ module.exports = {
                     {
                       "type": "text",
                       "attr": {
-                        "value": "火力"
+                        "value": "温度"
                       },
                       "shown": function () {return this.language},
                       "classList": [
@@ -2094,7 +2124,7 @@ module.exports = {
                     {
                       "type": "text",
                       "attr": {
-                        "value": "火力"
+                        "value": "温度"
                       },
                       "shown": function () {return !this.language},
                       "classList": [
@@ -2648,8 +2678,8 @@ var _default = {
       work_minute: 5,
       work_second: 0
     };
-    var status = ['lock', 'minutes', 'second', 'fire_power', 'work_status', 'mode'];
-    that.ctrDevice(params, status, false);
+    var status = ['lock', 'work_minute', 'work_second', 'work_status', 'work_mode'];
+    that.ctrDevice(params, status, true);
   },
   pauseDevice: function pauseDevice() {
     var params = {
@@ -2984,8 +3014,6 @@ var _default = {
     }, 1000);
   },
   showAlert: function showAlert() {
-    this.startDevice();
-    return;
     var that = this;
 
     if (that.online === 'true') {
@@ -2994,7 +3022,7 @@ var _default = {
           if (that.work_status != 'three') {
             that.isset = true;
 
-            if (parseInt(that.listdata.minutes) === 0 && parseInt(that.listdata.second) === 0) {
+            if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_second) === 0) {
               that.min = "--";
               that.sec = "--";
             } else {
@@ -3143,15 +3171,10 @@ var _default = {
     that.isshowLoading = false;
     that.isRefreshing = false;
     that.isfirst = true;
+    var data = _typeof(res.data) === "object" ? res.data : JSON.parse(res.data);
 
-    if (res.code === 200) {
-      var data = _typeof(res.data) === "object" ? res.data : JSON.parse(res.data);
-
-      _system["default"].showToast({
-        message: data
-      });
-
-      if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+    if (parseInt(data.code) == 0) {
+      if (!parseInt(data.code)) {
         var obj = _typeof(data.devices[0].properties) === 'object' ? data.devices[0].properties : JSON.parse(data.devices[0].properties);
         that.listdata = obj;
         that.listDevice = obj;
@@ -3312,9 +3335,7 @@ var _default = {
       that.lanOnline = 'false';
     }
 
-    _system["default"].showToast({
-      message: JSON.stringify(params) + '：下发参数'
-    });
+    console.log('下发参数' + JSON.stringify(params));
 
     _api["default"].postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then(function (res) {
       that.isagain = true;
@@ -3330,12 +3351,12 @@ var _default = {
       that.isfirst = true;
 
       if (res.lanonline) {
-        that.wlanControl(res);
+        console.log('广域网：' + JSON.stringify(res));
       } else {
-        that.lanControl(res, obj, status, bol);
+        console.log('局域网：' + JSON.stringify(res));
       }
 
-      that.dataCan();
+      that.getDeviceList();
     })["catch"](function (error) {
       if (error.online) {
         if (that.timeout != '') {
@@ -3378,10 +3399,9 @@ var _default = {
   },
   wlanControl: function wlanControl(res) {
     var that = this;
+    var bind_res_data = _typeof(res.data) === 'object' ? res.data : JSON.parse(res.data);
 
-    if (res.code && res.code === 200) {
-      var bind_res_data = _typeof(res.data) === 'object' ? res.data : JSON.parse(res.data);
-
+    if (parseInt(bind_res_data.code) == 0 || parseInt(bind_res_data.code) == 200) {
       if (parseInt(bind_res_data.code) == 0) {
         if (!parseInt(bind_res_data.devices[0].status)) {
           that.listdata.online = 'true';
@@ -3389,8 +3409,8 @@ var _default = {
           var isall = false;
           var obj = _typeof(bind_res_data.devices[0].props) === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
 
-          if (obj.power) {
-            that.listdata.power = obj.power;
+          if (obj.save_power) {
+            that.listdata.power = obj.save_power;
           } else {
             isall = true;
           }
@@ -3401,14 +3421,14 @@ var _default = {
             isall = true;
           }
 
-          if (obj.minutes.toString()) {
-            that.listdata.minutes = obj.minutes;
+          if (obj.work_minute.toString()) {
+            that.listdata.work_minute = obj.work_minute;
           } else {
             isall = true;
           }
 
-          if (obj.second.toString()) {
-            that.listdata.second = obj.second;
+          if (obj.work_second.toString()) {
+            that.listdata.work_second = obj.work_second;
           } else {
             isall = true;
           }
@@ -3426,14 +3446,8 @@ var _default = {
           }
 
           that.listDevice = obj;
-
-          if (isall) {
-            that.isshowLoading = true;
-            that.getDeviceList();
-          } else {
-            that.isRefreshing = false;
-            that.isshowLoading = false;
-          }
+          that.isRefreshing = false;
+          that.isshowLoading = false;
         } else {
           that.isRefreshing = false;
           that.isshowLoading = false;
@@ -3553,6 +3567,7 @@ var _default = {
 
     that.timeoutInter = setInterval(function () {
       that.iswarm = false;
+      console.log(111);
       var timestamp = Date.parse(new Date());
 
       _system4["default"].get({
