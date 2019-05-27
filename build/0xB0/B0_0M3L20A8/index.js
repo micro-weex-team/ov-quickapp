@@ -1530,7 +1530,7 @@ module.exports = {
                 {
                   "type": "text",
                   "attr": {
-                    "value": function () {return '' + '温度 ' + (this.firpower(this.fire_power)) + ' | ' + (this.statusData(this.work_status))}
+                    "value": function () {return '' + '温度 ' + (this.tempShow(this.temperature)) + ' | ' + (this.statusData(this.work_status))}
                   },
                   "classList": [
                     "b0_nav_list_status"
@@ -2072,7 +2072,7 @@ module.exports = {
                     "b0_alert_nav_list_item"
                   ],
                   "events": {
-                    "click": function (evt) {this.doingAnimation('fire',evt)}
+                    "click": function (evt) {this.doingAnimation('temperature',evt)}
                   },
                   "children": [
                     {
@@ -2093,7 +2093,7 @@ module.exports = {
                         {
                           "type": "text",
                           "attr": {
-                            "value": function () {return '' + (this.fire?this.fire:'--') + '档'}
+                            "value": function () {return '' + (this.temperature?this.temperature:'--') + '℃'}
                           },
                           "shown": function () {return this.language},
                           "classList": [
@@ -2112,7 +2112,7 @@ module.exports = {
                         {
                           "type": "text",
                           "attr": {
-                            "value": function () {return '' + (this.fire?this.fire:'--') + '档'}
+                            "value": function () {return '' + (this.temperature?this.temperature:'--') + '℃'}
                           },
                           "shown": function () {return !this.language},
                           "classList": [
@@ -2157,14 +2157,14 @@ module.exports = {
                             "b0_alert_nav_list_select_list_item"
                           ],
                           "events": {
-                            "click": function (evt) {this.selectData(this.$idx+1,'fire',evt)}
+                            "click": function (evt) {this.selectData(this.$item.data,'temperature',evt)}
                           },
-                          "repeat": function () {return this.getSecMin(10)},
+                          "repeat": function () {return this.getTemp(50,200,5)},
                           "children": [
                             {
                               "type": "text",
                               "attr": {
-                                "value": function () {return '' + (this.$item.data+1) + '档'}
+                                "value": function () {return '' + (this.$item.data) + '℃'}
                               },
                               "classList": [
                                 "b0_alert_nav_list_select_list_item_data"
@@ -2194,7 +2194,7 @@ module.exports = {
                             {
                               "type": "text",
                               "attr": {
-                                "value": function () {return '' + (this.$item.data+1) + '档'}
+                                "value": function () {return '' + (this.$item.data) + '℃'}
                               },
                               "classList": [
                                 "b0_alert_nav_list_select_list_item_data"
@@ -2605,6 +2605,7 @@ var _default = {
     second: 0,
     isdone: false,
     fire_power: 0,
+    temperature: 0,
     online: 'false',
     isworking: true,
     timeoutInter: "",
@@ -2613,7 +2614,7 @@ var _default = {
     mode: 'microwave',
     num: 0,
     listDevice: {},
-    B0list: ['lock', 'power', 'minutes', 'second', 'fire_power', 'work_status', 'mode'],
+    B0list: ['lock', 'power', 'minutes', 'second', 'fire_power', 'temperature', 'work_status', 'mode'],
     listdata: {
       lock: 'off',
       power: "off",
@@ -2622,7 +2623,8 @@ var _default = {
       fire_power: 0,
       online: 'false',
       work_status: 'cloud',
-      mode: 'microwave'
+      mode: 'microwave',
+      temperature: 0
     }
   },
   "public": {
@@ -2671,15 +2673,23 @@ var _default = {
   startDevice: function startDevice() {
     var that = this;
     var params;
-    this.isset = false;
-    params = {
-      work_status: 'work',
-      work_mode: 'above_tube',
-      work_minute: 5,
-      work_second: 0
-    };
-    var status = ['lock', 'work_minute', 'work_second', 'work_status', 'work_mode'];
-    that.ctrDevice(params, status, true);
+
+    if (parseInt(that.min) >= 0 && parseInt(that.temperature) > 0) {
+      this.isset = false;
+      params = {
+        work_status: 'work',
+        work_mode: 'above_tube',
+        work_minute: that.min,
+        work_second: that.sec,
+        temperature: that.temperature
+      };
+      var status = ['lock', 'work_minute', 'work_second', 'work_status', 'work_mode', 'temperature'];
+      that.ctrDevice(params, status, true);
+    } else {
+      _system["default"].showToast({
+        message: "请选择加热时长与温度"
+      });
+    }
   },
   pauseDevice: function pauseDevice() {
     var params = {
@@ -2755,6 +2765,13 @@ var _default = {
     }
   },
   firpower: function firpower(str) {
+    if (parseInt(str) > 0) {
+      return str;
+    } else {
+      return '-- ';
+    }
+  },
+  tempShow: function tempShow(str) {
     if (parseInt(str) > 0) {
       return str;
     } else {
@@ -2843,6 +2860,29 @@ var _default = {
       fail: function fail(res, code) {}
     });
   },
+  getTemp: function getTemp(start, end, step) {
+    var arr = [];
+
+    if (start > end) {
+      return arr;
+    }
+
+    for (var i = 0; start + i * step <= end; i++) {
+      var value = start + step * i;
+
+      if (value < 0) {
+        continue;
+      }
+
+      var obj = {
+        id: i,
+        data: value
+      };
+      arr.push(obj);
+    }
+
+    return arr;
+  },
   getSecMin: function getSecMin(num) {
     var that = this;
     var arrary = [];
@@ -2892,6 +2932,7 @@ var _default = {
     that.pause_data = false;
     that.work_status = that.listdata.work_status;
     that.fire_power = that.listdata.fire_power;
+    that.temperature = that.listdata.temperature;
     that.second = that.listdata.work_second;
     that.minutes = that.listdata.work_minute;
     that.lock = that.listdata.lock;
@@ -2950,6 +2991,10 @@ var _default = {
       case 'fire':
         that.fire = data;
         break;
+
+      case 'temperature':
+        that.temperature = data;
+        break;
     }
   },
   doingAnimation: function doingAnimation(str) {
@@ -2965,6 +3010,14 @@ var _default = {
         break;
 
       case 'fire':
+        if (that.doneanimat != 'doneanimation') {
+          that.doanimat = 'doanimation';
+          that.doneanimat = 'doneanimation';
+        }
+
+        break;
+
+      case 'temperature':
         if (that.doneanimat != 'doneanimation') {
           that.doanimat = 'doanimation';
           that.doneanimat = 'doneanimation';
@@ -3036,6 +3089,12 @@ var _default = {
               that.fire = that.listdata.fire_power;
             } else {
               that.fire = '--';
+            }
+
+            if (parseInt(that.listdata.temperature) > 0) {
+              that.temperature = that.listdata.temperature;
+            } else {
+              that.temperature = '--';
             }
 
             that.dataCan();
@@ -3445,6 +3504,12 @@ var _default = {
             isall = true;
           }
 
+          if (obj.temperature) {
+            that.listdata.temperature = obj.temperature;
+          } else {
+            isall = true;
+          }
+
           that.listDevice = obj;
           that.isRefreshing = false;
           that.isshowLoading = false;
@@ -3656,6 +3721,10 @@ var _default = {
 
         if (obj.status.fire_power) {
           that.listdata.fire_power = obj.status.fire_power;
+        }
+
+        if (obj.status.temperature) {
+          that.listdata.temperature = obj.status.temperature;
         }
 
         if (obj.status.work_status) {
@@ -6068,7 +6137,11 @@ var _system3 = _interopRequireDefault($app_require$("@app-module/system.prompt")
 
 var _system4 = _interopRequireDefault($app_require$("@app-module/system.router"));
 
-var _system5 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
+var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
+
+var _system5 = _interopRequireDefault($app_require$("@app-module/system.storage"));
+
+var _system6 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
 
 var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "./src/Common/api/uuid.js"));
 
@@ -6296,6 +6369,7 @@ var _default = {
       // "skipOvCheck":'false',
       "Content-Type": 'application/json'
     };
+    console.log("拿第三方token");
     strObj.signature = that.getSignature(objStr, strObj.nonce, strObj.timestamp);
     var p = new Promise(function (resolve, reject) {
       if (_typeof(params) === 'object') {
@@ -6429,6 +6503,9 @@ var _default = {
   //设备状态查询
   postDeviceStatusQuery: function postDeviceStatusQuery(params, accessToken, lanonline, deviceid) {
     var that = this;
+
+    _util["default"].setHeight();
+
     var objStr = ''; // console.log("")
 
     if (_typeof(params) === 'object') {
@@ -6595,7 +6672,7 @@ var _default = {
           // 						message:"url:"+url + '/simplews/status/fetch?appId=' + appid + '&s=' + s + '&l=10&key=' + appkey.substring(s,s+10) + '&did=' + did
           // 					})
 
-          var ws = _system5["default"].create({
+          var ws = _system6["default"].create({
             url: url + '/simplews/status/fetch?appId=' + appid + '&s=' + s + '&l=10&key=' + appkey.substring(s, s + 10) + '&did=' + did,
             header: {
               'content-type': 'application/json'
@@ -6610,6 +6687,10 @@ var _default = {
   },
   //错误码code
   getCode: function getCode(code, msg) {
+    _system3["default"].showToast({
+      message: "aosydigasuigduiasfgudg"
+    });
+
     var str = code.toString();
     var data = '';
 
@@ -6761,12 +6842,54 @@ fly.interceptors.response.use(function (response) {//只将请求结果的data�
       _system4["default"].clear();
 
       _system4["default"].back();
-
-      console.log("handling fail, code = ".concat(code));
     }
   }); // that.showDialog(err);
 
 });
+/**
+ * 定时刷新token
+ */
+
+function setTimeGetToken(appid, appkey) {
+  // 生成UUID字符串
+  var len = _uuid["default"].create().toString().length;
+
+  var s = _uuid["default"].create().toString();
+
+  var str = s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24, len); // 获取时间戳
+
+  var timestamp = new Date().valueOf();
+  var num = new Number(timestamp); // 获取消息签名
+
+  var sign = 'appid=' + appid + "&nonce=" + str + "&timestamp=" + num.toString();
+
+  _service["default"].authorize({
+    type: 'code',
+    success: function success(data) {
+      var params = {
+        thirdUId: data.code,
+        type: 1
+      };
+      var strObj = {
+        "appId": appid,
+        "timestamp": num.toString(),
+        "nonce": str,
+        "Content-Type": 'application/json'
+      };
+      strObj.signature = _jsSha["default"].sha256(sign + JSON.stringify(params) + appkey);
+      fly.post(host + '/v1/iotopen/user/token/get', params, {
+        headers: strObj
+      }).then(function (response) {
+        _system3["default"].showToast({
+          message: "信息：" + JSON.stringify(response)
+        });
+      })["catch"](function (error) {});
+    },
+    fail: function fail(data, code) {
+      console.log("授权接口：data" + data + ":::code" + code);
+    }
+  });
+}
 
 /***/ }),
 
@@ -7497,6 +7620,9 @@ var _default = {
     //配置环境（true：pro环境；false：sit环境）
     type: ["ac", "ca", "b0", "db", "e2", "ea", "fa", "fc", "fd", "e1", "e3", "b8", "b6"] //支持的设备
 
+  },
+  setHeight: function setHeight() {
+    var that = this; // console.log("app参数："+JSON.stringify(that.$app))
   }
 };
 exports["default"] = _default;

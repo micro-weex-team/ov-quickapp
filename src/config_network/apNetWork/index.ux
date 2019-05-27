@@ -502,13 +502,8 @@
 					deviceSN: $this.sn
 				}
 			}
-<<<<<<< HEAD
-			console.log(JSON.stringify(params))
-			prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
-=======
 			console.log("完成的参数："+JSON.stringify(params))
 			// prompt.showToast({message:"参数：" + JSON.stringify(params),duration:1})
->>>>>>> 05967bd0573a4127cdbbc55944e39ef61b8674c7
 			setTimeout(function(){
 				$this.$page.finish()
 			},300)

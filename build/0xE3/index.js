@@ -1792,6 +1792,7 @@ module.exports = {
 
             if (!parseInt(result_data.code)) {
               that.openId = result_data.openId;
+              that.openid = result_data.openId;
               that.accessToken = result_data.accessToken;
               var obj = {
                 openid: that.openId,
@@ -4819,7 +4820,11 @@ var _system3 = _interopRequireDefault($app_require$("@app-module/system.prompt")
 
 var _system4 = _interopRequireDefault($app_require$("@app-module/system.router"));
 
-var _system5 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
+var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
+
+var _system5 = _interopRequireDefault($app_require$("@app-module/system.storage"));
+
+var _system6 = _interopRequireDefault($app_require$("@app-module/system.websocketfactory"));
 
 var _uuid = _interopRequireDefault(__webpack_require__(/*! ./uuid.js */ "./src/Common/api/uuid.js"));
 
@@ -5047,6 +5052,7 @@ var _default = {
       // "skipOvCheck":'false',
       "Content-Type": 'application/json'
     };
+    console.log("拿第三方token");
     strObj.signature = that.getSignature(objStr, strObj.nonce, strObj.timestamp);
     var p = new Promise(function (resolve, reject) {
       if (_typeof(params) === 'object') {
@@ -5180,6 +5186,9 @@ var _default = {
   //设备状态查询
   postDeviceStatusQuery: function postDeviceStatusQuery(params, accessToken, lanonline, deviceid) {
     var that = this;
+
+    _util["default"].setHeight();
+
     var objStr = ''; // console.log("")
 
     if (_typeof(params) === 'object') {
@@ -5346,7 +5355,7 @@ var _default = {
           // 						message:"url:"+url + '/simplews/status/fetch?appId=' + appid + '&s=' + s + '&l=10&key=' + appkey.substring(s,s+10) + '&did=' + did
           // 					})
 
-          var ws = _system5["default"].create({
+          var ws = _system6["default"].create({
             url: url + '/simplews/status/fetch?appId=' + appid + '&s=' + s + '&l=10&key=' + appkey.substring(s, s + 10) + '&did=' + did,
             header: {
               'content-type': 'application/json'
@@ -5361,6 +5370,10 @@ var _default = {
   },
   //错误码code
   getCode: function getCode(code, msg) {
+    _system3["default"].showToast({
+      message: "aosydigasuigduiasfgudg"
+    });
+
     var str = code.toString();
     var data = '';
 
@@ -5512,12 +5525,54 @@ fly.interceptors.response.use(function (response) {//只将请求结果的data�
       _system4["default"].clear();
 
       _system4["default"].back();
-
-      console.log("handling fail, code = ".concat(code));
     }
   }); // that.showDialog(err);
 
 });
+/**
+ * 定时刷新token
+ */
+
+function setTimeGetToken(appid, appkey) {
+  // 生成UUID字符串
+  var len = _uuid["default"].create().toString().length;
+
+  var s = _uuid["default"].create().toString();
+
+  var str = s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24, len); // 获取时间戳
+
+  var timestamp = new Date().valueOf();
+  var num = new Number(timestamp); // 获取消息签名
+
+  var sign = 'appid=' + appid + "&nonce=" + str + "&timestamp=" + num.toString();
+
+  _service["default"].authorize({
+    type: 'code',
+    success: function success(data) {
+      var params = {
+        thirdUId: data.code,
+        type: 1
+      };
+      var strObj = {
+        "appId": appid,
+        "timestamp": num.toString(),
+        "nonce": str,
+        "Content-Type": 'application/json'
+      };
+      strObj.signature = _jsSha["default"].sha256(sign + JSON.stringify(params) + appkey);
+      fly.post(host + '/v1/iotopen/user/token/get', params, {
+        headers: strObj
+      }).then(function (response) {
+        _system3["default"].showToast({
+          message: "信息：" + JSON.stringify(response)
+        });
+      })["catch"](function (error) {});
+    },
+    fail: function fail(data, code) {
+      console.log("授权接口：data" + data + ":::code" + code);
+    }
+  });
+}
 
 /***/ }),
 
@@ -6248,6 +6303,9 @@ var _default = {
     //配置环境（true：pro环境；false：sit环境）
     type: ["ac", "ca", "b0", "db", "e2", "ea", "fa", "fc", "fd", "e1", "e3", "b8", "b6"] //支持的设备
 
+  },
+  setHeight: function setHeight() {
+    var that = this; // console.log("app参数："+JSON.stringify(that.$app))
   }
 };
 exports["default"] = _default;

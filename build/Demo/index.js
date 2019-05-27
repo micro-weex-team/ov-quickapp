@@ -929,24 +929,33 @@ module.exports = {
       "attr": {},
       "classList": [
         "slot_shadow"
-      ],
-      "events": {
-        "click": function (evt) {this.clickshadow(evt)}
-      }
+      ]
     },
     {
       "type": "div",
-      "attr": {},
+      "attr": {
+        "id": "parentNode"
+      },
       "classList": [
         "slot_nav"
       ],
+      "id": "parentNode",
+      "events": {
+        "click": function (evt) {this.clickshadow(evt)}
+      },
       "children": [
         {
           "type": "div",
-          "attr": {},
+          "attr": {
+            "id": "child1"
+          },
           "classList": [
             "slot_alert"
           ],
+          "id": "child1",
+          "events": {
+            "click": function (evt) {this.clickchild(evt)}
+          },
           "children": [
             {
               "type": "div",
@@ -1129,10 +1138,11 @@ module.exports = {
         "data": function () {return this.setdata},
         "footer": function () {return this.foot}
       },
+      "shown": function () {return this.showd},
       "events": {
+        "click-event3": function (evt) {this.closeDialog(evt)},
         "click-event1": function (evt) {this.closeAlert(evt)},
-        "click-event2": function (evt) {this.comfirm(evt)},
-        "click-event3": function (evt) {this.closeDialog(evt)}
+        "click-event2": function (evt) {this.comfirm(evt)}
       },
       "children": [
         {
@@ -1438,6 +1448,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 var _default = {
   "private": {
+    showd: true,
     power: 'off',
     showMenu: true,
     isnew: true,
@@ -1520,12 +1531,14 @@ var _default = {
   btnclick: function btnclick() {},
   clickEv: function clickEv(e) {},
   closeAlert: function closeAlert() {
-    console.log("asdasdasdasdsad");
+    this.showd = false;
+    console.log("取消按钮");
   },
   comfirm: function comfirm() {
     console.log("确定按钮");
   },
   closeDialog: function closeDialog() {
+    this.showd = false;
     console.log("点击弹框以外的阴影部分");
   },
   selectPower: function selectPower() {
@@ -1573,7 +1586,6 @@ var _default = {
   },
   onInit: function onInit() {
     var that = this;
-    console.log(that.selectdata.substring(3, 5));
 
     for (var time = 1; time < 24; time++) {
       var obj = {
@@ -1608,7 +1620,6 @@ var _default = {
     }
 
     that.getTime();
-    console.log("信息来了" + JSON.stringify(that.$app));
   }
 };
 exports["default"] = _default;
@@ -2016,9 +2027,12 @@ var _default = {
     var that = this;
     that.$emit('clickEvent2');
   },
-  clickshadow: function clickshadow() {
+  clickshadow: function clickshadow(e) {
     var that = this;
     that.$emit('clickEvent3');
+  },
+  clickchild: function clickchild() {
+    console.log("ccccccccccccccccc");
   },
   onInit: function onInit() {
     console.log(this.footer[0].hasOwnProperty('disabled'));
@@ -2186,10 +2200,11 @@ var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "./s
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-console.log("util:" + JSON.stringify(_util["default"].hostData));
+// console.log("util:"+JSON.stringify(util.hostData))
 var _default = {
-  onCreate: function onCreate() {
-    console.log("配置信息：" + JSON.stringify(this.$app.$def));
+  getHeight: function getHeight() {
+    _util["default"].setHeight(); // console.log("配置信息："+JSON.stringify(this.$app.$def))
+
   }
 };
 exports["default"] = _default;
@@ -2250,6 +2265,9 @@ var _default = {
     //配置环境（true：pro环境；false：sit环境）
     type: ["ac", "ca", "b0", "db", "e2", "ea", "fa", "fc", "fd", "e1", "e3", "b8", "b6"] //支持的设备
 
+  },
+  setHeight: function setHeight() {
+    var that = this; // console.log("app参数："+JSON.stringify(that.$app))
   }
 };
 exports["default"] = _default;

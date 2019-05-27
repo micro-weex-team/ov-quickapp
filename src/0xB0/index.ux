@@ -102,7 +102,7 @@
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($idx+1,'fire')" for="{{getSecMin(10)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data+1}}档</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data+1}}档</text>
 								<div class="bo_kong{{language?'':'_l'}}">
 									<image src="./assets/img/select.png" show="{{fire-1 === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>

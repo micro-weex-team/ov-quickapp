@@ -20,7 +20,7 @@
 					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
-					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{firpower(fire_power)}} | {{statusData(work_status)}}</text>
+					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{tempShow(temperature)}} | {{statusData(work_status)}}</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
 					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
 					<text class="b0_nav_list_done" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已关机</text>
@@ -94,23 +94,23 @@
 							</list-item>
 						</list>
 					</div>
-					<div class="b0_alert_nav_list_item" @click="doingAnimation('fire')">
+					<div class="b0_alert_nav_list_item" @click="doingAnimation('temperature')">
 						<text if="{{language}}" class="b0_alert_nav_list_item_title">温度</text>
 						<div class="b0_alert_nav_list_item_status{{language?'':'_l'}}">
-							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{fire?fire:'--'}}档</text>
+							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{temperature?temperature:'--'}}℃</text>
 							<image class="b0_alert_nav_list_item_status_img" src="./assets/img/arow_down.png"></image>
-							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{fire?fire:'--'}}档</text>
+							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{temperature?temperature:'--'}}℃</text>
 						</div>
 						<text if="{{!language}}" class="b0_alert_nav_list_item_title">温度</text>
 					</div>
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($idx+1,'fire')" for="{{getSecMin(10)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data+1}}档</text>
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{getTemp(50,200,5)}}">
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 								<div class="bo_kong{{language?'':'_l'}}">
 									<image src="./assets/img/select.png" show="{{fire-1 === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data+1}}档</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{fire-1 === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 							</list-item>
 						</list>
 					</div>
@@ -186,6 +186,7 @@
 			second: 0,
 			isdone:false,
 			fire_power: 0,
+			temperature: 0,
 			online: 'false',
 			isworking:true,
 			timeoutInter: "",
@@ -194,7 +195,7 @@
 			mode:'microwave',
 			num:0,
 			listDevice:{},
-			B0list: ['lock', 'power', 'minutes', 'second', 'fire_power', 'work_status','mode'],
+			B0list: ['lock', 'power', 'minutes', 'second', 'fire_power', 'temperature','work_status','mode'],
 			listdata: {
 				lock: 'off',
 				power: "off",
@@ -203,7 +204,8 @@
 				fire_power: 0,
 				online: 'false',
 				work_status: 'cloud',
-				mode:'microwave'
+				mode:'microwave',
+				temperature: 0,
 			}
 		},
 		public: {
@@ -259,16 +261,22 @@
 		startDevice() {
 			let that = this;
 			let params;
-			
-			this.isset = false;
-			params = {
-						work_status: 'work',
-						work_mode: 'above_tube',
-						work_minute: 5,
-						work_second: 0
-					}
-					let status = ['lock', 'work_minute', 'work_second', 'work_status','work_mode'];
-			that.ctrDevice(params,status,true);
+			if (parseInt(that.min) >= 0 && parseInt(that.temperature) > 0) {
+				this.isset = false;
+				params = {
+							work_status: 'work',
+							work_mode: 'above_tube',
+							work_minute: that.min,
+							work_second: that.sec,
+							temperature: that.temperature
+						}
+				let status = ['lock', 'work_minute', 'work_second', 'work_status','work_mode','temperature'];
+				that.ctrDevice(params,status,true);
+			}else {
+				prompt.showToast({
+					message: "请选择加热时长与温度"
+				})
+			}
 			
 		},
 		//暂停
@@ -359,6 +367,13 @@
 				return '-- '
 			}
 		},
+		tempShow(str){
+			if (parseInt(str) > 0) {
+				return str
+			} else {
+				return '-- '
+			}
+		},
 		//工作状态过滤
 		statusData(str) {
 			let data = '待机中';
@@ -436,6 +451,29 @@
 				}
 			});
 		},
+		/*
+		温度选择
+		*/
+		getTemp(start,end,step){
+			var arr=[];
+			if(start > end){
+				return arr;
+			}
+			for(var i=0;start+i*step <= end;i++){
+				var value = start+step*i;
+				if(value < 0){
+					continue;
+				}
+				// arr[i]=value;
+				let obj = {
+					id: i,
+					data: value
+				}
+				arr.push(obj);
+			}
+			return arr;
+		},
+
 		// 分钟
 		getSecMin(num) {
 			let that = this;
@@ -485,6 +523,7 @@
 			that.pause_data = false;
 			that.work_status = that.listdata.work_status;
 			that.fire_power = that.listdata.fire_power;
+			that.temperature = that.listdata.temperature;
 			that.second = that.listdata.work_second;
 			that.minutes = that.listdata.work_minute;
 			that.lock = that.listdata.lock;
@@ -538,6 +577,9 @@
 				case 'fire': //火力处理
 					that.fire = data;
 					break;
+				case 'temperature': //温度处理
+					that.temperature = data;
+					break;
 			}
 		},
 		// 执行收起动画
@@ -551,6 +593,12 @@
 					}
 					break;
 				case 'fire':
+					if (that.doneanimat != 'doneanimation') {
+						that.doanimat = 'doanimation';
+						that.doneanimat = 'doneanimation';
+					}
+					break;
+				case 'temperature':
 					if (that.doneanimat != 'doneanimation') {
 						that.doanimat = 'doanimation';
 						that.doneanimat = 'doneanimation';
@@ -619,6 +667,11 @@
 								that.fire = that.listdata.fire_power;
 							} else {
 								that.fire = '--';
+							}
+							if (parseInt(that.listdata.temperature) > 0) {
+								that.temperature = that.listdata.temperature;
+							} else {
+								that.temperature = '--';
 							}
 							that.dataCan();
 							that.doanimat = "";
@@ -1029,6 +1082,11 @@
 						} else {
 							isall = true;
 						}
+						if (obj.temperature) {
+							that.listdata.temperature = obj.temperature
+						} else {
+							isall = true;
+						}
 						that.listDevice = obj;
 						// if (isall) {
 						// 	that.isshowLoading = true;
@@ -1228,6 +1286,9 @@
 					}
 					if (obj.status.fire_power) {
 						that.listdata.fire_power = obj.status.fire_power
+					}
+					if (obj.status.temperature) {
+						that.listdata.temperature = obj.status.temperature
 					}
 					if (obj.status.work_status) {
 						that.listdata.work_status = obj.status.work_status
