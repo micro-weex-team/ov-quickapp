@@ -82,7 +82,7 @@
 			is_device:true,
 			deviceType:'',
 			// type:["ac","ca","b0","db","e2","ea","fa","fc","fd"]//支持的设备
-			type:["ac","ca","b0","db","e2","ea","fa","fc","fd","e1","e3","b8","b6"]//支持的设备
+			type:["ac","ca","b0","b1","b2","db","e2","ea","fa","fc","fd","e1","e3","b8","b6"]//支持的设备
         },
 		public: {
 			iot_call_from: '',
