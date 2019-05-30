@@ -1,6 +1,7 @@
 import IOT from '@service.iot';
 import prompt from '@system.prompt';
 import device from '@system.device';
+import storage from '@system.storage';
 import util from "../../util.js";
 const sethost = util.hostData.setHost;  //配置环境（true：pro环境；false：sit环境）
 let clientId = "";
@@ -11,6 +12,7 @@ export default {
 		isonLan:"false"
 	},
 	mes: {
+		deviceid:'',
 		clientId: 'db3924f6431a4c461667bd164a4ab1fb',
 		clientSecret: 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b'
 	},
@@ -105,6 +107,9 @@ export default {
 								action: 'CustomerHandler.addDevice',
 								data: deviceID,
 								success: function(res) {
+									that.mes.deviceid = deviceID;
+									const pageA = new BroadcastChannel('channel1')
+									pageA.postMessage(deviceID)
 									that.LanGetData(deviceID);
 									resolve(res)
 								},
@@ -124,6 +129,23 @@ export default {
 		return p;
 	},
 	/**
+	 * @param {Object} deviceID
+	 * 删除设备局域网广播的监控
+	 */
+	removeDevice(deviceid){
+		console.log(deviceid);
+		IOT.send({
+			action: 'CustomerHandler.removeDevice',
+			data: deviceid,
+			success: function(res) {
+				console.log("成功")
+			},
+			fail: function(data, code) {
+				console.log("失败")
+			}
+		})
+	},
+	/**
 	 * 2.添加设备局域网广播监控
 	 */
 	addDevice(deviceID) {
@@ -137,10 +159,6 @@ export default {
 			success: function(res) {
 			},
 			fail: function(data, code) {
-				prompt.showToast({
-					message: "fail:" + JSON.stringify(data),
-					duration: 1
-				})
 			}
 		})
 	},

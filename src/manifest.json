@@ -186,6 +186,7 @@
     "display": {
         "titleBarBackgroundColor": "#ffffff",
         "backgroundColor": "#ffffff",
+		"fullScreen":false,
         "titleBar": false,
         "titleBarTextColor": "#000000",
         "menu": false,

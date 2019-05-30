@@ -11,5 +11,5 @@ export default {
 	setHeight(){
 		let that = this;
 		// console.log("app参数："+JSON.stringify(that.$app))
-	}
+	},
 }
