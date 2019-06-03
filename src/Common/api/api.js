@@ -67,6 +67,7 @@ device.getInfo({
 				clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
 				clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
 			}
+			// setGet(appid,appkey)
 		}
 	}
 })
@@ -300,6 +301,66 @@ export default {
 								fly.post(host + that.hostData.postDeviceControl, params, {headers:strObj}).then(function (response) {
 									response.code = response.status;
 									response.lanonline = lanonline;
+									if(response.data.code && response.data.code.toString() == '3158'){
+										console.log("第三步授权")
+										account.authorize({
+											type: 'code',
+											success: function(data) {
+												console.log("第三步"+JSON.stringify(data))
+												let tokenparams = {
+													thirdUId: data.code,
+													type:1
+												}
+												let tokenobjStr      = JSON.stringify(tokenparams);
+												let tokenstrObj = {
+													"appId"       : appid,
+													"timestamp"   : that.getTimestamp(),
+													"nonce"       : that.createUUID(),
+													"Content-Type": 'application/json'
+												}
+												tokenstrObj.signature = that.getSignature(tokenobjStr,tokenstrObj.nonce,tokenstrObj.timestamp);
+												fly.post(host + that.hostData.getUserToken, tokenparams, {headers:tokenstrObj}).then(function (res) {
+													console.log("重新刷新token："+JSON.stringify(res))
+													let data_accesstoken = res;
+													if (data_accesstoken.status && data_accesstoken.status === 200) {
+														let result_data = typeof data_accesstoken.data === 'object'?data_accesstoken.data:JSON.parse(data_accesstoken.data);
+														if (!parseInt(result_data.code)) {
+															let obj = {
+																openid: result_data.openId,
+																accessToken: result_data.accessToken,
+																time: that.gettime()
+															}
+															storage.set({
+																key: 'openidToken',
+																value: JSON.stringify(obj),
+																success: function(data) {
+												
+																},
+																fail: function(data, code) {
+												
+																}
+															})
+															console.log("重新保存的token："+JSON.stringify(obj))
+															that.postDeviceStatusQuery(params,result_data.accessToken,lanonline,deviceid)
+														}else{
+															reject("获取token失败")
+														}
+													}else{
+														reject("获取token失败")
+													}
+												}).catch((error,code) => {
+													reject(error)
+													console.log("授权接口：error"+error+":::code"+code)
+												})
+											},
+											fail: function(data, code) {
+												reject(data);
+												console.log("授权接口：error"+error+":::code"+code)
+											}
+										})
+									}else{
+										resolve(response);
+									}
 									console.log("返回信息："+JSON.stringify(response));
 				// 					if (response.code && response.code === 200) {
 				// 						let bind_res_data = typeof response.data == 'object' ? response.data : JSON.parse(response.data);
@@ -312,7 +373,6 @@ export default {
 				// 							}
 				// 						}
 				// 					}
-									resolve(response);
 								}).catch(function (error) {
 									let obj = JSON.parse(error);
 									obj.online = lanonline;
@@ -329,6 +389,21 @@ export default {
 						});
 						return p;
 			}
+		
+	},
+	//获取后一天的时间戳
+	gettime() {
+		let timestamp = Date.parse(new Date());
+		return parseInt(timestamp) + 3600000;
+	},
+	/**
+	 * @param {Object} params
+	 * @param {Object} accessToken
+	 * @param {Object} lanonline
+	 * @param {Object} deviceid
+	 * 重新获取token
+	 */
+	regetToken(){
 		
 	},
 	//设备状态查询
@@ -360,6 +435,66 @@ export default {
 								fly.post(host + that.hostData.postDeviceStatusQuery, params, {headers:strObj}).then(function (response) {
 									response.code = response.status;
 									response.lanonline = lanonline;
+									if(response.data.code && response.data.code.toString() == '3158'){
+										console.log("第三步授权")
+										account.authorize({
+											type: 'code',
+											success: function(data) {
+												console.log("第三步"+JSON.stringify(data))
+												let tokenparams = {
+													thirdUId: data.code,
+													type:1
+												}
+												let tokenobjStr      = JSON.stringify(tokenparams);
+												let tokenstrObj = {
+													"appId"       : appid,
+													"timestamp"   : that.getTimestamp(),
+													"nonce"       : that.createUUID(),
+													"Content-Type": 'application/json'
+												}
+												tokenstrObj.signature = that.getSignature(tokenobjStr,tokenstrObj.nonce,tokenstrObj.timestamp);
+												fly.post(host + that.hostData.getUserToken, tokenparams, {headers:tokenstrObj}).then(function (res) {
+													console.log("重新刷新token："+JSON.stringify(res))
+													let data_accesstoken = res;
+													if (data_accesstoken.status && data_accesstoken.status === 200) {
+														let result_data = typeof data_accesstoken.data === 'object'?data_accesstoken.data:JSON.parse(data_accesstoken.data);
+														if (!parseInt(result_data.code)) {
+															let obj = {
+																openid: result_data.openId,
+																accessToken: result_data.accessToken,
+																time: that.gettime()
+															}
+															storage.set({
+																key: 'openidToken',
+																value: JSON.stringify(obj),
+																success: function(data) {
+												
+																},
+																fail: function(data, code) {
+												
+																}
+															})
+															console.log("重新保存的token："+JSON.stringify(obj))
+															that.postDeviceStatusQuery(params,result_data.accessToken,lanonline,deviceid)
+														}else{
+															reject("获取token失败")
+														}
+													}else{
+														reject("获取token失败")
+													}
+												}).catch((error,code) => {
+													reject(error)
+													console.log("授权接口：error"+error+":::code"+code)
+												})
+											},
+											fail: function(data, code) {
+												reject(data);
+												console.log("授权接口：error"+error+":::code"+code)
+											}
+										})
+									}else{
+										resolve(response);
+									}
 									console.log("返回信息："+JSON.stringify(response));
 				// 					if (response.code && response.code === 200) {
 				// 						let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
@@ -372,7 +507,6 @@ export default {
 				// 							}
 				// 						}
 				// 					}
-									resolve(response);
 								}).catch(function (error) {
 									console.log(JSON.stringify(error));
 									let obj = JSON.parse(error);
@@ -666,9 +800,29 @@ function setTimeGetToken(appid,appkey){
 			}
 			strObj.signature  = SHA.sha256(sign + JSON.stringify(params) + appkey);
 			fly.post(host + '/v1/iotopen/user/token/get', params, {headers:strObj}).then(function (response) {
-				prompt.showToast({
-					message:"信息："+JSON.stringify(response)
-				})
+				let data_accesstoken = response;
+				if (data_accesstoken.status && data_accesstoken.status === 200) {
+					let result_data = typeof data_accesstoken.data === "object"? data_accesstoken.data:JSON.parse(data_accesstoken.data);
+					if (!parseInt(result_data.code)) {
+						let timestamp = Date.parse(new Date());
+						let obj = {
+							openid: result_data.openId,
+							accessToken: result_data.accessToken,
+							time: parseInt(timestamp) + 3600000
+						}
+						storage.set({
+							key: 'openidToken',
+							value: JSON.stringify(obj),
+							success: function (data) {
+								
+							},
+							fail: function (data, code) {
+								
+							}
+						})
+					}
+				}
+				setGet(appid,appkey);
 			}).catch(function (error) {
 			});
 		},
@@ -676,4 +830,42 @@ function setTimeGetToken(appid,appkey){
 				console.log("授权接口：data"+data+":::code"+code)
 		}
 	})
+}
+/**
+ * 定时器
+ */
+function setGet(appid,appkey){
+	getStorage().then((res) => {
+		let t = parseInt(res);
+		setTimeout(function(){
+			setTimeGetToken(appid,appkey);
+		},t)
+	}).catch((error) => {
+		setTimeGetToken(appid,appkey)
+	})
+}
+/**
+ * 获取保存的信息
+ */
+function getStorage(){
+	let time = Date.parse(new Date());
+	var p = new Promise(function(resolve, reject){
+		storage.get({
+			key:"openidToken",
+			success:function (data){
+				if (data == '') {
+					reject()
+				} else{
+					let obj = JSON.parse(data);
+					if (parseInt(time) > parseInt(obj.time)) {
+						let set = parseInt(time) - parseInt(obj.time)
+						resolve(set)
+					} else{
+						reject()
+					}
+				}
+			}
+		})
+	})
+	return p;
 }

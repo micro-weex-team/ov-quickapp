@@ -1077,6 +1077,7 @@
 				}
 			})
 			let that = this;
+			// that.$app.$def.publicData.mes = that.deviceId;
 			// this.deviceHeight = this.$app.options.env.deviceHeight;
 			device.getInfo({
 				success: function(ret) {
@@ -1127,6 +1128,8 @@
 					console.log(`handling fail, code = ${code}`)
 				}
 			})
+			
+			
             // this.getdevicelist();
         },
 		isshowclose(){
@@ -1145,6 +1148,16 @@
 		},
         onBackPress(){
 			let that = this;
+			// storage.get({
+			// 	key: 'openidToken',
+			// 	success: function (data) {
+			// 		prompt.showToast({message:"data"+JSON.stringify(data)})
+			// 		console.log('handling success')
+			// 	},
+			// 	fail: function (data, code) {
+			// 		console.log(`handling fail, code = ${code}`)
+			// 	}
+			// })
 			that.closeWebsocket();
 			router.clear();
 			this.$app.exit();

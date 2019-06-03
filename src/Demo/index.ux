@@ -148,6 +148,7 @@
 </style>
 <script>
 import prompt from '@system.prompt';
+import account from '@service.account';
 // import api from '../Common/api/api.js';
 import index from "./assets/index.js";
 export default {
@@ -323,6 +324,7 @@ export default {
 	        that.minList.push(obj)
 	    }
 	    that.getTime();
+		console.log("that.$app.$def.publicData.mes"+JSON.stringify(this.$app.$def.data1))
 		// console.log("信息来了"+JSON.stringify(that.$app))
 	    // console.log(that.hourList)
 	},
