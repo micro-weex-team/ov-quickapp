@@ -5,7 +5,7 @@
 <import name="midea-loading" src="../../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="大烤箱R6" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
+		<midea-head title="大烤箱R6 " language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
@@ -17,7 +17,7 @@
 						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
 					<text class="b0_nav_list_usemeiju">使用美居</text>
-					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(minutes,second):'--'}}</text>
+					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{tempShow(temperature)}} | {{statusData(work_status)}}</text>
@@ -33,10 +33,15 @@
 				<image src="./assets/img/off.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">开关</text>
 			</div>
-			<div class="b0_contrl_btn" @click="showAlert()">
+
+			<div class="b0_contrl_btn" @click="showAlert($item)" for="{{modeList}}">
+				<image src="./assets/img/{{$item.iconSrc}}" class="b0_contrl_btn_img"></image>
+				<text class="b0_contrl_btn_text">{{$item.name}}</text>
+			</div>
+			<!-- <div class="b0_contrl_btn" @click="showAlert()">
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">热风对流</text>
-			</div>
+			</div> -->
 			<!-- <div class="b0_contrl_btn" @click="showAlert()">
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_contrl_btn_text">启动</text>
@@ -62,35 +67,35 @@
 					<div class="b0_alert_nav_list_item" @click="doingAnimation('time')">
 						<text if="{{language}}" class="b0_alert_nav_list_item_title">加热时长</text>
 						<div class="b0_alert_nav_list_item_status{{language?'':'_l'}}">
-							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{min >= 0?min:'--'}}分钟{{sec >= 0?sec:'--'}}秒</text>
+							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{_hour >= 0?_hour:'--'}}小时{{min >= 0?min:'--'}}分</text>
 							<image class="b0_alert_nav_list_item_status_img" src="./assets/img/arow_down.png"></image>
-							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{min >= 0?min:'--'}}分钟{{sec >= 0?sec:'--'}}秒</text>
+							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{_hour >= 0?_hour:'--'}}小时{{min >= 0?min:'--'}}分</text>
 						</div>
 						<text if="{{!language}}" class="b0_alert_nav_list_item_title">加热时长</text>
 					</div>
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" if="{{language}}" id="listMin">
 							<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($idx,'min')" for="{{getSecMin(100)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{min === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}分钟</text>
-								<image src="./assets/img/select.png" show="{{min === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'_hour')" for="{{getHourMin(9)}}">
+								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{_hour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
+								<image src="./assets/img/select.png" show="{{_hour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" id="listSec">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($idx,'sec')" for="{{getSecMin(60)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{sec === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'min')" for="{{getHourMin(59)}}">
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{min === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
 								<div class="bo_kong{{language?'':'_l'}}">
-									<image src="./assets/img/select.png" show="{{sec === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
+									<image src="./assets/img/select.png" show="{{min === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{sec === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{min === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" if="{{!language}}" id="listMin">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($idx,'min')" for="{{getSecMin(100)}}">
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'_hour')" for="{{getHourMin(9)}}">
 								<div class="bo_kong_l">
-									<image src="./assets/img/select.png" show="{{min === $idx}}" class="b0_alert_nav_list_select_list_item_img"></image>
+									<image src="./assets/img/select.png" show="{{_hour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>
-								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{min === $idx?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}分钟</text>
+								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{_hour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
 							</list-item>
 						</list>
 					</div>
@@ -175,6 +180,7 @@
 			ismeiju: false,
 			code: '', //授权码
 			accessToken: '', //token
+			_hour:0,
 			min: 0,
 			sec: 0,
 			fire: 0,
@@ -182,6 +188,7 @@
 			openId: '',
 			lock: 'off',
 			power: "off",
+			hour: 0,
 			minutes: 0,
 			second: 0,
 			isdone:false,
@@ -195,10 +202,11 @@
 			mode:'microwave',
 			num:0,
 			listDevice:{},
-			B0list: ['lock', 'power', 'minutes', 'second', 'fire_power', 'temperature','work_status','mode'],
+			B0list: ['lock', 'power', 'hour','minutes', 'second', 'fire_power', 'temperature','work_status','mode'],
 			listdata: {
 				lock: 'off',
 				power: "off",
+				hour: 0,
 				minutes: 0,
 				second: 0,
 				fire_power: 0,
@@ -206,7 +214,15 @@
 				work_status: 'cloud',
 				mode:'microwave',
 				temperature: 0,
-			}
+			},
+
+			modeList:[
+				{ work_mode: 'hot_wind_bake',name:'热风对流',iconSrc:'hot_wind@3x.png'},
+				{ work_mode: 'underside_tube',name:'下管烧烤',iconSrc:'bottom_heat@3x.png'},
+				{ work_mode: 'core_baking',name:'双上管烧烤',iconSrc:'double_grill@3x.png'},
+				{ work_mode: 'double_upside_tube_fan',name:'双上管+风扇',iconSrc:'double_grill_and_fan@3x.png'},
+			],
+			modeItem:{},
 		},
 		public: {
 			deviceSeries: '',
@@ -265,12 +281,12 @@
 				this.isset = false;
 				params = {
 							work_status: 'work',
-							work_mode: 'hot_wind_bake',
+							work_mode: that.modeItem.work_mode,
 							work_minute: that.min,
-							work_second: that.sec,
+							work_hour: that._hour,
 							temperature: that.temperature
 						}
-				let status = ['lock', 'work_minute', 'work_second', 'work_status','work_mode','temperature'];
+				let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
 				that.ctrDevice(params,status,true);
 			}else {
 				prompt.showToast({
@@ -309,25 +325,6 @@
 				})
 			}
 
-		},
-		//重启
-		restartDevice() {
-			let params = {
-				minutes: this.min,
-				second: this.sec,
-				fire_power: this.fire,
-				work_status: 'work',
-				mode:'microwave'
-			}
-			// let status = ['lock', 'power', 'minutes', 'second', 'fire_power', 'work_status','mode'];
-			let status = [];
-			if (this.lock === 'off') {
-				this.ctrDevice(params,status,true);
-			} else {
-				prompt.showToast({
-					message: "童锁打开状态"
-				})
-			}
 		},
 		//操作童锁
 		childLock() {
@@ -473,7 +470,18 @@
 			}
 			return arr;
 		},
-
+		getHourMin(num) {
+			let that = this;
+			let arrary = [];
+			for (let i = 0; i < num; i++) {
+				let obj = {
+					id: i,
+					data: i
+				}
+				arrary.push(obj);
+			}
+			return arrary;
+		},
 		// 分钟
 		getSecMin(num) {
 			let that = this;
@@ -524,6 +532,7 @@
 			that.work_status = that.listdata.work_status;
 			that.fire_power = that.listdata.fire_power;
 			that.temperature = that.listdata.temperature;
+			that.hour = that.listdata.work_hour;
 			that.second = that.listdata.work_second;
 			that.minutes = that.listdata.work_minute;
 			that.lock = that.listdata.lock;
@@ -546,6 +555,18 @@
 		selectData(data, str) {
 			let that = this;
 			switch (str) {
+				case '_hour': //分钟处理
+					that._hour = data;
+					if (data === 0) {
+						if (that.min === 0 || that.min === '--') {
+							that.min = 1;
+						}
+					} else {
+						if (that.min === '--') {
+							that.min = 0;
+						}
+					}
+					break;
 				case 'min': //分钟处理
 					that.min = data;
 					if (data === 0) {
@@ -558,22 +579,22 @@
 						}
 					}
 					break;
-				case 'sec': //秒钟处理
-					if (data === 0 && that.min === 0) {
+				// case 'sec': //秒钟处理
+				// 	if (data === 0 && that.min === 0) {
 
-					} else {
-						that.sec = data;
-						if (data === 0) {
-							if (that.min === 0 || that.min === '--') {
-								that.min = 1
-							}
-						} else {
-							if (that.min === 0 || that.min === '--') {
-								that.min = 0;
-							}
-						}
-					}
-					break;
+				// 	} else {
+				// 		that.sec = data;
+				// 		if (data === 0) {
+				// 			if (that.min === 0 || that.min === '--') {
+				// 				that.min = 1
+				// 			}
+				// 		} else {
+				// 			if (that.min === 0 || that.min === '--') {
+				// 				that.min = 0;
+				// 			}
+				// 		}
+				// 	}
+				// 	break;
 				case 'fire': //火力处理
 					that.fire = data;
 					break;
@@ -609,6 +630,7 @@
 		// 取消
 		cancel() {
 			this.isset = false;
+			this.modeItem = {};
 			this.dataCan();
 		},
 		//时间过滤器
@@ -639,14 +661,15 @@
 				let time = parseInt(that.min) * 60 + parseInt(that.sec) - 1;
 				if (!that.pause_data && that.listdata.work_status === 'work') {
 					that.listdata.work_minute = parseInt(time / 60);
-					that.listdata.seconwork_second = time % 60;
+					that.listdata.work_second = time % 60;
 					that.dataCan();
 				}
 			}, 1000)
 		},
 		//显示弹框
-		showAlert() {
+		showAlert(item) {
 			let that = this;
+			that.modeItem = item;
 			that.doanimat = '';
 			that.doneanimat = '';
 			if (that.online === 'true') {
@@ -654,10 +677,12 @@
 					if (that.power === 'on') {
 						if(that.work_status != 'three'){
 							that.isset = true;
-							if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_second) === 0) {
+							if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_hour) === 0) {
+								that._hour = "--"
 								that.min = "--";
 								that.sec = "--";
 							} else {
+								that._hour = parseInt(that.listdata.work_hour);
 								that.min = parseInt(that.listdata.work_minute);
 								that.sec = parseInt(that.listdata.work_second);
 								if(that.timeout === ''){
@@ -1068,6 +1093,11 @@
 						} else {
 							isall = true;
 						}
+						if (obj.work_hour.toString()) {
+							that.listdata.work_hour = obj.work_hour
+						} else {
+							isall = true;
+						}
 						if (obj.work_second.toString()) {
 							that.listdata.work_second = obj.work_second
 						} else {
@@ -1199,7 +1229,7 @@
 				that.isLanInit = false;
 			});
 		},
-		//爱心3秒倒计时
+		//倒计时
 		headTime(){
 			let that = this;
 			let str = 3000;
@@ -1274,6 +1304,11 @@
 					}
 					if (obj.status.lock) {
 						that.listdata.lock = obj.status.lock
+					}
+					if (obj.status.hour) {
+						that.listdata.minutes = obj.status.minutes
+					}else{
+						that.listdata.minutes = 0;
 					}
 					if (obj.status.minutes) {
 						that.listdata.minutes = obj.status.minutes

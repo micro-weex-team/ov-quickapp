@@ -129,7 +129,7 @@
     "debug": true
   },
   "router": {
-    "entry": "0xB0",
+    "entry": "0xB1",
     "pages": {
       "0xAC": {
         "component": "index"
@@ -208,6 +208,7 @@
   "display": {
     "titleBarBackgroundColor": "#ffffff",
     "backgroundColor": "#ffffff",
+    "fullScreen": false,
     "titleBar": false,
     "titleBarTextColor": "#000000",
     "menu": false,

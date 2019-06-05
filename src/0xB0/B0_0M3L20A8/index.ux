@@ -5,6 +5,8 @@
 <import name="midea-loading" src="../../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
+		<!-- <midea-head title="微波炉20L3" coloron="#F9CB3D" power="{{power}}" show-menu="true"></midea-head> -->
+
 		<midea-head title="微波炉20L" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">

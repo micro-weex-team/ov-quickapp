@@ -810,7 +810,7 @@ module.exports = {
       "type": "image",
       "attr": {
         "show": function () {return this.showMenu},
-        "src": function () {return this.power==='on'?'../Component/MideaHead/assets/menu_ic_more_white.png':'../Component/MideaHead/assets/menu_ic_more_normal.png'}
+        "src": function () {return this.foo(this.power,true)}
       },
       "classList": [
         "midea-head-back"
@@ -822,7 +822,7 @@ module.exports = {
     {
       "type": "image",
       "attr": {
-        "src": function () {return this.power==='on'?'../Component/MideaHead/assets/menu_ic_cancel_online.png':'../Component/MideaHead/assets/menu_ic_cancel_normal.png'}
+        "src": function () {return this.foo(this.power,false)}
       },
       "classList": [
         "midea-head-back"
@@ -933,26 +933,20 @@ module.exports = {
     },
     {
       "type": "div",
-      "attr": {
-        "id": "parentNode"
-      },
+      "attr": {},
       "classList": [
         "slot_nav"
       ],
-      "id": "parentNode",
       "events": {
         "click": function (evt) {this.clickshadow(evt)}
       },
       "children": [
         {
           "type": "div",
-          "attr": {
-            "id": "child1"
-          },
+          "attr": {},
           "classList": [
             "slot_alert"
           ],
-          "id": "child1",
           "events": {
             "click": function (evt) {this.clickchild(evt)}
           },
@@ -1440,6 +1434,8 @@ exports["default"] = void 0;
 
 var _system = _interopRequireDefault($app_require$("@app-module/system.prompt"));
 
+var _service = _interopRequireDefault($app_require$("@app-module/service.account"));
+
 var _index = _interopRequireDefault(__webpack_require__(/*! ./assets/index.js */ "./src/Demo/assets/index.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -1620,6 +1616,7 @@ var _default = {
     }
 
     that.getTime();
+    console.log("that.$app.$def.publicData.mes" + JSON.stringify(this.$app.$def.data1));
   }
 };
 exports["default"] = _default;
@@ -1828,16 +1825,55 @@ var _default = {
       that.$watch('power', 'watchPropsChange');
     }
 
-    if (that.power == 'on') {
-      that.img1 = '../Component/MideaHead/assets/menu_ic_more_white.png';
-    } else {
-      that.img1 = '../Component/MideaHead/assets/menu_ic_more_normal.png';
-    }
+    var page = _system["default"].getState();
+
+    if (that.power == 'on') {} else {}
 
     if (that.isnew) {
       that.bgColor = "#F9CB3D";
     } else {
       that.bgColor = "#3191FD";
+    }
+  },
+  foo: function foo(power, bol) {
+    var page = _system["default"].getState();
+
+    console.log("page index = ".concat(page.index));
+    console.log("page name = ".concat(page.name));
+    console.log("page path = ".concat(page.path));
+    var path = '../';
+    var string = page.path;
+    var count = 1;
+
+    for (var index = 0; index < string.length; index++) {
+      var a = string.indexOf('/', index);
+
+      if (a != -1 && string.indexOf('/', index) != string.indexOf('/', index - 1)) {
+        count++;
+      }
+    }
+
+    var img = '';
+    var img2 = '';
+
+    if (power == 'on') {
+      img = 'Component/MideaHead/assets/menu_ic_more_white.png';
+      img2 = 'Component/MideaHead/assets/menu_ic_cancel_online.png';
+    } else {
+      img = 'Component/MideaHead/assets/menu_ic_more_normal.png';
+      img2 = 'Component/MideaHead/assets/menu_ic_cancel_normal.png';
+    }
+
+    var pathall = path;
+
+    if (count > 1) {
+      pathall = path.repeat(count);
+    }
+
+    if (bol) {
+      return pathall + img;
+    } else {
+      return pathall + img2;
     }
   },
   changColor: function changColor(power, str) {

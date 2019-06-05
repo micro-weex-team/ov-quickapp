@@ -1738,7 +1738,7 @@ module.exports = {
       "type": "image",
       "attr": {
         "show": function () {return this.showMenu},
-        "src": function () {return this.power==='on'?'../Component/MideaHead/assets/menu_ic_more_white.png':'../Component/MideaHead/assets/menu_ic_more_normal.png'}
+        "src": function () {return this.foo(this.power,true)}
       },
       "classList": [
         "midea-head-back"
@@ -1750,7 +1750,7 @@ module.exports = {
     {
       "type": "image",
       "attr": {
-        "src": function () {return this.power==='on'?'../Component/MideaHead/assets/menu_ic_cancel_online.png':'../Component/MideaHead/assets/menu_ic_cancel_normal.png'}
+        "src": function () {return this.foo(this.power,false)}
       },
       "classList": [
         "midea-head-back"
@@ -2130,6 +2130,7 @@ var _default = {
   work_status_fun: function work_status_fun(mode, str) {
     var status = '';
     var mode_data = "";
+    console.log("状态改变了");
 
     switch (mode) {
       case 'cook_rice':
@@ -2554,14 +2555,17 @@ var _default = {
   },
   getAuthor: function getAuthor() {
     var that = this;
+    console.log("第三步授权");
 
     _service["default"].authorize({
       type: 'code',
       success: function success(data) {
+        console.log("第三步" + JSON.stringify(data));
         that.code = data.code;
         that.getToken(data.code);
       },
       fail: function fail(data, code) {
+        console.log("第三步" + JSON.stringify(data));
         that.initData();
         that.isfirst = true;
         that.isRefreshing = false;
@@ -2633,11 +2637,9 @@ var _default = {
       that.isRefreshing = false;
       that.isshowLoading = false;
       that.isfirst = true;
-
-      var _data = _typeof(obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
-
-      that.EAdata = _data;
-      that.listDevice = _data;
+      var data = _typeof(obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+      that.EAdata = data;
+      that.listDevice = data;
       that.listDevice.online = "true";
       that.online = "true";
     } else {
@@ -2653,10 +2655,10 @@ var _default = {
     that.isfirst = true;
 
     if (res.code === 200) {
-      var _data2 = _typeof(res.data) === "object" ? res.data : JSON.parse(res.data);
+      var data = _typeof(res.data) === "object" ? res.data : JSON.parse(res.data);
 
-      if (!parseInt(_data2.code) && !parseInt(_data2.devices[0].status)) {
-        var obj = _data2.devices[0].properties;
+      if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+        var obj = data.devices[0].properties;
         that.EAdata = obj;
         that.listDevice = obj;
         that.online = that.EAdata.online;
@@ -2665,31 +2667,34 @@ var _default = {
           that.isshowclose();
         }
       } else {
-        if (_data2.msg === '') {
+        that.initall();
+
+        if (data.msg === '') {
           var str1 = '';
 
-          if (_data2.devices[0].status) {
-            str1 = _data2.devices[0].status;
+          if (data.devices[0].status) {
+            str1 = data.devices[0].status;
 
             if (str1.toString() === '-6') {
               that.isshowclose();
               return false;
             }
 
-            if (str1.toString() === '-100' && _data2.devices[0].description.toString() === '3123') {
+            if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
               that.isshowclose();
             } else {
               that.netWorkGet(_api["default"].getStatus("get", str1, '获取设备状态失败'));
             }
           } else {
-            str1 = _data2.code;
+            str1 = data.code;
             that.netWorkGet(_api["default"].getCode(str1, '获取设备状态失败'));
           }
         } else {
-          that.netWorkGet(_data2.msg);
+          that.netWorkGet(data.msg);
         }
       }
     } else {
+      that.initall();
       that.netWorkGet('获取设备状态失败,请稍后重试');
     }
   },
@@ -2724,6 +2729,7 @@ var _default = {
     })["catch"](function (error) {
       if (error.online) {
         if (that.iswarm) {
+          that.initall();
           that.initData();
         }
 
@@ -2746,25 +2752,25 @@ var _default = {
     if (parseInt(obj.code) == 0) {
       that.isRefreshing = false;
       that.isshowLoading = false;
-
-      var _data3 = _typeof(obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
-
-      that.EAdata.mode = obj.mode;
-      that.EAdata.order_time_hour = _data3.order_time_hour;
-      that.EAdata.order_time_min = _data3.order_time_min;
-      that.EAdata.left_time_hour = _data3.left_time_hour;
-      that.left_time_hour = _data3.left_time_hour;
-      that.EAdata.left_time_min = _data3.left_time_min;
-      that.left_time_min = _data3.left_time_min;
-      that.EAdata.warm_time_hour = _data3.warm_time_hour;
-      that.warm_time_hour = _data3.warm_time_hour;
-      that.EAdata.warm_time_min = _data3.warm_time_min;
-      that.warm_time_min = _data3.warm_time_min;
-      that.EAdata.work_status = _data3.work_status;
+      var data = _typeof(obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+      that.EAdata.mode = data.mode;
+      that.mode = data.mode;
+      that.EAdata.order_time_hour = data.order_time_hour;
+      that.EAdata.order_time_min = data.order_time_min;
+      that.EAdata.left_time_hour = data.left_time_hour;
+      that.left_time_hour = data.left_time_hour;
+      that.EAdata.left_time_min = data.left_time_min;
+      that.left_time_min = data.left_time_min;
+      that.EAdata.warm_time_hour = data.warm_time_hour;
+      that.warm_time_hour = data.warm_time_hour;
+      that.EAdata.warm_time_min = data.warm_time_min;
+      that.warm_time_min = data.warm_time_min;
+      that.EAdata.work_status = data.work_status;
       that.EAdata.online = 'true';
-      that.listDevice = _data3;
+      that.listDevice = data;
       that.listDevice.online = "true";
       that.online = 'true';
+      that.initData();
     } else {
       that.isagain = false;
       that.lanOnline = 'false';
@@ -2775,9 +2781,12 @@ var _default = {
     var that = this;
 
     if (res.code && res.code === 200) {
+      console.log("第一步");
       var bind_res_data = _typeof(res.data) === 'object' ? res.data : JSON.parse(res.data);
 
       if (parseInt(bind_res_data.code) == 0) {
+        console.log("第二步");
+
         if (!parseInt(bind_res_data.devices[0].status)) {
           that.EAdata.online = 'true';
           that.online = 'true';
@@ -2846,13 +2855,17 @@ var _default = {
             that.isshowLoading = false;
           }
         } else {
+          that.initall();
+          console.log("第三步");
           that.isRefreshing = false;
           that.isshowLoading = false;
 
           if (bind_res_data.msg === '') {
+            console.log("第四步");
             var str1 = '';
 
             if (bind_res_data.devices[0].status) {
+              console.log("第5步");
               str1 = bind_res_data.devices[0].status;
 
               if (str1.toString() === '-6') {
@@ -2860,7 +2873,7 @@ var _default = {
                 return false;
               }
 
-              if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+              if (str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123') {
                 that.isshowclose();
               } else {
                 that.netWorkGet(_api["default"].getStatus("post", str1, '操作设备失败'));
@@ -2874,6 +2887,7 @@ var _default = {
           }
         }
       } else {
+        that.initall();
         that.isRefreshing = false;
         that.isshowLoading = false;
 
@@ -2886,10 +2900,13 @@ var _default = {
         }
       }
     } else {
+      that.initall();
       that.isRefreshing = false;
       that.isshowLoading = false;
       that.netWorkGet('操作设备失败,请稍后重试');
     }
+
+    that.initData();
   },
   ctrDevice: function ctrDevice(obj, status) {
     var that = this;
@@ -2920,27 +2937,47 @@ var _default = {
 
     _api["default"].postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then(function (res) {
       that.isagain = true;
+      that.iswarm = true;
 
       if (res.lanonline) {
         that.wlanControl(res);
       } else {
         that.lanControl(res, obj, status);
       }
-
-      that.initData();
     })["catch"](function (error) {
-      if (error.online) {
+      that.iswarm = true;
+
+      if (that.lanOnline == 'true') {
+        console.log("ssssssss");
+        that.isagain = false;
+        that.lanOnline = 'false';
+        that.ctrDevice(obj, status);
+      } else {
+        that.initall();
         that.initData();
         that.netWorkGet('操作设备失败,请稍后重试');
         that.isRefreshing = false;
         that.isshowLoading = false;
         that.isfirst = true;
-      } else {
-        that.isagain = false;
-        that.lanOnline = 'false';
-        that.ctrDevice(obj, status);
       }
     });
+  },
+  initall: function initall() {
+    var that = this;
+    that.EAdata = {
+      order_time_hour: 0,
+      order_time_min: 0,
+      left_time_hour: 0,
+      left_time_min: 0,
+      work_status: '--',
+      mode: '--',
+      warm_time_hour: 0,
+      warm_time_min: 0
+    };
+    that.EAdata.online = 'false';
+    that.listDevice = that.EAdata;
+    that.listDevice.online = "false";
+    that.online = 'false';
   },
   isshowclose: function isshowclose() {
     var that = this;
@@ -3258,6 +3295,7 @@ var _default = {
       key: 'openidToken',
       success: function success(data) {
         that.isshowLoading = true;
+        console.log("来这里" + data);
 
         if (data === '') {
           that.getAuthor();
@@ -3267,6 +3305,8 @@ var _default = {
           if (parseInt(timestamp) > parseInt(obj.time)) {
             that.getAuthor();
           } else {
+            console.log("第一步");
+
             if (obj.openid === that.openid) {
               that.openId = obj.openid;
               that.accessToken = obj.accessToken;
@@ -3428,16 +3468,55 @@ var _default = {
       that.$watch('power', 'watchPropsChange');
     }
 
-    if (that.power == 'on') {
-      that.img1 = '../Component/MideaHead/assets/menu_ic_more_white.png';
-    } else {
-      that.img1 = '../Component/MideaHead/assets/menu_ic_more_normal.png';
-    }
+    var page = _system["default"].getState();
+
+    if (that.power == 'on') {} else {}
 
     if (that.isnew) {
       that.bgColor = "#F9CB3D";
     } else {
       that.bgColor = "#3191FD";
+    }
+  },
+  foo: function foo(power, bol) {
+    var page = _system["default"].getState();
+
+    console.log("page index = ".concat(page.index));
+    console.log("page name = ".concat(page.name));
+    console.log("page path = ".concat(page.path));
+    var path = '../';
+    var string = page.path;
+    var count = 1;
+
+    for (var index = 0; index < string.length; index++) {
+      var a = string.indexOf('/', index);
+
+      if (a != -1 && string.indexOf('/', index) != string.indexOf('/', index - 1)) {
+        count++;
+      }
+    }
+
+    var img = '';
+    var img2 = '';
+
+    if (power == 'on') {
+      img = 'Component/MideaHead/assets/menu_ic_more_white.png';
+      img2 = 'Component/MideaHead/assets/menu_ic_cancel_online.png';
+    } else {
+      img = 'Component/MideaHead/assets/menu_ic_more_normal.png';
+      img2 = 'Component/MideaHead/assets/menu_ic_cancel_normal.png';
+    }
+
+    var pathall = path;
+
+    if (count > 1) {
+      pathall = path.repeat(count);
+    }
+
+    if (bol) {
+      return pathall + img;
+    } else {
+      return pathall + img2;
     }
   },
   changColor: function changColor(power, str) {
@@ -5639,7 +5718,8 @@ _system2["default"].getInfo({
       } else {
         clientId = "660354a2ee1f1ed1a6a6b96fb22b14ea";
         clientSecret = "5a50ff3716862bf90ac763d61459e0ef";
-      }
+      } // setGet(appid,appkey)
+
     }
   }
 });
@@ -5897,6 +5977,71 @@ var _default = {
           }).then(function (response) {
             response.code = response.status;
             response.lanonline = lanonline;
+
+            if (response.data.code && response.data.code.toString() == '3158') {
+              console.log("第三步授权");
+
+              _service["default"].authorize({
+                type: 'code',
+                success: function success(data) {
+                  console.log("第三步" + JSON.stringify(data));
+                  var tokenparams = {
+                    thirdUId: data.code,
+                    type: 1
+                  };
+                  var tokenobjStr = JSON.stringify(tokenparams);
+                  var tokenstrObj = {
+                    "appId": appid,
+                    "timestamp": that.getTimestamp(),
+                    "nonce": that.createUUID(),
+                    "Content-Type": 'application/json'
+                  };
+                  tokenstrObj.signature = that.getSignature(tokenobjStr, tokenstrObj.nonce, tokenstrObj.timestamp);
+                  fly.post(host + that.hostData.getUserToken, tokenparams, {
+                    headers: tokenstrObj
+                  }).then(function (res) {
+                    console.log("重新刷新token：" + JSON.stringify(res));
+                    var data_accesstoken = res;
+
+                    if (data_accesstoken.status && data_accesstoken.status === 200) {
+                      var result_data = _typeof(data_accesstoken.data) === 'object' ? data_accesstoken.data : JSON.parse(data_accesstoken.data);
+
+                      if (!parseInt(result_data.code)) {
+                        var obj = {
+                          openid: result_data.openId,
+                          accessToken: result_data.accessToken,
+                          time: that.gettime()
+                        };
+
+                        _system5["default"].set({
+                          key: 'openidToken',
+                          value: JSON.stringify(obj),
+                          success: function success(data) {},
+                          fail: function fail(data, code) {}
+                        });
+
+                        console.log("重新保存的token：" + JSON.stringify(obj));
+                        that.postDeviceStatusQuery(params, result_data.accessToken, lanonline, deviceid);
+                      } else {
+                        reject("获取token失败");
+                      }
+                    } else {
+                      reject("获取token失败");
+                    }
+                  })["catch"](function (error, code) {
+                    reject(error);
+                    console.log("授权接口：error" + error + ":::code" + code);
+                  });
+                },
+                fail: function fail(data, code) {
+                  reject(data);
+                  console.log("授权接口：error" + error + ":::code" + code);
+                }
+              });
+            } else {
+              resolve(response);
+            }
+
             console.log("返回信息：" + JSON.stringify(response)); // 					if (response.code && response.code === 200) {
             // 						let bind_res_data = typeof response.data == 'object' ? response.data : JSON.parse(response.data);
             // 						if (!parseInt(bind_res_data.devices[0].status) && !parseInt(bind_res_data.code)) {
@@ -5908,8 +6053,6 @@ var _default = {
             // 							}
             // 						}
             // 					}
-
-            resolve(response);
           })["catch"](function (error) {
             var obj = JSON.parse(error);
             obj.online = lanonline;
@@ -5927,6 +6070,20 @@ var _default = {
       return p;
     }
   },
+  //获取后一天的时间戳
+  gettime: function gettime() {
+    var timestamp = Date.parse(new Date());
+    return parseInt(timestamp) + 3600000;
+  },
+
+  /**
+   * @param {Object} params
+   * @param {Object} accessToken
+   * @param {Object} lanonline
+   * @param {Object} deviceid
+   * 重新获取token
+   */
+  regetToken: function regetToken() {},
   //设备状态查询
   postDeviceStatusQuery: function postDeviceStatusQuery(params, accessToken, lanonline, deviceid) {
     var that = this;
@@ -5962,6 +6119,71 @@ var _default = {
           }).then(function (response) {
             response.code = response.status;
             response.lanonline = lanonline;
+
+            if (response.data.code && response.data.code.toString() == '3158') {
+              console.log("第三步授权");
+
+              _service["default"].authorize({
+                type: 'code',
+                success: function success(data) {
+                  console.log("第三步" + JSON.stringify(data));
+                  var tokenparams = {
+                    thirdUId: data.code,
+                    type: 1
+                  };
+                  var tokenobjStr = JSON.stringify(tokenparams);
+                  var tokenstrObj = {
+                    "appId": appid,
+                    "timestamp": that.getTimestamp(),
+                    "nonce": that.createUUID(),
+                    "Content-Type": 'application/json'
+                  };
+                  tokenstrObj.signature = that.getSignature(tokenobjStr, tokenstrObj.nonce, tokenstrObj.timestamp);
+                  fly.post(host + that.hostData.getUserToken, tokenparams, {
+                    headers: tokenstrObj
+                  }).then(function (res) {
+                    console.log("重新刷新token：" + JSON.stringify(res));
+                    var data_accesstoken = res;
+
+                    if (data_accesstoken.status && data_accesstoken.status === 200) {
+                      var result_data = _typeof(data_accesstoken.data) === 'object' ? data_accesstoken.data : JSON.parse(data_accesstoken.data);
+
+                      if (!parseInt(result_data.code)) {
+                        var obj = {
+                          openid: result_data.openId,
+                          accessToken: result_data.accessToken,
+                          time: that.gettime()
+                        };
+
+                        _system5["default"].set({
+                          key: 'openidToken',
+                          value: JSON.stringify(obj),
+                          success: function success(data) {},
+                          fail: function fail(data, code) {}
+                        });
+
+                        console.log("重新保存的token：" + JSON.stringify(obj));
+                        that.postDeviceStatusQuery(params, result_data.accessToken, lanonline, deviceid);
+                      } else {
+                        reject("获取token失败");
+                      }
+                    } else {
+                      reject("获取token失败");
+                    }
+                  })["catch"](function (error, code) {
+                    reject(error);
+                    console.log("授权接口：error" + error + ":::code" + code);
+                  });
+                },
+                fail: function fail(data, code) {
+                  reject(data);
+                  console.log("授权接口：error" + error + ":::code" + code);
+                }
+              });
+            } else {
+              resolve(response);
+            }
+
             console.log("返回信息：" + JSON.stringify(response)); // 					if (response.code && response.code === 200) {
             // 						let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
             // 						if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
@@ -5973,8 +6195,6 @@ var _default = {
             // 							}
             // 						}
             // 					}
-
-            resolve(response);
           })["catch"](function (error) {
             console.log(JSON.stringify(error));
             var obj = JSON.parse(error);
@@ -6307,15 +6527,79 @@ function setTimeGetToken(appid, appkey) {
       fly.post(host + '/v1/iotopen/user/token/get', params, {
         headers: strObj
       }).then(function (response) {
-        _system3["default"].showToast({
-          message: "信息：" + JSON.stringify(response)
-        });
+        var data_accesstoken = response;
+
+        if (data_accesstoken.status && data_accesstoken.status === 200) {
+          var result_data = _typeof(data_accesstoken.data) === "object" ? data_accesstoken.data : JSON.parse(data_accesstoken.data);
+
+          if (!parseInt(result_data.code)) {
+            var _timestamp = Date.parse(new Date());
+
+            var obj = {
+              openid: result_data.openId,
+              accessToken: result_data.accessToken,
+              time: parseInt(_timestamp) + 3600000
+            };
+
+            _system5["default"].set({
+              key: 'openidToken',
+              value: JSON.stringify(obj),
+              success: function success(data) {},
+              fail: function fail(data, code) {}
+            });
+          }
+        }
+
+        setGet(appid, appkey);
       })["catch"](function (error) {});
     },
     fail: function fail(data, code) {
       console.log("授权接口：data" + data + ":::code" + code);
     }
   });
+}
+/**
+ * 定时器
+ */
+
+
+function setGet(appid, appkey) {
+  getStorage().then(function (res) {
+    var t = parseInt(res);
+    setTimeout(function () {
+      setTimeGetToken(appid, appkey);
+    }, t);
+  })["catch"](function (error) {
+    setTimeGetToken(appid, appkey);
+  });
+}
+/**
+ * 获取保存的信息
+ */
+
+
+function getStorage() {
+  var time = Date.parse(new Date());
+  var p = new Promise(function (resolve, reject) {
+    _system5["default"].get({
+      key: "openidToken",
+      success: function success(data) {
+        if (data == '') {
+          reject();
+        } else {
+          var obj = JSON.parse(data);
+
+          if (parseInt(time) > parseInt(obj.time)) {
+            var set = parseInt(time) - parseInt(obj.time);
+            resolve(set);
+          } else {
+            reject();
+          }
+        }
+      }
+    });
+  });
+  return p;
 }
 
 /***/ }),
@@ -6341,6 +6625,8 @@ var _system = _interopRequireDefault($app_require$("@app-module/system.prompt"))
 
 var _system2 = _interopRequireDefault($app_require$("@app-module/system.device"));
 
+var _system3 = _interopRequireDefault($app_require$("@app-module/system.storage"));
+
 var _util = _interopRequireDefault(__webpack_require__(/*! ../../util.js */ "./src/util.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -6357,6 +6643,7 @@ var _default = {
     isonLan: "false"
   },
   mes: {
+    deviceid: '',
     clientId: 'db3924f6431a4c461667bd164a4ab1fb',
     clientSecret: 'o8dk8vm6cbuyxdrl4se4c6i3h4tdea9b'
   },
@@ -6455,6 +6742,9 @@ var _default = {
                 action: 'CustomerHandler.addDevice',
                 data: deviceID,
                 success: function success(res) {
+                  that.mes.deviceid = deviceID;
+                  var pageA = new BroadcastChannel('channel1');
+                  pageA.postMessage(deviceID);
                   that.LanGetData(deviceID);
                   resolve(res);
                 },
@@ -6474,6 +6764,25 @@ var _default = {
   },
 
   /**
+   * @param {Object} deviceID
+   * 删除设备局域网广播的监控
+   */
+  removeDevice: function removeDevice(deviceid) {
+    console.log(deviceid);
+
+    _service["default"].send({
+      action: 'CustomerHandler.removeDevice',
+      data: deviceid,
+      success: function success(res) {
+        console.log("成功");
+      },
+      fail: function fail(data, code) {
+        console.log("失败");
+      }
+    });
+  },
+
+  /**
    * 2.添加设备局域网广播监控
    */
   addDevice: function addDevice(deviceID) {
@@ -6486,12 +6795,7 @@ var _default = {
       action: 'CustomerHandler.addDevice',
       data: deviceID,
       success: function success(res) {},
-      fail: function fail(data, code) {
-        _system["default"].showToast({
-          message: "fail:" + JSON.stringify(data),
-          duration: 1
-        });
-      }
+      fail: function fail(data, code) {}
     });
   },
 
