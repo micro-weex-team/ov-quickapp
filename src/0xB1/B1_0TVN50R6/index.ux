@@ -17,7 +17,10 @@
 						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
 					<text class="b0_nav_list_usemeiju">使用美居</text>
-					<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
+					<div class="b0_nav_list_time">
+						<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
+						<text if="{{showTag}}" class="b0_nav_list_tag">{{tagText}}</text>
+					</div>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{tempShow(temperature)}} | {{statusData(work_status)}}</text>
@@ -67,18 +70,18 @@
 					<div class="b0_alert_nav_list_item" @click="doingAnimation('time')">
 						<text if="{{language}}" class="b0_alert_nav_list_item_title">加热时长</text>
 						<div class="b0_alert_nav_list_item_status{{language?'':'_l'}}">
-							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{_hour >= 0?_hour:'--'}}小时{{min >= 0?min:'--'}}分</text>
+							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{setHour >= 0?setHour:'--'}}小时{{min >= 0?min:'--'}}分</text>
 							<image class="b0_alert_nav_list_item_status_img" src="./assets/img/arow_down.png"></image>
-							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{_hour >= 0?_hour:'--'}}小时{{min >= 0?min:'--'}}分</text>
+							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{setHour >= 0? setHour:'--'}}小时{{min >= 0?min:'--'}}分</text>
 						</div>
 						<text if="{{!language}}" class="b0_alert_nav_list_item_title">加热时长</text>
 					</div>
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" if="{{language}}" id="listMin">
 							<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'_hour')" for="{{getHourMin(9)}}">
-								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{_hour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
-								<image src="./assets/img/select.png" show="{{_hour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'setHour')" for="{{getHourMin(9)}}">
+								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{setHour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
+								<image src="./assets/img/select.png" show="{{ setHour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" id="listSec">
@@ -91,11 +94,11 @@
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" if="{{!language}}" id="listMin">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'_hour')" for="{{getHourMin(9)}}">
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'setHour')" for="{{getHourMin(9)}}">
 								<div class="bo_kong_l">
-									<image src="./assets/img/select.png" show="{{_hour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
+									<image src="./assets/img/select.png" show="{{setHour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								</div>
-								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{_hour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
+								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{setHour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
 							</list-item>
 						</list>
 					</div>
@@ -110,7 +113,7 @@
 					</div>
 					<div class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{getTemp(70,230,5)}}">
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{setTempArr}}">
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{temperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 								<div class="bo_kong{{language?'':'_l'}}">
 									<image src="./assets/img/select.png" show="{{temperature == $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
@@ -151,6 +154,30 @@
 	import pkg from '@system.package';
 	import network from '@system.network';
 	import net from '../../Common/api/networkAPI.js';
+	/*
+	温度选择
+	*/
+	function getTemp(start,end,step){
+		var arr=[], b = [];
+		if(start > end){
+			return arr;
+		}
+		if(start<100){
+			b.push({id:1,data:start});
+		}
+		for(var i=0;start+i*step <= end;i++){
+			var value = start+step*i;
+			if(value<100){
+				continue;
+			}
+			let obj = {
+				id: i,
+				data: value
+			}
+			arr.push(obj);
+		}
+		return b.concat(arr);
+	}
 
 	export default {
 		private: {
@@ -180,7 +207,7 @@
 			ismeiju: false,
 			code: '', //授权码
 			accessToken: '', //token
-			_hour:0,
+			setHour:0,
 			min: 0,
 			sec: 0,
 			fire: 0,
@@ -217,12 +244,15 @@
 			},
 
 			modeList:[
-				{ work_mode: 'hot_wind_bake',name:'热风对流',iconSrc:'hot_wind@3x.png'},
-				{ work_mode: 'underside_tube',name:'下管烧烤',iconSrc:'bottom_heat@3x.png'},
-				{ work_mode: 'core_baking',name:'双上管烧烤',iconSrc:'double_grill@3x.png'},
-				{ work_mode: 'double_upside_tube_fan',name:'双上管+风扇',iconSrc:'double_grill_and_fan@3x.png'},
+				{ work_mode: 'hot_wind_bake',name:'热风对流',iconSrc:'hot_wind@3x.png',tempArr:getTemp(50,250,5)},
+				{ work_mode: 'underside_tube',name:'下管烧烤',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ work_mode: 'core_baking',name:'双上管烧烤',iconSrc:'double_grill@3x.png',tempArr:getTemp(100,235,5)},
+				{ work_mode: 'double_upside_tube_fan',name:'双上管+风扇',iconSrc:'double_grill_and_fan@3x.png',tempArr:getTemp(100,250,5)},
 			],
 			modeItem:{},
+			setTempArr:getTemp(100,250,5),
+			showTag:false,
+			tagText: "分"
 		},
 		public: {
 			deviceSeries: '',
@@ -277,13 +307,19 @@
 		startDevice() {
 			let that = this;
 			let params;
+			if(parseInt(that.min)===0 && parseInt(that.setHour) === 0){
+				prompt.showToast({
+					message: "请选择加热时长"
+				})
+				return;
+			}
 			if (parseInt(that.min) >= 0 && parseInt(that.temperature) > 0) {
 				this.isset = false;
 				params = {
 							work_status: 'work',
 							work_mode: that.modeItem.work_mode,
 							work_minute: that.min,
-							work_hour: that._hour,
+							work_hour: that.setHour,
 							temperature: that.temperature
 						}
 				let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
@@ -366,7 +402,7 @@
 		},
 		tempShow(str){
 			if (parseInt(str) > 0) {
-				return str
+				return str + '℃';
 			} else {
 				return '-- '
 			}
@@ -448,28 +484,7 @@
 				}
 			});
 		},
-		/*
-		温度选择
-		*/
-		getTemp(start,end,step){
-			var arr=[];
-			if(start > end){
-				return arr;
-			}
-			for(var i=0;start+i*step <= end;i++){
-				var value = start+step*i;
-				if(value < 0){
-					continue;
-				}
-				// arr[i]=value;
-				let obj = {
-					id: i,
-					data: value
-				}
-				arr.push(obj);
-			}
-			return arr;
-		},
+	
 		getHourMin(num) {
 			let that = this;
 			let arrary = [];
@@ -553,10 +568,11 @@
 		},
 		//选择
 		selectData(data, str) {
+			console.log(data,str);
 			let that = this;
 			switch (str) {
-				case '_hour': //分钟处理
-					that._hour = data;
+				case 'setHour': //分钟处理
+					that.setHour = data;
 					if (data === 0) {
 						if (that.min === 0 || that.min === '--') {
 							that.min = 1;
@@ -636,9 +652,16 @@
 		//时间过滤器
 		timeData(str1, str2) {
 			let that = this;
+			that.showTag = false;
+			let num1 = '';
+			let num2 = '';
+			if(parseInt(str1) == 0 && parseInt(str2) > 0){
+				that.showTag = true;
+				that.tagText = "分";
+				return str2;
+			}
 			if (parseInt(str1) > 0 || parseInt(str2) > 0) {
-				let num1 = '';
-				let num2 = '';
+			
 				if (parseInt(str1) < 10) {
 					num1 = "0" + str1;
 				} else {
@@ -651,7 +674,13 @@
 				}
 				return num1.toString() + ":" + num2.toString();
 			} else {
-				return '--'
+				if(parseInt(that.sec)){
+					that.showTag = true;
+					that.tagText = "秒";
+					return that.sec;
+				}else{
+					return "--";
+				}
 			}
 		},
 		//倒计时
@@ -670,6 +699,7 @@
 		showAlert(item) {
 			let that = this;
 			that.modeItem = item;
+			that.setTempArr = that.modeItem.tempArr;
 			that.doanimat = '';
 			that.doneanimat = '';
 			if (that.online === 'true') {
@@ -678,11 +708,11 @@
 						if(that.work_status != 'three'){
 							that.isset = true;
 							if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_hour) === 0) {
-								that._hour = "--"
+								that.setHour = "--"
 								that.min = "--";
 								that.sec = "--";
 							} else {
-								that._hour = parseInt(that.listdata.work_hour);
+								that.setHour = parseInt(that.listdata.work_hour);
 								that.min = parseInt(that.listdata.work_minute);
 								that.sec = parseInt(that.listdata.work_second);
 								if(that.timeout === ''){
@@ -1386,20 +1416,8 @@
 			}
 		},
 		onInit() {
-			// this.dataCan();
-
-			// //获取sn8，区分
-			// if(this.deviceSeries=='0M3L20A8'){
-			// 	   // 跳转到应用内的对应的sn8目录
-			// 		router.replace({
-			// 			uri: '/B0_0M3L20A8/index.ux'
-			// 		})
-			// 		return;
-			// }
-
-			prompt.showToast({
-						message: this.deviceSeries+' '+this.deviceId+' '+this.openid+'' +'get'
-					})
+			// this.dataCan()
+			console.log(this.deviceSeries+' '+this.deviceId+' '+this.openid+'' +'get');
 			this.getSecMin();
 			let that = this;
 			api.getlanguage().then((res) => {

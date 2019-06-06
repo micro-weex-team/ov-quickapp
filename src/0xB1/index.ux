@@ -5,7 +5,7 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="烤箱R6" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
+		<midea-head title="烤箱R61" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
@@ -1254,17 +1254,7 @@
 		onInit() {
 			// this.dataCan();
 
-			// //获取sn8，区分
-			// if(this.deviceSeries=='0M3L20A8'){
-			// 	   // 跳转到应用内的对应的sn8目录
-			// 		router.replace({
-			// 			uri: '/0xB0/B0_0M3L20A8'
-			// 		})
-			// 		return;
-			// }
-			prompt.showToast({
-						message: this.deviceSeries
-					})
+			//获取sn8，区分
 			router.replace({
 				uri: '/0xB1/B1_0TVN50R6',
 				params: { 
@@ -1274,6 +1264,19 @@
 					}
 			})
 			return;
+			console.log(this.deviceSeries);
+			// if(this.deviceSeries=='0TVN50R6'){
+			// 	router.replace({
+			// 		uri: '/0xB1/B1_0TVN50R6',
+			// 		params: { 
+			// 			deviceSeries: this.deviceSeries, 
+			// 			deviceId: this.deviceId,
+			// 			openid: this.openid
+			// 			}
+			// 	})
+			// 	return;
+			// }
+			
 
 			this.getSecMin();
 			let that = this;
