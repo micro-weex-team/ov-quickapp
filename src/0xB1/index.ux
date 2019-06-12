@@ -1255,6 +1255,7 @@
 			// this.dataCan();
 
 			//获取sn8，区分
+			console.log(this.deviceSeries);
 			router.replace({
 				uri: '/0xB1/B1_0TVN50R6',
 				params: { 
@@ -1264,7 +1265,6 @@
 					}
 			})
 			return;
-			console.log(this.deviceSeries);
 			// if(this.deviceSeries=='0TVN50R6'){
 			// 	router.replace({
 			// 		uri: '/0xB1/B1_0TVN50R6',

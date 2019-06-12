@@ -19,11 +19,13 @@
 					<text class="b0_nav_list_usemeiju">使用美居</text>
 					<div class="b0_nav_list_time">
 						<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
-						<text if="{{showTag}}" class="b0_nav_list_tag">{{tagText}}</text>
+						<text if="{{showMinTag}}" class="b0_nav_list_tag">{{tagText}}</text>
 					</div>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">温度 {{tempShow(temperature)}} | {{statusData(work_status)}}</text>
+					<text class="b0_nav_list_mode" if="{{power === 'on' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{modeShow(mode)}}</text>
+
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
 					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
 					<text class="b0_nav_list_done" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已关机</text>
@@ -37,9 +39,9 @@
 				<text class="b0_contrl_btn_text">开关</text>
 			</div>
 
-			<div class="b0_contrl_btn" @click="showAlert($item)" for="{{modeList}}">
+			<div class="b0_contrl_btn" if="{{$item.isShow}}" @click="showAlert($item)" for="{{modeList}}">
 				<image src="./assets/img/{{$item.iconSrc}}" class="b0_contrl_btn_img"></image>
-				<text class="b0_contrl_btn_text">{{$item.name}}</text>
+				<text  class="b0_contrl_btn_text">{{$item.name}}</text>
 			</div>
 			<!-- <div class="b0_contrl_btn" @click="showAlert()">
 				<image src="./assets/img/doing.png" class="b0_contrl_btn_img"></image>
@@ -85,7 +87,7 @@
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" id="listSec">
-							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'min')" for="{{getHourMin(59)}}">
+							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'min')" for="{{getHourMin(60)}}">
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{min === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
 								<div class="bo_kong{{language?'':'_l'}}">
 									<image src="./assets/img/select.png" show="{{min === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
@@ -242,17 +244,26 @@
 				mode:'microwave',
 				temperature: 0,
 			},
-
 			modeList:[
-				{ work_mode: 'hot_wind_bake',name:'热风对流',iconSrc:'hot_wind@3x.png',tempArr:getTemp(50,250,5)},
-				{ work_mode: 'underside_tube',name:'下管烧烤',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
-				{ work_mode: 'core_baking',name:'双上管烧烤',iconSrc:'double_grill@3x.png',tempArr:getTemp(100,235,5)},
-				{ work_mode: 'double_upside_tube_fan',name:'双上管+风扇',iconSrc:'double_grill_and_fan@3x.png',tempArr:getTemp(100,250,5)},
+				{ isShow:true, work_mode: 'hot_wind_bake',name:'热风对流',iconSrc:'hot_wind@3x.png',tempArr:getTemp(50,250,5)},
+				{ isShow:true, work_mode: 'underside_tube',name:'下管烧烤',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:true, work_mode: 'core_baking',name:'双上管烧烤',iconSrc:'double_grill@3x.png',tempArr:getTemp(100,235,5)},
+				{ isShow:true, work_mode: 'double_upside_tube_fan',name:'双上管+风扇',iconSrc:'double_grill_and_fan@3x.png',tempArr:getTemp(100,250,5)},
+
+				{ isShow:false, work_mode: 'double_tube_fan',name:'上下烧烤+风扇',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:false, work_mode: 'double_tube',name:'上下烧烤',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:false, work_mode: 'total_baking',name:'红外烧烤',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:false, work_mode: 'underside_tube_hot_wind_bake',name:'下管烧烤+热风对流',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:false, work_mode: 'zymosis',name:'发酵',iconSrc:'bottom_heat@3x.png',tempArr:getTemp(50,235,5)},
+				{ isShow:false, work_mode: 'auto_menu',name:'自动菜单',iconSrc:'fermentation@3x.png'},
+
 			],
 			modeItem:{},
 			setTempArr:getTemp(100,250,5),
-			showTag:false,
-			tagText: "分"
+			showMinTag:false,
+			tagText: "分",
+			modeName: 0,
+			modeText: '--',
 		},
 		public: {
 			deviceSeries: '',
@@ -315,6 +326,12 @@
 			}
 			if (parseInt(that.min) >= 0 && parseInt(that.temperature) > 0) {
 				this.isset = false;
+				if(that.setHour=='--'){
+					that.setHour = 0;
+				}
+				if(that.min=='--'){
+					that.min = 0;
+				}
 				params = {
 							work_status: 'work',
 							work_mode: that.modeItem.work_mode,
@@ -406,6 +423,50 @@
 			} else {
 				return '-- '
 			}
+		},
+		modeShow(mode){
+			let that = this;
+			let modeArr = that.modeList;
+			that.modeText = '--';
+			for(var i=0; i< modeArr.length; i++){
+				if(mode == modeArr[i].work_mode){
+					that.modeText = modeArr[i].name;
+				}
+			}
+			// switch (mode) {
+			// 	case 'hot_wind_bake':
+			// 		that.modeText = '热风对流';
+			// 		break;
+			// 	case 'underside_tube':
+			// 		that.modeText = '下管烧烤';
+			// 		break;
+			// 	case 'core_baking':
+			// 		that.modeText = '双上管烧烤';
+			// 		break;
+			// 	case 'double_upside_tube_fan':
+			// 		that.modeText = '双上管+风扇';
+			// 		break;
+
+			// 	case 'double_tube_fan':
+			// 		that.modeText = '上下烧烤+风扇';
+			// 		break;
+			// 	case 'double_tube':
+			// 		that.modeText = '上下烧烤';
+			// 		break;
+			// 	case 'total_baking':
+			// 		that.modeText = '红外烧烤';
+			// 		break;
+			// 	case 'underside_tube_hot_wind_bake':
+			// 		that.modeText = '下管烧烤+热风对流';
+			// 		break;
+			// 	case 'zymosis':
+			// 		that.modeText = '发酵';
+			// 		break;
+			// 	default:
+			// 		that.modeText = '--';
+			// 		break;
+			// }
+			return that.modeText;
 		},
 		//工作状态过滤
 		statusData(str) {
@@ -548,21 +609,28 @@
 			that.fire_power = that.listdata.fire_power;
 			that.temperature = that.listdata.temperature;
 			that.hour = that.listdata.work_hour;
+			that.sec = that.listdata.work_second;
 			that.second = that.listdata.work_second;
 			that.minutes = that.listdata.work_minute;
+			that.mode = that.listdata.work_mode;
 			that.lock = that.listdata.lock;
 			if(this.listdata.work_status === 'save_power'){
 				that.power = 'off';
 			}else{
 				that.power = 'on';
 			}
+			if(this.listdata.work_status === 'save_power' || this.listdata.work_status === 'standby' || this.listdata.work_status === 'work_finish'){
+				that.showMinTag = false;
+			}
 			// that.power = that.listdata.power;
 			that.online = that.listdata.online;
 			that.startOrpause();
 			if(that.power === 'on'){
-				if(that.work_status === 'work' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
-					that.headTime();
-				}
+				that.headTime();
+
+				// if(that.work_status === 'work' || that.work_status === 'work_finish' || that.work_status === 'standby' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
+				// 	that.headTime();
+				// }
 			}
 			
 		},
@@ -652,11 +720,11 @@
 		//时间过滤器
 		timeData(str1, str2) {
 			let that = this;
-			that.showTag = false;
+			that.showMinTag = false;
 			let num1 = '';
 			let num2 = '';
 			if(parseInt(str1) == 0 && parseInt(str2) > 0){
-				that.showTag = true;
+				that.showMinTag = true;
 				that.tagText = "分";
 				return str2;
 			}
@@ -675,7 +743,7 @@
 				return num1.toString() + ":" + num2.toString();
 			} else {
 				if(parseInt(that.sec)){
-					that.showTag = true;
+					that.showMinTag = true;
 					that.tagText = "秒";
 					return that.sec;
 				}else{
@@ -1262,11 +1330,11 @@
 		//倒计时
 		headTime(){
 			let that = this;
-			let str = 3000;
+			let str = 6000;
 			if(that.lanOnline == 'true'){
-				str = 1000;
+				str = 6000;
 			}else{
-				str = 3000;
+				str = 10000;
 			}
 			that.timeoutInter = setInterval(function(){
 				that.iswarm = false;
@@ -1406,9 +1474,11 @@
 				clearInterval(that.timeoutInter);
 			}
 			if(that.online === 'true'){
-				if(that.work_status === 'work' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
-					that.headTime();
-				}
+				that.headTime();
+
+				// if(that.work_status === 'work' || that.work_status === 'work_finish' || that.work_status === 'standby' || that.work_status === 'save_power' || that.work_status === 'order' || that.work_status === 'heat' || that.work_status === 'three'){
+				// 	that.headTime();
+				// }
 			}
 			// that.headTime();
 			if(that.ws === '' && that.isws){

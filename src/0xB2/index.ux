@@ -1254,17 +1254,7 @@
 		onInit() {
 			// this.dataCan();
 
-			// //获取sn8，区分
-			// if(this.deviceSeries=='0M3L20A8'){
-			// 	   // 跳转到应用内的对应的sn8目录
-			// 		router.replace({
-			// 			uri: '/0xB0/B0_0M3L20A8'
-			// 		})
-			// 		return;
-			// }
-			prompt.showToast({
-						message: this.deviceSeries
-					})
+			console.log(this.deviceSeries);
 			router.replace({
 				uri: '/0xB2/B2_0TPN50R6',
 				params: { 
