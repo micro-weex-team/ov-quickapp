@@ -4829,7 +4829,7 @@ $app_define$('@app-component/index', [], function($app_require$, $app_exports$, 
      $app_module$.exports.style = $app_style$
 })
 
-$app_bootstrap$('@app-component/index',{ packagerVersion: '0.4.6'})
+$app_bootstrap$('@app-component/index',{ packagerVersion: '0.5.4'})
 
 
 /***/ }),
