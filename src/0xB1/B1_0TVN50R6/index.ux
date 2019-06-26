@@ -5,7 +5,7 @@
 <import name="midea-loading" src="../../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="大烤箱R6 " language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
+		<midea-head title="大烤箱" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
@@ -124,6 +124,13 @@
 							</list-item>
 						</list>
 					</div>
+					 <div class="item-container">
+						<text class="item-title">预热</text>
+						<div class="item-content">
+							<switch checked="{{preheatCheck}}" class="switch" @change="switchChange"></switch>
+						</div>
+					</div>
+
 					<div class="b0_alert_nav_list_btn">
 						<div class="b0_alert_nav_list_btn_1" if="{{language}}" @click="cancel()">
 							<text class="b0_alert_nav_list_btn_1_text">取消</text>
@@ -264,6 +271,8 @@
 			tagText: "分",
 			modeName: 0,
 			modeText: '--',
+			preheatCheck: false,
+			pre_heat:'off'
 		},
 		public: {
 			deviceSeries: '',
@@ -337,7 +346,8 @@
 							work_mode: that.modeItem.work_mode,
 							work_minute: that.min,
 							work_hour: that.setHour,
-							temperature: that.temperature
+							temperature: that.temperature,
+							pre_heat: that.preheatCheck?'on':'off'
 						}
 				let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
 				that.ctrDevice(params,status,true);
@@ -471,6 +481,10 @@
 		//工作状态过滤
 		statusData(str) {
 			let data = '待机中';
+			if(str=='work' && this.pre_heat == 'on'){
+				data = '预热中';
+				return data;
+			}
 			switch (str) {
 				case 'cancel':
 					data = '待机中';
@@ -571,6 +585,14 @@
 			}
 			return arrary;
 		},
+		//预热
+		switchChange(e){
+			console.log(JSON.stringify(e));
+			let val = e.target.attr.checked;
+			console.log(JSON.stringify(val));
+			this.preheatCheck = val;
+		},
+
 		//跳转到选定item
 		setItem(id, num) {
 			this.$element(id).scrollTo({
@@ -595,6 +617,22 @@
 				this.pause = false;
 			}
 		},
+		//提示码
+		tipsShow(tips_code){
+			let that = this;
+			if(tips_code){
+				let codeData = 0;
+				if(tips_code == 8){
+					that.pre_heat = 'on';
+				}else{
+					prompt.showToast({
+						message: "故障了"
+					})
+					return;
+				}
+			}
+		},
+
 		//数据处理
 		dataCan() {
 			let that = this;
@@ -614,6 +652,10 @@
 			that.minutes = that.listdata.work_minute;
 			that.mode = that.listdata.work_mode;
 			that.lock = that.listdata.lock;
+			that.pre_heat = that.listdata.pre_heat?that.listdata.pre_heat:'off';
+			let tips_code = that.listdata.tips_code;
+			that.tipsShow(tips_code);
+		
 			if(this.listdata.work_status === 'save_power'){
 				that.power = 'off';
 			}else{
@@ -767,6 +809,7 @@
 		showAlert(item) {
 			let that = this;
 			that.modeItem = item;
+			that.preheatCheck = false;
 			that.setTempArr = that.modeItem.tempArr;
 			that.doanimat = '';
 			that.doneanimat = '';
@@ -1216,6 +1259,13 @@
 						} else {
 							isall = true;
 						}
+						if (obj.pre_heat) {
+							that.listdata.pre_heat = obj.pre_heat;
+						} else {
+							isall = true;
+						}
+						let tips_code = that.listdata.tips_code;
+						that.tipsShow(tips_code);
 						that.listDevice = obj;
 						// if (isall) {
 						// 	that.isshowLoading = true;
@@ -1427,6 +1477,14 @@
 					if (obj.status.work_status) {
 						that.listdata.work_status = obj.status.work_status
 					}
+					if (obj.status.pre_heat) {
+						that.listdata.pre_heat = obj.status.pre_heat;
+					}
+					if (obj.status.tips_code) {
+						that.listdata.tips_code = obj.status.tips_code;
+					}
+					let tips_code = obj.status.tips_code;
+					that.tipsShow(tips_code);
 					that.dataCan();
 				}
 				ws.onclose = function() {

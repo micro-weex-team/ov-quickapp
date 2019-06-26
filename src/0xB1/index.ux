@@ -1255,27 +1255,27 @@
 			// this.dataCan();
 
 			//获取sn8，区分
-			console.log(this.deviceSeries);
-			router.replace({
-				uri: '/0xB1/B1_0TVN50R6',
-				params: { 
-					deviceSeries: this.deviceSeries, 
-					deviceId: this.deviceId,
-					openid: this.openid
-					}
-			})
-			return;
-			// if(this.deviceSeries=='0TVN50R6'){
-			// 	router.replace({
-			// 		uri: '/0xB1/B1_0TVN50R6',
-			// 		params: { 
-			// 			deviceSeries: this.deviceSeries, 
-			// 			deviceId: this.deviceId,
-			// 			openid: this.openid
-			// 			}
-			// 	})
-			// 	return;
-			// }
+			console.log(this.deviceSeries+' '+this.deviceId+' '+this.openid+'' +'get');
+			// router.replace({
+			// 	uri: '/0xB1/B1_0TVN50R6',
+			// 	params: { 
+			// 		deviceSeries: this.deviceSeries, 
+			// 		deviceId: this.deviceId,
+			// 		openid: this.openid
+			// 		}
+			// })
+			// return;
+			if(this.deviceSeries=='0TVN50R6'){
+				router.replace({
+					uri: '/0xB1/B1_0TVN50R6',
+					params: { 
+						deviceSeries: this.deviceSeries, 
+						deviceId: this.deviceId,
+						openid: this.openid
+						}
+				})
+				return;
+			}
 			
 
 			this.getSecMin();
