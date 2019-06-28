@@ -1,0 +1,897 @@
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-foot" src="../Component/MideaFoot/index"></import>
+<template>
+    <div class="container">
+		<midea-head title="洗碗机" language="{{language}}" power="{{work_status==='power_off'?'off':'on'}}"></midea-head>
+		<refresh offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+			<list onscrollbottom="" id="list" class="E1_list" style="background-color: {{work_status === 'power_off'?'#CCCCCC':'#3191FD'}};">
+				<list-item class="E1_nav" type="listItem">
+					<div class="{{language?'E1_nav_list_lock':'E1_nav_list_lock_l'}}" @click="downMeiju()">
+						<image src="{{work_status === 'power_off'?'./assets/img/meijuicon.png':'./assets/img/loadingMeiju.png'}}" class="E1_nav_list_lock_img"></image>
+					</div>
+					<text class="E1_nav_list_usemeiju">使用美居</text>
+					<div if="{{wash_stage != 5}}" class="text_list">
+						<text class="E1_nav_standby" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">待机中</text>
+						<text class="E1_nav_warm" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">请选择下方功能</text>
+						<text class="E1_nav_close" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">已关机</text>
+						<text class="E1_nav_warm" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">点击下方开关</text>
+						<text class="E1_nav_data" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{leftTime(left_time)}}</text>
+						<text class="E1_nav_text" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">大约剩余</text>
+						<text class="E1_nav_mode" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}}丨{{washStage(wash_stage)}}</text>
+					</div>
+					<text class="E1_nav_standby" if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">保管中</text>
+					<text class="E1_nav_keepend"  if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}} | {{washStage(wash_stage)}}</text>
+				</list-item>
+			</list>
+		</refresh>
+		<div if="{{work_status === 'work' && operator === 'pause' && wash_stage != 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop" @click="stopDevice()">
+				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">停止</text>
+			</div>
+			<div class="E1_nav_status_stop" @click="deviceCtr('start')">
+				<image src="./assets/img/start.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">继续</text>
+			</div>
+		</div>
+		<div if="{{work_status === 'work' && operator === 'start' && wash_stage != 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop" @click="deviceCtr('pause')">
+				<image src="./assets/img/pause.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">暂停</text>
+			</div>
+		</div>
+		<div if="{{work_status === 'work' && wash_stage === 5}}" class="E1_nav_status">
+			<div class="E1_nav_status_stop" @click="stopDevice()">
+				<image src="./assets/img/stop.png" class="E1_nav_status_img"></image>
+				<text class="E1_nav_status_text">结束保管</text>
+			</div>
+		</div>
+		<div class="E1_alert" if="{{isalert}}" @click="closealert">
+			<div class="E1_alert_nav" style="top: {{deviceHeight/2-312}}px;">
+				<text class="E1_alert_nav_head">节能洗</text>
+				<text class="E1_alert_nav_middle">确定启动“节能洗”模式吗</text>
+				<div class="E1_alert_nav_foot">
+					<div class="E1_alert_nav_foot_btn" @click="closealert">
+						<text class="E1_alert_nav_foot_btn_left">取消</text>
+					</div>
+					<div class="E1_alert_nav_foot_btn" @click="startDevice">
+						<text class="E1_alert_nav_foot_btn_right">启动</text>
+					</div>
+				</div>
+			</div>
+		</div>
+		<midea-foot if="{{work_status != 'work'}}" onclick-btn="clickEvent" onclick-alert="showalert" type='1' list-first="{{btnlist}}"></midea-foot>
+		<midea-loading if="{{isloading}}"></midea-loading>
+		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
+		<midea-tips if="{{istips}}"></midea-tips>
+    </div>
+</template>
+<script>
+import api from '../Common/api/api.js';
+import router from '@system.router';
+import prompt from '@system.prompt';
+import fetch from '@system.fetch';
+import account from '@service.account';
+import storage from '@system.storage';
+// import push from '@service.push';
+import device from '@system.device';
+import pkg from '@system.package';
+import network from '@system.network';
+import net from '../Common/api/networkAPI.js';
+module.exports = {
+	private: {
+		isagain:true,
+		lanOnline:'false',
+		isLanInit:false,
+		isoffset:'-1000px',
+		isRefreshing:false,
+		isalert:false,
+		language: false,
+		isfirst: false,
+		iswarm: true,
+		isabout: false,
+		istips: false,
+		isloading: false,
+		deviceHeight:0,
+		timeoutInter: '',
+		openId: '',
+		time:'',
+		accessToken: '',
+		btnlist:[{
+			name:'开关',
+			data:'on',
+			pic:'./assets/img/off.png',
+			clickAlert:false
+		},{
+			name:'节能洗',
+			data:'eco_wash',
+			pic:'./assets/img/eco_on.png',
+			clickAlert:true
+		}],
+		E1list:["work_status","operator","mode","wash_stage","left_time"],
+		E1data:{},
+		online:"false",
+		work_status:'power_off',
+		operator:'pause',
+		mode:'eco_wash',
+		wash_stage:0,
+		left_time: 0,
+	},
+	public: {
+		deviceSeries: '',
+		deviceId: '',
+		openid: ''
+	},
+	isshowclose() {
+		let that = this;
+		that.istips = false;
+		if(that.time != ''){
+			clearTimeout(that.time)
+		}
+		if (that.iswarm) {
+			that.istips = true;
+			that.time = setTimeout(() => {
+				that.istips = false;
+			}, 3000);
+		}
+	},
+	onclickFn(e) {
+		this.isabout = false;
+	},
+	leftTime(str){
+		let num = parseInt(str);
+		let hours = "00";
+		let mins = "00";
+		if(num > 0){
+			if(10 > parseInt(num/60) > 0){
+				hours = '0' + parseInt(num/60).toString();
+			}else{
+				hours = parseInt(num/60).toString();
+			}
+			if(10 > parseInt(num%60) > 0){
+				mins = '0' + parseInt(num%60).toString();
+			}else{
+				mins = parseInt(num%60).toString();
+			}
+		}
+		return hours+":"+mins;
+	},
+	modeShow(str){
+		let name = '';
+		switch(str){
+			case 'auto_wash': 
+				name = '自动洗';
+				break;
+			case 'strong_wash': 
+				name = '强力洗';
+				break;
+			case 'standard_wash': 
+				name = '及时洗';
+				break;
+			case 'eco_wash': 
+				name = '节能洗';
+				break;
+			case 'glass_wash': 
+				name = '玻璃洗';
+				break;
+			case 'fast_wash': 
+				name = '快速洗';
+				break;
+			case 'self_define': 
+				name = '自定义洗';
+				break;
+			default:
+				name = '--';
+		}
+		return name;
+	},
+	washStage(str){
+		let name = '';
+		let num = parseInt(str)
+		switch(num){
+			case 0: 
+				name = '准备中';
+				break;
+			case 1: 
+				name = '预洗';
+				break;
+			case 2: 
+				name = '主洗';
+				break;
+			case 3: 
+				name = '漂洗';
+				break;
+			case 4: 
+				name = '干燥';
+				break;
+			case 5: 
+				name = '已完成';
+				break;
+			default:
+				name = '--';
+		}
+		return name;
+	},
+	downMeiju() {
+		let that = this;
+		let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+		let str2 = "您还没安装美居app，是否确定下载安装?";
+		pkg.hasInstalled({
+			package: 'com.midea.ai.appliances',
+			success: function(res) {
+				prompt.showDialog({
+					title: '提示',
+					message: res.result?str1:str2,
+					buttons: [
+						{
+							text: res.result?'直接打开':'去下载',
+							color: '#33dd44'
+						}
+					],
+					success: function(data) {
+						if (res.result) {
+							router.push({ uri: 'meiju://com.midea.meiju/main' });
+						} else {
+							pkg.install({
+								package: 'com.midea.ai.appliances',
+								success: function(resp) {
+									console.log(`handling success: ${resp.result}`);
+								},
+								fail: function(resp, code) {
+									console.log(`handling fail, code = ${code}`);
+								}
+							});
+						}
+					},
+					cancel: function() {
+						console.log('handling cancel');
+					},
+					fail: function(data, code) {
+						console.log(`handling fail, code = ${code}`);
+					}
+				});
+				
+				console.log(`handling success: ${res.result}`);
+			},
+			fail: function(res, code) {
+				console.log(`handling fail, code = ${code}`);
+			}
+		});
+	},
+	/**
+	 * 局域网初始化
+	 */
+	LanOnlineGet(){
+		let that = this;
+		net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+			that.isLanInit = true;
+		}).catch((error) => {
+			that.isLanInit = false;
+		});
+	},
+	scrollbottom(e) {
+		let that = this;
+		that.isRefreshing = e.refreshing;
+		let timestamp = Date.parse(new Date());
+		if (that.isfirst) {
+			storage.get({
+				key: 'openidToken',
+				success: function(data) {
+					that.isloading = true;
+					that.iswarm = true;
+					if (data === '') {
+						that.getdevicelist();
+					} else {
+						let obj = JSON.parse(data);
+						if (parseInt(timestamp) > parseInt(obj.time)) {
+							that.getdevicelist();
+						} else {
+							if (obj.openid === that.openid) {
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success');
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		}
+	},
+	timeGetData() {
+		let that = this;
+		that.timeoutInter = setInterval(function() {
+			that.iswarm = false;
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function(data) {
+					if (data === '') {
+						that.getdevicelist();
+					} else {
+						let obj = JSON.parse(data);
+						if (parseInt(timestamp) > parseInt(obj.time)) {
+							that.getdevicelist();
+						} else {
+							if (obj.openid === that.openid) {
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success');
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		}, 3000);
+	},
+	clickEvent(e){
+		let that = this;
+		let params = {};
+		that.iswarm = true;
+		if(that.online === 'false'){
+			that.isshowclose();
+			return false
+		}
+		if(e.detail.params === "开关"){
+			if(that.work_status != 'power_off'){
+				params = {
+					work_status:'power_off'
+				}
+			}else{
+				params = {
+					work_status:'power_on'
+				}
+			}
+			let status = ['work_status'];
+			that.isloading = true;
+			that.postDeviceControl(params,status)
+		}
+	},
+	showalert(e){
+		let that = this;
+		that.iswarm = true;
+		if(that.online === 'false'){
+			that.isshowclose();
+			return false
+		}
+// 		prompt.showToast({
+// 			message:"sasd"
+// 		})
+		if(that.work_status === 'power_off'){
+			prompt.showToast({
+				message:"设备关机状态,不能操作"
+			})
+			return false;
+		}
+		if(e.detail.params === "节能洗"){
+			that.isalert = true;
+		}
+	},
+	closealert(){
+		this.isalert = false;
+	},
+	startDevice(){
+		let that = this;
+		let params = {
+			mode:'eco_wash',
+			work_status:'work'
+		}
+		let status = ['mode','work_status'];
+		that.isloading = true;
+		that.closealert();
+		that.postDeviceControl(params,status)
+	},
+	deviceCtr(str){
+		let that = this;
+		let params = {
+			operator:str
+		}
+		let status = ['operator'];
+		that.isloading = true;
+		that.postDeviceControl(params,status)
+	},
+	stopDevice(){
+		let that = this;
+		let params = {
+			work_status:'cancel'
+		}
+		let status = ['work_status'];
+		that.isloading = true;
+		that.postDeviceControl(params,status)
+	},
+	//获取第三方登录信息
+	getdevicelist() {
+		let that = this;
+		account.authorize({
+			type: 'code',
+			success: function(data) {
+				let params = {
+					thirdUId: data.code
+				};
+				api.getUserToken(params).then(res => {
+						let data_accesstoken = res;
+						if (data_accesstoken.code && data_accesstoken.code === 200) {
+							let result_data = typeof data_accesstoken.data === 'object'? data_accesstoken.data: JSON.parse(data_accesstoken.data);
+							if (!parseInt(result_data.code)) {
+								that.openId = result_data.openId;
+								that.openid = result_data.openId;
+								that.accessToken = result_data.accessToken;
+								let obj = {
+									openid: that.openId,
+									accessToken: that.accessToken,
+									time: that.gettime()
+								};
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function(data) {},
+									fail: function(data, code) {}
+								});
+								that.LanOnlineGet();
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.initData();
+								that.isRefreshing = false;
+								that.isloading = false;
+								that.netWorkGet(that.getCode(result_data.code, '获取访问令牌失败'));
+								that.isfirst = true;
+							}
+						} else {
+							that.initData();
+							that.isRefreshing = false;
+							that.isloading = false;
+							that.netWorkGet('获取访问令牌失败');
+							that.isfirst = true;
+						}
+					})
+					.catch(error => {
+						that.initData();
+						that.isRefreshing = false;
+						that.isloading = false;
+						that.netWorkGet('获取访问令牌失败');
+						that.isfirst = true;
+					});
+			},
+			fail: function(data, code) {
+				that.initData();
+				that.netWorkGet('授权失败,请稍后重试');
+				that.isloading = false;
+				that.isRefreshing = false;
+				that.isfirst = true;
+			}
+		});
+	},
+	/**
+	 * 局域网获取
+	 */
+	getLanData(res){
+		let that = this;
+		let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		if(parseInt(obj.code) == 0){
+			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+			that.isfirst = true;
+			that.isRefreshing = false;
+			that.isloading = false;
+			that.E1data.online = "true";
+			that.E1data = data;
+			that.work_status = data.work_status;
+			that.operator = data.operator;
+			that.mode = data.mode;
+			that.wash_stage = data.wash_stage;
+			that.left_time = data.left_time;
+			that.online = "true";
+			if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
+				that.timeGetData();
+			}
+		}else{
+			that.isagain = false;
+			that.lanOnline = "false";
+			that.getDeviceStatus(that.openId);
+		}
+	},
+	/**
+	 * 联网获取
+	 */
+	getdataLan(res){
+		let that = this;
+		that.isfirst = true;
+		that.isRefreshing = false;
+		that.isloading = false;
+		if (res.code === 200) {
+			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+			if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+				let obj = data.devices[0].properties;
+				that.E1data = obj;
+				that.online = obj.online;
+				that.work_status = obj.work_status;
+				that.operator = obj.operator;
+				that.mode = obj.mode;
+				that.wash_stage = obj.wash_stage;
+				that.left_time = obj.left_time;
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
+				if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
+					that.timeGetData();
+				}
+			} else {
+				that.initData();
+				that.isstop = true;
+				if(data.msg === ''){
+					let str1 = '';
+					if (data.devices[0].status) {
+						str1 = data.devices[0].status;
+						if(str1.toString() === '-6'){
+							that.isshowclose();
+							return false;
+						}
+						if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+							that.isshowclose();
+						}else{
+							that.netWorkGet(api.getStatus('get', str1, '获取设备状态失败'));
+						}
+					}else{
+						str1 = data.code;
+						that.netWorkGet(api.getCode(str1, '获取设备状态失败'));
+					}
+				} else {
+					that.netWorkGet(data.msg);
+				}
+			}
+		} else {
+			that.initData();
+			that.isstop = true;
+			that.netWorkGet('获取设备状态失败,请稍后重试');
+		}
+	},
+	//查询状态
+	getDeviceStatus(opid) {
+		let that = this;
+		let params = {
+			openId: opid,
+			devices: [
+				{
+					deviceId: that.deviceId,
+					properties: that.E1list
+				}
+			]
+		};
+		that.istips = false;
+		if (that.timeoutInter != '') {
+			clearInterval(that.timeoutInter);
+		}
+		if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+			that.lanOnline = 'true';
+		}else{
+			that.lanOnline = 'false';
+		}
+		api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+			that.isagain = true;
+			if(res.lanonline){
+				that.getdataLan(res);
+			}else{
+				that.getLanData(res);
+			}
+		}).catch((error) => {
+			console.log("错误了++++++++++++")
+			if(error.online){
+				that.initData();
+				that.isstop = true;
+				that.netWorkGet('获取设备状态失败,请稍后重试');
+				that.isfirst = true;
+				that.isRefreshing = false;
+				that.isloading = false;
+			}else{
+				that.isagain = false;
+				that.lanOnline = "false";
+				that.getDeviceStatus(that.openId);
+			}
+		});
+	},
+	/**
+	 * 局域网控制
+	 */
+	lanControl(res,obj1,status){
+		let that = this;
+		let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		console.log("局域网："+JSON.stringify(res))
+		if(parseInt(obj.code) == 0){
+			that.isRefreshing = false;
+			that.isloading = false;
+			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+			that.E1data.online = "true";
+			that.E1data = data;
+			that.work_status = data.work_status;
+			that.operator = data.operator;
+			that.mode = data.mode;
+			that.wash_stage = data.wash_stage;
+			that.left_time = data.left_time;
+			that.online = "true";
+			if (that.timeoutInter != '') {
+				clearInterval(that.timeoutInter);
+			}
+			if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
+				that.timeGetData();
+			}
+		}else{
+			that.isagain = false;
+			that.lanOnline = 'false';
+			that.postDeviceControl(obj1, status);
+		}
+	},
+	/**
+	 * 广域网控制
+	 */
+	wlanControl(res){
+		let that = this;
+		if (res.code === 200) {
+			let data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+			if(parseInt(data.code) == 0){
+				if (!parseInt(data.devices[0].status)) {
+					let obj = typeof data.devices[0].props === 'object' ? data.devices[0].props : JSON.parse(data.devices[0].props);;
+					let isall = false;
+					if(obj.work_status){
+						that.work_status = obj.work_status;
+					}else{
+						isall = true;
+					}
+					if(obj.operator){
+						that.operator = obj.operator;
+					}else{
+						isall = true;
+					}
+					if(obj.mode){
+						that.mode = obj.mode;
+					}else{
+						isall = true;
+					}
+					if(obj.wash_stage.toString()){
+						that.wash_stage = obj.wash_stage;
+					}else{
+						isall = true;
+					}
+					if(obj.left_time.toString()){
+						that.left_time = obj.left_time;
+					}else{
+						isall = true;
+					}
+					that.E1data = obj;
+					if(isall){
+						that.getDeviceStatus(that.openId);
+					}else{
+						that.isRefreshing = false;
+						that.isloading = false;
+						if (that.timeoutInter != '') {
+							clearInterval(that.timeoutInter);
+						}
+						if(that.work_status === 'work' && that.operator === 'start' && parseInt(that.wash_stage) != 5){
+							that.timeGetData();
+						}
+					}
+					
+				} else {
+					that.initData();
+					that.isRefreshing = false;
+					that.isloading = false;
+					that.isstop = true;
+					if (data.msg === '') {
+						let str1 = '';
+						if (data.devices[0].status) {
+							str1 = data.devices[0].status;
+							if (str1.toString() === '-6') {
+								that.isshowclose();
+								return false;
+							}
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+								that.isshowclose();
+							} else {
+								that.netWorkGet(api.getStatus('post', str1, '操作设备失败'));
+							}
+						} else {
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1, '操作设备失败'));
+						}
+					} else {
+						that.netWorkGet(data.msg);
+					}
+				}
+			}else{
+				that.initData();
+				that.isRefreshing = false;
+				that.isloading = false;
+				that.isstop = true;
+				let str1 = '';
+				if (data.msg === '') {
+					str1 = data.code;
+					that.netWorkGet(api.getCode(str1, '操作设备失败'));
+				}else{
+					that.netWorkGet(data.msg);
+				}
+			}
+			
+		} else {
+			that.initData();
+			that.isRefreshing = false;
+			that.isloading = false;
+			that.netWorkGet('操作设备失败,请稍后重试');
+		}
+		
+	},
+	postDeviceControl(obj, status) {
+		let that = this;
+		let params = {
+			openId: that.openId,
+			devices: [
+				{
+					deviceId: that.deviceId,
+					properties: obj,
+					status: that.E1data
+				}
+			]
+		};
+		console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
+		if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+			that.lanOnline = 'true';
+		}else{
+			that.lanOnline = 'false';
+		}
+		api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then(res => {
+			that.isagain = true;
+			if(res.lanonline){
+				that.wlanControl(res);
+			}else{
+				that.lanControl(res,obj,status)
+			}
+		}).catch(error => {
+			if(error.online){
+				that.initData();
+				that.isRefreshing = false;
+				that.isstop = true;
+				that.netWorkGet('操作设备失败,请稍后重试');
+				that.isloading = false;
+			}else{
+				that.isagain = false;
+				that.lanOnline = 'false';
+				that.postDeviceControl(obj, status);
+			}
+		});
+	},
+	initData() {
+		
+	},
+	netWorkGet(str) {
+		if (this.iswarm) {
+			network.getType({
+				success: function(data) {
+					if (data.type === 'none') {
+						prompt.showToast({
+							message: str + '请检查网络',
+							duration: 1
+						});
+					} else {
+						prompt.showToast({
+							message: str,
+							duration: 1
+						});
+					}
+				}
+			});
+		}
+	},
+	gettime() {
+		let timestamp = Date.parse(new Date());
+		return parseInt(timestamp) + 3600000;
+	},
+	onMenuPress() {
+		this.isabout = !this.isabout;
+	},
+	closeWebsocket(e) {
+		let that = this;
+		that.isclosews = true;
+		if (that.timeoutInter != '') {
+			clearInterval(that.timeoutInter);
+		}
+	},
+	onHide() {
+		let that = this;
+		that.istips = false;
+		that.closeWebsocket();
+	},
+	onShow() {
+		let that = this;
+		that.isclosews = false;
+		if (that.ws === '' && that.isws) {
+			// that.webSocketdata();
+		}
+		if (that.timeoutInter != '') {
+			clearInterval(that.timeoutInter);
+		}
+		that.timeGetData();
+	},
+	onInit() {
+		api.getlanguage().then(res => {
+			if (res === 'ug') {
+				this.language = false;
+			} else {
+				this.language = true;
+			}
+		});
+		let that = this;
+		// that.deviceHeight = that.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
+		router.clear();
+		that.$on('cancel', function(e) {
+			that.isabout = false;
+		});
+		that.$on('closetips', function(e) {
+			that.istips = false;
+		});
+		that.$on('openmenu', function(e) {
+			that.isabout = !that.isabout;
+		});
+		let timestamp = Date.parse(new Date());
+		storage.get({
+			key: 'openidToken',
+			success: function(data) {
+				that.isloading = true;
+				if (data === '') {
+					that.getdevicelist();
+				} else {
+					let obj = JSON.parse(data);
+					if (parseInt(timestamp) > parseInt(obj.time)) {
+						that.getdevicelist();
+					} else {
+						if (obj.openid === that.openid) {
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							that.LanOnlineGet();
+							that.getDeviceStatus(that.openId);
+						} else {
+							that.getdevicelist();
+						}
+					}
+				}
+				console.log('handling success');
+			},
+			fail: function(data, code) {
+				console.log(`handling fail, code = ${code}`);
+			}
+		});
+	},
+	onCreate() {},
+	onBackPress() {
+		router.clear();
+		this.$app.exit();
+	}
+};
+</script>
+
+<style lang='less'>
+	@import "./assets/index.less";
+</style>

@@ -1,0 +1,1388 @@
+<import name="qui-popup" src="../Component/qui-popup/index"></import>
+<import name='qui-switch' src='../Component/qui-switch/index'></import>
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<template>
+<div class="container">
+	<midea-head title="冰箱" onclose-websocket="closeWebsocket" language="{{language}}" power="{{online === 'true'?'on':'off'}}"></midea-head>
+    <!-- <div class="temperature_display" style="background-color:{{online === 'true'?'#3191FD':'#CCCCCC'}}"> -->
+	<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+		<list onscroll="" class="main-nav" id="listdeviceNav" style="background-color:{{online === 'true'?'#3191FD':'#CCCCCC'}}">
+			<list-item type="deviceNav" class="main-nav-nav">
+				<div class="{{language?'downMeiju':'downMeiju_l'}}">
+					<image src="{{online === 'true'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" @click="downMeiju()" class="nav_click_pic"></image>
+				</div>
+				<text class="child-lock-text" style="color:{{online === 'true'?'#ffffff':'#666666'}}">
+					使用美居
+				</text>
+				<div class="display2">
+					<text class="display2-text1">{{storage_temperature?filetrData(storage_temperature):'--'}}°</text>
+					<text class="display2-text2">冷藏</text>
+				</div>
+				<div class="display3">
+					<text class="display3-text1">{{freezing_temperature?filetrData(freezing_temperature):'--'}}°</text>
+					<text class="display3-text2">冷冻</text>
+				</div>
+			</list-item>
+		</list>
+	</refresh>
+    <!-- </div> -->
+    <div class="control_button ">
+        <div class="control_button-page ">
+            <div class="control_button-page-circus b-blue" style="background-color:{{storage_power === 'on'?'#3191FD':'#ffffff'}}" onclick="showPopup('storage_power')">
+                <text class="control_button-page-circus-text f-white" style="color:{{storage_power === 'on'?'#ffffff':'#333333'}}">{{storage_power === 'on'?filterCAdata(storage_temperature):'off'}}</text>
+            </div>
+            <text class="control_button-page-text" style="color:{{storage_power === 'on'?'#000000':'#666666'}}">冷藏室</text>
+        </div>
+        <div class="control_button-page ">
+            <div class="control_button-page-circus" style="background-color:{{freezing_power === 'on'?'#3191FD':'#ffffff'}}" id="popup" onclick="showPopup('freezing_power')">
+                <text class="control_button-page-circus-text" style="color:{{freezing_power === 'on'?'#ffffff':'#333333'}}">{{freezing_power === 'on'?filterCAdata(freezing_temperature):'off'}}</text>
+            </div>
+            <text class="control_button-page-text" style="color:{{freezing_power === 'on'?'#000000':'#666666'}}">冷冻室</text>
+        </div>
+    </div>
+	<div class="mask" if="{{isdialog}}" @click="closeDialog">
+		
+	</div>
+	<div class="dialogShow" style="top:{{(deviceHeight-700)/2}}px" if="{{isdialog}}">
+		<list class="dialogselect" id="dialogselect">
+			<list-item type="listItem" class="dialoglist" for="{{TempSelectList}}" @click="selectData($item.value,selectName)">
+				<text if="{{language}}" class="dialoglistText" style="color:{{TempData === $item.value?'#3191FD':'#CCCCCC'}};font-size:{{TempData === $item.value?'60px':'55px'}}">{{$item.value}}°</text>
+				<image show="{{TempData === $item.value}}" class="dialoglistImg" src="./assets/img/ic_select.png"></image>
+				<text if="{{!language}}" class="dialoglistText" style="color:{{TempData === $item.value?'#3191FD':'#CCCCCC'}};font-size:{{TempData === $item.value?'60px':'55px'}}">{{$item.value}}°</text>
+			</list-item>
+		</list>
+		<div class="dialogbtn">
+			<text class="dialogbtn_btn1" @click="closeDialog">取消</text>
+			<text class="dialogbtn_btn2" @click="comfirmData(selectName)">确定</text>
+		</div>
+	</div>
+	<midea-loading if="{{isloading}}"></midea-loading>
+	<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
+	<midea-tips if="{{istips}}"></midea-tips>
+</div>
+</template>
+<script>
+import api from '../Common/api/api.js';
+import router from '@system.router';
+import prompt from '@system.prompt';
+import fetch from '@system.fetch';
+import account from '@service.account';
+import storage from '@system.storage';
+import device from '@system.device';
+import barcode from '@system.barcode';
+// import IOT from '@service.iot';
+import pkg from '@system.package';
+import network from '@system.network'
+import net from '../Common/api/networkAPI.js';
+
+export default {
+    private: {
+		isagain:true,
+		lanOnline:'false',
+		isLanInit:false,
+		timeTips:'',
+		isoffset:'-1000px',
+		isRefreshing:false,
+		ws: '',
+		isws: false,
+		isclosews: false,
+		language:true,
+		deviceHeight: 0,
+		istips: false,
+		isabout: false,
+		openId: '',
+		online:"false",
+		accesstoken: '',
+		isdialog: false,
+		isloading: false,
+        componentName: '冰箱',
+        iotInfo: 'test_iot',
+		selectName:'冷藏室',
+		isselect: false,
+		TempData: "5",
+		isfirst: false,
+		TempSelectList:[],
+		storage_power: 'off',
+		freezing_power: 'off',
+		storage_temperature: '3',
+		freezing_temperature: '0',
+		CAdata:{
+			storage_power: 'off',
+			freezing_power: 'off',
+			storage_temperature: '3',
+			freezing_temperature: '0'
+		},
+		listDevice:{},
+		CAlist:['storage_power','freezing_power','storage_temperature','freezing_temperature'],
+		popupData1: {
+			visible: '0',
+			position: 'bottom'
+		},
+		sliderValue: 0
+    },
+    protected: {
+        key: '',
+        iot_call_from: ''
+    },
+	public: {
+		deviceId: '',
+		openid: '',
+		deviceSeries: ''
+	},
+	onclickFn(e){
+		this.isabout = false;
+	},
+	onMenuPress(){
+		this.isabout = !this.isabout;
+	},
+	closeWebsocket(e){
+		let that = this;
+		that.isclosews = true;
+		if(that.ws != ''){
+			that.ws.close({
+				code: 1000,
+				reason: '退出关闭',
+				success: function() {
+					that.ws = '';
+					console.log("关闭websocket成功")
+				},
+				fail: function(data, code) {
+					console.log("关闭websocke失败, code = "+JSON.stringify(code))
+				}
+			})
+		}
+	},
+	onHide(){
+		let that = this;
+		that.istips = false;
+		that.closeWebsocket();
+	},
+	onShow(){
+		let that = this;
+		that.isclosews = false;
+		if(that.ws === '' && that.isws){
+			// that.webSocketdata();
+		}
+	},
+    onInit() {
+		api.getlanguage().then((res) => {
+			if(res === 'ug'){
+				this.language = false;
+			}else{
+				this.language = true;
+			}
+		})
+		let that = this;
+		// this.deviceHeight = this.$app.options.env.deviceHeight;
+		device.getInfo({
+			success: function(ret) {
+				console.log(`handling success， brand = ${ret.brand}`);
+				console.log("屏幕高度："+ret.screenHeight);
+				that.deviceHeight = ret.screenHeight;
+			}
+		})
+		router.clear();
+		that.$on('cancel', function(e){
+			that.isabout = false;
+			// prompt.showToast({message:"shdf" + e})
+		})
+		that.$on('closetips', function(e){
+			that.istips = false;
+			// prompt.showToast({message:"shdf" + e})
+		})
+		that.$on('openmenu', function(e){
+			that.isabout = !that.isabout;
+		})
+        this.$page.setTitleBar({
+            text: '冰箱'
+        })
+		
+		let timestamp = Date.parse(new Date());
+		storage.get({
+			key: 'openidToken',
+			success: function (data) {
+				// prompt.showToast({message:"data"+JSON.stringify(data)})
+				if(data === ''){
+					that.getdevicelist();
+				}else{
+					let obj = JSON.parse(data);
+					if(parseInt(timestamp) > parseInt(obj.time)){
+						that.getdevicelist();
+					}else{
+						if(obj.openid === that.openid){
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							that.LanOnlineGet();
+							that.getDeviceStatus(that.openId);
+						}else{
+							that.getdevicelist();
+						}
+					}
+				}
+				console.log('handling success')
+			},
+			fail: function (data, code) {
+				console.log(`handling fail, code = ${code}`)
+			}
+		})
+		// this.webSocketdata();
+		// this.getdevicelist();
+    },
+	/**
+	 * 局域网初始化
+	 */
+	LanOnlineGet(){
+		let that = this;
+		net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+			that.isLanInit = true;
+		}).catch((error) => {
+			that.isLanInit = false;
+		});
+	},
+		webSocketdata(){
+					let that = this;
+					api.createWensocket(that.deviceId).then((ws) => {
+						that.ws = ws;
+						that.isws = true;
+						ws.onopen = function(){
+// 							prompt.showToast({
+// 								message: "连接成功"
+// 							})
+						}
+						ws.onerror = function (data) {
+							that.webSocketdata();
+						}
+						ws.onmessage = function (res) {
+							let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+							if(obj.status.online){
+								that.online = obj.status.online;
+							}else{
+								that.online = 'true';
+							}
+							if(obj.status.storage_power){
+								that.CAdata.storage_power = obj.status.storage_power;
+								that.storage_power = obj.status.storage_power;
+							}
+							if(obj.status.freezing_power){
+								that.freezing_power = obj.status.freezing_power;
+								that.CAdata.freezing_power = obj.status.freezing_power;
+							}
+							if(obj.status.storage_temperature){
+								that.storage_temperature = obj.status.storage_temperature;
+								that.CAdata.storage_temperature = obj.status.storage_temperature;
+							}
+							if(obj.status.freezing_temperature){
+								that.freezing_temperature = obj.status.freezing_temperature;
+								that.CAdata.freezing_temperature = obj.status.freezing_temperature;
+							}
+							// that.listDevice = obj.status;
+						}
+						ws.onclose = function(){ 
+							// 关闭 websocket
+							if(!that.isclosews){
+								that.webSocketdata();
+							}
+						};
+					});
+				},
+	gettime(){
+		let timestamp = Date.parse(new Date());
+		return parseInt(timestamp) + 3600000;
+	},
+	isshowclose(){
+			let that = this;
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
+			that.istips = true;
+			that.timeTips = setTimeout(() => {
+				that.istips = false;
+			},3000)
+		},
+	downMeiju(){
+			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
+			pkg.hasInstalled({
+				package: 'com.midea.ai.appliances',
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
+								color: '#33dd44'
+							}
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
+							}
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
+				},
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		},
+	scrollbottom(e){
+		let that = this;
+		that.isRefreshing = e.refreshing;
+		let timestamp = Date.parse(new Date());
+		if(that.isfirst){
+			that.isloading = true;
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					if(data === ''){
+						that.getdevicelist();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
+								that.getDeviceStatus(that.openId);
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		}
+		
+	},
+	onDestroy(){
+        this.$page.finish();
+      	this.$app.exit();
+    },
+	onBackPress(){
+			let that = this;
+			that.closeWebsocket();
+			router.clear();
+			this.$app.exit();
+	},
+	filetrData(data){
+		if(!data || data === 'unknow' || data === 'invalid'){
+			return '--'
+		}else{
+			return data;
+		}
+	},
+	filterCAdata(data){
+		if(!data || data === 'unknow' || data === 'invalid'){
+			return data
+		}else{
+			return data + '°';;
+		}
+	},
+    overlayClick() {
+        this.popupData1.visible = '0'
+    },
+	closeDialog(){
+		this.isdialog = false;
+	},
+	comfirmData(str){
+		let params = {};
+		let status = []
+		// if(this.isselect){
+			if(str === '冷藏室'){
+				params = {
+					storage_temperature: this.TempData,
+					storage_power: "on"
+				}
+				status = ['storage_temperature','storage_power']
+			}else{
+				params = {
+					freezing_temperature: this.TempData,
+					freezing_power:'on'
+				}
+				status = ['freezing_temperature','freezing_power']
+			}
+			
+			this.isdialog = false;
+			this.postDeviceControl(params,status);
+// 		}else{
+// 			prompt.showToast({message:"你看看，"+str+"都还没开启就想选择温度？开启了"+str+"才能选择哦"})
+// 		}
+	},
+	selectData(str,tips){
+		if(this.isselect){
+			this.TempData = str;
+		}else{
+			prompt.showToast({message:"你看看，"+tips+"都还没开启就想选择温度？开启了"+tips+"才能选择哦"})
+		}
+	},
+	changdata(e){
+		let params = {};
+		let status = [];
+		if(e.checked){
+			if(this.selectName === '冷藏室'){
+				params = {
+					storage_power: 'on'
+				}
+				status = ['storage_power']
+			}else{
+				params = {
+					freezing_power: 'on'
+				}
+				status = ['freezing_power']
+			}
+		}else{
+			if(this.selectName === '冷藏室'){
+				params = {
+					storage_power: 'off'
+				}
+				status = ['storage_power']
+			}else{
+				params = {
+					freezing_power: 'off'
+				}
+				status = ['freezing_power']
+			}
+		}
+		
+		// this.isdialog = false;
+		this.postDeviceControl(params,status);
+		
+	},
+    showPopup(str) {
+		let that = this;
+		this.TempSelectList = [];
+		if(this.online === 'true'){
+			this.isdialog = true;
+			if(str === 'freezing_power'){
+				this.selectName = "冷冻室";
+				if(this.CAdata.freezing_power === 'on'){
+					this.isselect = true;
+				}else{
+					this.isselect = false;
+				}
+				if(!this.CAdata.freezing_temperature || this.CAdata.freezing_temperature === 'unknow' || this.CAdata.freezing_temperature === 'invalid'){
+					this.TempData = "--";
+				}else{
+					this.TempData = this.CAdata.freezing_temperature;
+				}
+				
+				for(let i = -24;i < -15;i++){
+					let obj = {};
+					obj = {
+						value:i.toString()
+					}
+					this.TempSelectList.push(obj);
+				}
+			}else if(str === 'storage_power'){
+				this.selectName = "冷藏室";
+				this.isselect = true;
+				if(!this.CAdata.storage_temperature || this.CAdata.storage_temperature === 'unknow' || this.CAdata.storage_temperature === 'invalid'){
+					this.TempData = "--";
+				}else{
+					this.TempData = this.CAdata.storage_temperature;
+				}
+				for(let i = 2;i < 9;i++){
+					let obj = {};
+					obj = {
+						value:i.toString()
+					}
+					this.TempSelectList.push(obj);
+				}
+			}
+			
+			setTimeout(function(){
+				let num = 0;
+				that.TempSelectList.forEach(function(item,i){
+					if(item.value === that.TempData){
+						num = i
+					}
+				})
+				that.$element('dialogselect').scrollTo({index:num})
+			},200)
+		}else{
+			that.isshowclose();
+		}
+    },
+    hiddenPopup() {
+        this.popupData1.visible = '0'
+    },
+    callback1(data) {
+
+    },
+    setSliderValue: function(e) {
+        this.sliderValue = e.progress
+    },
+    startConfigDevice() {
+        const key = this.key;
+    },
+	//获取第三方登录信息
+		getdevicelist(){
+			let that = this;
+			that.isloading = true;
+			account.authorize({
+				type: 'code',
+				success: function(data) {
+					let params = {
+						thirdUId: data.code,
+					}
+					api.getUserToken(params).then((res) => {
+						let data_accesstoken = res;
+						if (data_accesstoken.code && data_accesstoken.code === 200) {
+							let result_data = typeof data_accesstoken.data === "object"? data_accesstoken.data:JSON.parse(data_accesstoken.data);
+							if (!parseInt(result_data.code)) {
+								that.openId = result_data.openId;
+								that.openid = result_data.openId;
+								that.accessToken = result_data.accessToken;
+								let obj = {
+									openid: that.openId,
+									accessToken: that.accessToken,
+									time: that.gettime()
+								}
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function (data) {
+										
+									},
+									fail: function (data, code) {
+										
+									}
+								})
+								that.LanOnlineGet();
+								that.getDeviceStatus(that.openId);
+							} else {
+								that.netWorkGet(api.getCode(result_data.code,"获取访问令牌失败"))
+								// that.netWorkGet('获取访问令牌失败')
+								that.isfirst = true;
+								that.isdialog = false;
+								that.isloading = false;
+								that.isRefreshing = false;
+							}
+						} else {
+							that.netWorkGet('获取访问令牌失败,请稍后重试')
+							that.isfirst = true;
+							that.isdialog = false;
+							that.isloading = false;
+							that.isRefreshing = false;
+						}
+					}).catch((error) => {
+						that.netWorkGet('获取访问令牌失败,请稍后重试')
+						that.isfirst = true;
+						that.isdialog = false;
+						that.isRefreshing = false;
+						that.isloading = false;
+					})
+				},
+				fail: function(data, code) {
+					console.log("授权接口：data"+data+":::code"+code)
+					that.netWorkGet('授权失败,请稍后重试')
+					that.isfirst = true;
+					that.isdialog = false;
+					that.isRefreshing = false;
+					that.isloading = false;
+				}
+			})
+		},
+		/**
+		 * 局域网获取
+		 */
+		getLanData(res){
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			if(parseInt(obj.code) == 0){
+				that.isfirst = true;
+				that.isloading = false;
+				that.isRefreshing = false;
+				that.isdialog = false;
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				that.CAdata = data;
+				that.listDevice = data;
+				that.CAdata.online = "true";
+				that.listDevice.online = "true";
+				if(that.CAdata.storage_power === 'on'){
+					that.isselect = true;
+				}else{
+					that.isselect = false;
+				}
+				that.storage_power = data.storage_power;
+				that.freezing_power = data.freezing_power;
+				that.storage_temperature = data.storage_temperature;
+				that.freezing_temperature = data.freezing_temperature;
+				that.online = "true";
+			}else{
+				that.isagain = false;
+				that.lanOnline = "false";
+				that.getDeviceStatus(that.openId);
+			}
+		},
+		/**
+		 * 联网获取
+		 */
+		getdataLan(res){
+			let that = this;
+			that.isfirst = true;
+			that.isloading = false;
+			that.isRefreshing = false;
+			that.isdialog = false;
+			if(res.code === 200){
+				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+				if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
+					let obj = data.devices[0].properties;
+					that.CAdata = obj;
+					that.listDevice = obj;
+					if(that.CAdata.storage_power === 'on'){
+						that.isselect = true;
+					}else{
+						that.isselect = false;
+					}
+					that.storage_power = obj.storage_power;
+					that.freezing_power = obj.freezing_power;
+					that.storage_temperature = obj.storage_temperature;
+					that.freezing_temperature = obj.freezing_temperature;
+					that.online = obj.online;
+					if (that.online != 'true') {
+						that.isshowclose()
+					}
+				}else{
+					that.initData();
+					if(data.msg === ''){
+						let str1 = '';
+						if(data.devices[0].status){
+							str1 = data.devices[0].status;
+							if(str1.toString() === '-6'){
+								that.isshowclose();
+								return false;
+							}
+							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+								// that.netWorkGet('设备离线')
+								that.isshowclose();
+							}else{
+								that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+							}
+						}else{
+							str1 = data.code;
+							that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
+						}
+						// that.netWorkGet('获取设备状态失败')
+					}else{
+						that.netWorkGet(data.msg)
+					}
+					// that.netWorkGet(data.msg)
+				}
+			}else{
+				that.initData();
+				that.netWorkGet('获取设备状态失败,请稍后重试')
+			}
+		},
+		//查询状态
+		getDeviceStatus(opid){
+			let that = this;
+			that.isloading = true;
+			let params = {
+				openId: opid,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: that.CAlist
+				}]
+			}
+			that.istips = false;
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
+			api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				that.isagain = true;
+				if(res.lanonline){
+					that.getdataLan(res);
+				}else{
+					that.getLanData(res);
+				}
+			}).catch((error) => {
+				if(error.online){
+					that.initData();
+					that.netWorkGet('获取设备状态失败,请稍后重试')
+					that.isdialog = false;
+					that.isfirst = true;
+					that.isRefreshing = false;
+					that.isloading = false;
+				}else{
+					that.isagain = false;
+					that.lanOnline = "false";
+					that.getDeviceStatus(that.openId);
+				}
+			})
+		},
+		/**
+		 * 局域网控制
+		 */
+		lanControl(res,obj1,status){
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			console.log("局域网："+JSON.stringify(res))
+			if(parseInt(obj.code) == 0){
+				that.isRefreshing = false;
+				that.isloading = false;
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				that.CAdata.storage_power = data.storage_power;
+				that.storage_power = data.storage_power;
+				that.freezing_power = data.freezing_power;
+				that.CAdata.freezing_power = data.freezing_power;
+				that.storage_temperature = data.storage_temperature;
+				that.CAdata.storage_temperature = data.storage_temperature;
+				that.freezing_temperature = data.freezing_temperature;
+				that.CAdata.freezing_temperature = data.freezing_temperature;
+				if(that.CAdata.storage_power === 'on'){
+					that.isselect = true;
+				}else{
+					that.isselect = false;
+				}
+			}else{
+				that.isagain = false;
+				that.lanOnline = 'false';
+				that.postDeviceControl(obj1, status);
+			}
+		},
+		/**
+		 * 广域网控制
+		 */
+		wlanControl(res){
+			let that = this;
+			
+							if(res.code === 200){
+								let data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
+								if(parseInt(data.code) == 0){
+									if(!parseInt(data.devices[0].status)){
+										let isall = false;
+										that.online = "true";
+										let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+										if(obj.storage_power){
+											 that.CAdata.storage_power = obj.storage_power;
+											 that.storage_power = obj.storage_power;
+										}else{
+											isall = true;
+										}
+										if(obj.freezing_power){
+											that.freezing_power = obj.freezing_power;
+											that.CAdata.freezing_power = obj.freezing_power;
+										}else{
+											isall = true;
+										}
+										if(obj.storage_temperature){
+											that.storage_temperature = obj.storage_temperature;
+											that.CAdata.storage_temperature = obj.storage_temperature;
+										}else{
+											isall = true;
+										}
+										if(obj.freezing_temperature){
+											that.freezing_temperature = obj.freezing_temperature;
+											that.CAdata.freezing_temperature = obj.freezing_temperature;
+										}else{
+											isall = true;
+										}
+										if(isall){
+											that.isloading = true;
+											 that.getDeviceStatus(that.openId);
+										}else{
+											that.isRefreshing = false;
+											that.isloading = false;
+											if(that.CAdata.storage_power === 'on'){
+												that.isselect = true;
+											}else{
+												that.isselect = false;
+											}
+										}
+										that.listDevice = obj;
+									}else{
+										that.isRefreshing = false;
+										that.isloading = false;
+										that.initData();
+										if(data.msg === ''){
+											let str1 = '';
+											if(data.devices[0].status){
+												str1 = data.devices[0].status;
+												if(str1.toString() === '-6'){
+													that.isshowclose();
+													return false;
+												}
+												if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+													that.netWorkGet('设备离线')
+												}else{
+													that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+												}
+											}else{
+												str1 = data.code;
+												that.netWorkGet(api.getCode(str1,'操作设备失败'))
+											}
+										}else{
+											that.netWorkGet(data.msg)
+										}
+									}
+								}else{
+									that.isRefreshing = false;
+									that.isloading = false;
+									that.initData();
+									if(data.msg === ''){
+										let str1 = '';
+										str1 = data.code;
+										that.netWorkGet(api.getCode(str1,'操作设备失败'))
+									}else{
+										that.netWorkGet(data.msg)
+									}
+								}
+								
+							}else{
+								that.isloading = false;
+								that.isRefreshing = false;
+								that.initData();
+								that.netWorkGet('操作设备失败,请稍后重试')
+							}
+		},
+		postDeviceControl(obj,status){
+			let that = this;
+			let status_params = that.CAdata;
+			for(let i = 0; i < status.length;i++){
+				delete status_params[status[i]]
+			}
+			if(status_params.online){
+				delete status_params.online
+			}
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: obj,
+					status:that.listDevice
+					// status:status_params
+				}]
+			}
+			that.isloading = true;
+			console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
+			api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				that.isagain = true;
+				if(res.lanonline){
+					that.wlanControl(res);
+				}else{
+					that.lanControl(res,obj,status)
+				}
+			}).catch((error) => {
+				if(error.online){
+					that.initData();
+					that.netWorkGet('操作设备失败,请稍后重试')
+					that.isRefreshing = false;
+					that.isloading = false;
+				}else{
+					that.isagain = false;
+					that.lanOnline = 'false';
+					that.postDeviceControl(obj, status);
+				}
+			})
+		},
+		initData(){
+			this.isfirst = true;
+			this.CAdata = {
+				storage_power: 'off',
+				freezing_power: 'off',
+				storage_temperature: '3',
+				freezing_temperature: '0'
+			}
+			this.storage_power = 'off';
+			this.freezing_power = 'off';
+			this.storage_temperature = '3';
+			this.freezing_temperature = '0';
+		},
+		netWorkGet(str){
+			network.getType({
+				success: function (data) {
+					if(data.type === 'none'){
+						prompt.showToast({
+							message: str + "，请检查网络",
+							duration:1
+						}) 
+					}else{
+						prompt.showToast({
+							message: str,
+							duration:1
+						}) 
+					}
+				}
+			})
+		}
+}
+</script>
+<style lang="less">
+.container {
+    flex-direction: column;
+    color: #ffffff;
+	.dialogShow{
+		width: 960px;
+		height: 682px;
+		position: fixed;
+		left:60px;
+		padding-top: 30px;
+		border-radius: 30px;
+		flex-direction: column;
+		background-color:#ffffff;
+		.dialogbtn{
+			width:100%;
+			height:150px;
+			flex-direction: row;
+			border-top-width: 1px;
+			border-top-color: #cccccc;
+			.dialogbtn_btn1{
+				width: 50%;
+				font-size:48px;
+				color:#666666;
+				height:60px;
+				margin-top:50px;
+				border-right-width: 1px;
+				border-right-color: #cccccc;
+				text-align: center;
+			}
+			.dialogbtn_btn2{
+				width: 50%;
+				margin-top:40px;
+				font-size:48px;
+				color:#3191FD;
+				height:80px;
+				text-align: center;
+			}
+		}
+		.dialogselect{
+			width:100%;
+			height:500px;
+			.dialoglist{
+				padding-left: 30px;
+				padding-right: 30px;
+				.dialoglistText{
+					width: 50%;
+					margin-left: 55px;
+					text-align: right;
+					height:150px;
+					font-size: 55px;
+				}
+				.dialoglistImg{
+					width:55px;
+					height: 55px;
+					margin-top:30px;
+					margin-left: 30px;
+					resize-mode: cover;
+				}
+			}
+		}
+		.dialogSwitch{
+			width: 100%;
+			border-bottom-width: 1px;
+			height: 120px;
+			padding-left:30px;
+			padding-right:30px;
+			border-bottom-color: #cccccc;
+			flex-direction: row;
+			.dialogText{
+				width:850px;
+				display: flex;
+				font-size: 45px;
+				height: 120px;
+				justify-content: flex-start;
+			}
+			.dialogTextSwitch{
+				display: flex;
+				justify-content: flex-end;
+			}
+			.dialogText_1{
+				width:800px;
+				display: flex;
+				font-size: 45px;
+				height: 120px;
+				justify-content: flex-start;
+			}
+			.dialogdata{
+				font-size: 38px;
+				color:#666666;
+			}
+			.dialogDown{
+				width:35px;
+				height:35px;
+				margin-top: 40px;
+				margin-left:15px;
+				resize-mode:cover;
+			}
+		}
+	}
+    .temperature_display {
+//         width: 100%;
+//         height: 80%;
+//         text-align: center;
+//         background-color: #3191FD;
+//         flex-direction: column;
+//         font-size: 104px;
+	}
+		.main-nav{
+// 			width: 100%;
+// 			height: 100%;
+		}
+		.main-nav-nav{
+			flex-direction: column;
+// 			width: 100%;
+// 			height: 80%;
+		}
+		.downMeiju{
+			width: 100%;
+			margin-top: 50px;
+			height: 95px;
+			justify-content: flex-end;
+			padding-right: 60px;
+			// padding-top: 60px;
+		}
+		.downMeiju_l{
+			width: 100%;
+			margin-top: 50px;
+			height: 95px;
+			justify-content: flex-start;
+			padding-right: 60px;
+			// padding-top: 60px;
+		}
+		.nav_click_pic{
+			width: 90px;
+			height: 90px;
+			resize-mode: cover;
+		}
+		.child-lock-text{
+			width: 100%;
+			text-align: right;
+			padding-right: 50px;
+			font-size: 24px;
+			color: #FFFFFF;
+		}
+        .display1 {
+            width: 852px;
+            height: 25%;
+            flex-direction: row;
+            margin: 10px 114px 0px 114px;
+            padding-bottom: 30px;
+            border-bottom-width: 2px;
+            border-color: #FFFFFF;
+            .left {
+                width: 426px;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 35px;
+                border-right-width: 2px;
+                border-color: #5EA9FD;
+                flex-direction: column;
+                .text1 {
+                    font-size: 116px;
+                    color: #ffffff;
+                    margin-bottom: 15px
+                }
+                .text2 {
+                    font-size: 56px;
+                    color: #ffffff;
+                }
+            }
+            .right {
+                width: 426px;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 35px;
+                flex-direction: column;
+                .text1 {
+                    font-size: 116px;
+                    color: #ffffff;
+                    margin-bottom: 15px
+                }
+                .text2 {
+                    font-size: 56px;
+                    color: #ffffff;
+                }
+            }
+        }
+        .display2 {
+            width: 852px;
+            height: 500px;
+            margin: 0px 114px;
+            border-bottom-width: 1px;
+            border-color: #dddddd;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            &-text1 {
+                align-items: center;
+                justify-content: center;
+                font-size: 116px;
+                color: #ffffff;
+                margin-bottom: 15px;
+            }
+            &-text2 {
+                align-items: center;
+                justify-content: center;
+                font-size: 56px;
+                color: #ffffff;
+            }
+        }
+        .display3 {
+            width: 852px;
+            height: 500px;
+            margin: 40px 114px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            &-text1 {
+                align-items: center;
+                justify-content: center;
+                font-size: 116px;
+                color: #ffffff;
+                margin-bottom: 25px;
+            }
+            &-text2 {
+                align-items: center;
+                justify-content: center;
+                font-size: 56px;
+                color: #ffffff;
+            }
+        }
+        .display4 {
+            width: 852px;
+            height: 25%;
+            margin: 40px 114px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            &-fast_cooling {
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                &-image {
+                    margin-bottom: 20px;
+                    width: 84px;
+                    height: 84px;
+                }
+                &-text {
+                    font-size: 48px;
+                    color: #ffffff;
+                }
+            }
+            &-quick_freeze {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 48px;
+                color: #ffffff;
+                &-image {
+                    margin-bottom: 20px;
+                    width: 84px;
+                    height: 84px;
+                }
+                &-text {
+                    font-size: 48px;
+                    color: #ffffff;
+                }
+            }
+            &-intelligence {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 48px;
+                color: #ffffff;
+                margin-bottom: 15px;
+                &-image {
+                    margin-bottom: 20px;
+                    width: 84px;
+                    height: 84px;
+                }
+                &-text {
+                    font-size: 48px;
+                    color: #ffffff;
+                }
+            }
+            &-holiday {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 48px;
+                color: #ffffff;
+                &-image {
+                    margin-bottom: 20px;
+                    width: 84px;
+                    height: 84px;
+                }
+                &-text {
+                    font-size: 48px;
+                    color: #ffffff;
+                }
+            }
+        }
+    
+    .control_button {
+        width: 360px;
+        height: 348px;
+        font-size: 40px;
+        text-align: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0px 350px;
+        &-page {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            .b-blue {
+                background-color: #3191FD;
+            }
+            &-circus {
+                height: 150px;
+                width: 150px;
+                border-radius: 75px;
+                border: 1px solid #666666;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 15px;
+                &-text {
+                    font-size: 48px;
+                }
+                .f-white {
+                    color: #ffffff;
+                }
+            }
+            &-text {
+                font-size: 36px;
+            }
+        }
+    }
+    .mask {
+        flex-direction: column;
+		position:fixed;
+		top:0px;
+		left:0px;
+		bottom:0px;
+		right: 0px;
+		background-color: #333333;
+		opacity: 0.3;
+        align-items: center;
+        &-title {
+            font-weight: bold;
+            font-size: 60px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            padding: 30px 60px;
+            border-bottom-width: 1px;
+            border-color: #d9d9d9;
+            &-text {
+                font-weight: bold;
+                font-size: 48px;
+            }
+        }
+        &-content {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 10px 60px;
+            &-title {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                &-text {
+                    font-weight: bold;
+                    font-size: 48px;
+                }
+            }
+            &-display {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                height: 300px;
+                margin: 10px 20px;
+                padding-top: 50px;
+                &-text {
+                    font-size: 116px;
+                }
+            }
+        }
+        &-slider {
+            width: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+            color: #ECECEC;
+            selected-color: #3191FD;
+        }
+        &-temperature {
+            padding: 10px 30px;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            &-left {
+                font-size: 36px;
+                color: #666666;
+            }
+            &-right {
+                font-size: 36px;
+                color: #666666;
+            }
+        }
+        &-foot {
+            width: 100%;
+            border-top-width: 3px;
+            border-color: #ECECEC;
+            margin-top: 30px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            &-confirm {
+                font-size: 48px;
+                color: #666666;
+                flex: 1;
+                text-align: center;
+                border-right-width: 3px;
+                border-color: #ECECEC;
+                ;
+            }
+            &-cancel {
+                font-size: 48px;
+                color: #3191FD;
+                flex: 1;
+                text-align: center;
+            }
+        }
+    }
+}
+</style>

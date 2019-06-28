@@ -1,0 +1,257 @@
+<template>
+    <div class="container">
+        <div class="switch-box">
+            <text if="{{language}}">{{titleText}}</text>
+            <!-- <div class="switch-bg {{switchBg}}" @click="switchFn()">
+                <div class="switch-btn {{anima}}"></div>
+            </div> -->
+			<switch checked="{{flag}}" @change="switchFn()"></switch>
+			<text if="{{!language}}">{{titleText}}</text>
+        </div>
+        <div class="time-box">
+            <text if="{{language}}">设置时间</text>
+            <div class="time-r">
+                <text if="{{language}}" class="timeText">{{timeText}}</text>
+                <image src="../../Common/img/arow_down.png"></image>
+				<text if="{{!language}}" class="timeText">{{timeText}}</text>
+            </div>
+			<text if="{{!language}}">设置时间</text>
+        </div>
+        <list class="list-box">
+            <block for="listData">
+                <list-item class="item" type="list" @click="{{selectFn($item)}}">
+                    <text if="{{language}}" style="color:{{timeValue==$item?hightColor:defaultColor}}; font-size:{{timeValue==$item?hightFontSize:defaultFontSize}}">{{$item}}</text>
+                    <image class="img" style="opacity:{{timeValue==$item?1:0}}" src="../../Common/img/icon_selected.png"></image>
+					<text if="{{!language}}" style="color:{{timeValue==$item?hightColor:defaultColor}}; font-size:{{timeValue==$item?hightFontSize:defaultFontSize}}">{{$item}}</text>
+                </list-item>
+            </block>
+        </list>
+        <div class="btn-grounp">
+            <text class="btn btn-cancel" @click="cancelFn">取消</text>
+            <text class="btn btn-sure" @click="sureFn">确定</text>
+        </div>
+    </div>
+</template>
+<style lang="less" scoped>
+    text,
+    span{
+        font-size: 48px;
+        text-align: center;
+    }
+    .container{
+		height:100%;
+        flex-direction: column;
+        width: 100%;
+    }
+    .switch-box,
+    .time-box{
+        height: 140px;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 60px;
+        padding-right: 60px;
+        border-bottom-width: 3px;
+        border-style: solid;
+        border-bottom-color: #f1f1f1;
+        text{
+            color: #000;
+        }
+        .timeText{
+            color: #666666;
+        }
+    }
+    .switch-bg{
+        width: 126px;
+        height: 72px;
+        border-radius: 36px;
+        background-color: #D8D8D8;
+        align-items: center;
+        &-on{
+            background-color: #3191FD;
+        }
+    }
+    .switch-btn{
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+        background-color: #ffffff;
+        margin-left: 12px;
+    }
+    .time-r{
+        align-items: center;
+        image{
+            width: 32px;
+            height: 32px;
+            resize-mode: center;
+            margin-left: 20px;
+        }
+    }
+    .list-box{
+        height: 460px;
+        background-color: #f2f2f2;
+    }
+    .item{
+        justify-content: center;
+        align-items: center;
+        height: 120px;
+        border-top-width: 3px;
+        border-style: solid;
+        border-top-color: #e0e0e0;
+    }
+    .item text{
+        margin-left: 60px;
+    }
+    .hightColor{
+        font-size: 70px;
+        color: #3191FD;
+    }
+    .img{
+        width: 36px;
+        height: 36px;
+        resize-mode: cover;
+        margin-left: 30px;
+    }
+    .btn-grounp{
+        padding-top: 50px;
+        padding-bottom: 50px;
+        border-top-width: 3px;
+        border-top-color: #e5e5e5;
+        border-style: solid;
+    }
+    .btn-grounp .btn{
+        flex: 1;
+        text-align: center;
+    }
+    .btn-grounp .btn-cancel{
+        color: #666;
+        border-right-width: 3px;
+        border-right-color: #e5e5e5;
+        border-style: solid;
+    }
+    .btn-grounp .btn-sure{
+        color: #3191FD;
+    }
+    .anima-right{
+        animation-name: animaRight;
+        animation-duration: 200ms;
+        animation-fill-mode: forwards;
+    }
+    @keyframes animaRight{
+        0%{
+            transform: translateX(0px);
+        }
+        100%{
+            transform: translateX(54px);
+        }
+    }
+    .anima-left{
+        animation-name: animaLeft;
+        animation-duration: 200ms;
+        animation-fill-mode: forwards;
+    }
+    @keyframes animaLeft{
+        0%{
+            transform: translateX(54px);
+        }
+        100%{
+            transform: translateX(0px);
+        }
+    }
+</style>
+<script>
+    import prompt from '@system.prompt';
+    export default {
+        name: 'midea-time',
+        props: {
+            flag: {
+                type: Boolean,
+                required: true
+            },
+            listData: {
+                type: Array,
+                required: true
+            },
+            timeValue: {
+                type: Number,
+                required: true
+            },
+            selectedIndex: {
+                type: Number,
+                required: true
+            },
+            text: {
+                default: '定时关机'
+            },
+            hightColor: {
+                default: '#3191FD'
+            },
+            defaultColor: {
+                default: '#666666'
+            },
+            hightFontSize: {
+                default: '70px'
+            },
+            defaultFontSize: {
+                default: '62px'
+            },
+			language: {
+				type: Boolean,
+				required: true
+			}
+        },
+        data(){
+            return {
+                value: '',
+                titleText: this.text,
+                timeText: '定时|关',
+                isFirst: true,
+                anima: '',
+                switchBg: '',
+				language: true
+            }
+        },
+        switchFn(){
+            this.flag = !this.flag;
+            if(this.isFirst){
+                this.timeValue = 1;
+                this.isFirst = false;
+            }
+        },
+        selectFn(value){
+            if(this.flag){
+                this.timeValue = value;
+            }
+        },
+        cancelFn(){
+            this.$emit('cancelEvt',{data: 'cancel'});
+        },
+        sureFn(){
+            this.$emit('sureEvt',{flag: this.flag, data: this.timeValue});
+        },
+        valueHander(newValue, oldValue){
+            this.timeText = this.timeValue+'小时';
+        },
+        flagHander(newValue){
+            if(newValue){
+                this.anima = 'anima-right';
+                this.switchBg = 'switch-bg-on';
+                this.timeText = this.timeValue+'小时';
+            }else{
+                this.anima = 'anima-left';
+                this.switchBg = '';
+                this.timeText = '定时|关';
+            }
+        },
+        onInit(){
+            if(this.flag){
+                this.isFirst = false;
+            }else{
+                this.isFirst = true;
+            }
+            this.valueHander();
+            this.$watch('timeValue','valueHander');
+            this.flagHander(this.flag);
+            this.$watch('flag', 'flagHander');
+        }
+    }
+</script>

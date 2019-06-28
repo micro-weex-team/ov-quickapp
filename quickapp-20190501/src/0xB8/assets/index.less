@@ -1,0 +1,146 @@
+.container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+.E1_nav{
+	&_list_lock_l{
+		width: 100%;
+		height: 84px;
+		margin-top: 60px;
+		padding-right: 60px;
+	}
+	&_list_lock_img{
+		width: 84px;
+		height: 100%;
+		resize-mode: cover;
+	}
+	&_list_lock{
+		flex-direction: row;
+		justify-content: flex-end;
+		width: 100%;
+		height: 84px;
+		margin-top: 60px;
+		padding-right: 60px;
+	}
+	&_list_usemeiju{
+		width: 100%;
+		text-align: right;
+		margin-top: 10px;
+		padding-right: 55px;
+		font-size: 24px;
+		color: #FFFFFF;
+	}
+}
+.B8_nav{
+	flex-direction: column;
+	&_status{
+		width: 100%;
+		text-align: center;
+		font-size: 140px;
+		// margin-top: 70px;
+		margin-top: 370px;
+	}
+	&_battery{
+		width: 100%;
+		text-align: center;
+		font-size: 48px;
+	}
+	&_data{
+		width: 100%;
+		flex-direction: row;
+		margin-top: 150px;
+		&_center{
+			width: 2px;
+			height: 220px;
+			background-color: #FFFFFF;
+			opacity: 0.3;
+		}
+		&_text{
+			width: 150px;
+		}
+		&_left{
+			width: 45%;
+			height: 220px;
+			margin-left: 150px;
+			flex-direction: column;
+			justify-content: center;
+			&_data{
+				width: 100%;
+				text-align: center;
+				font-size: 140px;
+			}
+			&_text{
+				width: 100%;
+				text-align: center;
+				margin-top: 20px;
+				font-size: 48px;
+				opacity: 0.6;
+			}
+			&_dan{
+				margin-top: 10px;
+				width: 70px;
+				height: 40px;
+				font-size: 36px;
+			}
+		}
+	}
+	&_control{
+		width: 100%;
+		margin-top: 220px;
+		flex-direction: row;
+		justify-content: center;
+		&_btn{
+			flex-direction: column;
+			justify-content: center;
+			width: 208px;
+			&_img{
+				width: 112px;
+				height: 112px;
+				margin-left: 48px;
+				margin-right: 48px;
+				resize-mode:cover;
+			}
+			&_text{
+				width: 100%;
+				margin-top: 20px;
+				text-align: center;
+				font-size: 36px;
+			}
+		}
+	}
+}
+
+.add_Animation{
+	animation-name: doingAn;
+	animation-timing-function: linear;
+	animation-duration: 1500ms;
+	animation-iteration-count:infinite;
+}
+.add_AnimationLeft{
+	animation-name: doingAn1;
+	animation-timing-function: linear;
+	animation-duration: 1500ms;
+	animation-iteration-count:infinite;
+}
+/*
+**
+**动画
+*/
+@keyframes doingAn{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes doingAn1{
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
+}

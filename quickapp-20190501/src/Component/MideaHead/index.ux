@@ -1,0 +1,180 @@
+<import name="midea-about" src="../MideaAbout/index"></import>
+<template>
+    <div class="midea-head" style="background-color:{{changColor(power,hightColor)}}">
+        <text class="{{language?'midea-head-title':'l_midea-head-title'}}" style="color:{{power === 'on'?'#ffffff':'#666666'}};">
+			{{title}}
+		</text>
+		<image class="midea-head-back" @click="openMenu" show="{{showMenu}}" src="{{foo(power,true)}}"></image>
+		<image class="midea-head-back" @click="goback" src="{{foo(power,false)}}"></image>
+		<midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about>
+	</div>
+</template>
+
+<style lang="less">
+	.l_midea-head-title{
+		width:800px;
+		height:144px;
+		font-size:50px;
+		font-weight: bold;
+		padding-right: 280px;
+		text-align:center;
+	}
+    .midea-head{
+		width:100%;
+		height: 144px;
+		background-color: #CCCCCC;
+		flex-direction: row;
+		&-title{
+			width:800px;
+			height:144px;
+			font-size:50px;
+			font-weight: bold;
+			padding-left: 280px;
+			text-align:center;
+		}
+		&-more{
+			width: 66px;
+			height: 66px;
+			margin-top: 40px;
+		}
+		&-back{
+			width: 66px;
+			height: 66px;
+			margin-left: 40px;
+			margin-top: 40px;
+		}
+	}
+</style>
+
+<script>
+	import router from '@system.router';
+    import prompt from '@system.prompt';
+    export default {
+        name: 'midea-head',
+        props: {
+			coloron:{
+				default: '',
+				type: String
+			},
+			coloroff:{
+				default: '#CCCCCC',
+				type: String
+			},
+			title:{
+				default: '',
+				type: String
+			},
+			power: {
+				default: 'off',
+				type: String
+			},
+			showMenu: {
+				default: true,
+				type: Boolean
+			},
+			isnew: {
+				default: false,
+				type: Boolean
+			},
+			language: {
+				default: true,
+				type: Boolean
+			}
+		},
+        data(){
+            return {
+				isabout:false,
+                value: '',
+                txt: this.text,
+				showMenu: true,
+				power_1:'off',
+				language:true,
+				bgColor: '#3191FD',
+				img1:'../Component/MideaHead/assets/menu_ic_more_normal.png'
+            }
+        },
+        onInit(){
+			let that = this;
+			if(that.power){
+				that.$watch('power', 'watchPropsChange')
+			}
+			var page = router.getState()
+			if(that.power == 'on'){
+				
+			}else{
+				
+			}
+			if(that.isnew){
+				that.bgColor = "#F9CB3D";
+			}else{
+				that.bgColor = "#3191FD";
+			}
+        },
+		foo(power,bol){
+			var page = router.getState()
+			console.log(`page index = ${page.index}`)
+			console.log(`page name = ${page.name}`)
+			console.log(`page path = ${page.path}`)
+			let path = '../';
+			var string=page.path;
+            var count=1;
+            for (let index = 0; index < string.length; index++) {
+               var a=string.indexOf('/',index);
+               if(a!=-1&&string.indexOf('/',index)!=string.indexOf('/',index-1)){
+                    count++;
+               }
+            }
+			let img = '';
+			let img2 = ''
+			if(power == 'on'){
+				img = 'Component/MideaHead/assets/menu_ic_more_white.png';
+				img2 = 'Component/MideaHead/assets/menu_ic_cancel_online.png';
+			}else{
+				img = 'Component/MideaHead/assets/menu_ic_more_normal.png';
+				img2 = 'Component/MideaHead/assets/menu_ic_cancel_normal.png';
+			}
+			let pathall = path;
+			if(count > 1){
+				pathall = path.repeat(count)
+			}
+			if(bol){
+				return pathall+img;
+			}else{
+				return pathall+img2;
+			}
+		},
+		changColor(power,str){
+			let that = this;
+			if(power == 'on'){
+				if(that.coloron != ''){
+					return that.coloron;
+				}else{
+					return that.bgColor;
+				}
+			}else{
+				return that.coloroff;
+			}
+			
+		},
+// 		watchbgColorChange(newV, oldV){
+// 			this.bgColor = this.coloron;
+// 		},
+		watchPropsChange(newV, oldV){
+			this.power_1 = newV;
+		},
+		goback(){
+			this.$emit("closeWebsocket",{ params: "关闭" })
+			router.clear();
+			// router.back();
+			this.$app.exit();
+		},
+		openMenu(){
+			if(!this.isabout){
+				this.isabout = true;
+			}
+		},
+		onclickFn(){
+			this.isabout = false;
+		}
+    }
+</script>

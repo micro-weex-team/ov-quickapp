@@ -1,0 +1,334 @@
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-foot" src="../Component/MideaFoot/index"></import>
+<import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
+<import name="midea-select" src="../Component/MideaSelect/index"></import>
+<import name="midea-showdialog" src="../Component/MideaShowdialog/index"></import>
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="nav">
+  	<midea-head title="标题" show-menu="{{showMenu}}" isnew="{{bgColor}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
+	<list onscrollbottom="" id="list" class="E1_list">
+		<list-item class="center" type="listItem">
+			<midea-meiju power="{{power}}"></midea-meiju>
+		</list-item>
+	</list>
+	<midea-showdialog if="{{showd}}" header="{{head}}" data="{{setdata}}" footer="{{foot}}" onclick-event3="closeDialog()" onclick-event1="closeAlert()" onclick-event2="comfirm()">
+	    <div class="nav_dialog" style="height:{{isup?453:heightNav}}px;" >
+	        <div class="item" @click="selectPower()">
+	            <text class="text1">预约开机</text>
+	            <image @click="selectPower()" class="icon" src="{{ispower?'./assets/img/select.png':'./assets/img/unselect.png'}}"></image>
+	        </div>
+	        <div class="item" @click="selectClose()">
+	            <text class="text1">预约关机</text>
+	            <image class="icon" src="{{isclose?'./assets/img/select.png':'./assets/img/unselect.png'}}"></image>
+	        </div>
+	        <div class="item" @click="openselect()" style="border-bottom-width:{{isup?0:1}}px">
+	            <text class="text1">预约时间</text>
+	            <div class="selectData">
+	                <text class="selecttext">{{selectdata}}</text>
+	                <image class="selecticon" src="{{isup?'./assets/img/up.png':'./assets/img/down.png'}}"></image>
+	            </div>
+	        </div>
+	        <div class="itemSelect" style="height:{{isup?0:heightNav-453}}px">
+	            <list onscrollbottom="" id="list" class="itemlist">
+	                <list-item for="{{hourList}}" class="dialog_center" type="listItem"  @click="timeSelect($item.name,'hour')">
+	                    <div class="itemSelectIcon" show="{{$item.name.toString() == selectdata.substring(0,2)}}"></div>
+	                    <text class="itemoption" style="color:{{$item.name.toString() == selectdata.substring(0,2)?'#F9CB3D':'#cccccc'}}">{{$item.name}}</text>
+	                    <image class="itemSelectIcon" show="{{$item.name.toString() == selectdata.substring(0,2)}}" src="./assets/img/selected.png"></image>
+	                </list-item>
+	            </list>
+	            <div class="itemLine"></div>
+	            <list onscrollbottom="" id="list" class="itemlist">
+	                <list-item for="{{minList}}" class="dialog_center" type="listItem" @click="timeSelect($item.name,'min')">
+	                    <div class="itemSelectIcon" show="{{$item.name.toString() == selectdata.substring(3,5)}}"></div>
+	                    <text class="itemoption" style="color:{{$item.name.toString() == selectdata.substring(3,5)?'#F9CB3D':'#cccccc'}}">{{$item.name}}</text>
+	                    <image class="itemSelectIcon" show="{{$item.name.toString() == selectdata.substring(3,5)}}" src="./assets/img/selected.png"></image>
+	                </list-item>
+	            </list>
+	        </div>
+	        
+	    </div>
+	</midea-showdialog>
+	<!-- <midea-select></midea-select> -->
+	<midea-foot type="{{type}}" onclick-btn="clickEv" list-second="{{listSecond}}" list-first="{{btnlist}}"></midea-foot>
+  </div>
+</template>
+<style>
+	.nav{
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+	.E1_list{
+		background-color:#cccccc;
+	}
+	.center{
+		height: 100%;
+		width: 100%;
+		flex-direction: column;
+		background-color: #00ffff;
+	}
+	.btn{
+		width: 100px;
+		font-size: 40px;
+		height: 100px;
+	}
+	
+	.nav_dialog{
+	    width: 100%;
+	    height: 453px;
+	    flex-direction: column;
+	}
+	.item{
+	    width: 100%;
+	    height: 150px;
+	    padding-left: 60px;
+	    padding-right: 60px;
+	    flex-direction: row;
+	    align-items: center;
+	    justify-content: space-between;
+	    border-bottom-color: #E5E5E5;
+	    border-bottom-width: 1px;
+	}
+	.text1{
+	    font-size: 48px;
+	    color:#000000;
+	}
+	.icon{
+	    width: 60px;
+	    height: 60px;
+	    resize-mode: cover;
+	    border-radius: 60px;
+	}
+	.selectData{
+	    padding: 50px 18px;
+	    flex-direction: row;
+	    justify-content: center;
+	    align-items: center;
+	}
+	.selecttext{
+	    font-size: 42px;
+	    text-align: center;
+	    color: #666666;
+	}
+	.selecticon{
+	    margin-left: 37.6px;
+	    width: 30px;
+	    height: 15px;
+	    resize-mode: cover;
+	}
+	.itemSelect{
+	    width: 100%;
+	    flex-direction: row;
+	    background-color: #F2F2F2;
+	}
+	.itemlist{
+	    width: 50%;
+	}
+	.dialog_center{
+	    width: 100%;
+	    height: 105px;
+	    flex-direction: row;
+	    align-items: center;
+	    justify-content: center;
+	}
+	.itemoption{
+	    font-size: 48px;
+	    padding: 0px 50px;
+	}
+	.itemSelectIcon{
+	    width: 65px;
+	    height: 40px;
+	    resize-mode: cover;
+	}
+	.itemLine{
+	    width: 1.5px;
+	    height: 526px;
+	    background-color: #d9d9d9;
+	}
+</style>
+<script>
+import prompt from '@system.prompt';
+import account from '@service.account';
+// import api from '../Common/api/api.js';
+import index from "./assets/index.js";
+export default {
+	private: {
+		showd:true,
+		power:'off',
+		showMenu:true,
+		isnew:true,
+		hight_Color:"#3191FD",
+		defaultColor:'#CCCCCC',
+		type:'2',
+		btnlist:[{
+			name:'开关',
+			data:'on',
+			pic:'',
+			btnColor:'',
+			dataColor:'',
+			textColor:""
+		},{
+			name:'档位',
+			data:'off',
+			pic:'',
+		},{
+			name:'延迟关机',
+			data:'on',
+			pic:'',
+		},{
+			name:'灯光',
+			data:'off',
+			pic:'./assets/img/light_off.png',
+		}],
+		listSecond:[
+		{
+			name:'执行',
+			data:'on',
+			pic:'./assets/img/off.png',
+		},{
+			name:'更多',
+			data:'off',
+			pic:'',
+		},{
+			name:'其他',
+			data:'off',
+			pic:'',
+		}],
+		//miea-showdialog
+		head:{
+		    title:'头部',
+		    fontSize:48,
+		    color:"#000000",
+		    fontWeight:'bold'
+		},
+		setdata:{
+		    text:"",
+		    fontSize:40,
+		    color:'#F9CB3D',
+		    fontWeight:'normal'
+		},
+		foot:[{
+		    name:'取消',
+		    fontSize:48,
+		    color:"#F9CB3D",
+		    fontWeight:'nomal',
+		    disabled:true
+		},{
+		    name:'确定',
+		    fontSize:48,
+		    color:"#F9CB3D",
+		    fontWeight:'nomal',
+		    disabled:false
+		}],
+		ispower:true,
+		isclose:false,
+		selectdata:'05:47',
+		isup:true,
+		heightNav:980,
+		hourList:[],
+		minList:[]
+	},
+	clickBtn(){
+		 if(this.power == 'on'){
+			 this.power = 'off';
+		 }else{
+			 this.power = 'on';
+		 }
+	},
+	btnclick(){
+	},
+	clickEv(e){
+		//console.log("配置信息："+JSON.stringify(this.$app.$def))
+	},
+	closeAlert(){
+		this.showd = false;
+	    console.log("取消按钮")
+	},
+	comfirm(){
+	    console.log("确定按钮")
+	},
+	closeDialog(){
+		this.showd = false;
+		console.log("点击弹框以外的阴影部分")
+		// prompt.showToast({
+		// 	message:"ssssssssssss"
+		// })
+	},
+	selectPower(){
+	    let that = this;
+	    that.ispower = !that.ispower;
+	    that.isclose = false;
+	    that.getTime()
+	},
+	selectClose(){
+	    let that = this;
+	    that.isclose = !that.isclose;
+	    that.ispower = false;
+	    that.getTime()
+	},
+	openselect(){
+	    let that = this;
+	    that.isup = !that.isup;
+	    if(that.isup){
+	        that.heightNav = 453;
+	    }else{
+	        that.heightNav = 980;
+	    }
+	},
+	timeSelect(data,str){
+	    let that = this;
+	    if(str == 'min'){
+	        that.selectdata = that.selectdata.substring(0,2) + ":" + data;
+	    }else{
+	        that.selectdata = data + ":" + that.selectdata.substring(3,5);
+	    }
+	    that.getTime()
+	},
+	getTime(){
+	    let that = this;
+	    let str = that.ispower?"开机":that.isclose?"关机":'';
+	    if(that.ispower || that.isclose){
+	        that.setdata.text = "当前预约："+that.selectdata+str;
+	    }else{
+	        that.setdata.text = "";
+	    }
+	},
+	onInit() {
+	    let that = this;
+		// index.getHeight();
+		// console.log("配置信息："+JSON.stringify(this.$app.$def))
+	    for (let time = 1; time < 24; time++) {
+	        let obj = {
+	            name:'',
+	            data:''
+	        }
+	        obj.data = time;
+	        if(time < 10){
+	            obj.name = '0'+time;
+	        }else{
+	            obj.name = time;
+	        }
+	        that.hourList.push(obj)
+	    }
+	    for (let time = 0; time < 60; time++) {
+	        let obj = {
+	            name:'',
+	            data:''
+	        }
+	        obj.data = time;
+	        if(time < 10){
+	            obj.name = '0'+time;
+	        }else{
+	            obj.name = time;
+	        }
+	        that.minList.push(obj)
+	    }
+	    that.getTime();
+		console.log("that.$app.$def.publicData.mes"+JSON.stringify(this.$app.$def.data1))
+		// console.log("信息来了"+JSON.stringify(that.$app))
+	    // console.log(that.hourList)
+	},
+}
+</script>
+
+

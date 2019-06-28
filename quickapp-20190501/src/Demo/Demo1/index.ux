@@ -1,0 +1,19 @@
+<import name="midea-head" src="../../Component/MideaHead/index"></import>
+<template>
+	<div>
+		<midea-head title="标题" show-menu="{{showMenu}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
+	</div>
+</template>
+<script>
+	export default {
+		data: {
+			showMenu:true,
+			hight_Color:"#3191FD",
+			defaultColor:'#CCCCCC',
+			power:'off'
+		},
+		onInit () {
+			
+		}
+	}
+</script>

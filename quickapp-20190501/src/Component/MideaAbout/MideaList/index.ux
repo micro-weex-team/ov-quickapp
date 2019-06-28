@@ -1,0 +1,153 @@
+<template>
+    <div class="mdiea_about_select_list">
+		<div class="midea-title">
+			<image class="{{language?'midea-title-back':'L_midea-title-back'}}" @click="backPage()" src="../assets/menu_ic_arrow_back_normal.png"></image>
+			<text class="midea-title-text">
+				关于美居快应用
+			</text>
+		</div>
+        <div class="mdiea_about_list_head">
+			<image @longpress="getapp()" class="mdiea_about_list_img" src="./assets/logo.png"></image>
+			<text class="mdiea_about_list_title">美居快应用</text>
+		</div>
+		<div class="mdiea_about_list_body">
+			<div class="mdiea_about_list_server" @click="openUrl('MideaServer')">
+				<text class="mdiea_about_list_text" if="{{language}}">服务协议</text>
+				<image class="mdiea_about_list_left" src="./assets/ic_nextpage.png"></image>
+				<text class="mdiea_about_list_text" if="{{!language}}">服务协议</text>
+			</div>
+			<div class="mdiea_about_list_self" @click="openUrl('MideaSelf')">
+				<text class="mdiea_about_list_text" if="{{language}}">隐私协议</text>
+				<image class="mdiea_about_list_left" src="./assets/ic_nextpage.png"></image>
+				<text class="mdiea_about_list_text" if="{{!language}}">隐私协议</text>
+			</div>
+		</div>
+    </div>
+</template>
+<style>
+    .mdiea_about_select_list {
+		width:100%;
+		height:100%;
+		background-color: #F2F2F2;
+		flex-direction: column;
+    }
+	.mdiea_about_list_head{
+		width: 100%;
+		height: 440px;
+		margin-top: 36px;
+		flex-direction: column;
+		background-color: #ffffff;
+	}
+	.midea-title{
+		width: 100%;
+		height: 144px;
+		background-color: #ffffff;
+		border-bottom-color: #cccccc;
+		border-bottom-width: 1px;
+		flex-direction: row;
+	}
+	.midea-title-back{
+		width: 66px;
+		height:66px;
+		margin-top: 50px;
+		margin-left: 40px;
+	}
+	.L_midea-title-back{
+		width: 66px;
+		height:66px;
+		margin-top: 50px;
+		margin-right: 40px;
+		transform: rotate(180deg);
+	}
+	.midea-title-text{
+		width: 848px;
+		height: 144px;
+		text-align: center;
+		font-size: 50px;
+		color: #000000;
+		font-weight: bold;
+	}
+	.mdiea_about_list_img{
+		width: 210px;
+		height: 210px;
+		resize-mode: cover;
+		margin-top: 84px;
+		margin-left: 435px;
+		margin-right: 435px;
+	}
+	.mdiea_about_list_title{
+		margin-top:36px;
+		width:100%;
+		text-align: center;
+		font-weight: bold;
+		font-size:48px;
+		color:#000000;
+	}
+	.mdiea_about_list_body{
+		padding-left: 60px;
+		padding-right: 60px;
+		width: 100%;
+		height: 301px;
+		margin-top: 36px;
+		flex-direction: column;
+		background-color: #ffffff;
+	}
+	.mdiea_about_list_server{
+		width: 1044px;
+		height: 150px;
+		flex-direction: row;
+		border-bottom-color: #E5E5E5;
+		border-bottom-width: 2px;
+	}
+	.mdiea_about_list_self{
+		width: 1044px;
+		height: 150px;
+		flex-direction: row;
+	}
+	.mdiea_about_list_text{
+		width: 950px;
+		height:100%;
+		font-size: 48px;
+		color: #000000;
+		text-align: left;
+	}
+	.mdiea_about_list_left{
+		width:15px;
+		height:33px;
+		margin-top: 60px;
+		resize-mode: cover;
+	}
+</style>
+<script>
+	import router from '@system.router';
+	import app from '@system.app';
+	import prompt from '@system.prompt';
+	import api from '../../../Common/api/api.js'
+    module.exports = {
+		data:{
+			language: true,
+		},
+        onInit: function () {
+			this.$page.setTitleBar({text: '关于美居快应用'});
+			api.getlanguage().then((res) => {
+				if(res === 'ug'){
+					this.language = false;
+				}else{
+					this.language = true;
+				}
+			})
+        },
+		openUrl(url){
+			router.push ({
+				uri: "Component/MideaAbout/" + url
+			})
+		},
+		getapp(){
+			let obj = app.getInfo();
+			prompt.showToast({message:"版本号"+api.hostData.pro+"：V "+obj.versionName,duration:1})
+		},
+		backPage(){
+			router.back();
+		}
+    }
+</script>

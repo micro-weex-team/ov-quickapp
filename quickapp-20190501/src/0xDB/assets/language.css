@@ -1,0 +1,26 @@
+.l_nav_stop_img{
+	width: 150px;
+	height: 150px;
+	resize-mode: cover;
+	margin-right: 300px;
+}
+.l_nav_stop_img1{
+	width: 150px;
+	height: 150px;
+	resize-mode: cover;
+	margin-right: 90px;
+}
+.l_nav_stop_text1{
+	margin-top: 20px;
+	font-size: 36px;
+	color: #FFFFFF;
+	text-align: right;
+	padding-right: 125px;
+}
+.l_nav_stop_text{
+	margin-top: 20px;
+	font-size: 36px;
+	color: #FFFFFF;
+	text-align: left;
+	padding-left:125px;
+}

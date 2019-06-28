@@ -1,0 +1,99 @@
+<template>
+	<div class="download" @click="downloadAPP()">
+		<image class="download_img" src="{{isopen?'./assets/img/logo.png':'./assets/img/logo2.png'}}"></image>
+		<text style="color: {{isopen?'#ffffff':'#666666'}}">使用美居</text>
+	</div>
+</template>
+
+<style>
+	.download {
+		flex-direction: column;
+		align-items: center;
+		margin-left: 900px;
+		margin-top: 30px;
+	}
+
+	.download_img {
+		width: 90px;
+		height: 90px;
+		resize-mode: cover;
+	}
+
+	.download text {
+		width: 96px;
+		font-size: 24px;
+		text-align: center;
+		color: #fff;
+		margin-top: 10px;
+	}
+</style>
+
+<script>
+	import pkg from '@system.package';
+	import prompt from '@system.prompt';
+	import router from '@system.router';
+	export default {
+		name: 'MideaLogo',
+		props: {
+			isopen:{
+				default: false,
+				type: Boolean
+			}
+		},
+		data() {
+			return {
+				isOpen: false
+			}
+		},
+		downloadAPP() {
+			let that = this;
+			let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+			let str2 = "您还没安装美居app，是否确定下载安装?";
+			pkg.hasInstalled({
+				package: 'com.midea.ai.appliances',
+				success: function(res) {
+					prompt.showDialog({
+						title: '提示',
+						message: res.result?str1:str2,
+						buttons: [
+							{
+								text: res.result?'直接打开':'去下载',
+								color: '#33dd44'
+							}
+						],
+						success: function(data) {
+							if (res.result) {
+								router.push({ uri: 'meiju://com.midea.meiju/main' });
+							} else {
+								pkg.install({
+									package: 'com.midea.ai.appliances',
+									success: function(resp) {
+										console.log(`handling success: ${resp.result}`);
+									},
+									fail: function(resp, code) {
+										console.log(`handling fail, code = ${code}`);
+									}
+								});
+							}
+						},
+						cancel: function() {
+							console.log('handling cancel');
+						},
+						fail: function(data, code) {
+							console.log(`handling fail, code = ${code}`);
+						}
+					});
+					
+					console.log(`handling success: ${res.result}`);
+				},
+				fail: function(res, code) {
+					console.log(`handling fail, code = ${code}`);
+				}
+			});
+		},
+		onInit() {
+			this.isOpen = this.isopen;
+		}
+
+	}
+</script>

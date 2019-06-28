@@ -1,0 +1,65 @@
+<template>
+    <div class="mdiea-tips_list">
+		<div class="mdiea-tips-mork">
+			<div class="mdiea-tips">
+				<text class="mdiea-tips-text-push">当前设备离线，请检查连接状态</text>
+				<!--<text class="mdiea-tips-text1-push" @click="close()">X</text>-->
+				<image class="mdiea-tips-img" @click="close()" src="./assets/menu_ic_cancel_online.png" ></image>
+			</div>
+		</div>
+    </div>
+</template>
+
+<style>
+    .mdiea-tips{
+        position: fixed;
+		bottom: 30px;
+		left:30px;
+		right: 30px;
+		/* width: 100%; */
+		height: 228px;
+		flex-direction: row;
+    }
+	.mdiea-tips-mork{
+		position: fixed;
+		bottom: 30px;
+		left:30px;
+		border-radius: 30px;
+		right: 30px;
+		background-color: #000000;
+		opacity:0.6;
+		/* width: 100%; */
+		height: 228px;
+	}
+	.mdiea-tips-text-push{
+		font-size: 48px;
+		width:980px;
+		height: 228px;
+		color: #FFFFFF;
+		padding-left: 50px;
+		text-align: left;
+	}
+	.mdiea-tips-img{
+		width: 60px;
+		height: 60px;
+		margin-right: 50px;
+		margin-top: 84px;
+		resize-mode: cover;
+	}
+</style>
+
+<script>
+    export default {
+        data(){
+            return {
+            }
+        },
+        onInit(){
+            
+        },
+		close(){
+			this.$dispatch('closetips',{ params: "取消" })
+		}
+
+    }
+</script>
