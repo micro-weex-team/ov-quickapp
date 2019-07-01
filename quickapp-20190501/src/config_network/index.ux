@@ -274,7 +274,7 @@
 				that.isap = "true";
 			}
 			that.iot_wifi_password = that.iot_wifi_password?that.iot_wifi_password:'';
-			if(that.ssidDevice.toString() == '00' || hat.ssidDevice.toUpperCase() == 'AB'){
+			if(that.ssidDevice.toString() == '00' || that.ssidDevice.toUpperCase() == 'AB'){
 				that.ssidDevice = 'AC'
 			}
 			let params = {
