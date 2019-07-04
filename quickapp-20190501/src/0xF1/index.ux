@@ -8,9 +8,9 @@
 <template>
 	<div class="container" id="container_body">
 		<text if="{{work_status == 2}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:{{padingLeft(left_time_hour,left_time_min)}}px;">分</text>
-		<midea-head title="破壁机" onclose-websocket="closeWebsocket" language="{{language}}" isnew="{{bgColor}}" coloron="{{online === 'true'? work_status == 0 ? '#F9CB3D' : '#F98242':'#cccccc'}}" power="{{online === 'true'?'on':'false'}}"></midea-head>
+		<midea-head title="破壁机" onclose-websocket="closeWebsocket" language="{{language}}" isnew="{{bgColor}}" coloron="{{online === 'true'? work_status == 0 || work_status == 3 ? '#F9CB3D' : '#F98242':'#cccccc'}}" power="{{online === 'true'?'on':'false'}}"></midea-head>
 		<refresh class="EA_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
-			<list onscroll="" style="background-color: {{online === 'true'? work_status == 0 ? '#F9CB3D' : '#F98242':'#cccccc'}}" class="EA_nav" id="list">
+			<list onscroll="" style="background-color: {{online === 'true'? work_status == 0 || work_status == 3 ? '#F9CB3D' : '#F98242':'#cccccc'}}" class="EA_nav" id="list">
 				<list-item type="listItem" class="EA_nav_list">
 					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}" @click="isMeiju()">
 						<image src="{{online === 'true'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="EA_nav_list_lock_img"></image>
@@ -30,7 +30,7 @@
 				</list-item>
 			</list>
 		</refresh>
-		<div class="EA_ctr" if="{{online === 'false' || (work_status == 0)}}">
+		<div class="EA_ctr" if="{{online === 'false' || (work_status == 0 || work_status == 3)}}">
 			<div class="EA_ctr_list">
 				<div class="EA_ctr_list_constrl" @click="doingDevice(25)">
 					<image src="./assets/img/3.png" class="EA_ctr_list_constrl_img"></image>
@@ -446,6 +446,9 @@
 					break;
 				case '1':
 					result = '预约中';
+					break;
+				case '3':
+					result = '空闲中';
 					break;
 			}
 			return result;
@@ -908,40 +911,6 @@
 						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
 						if (obj.mode) {
 							that.EAdata.mode = obj.mode;
-						} else {
-							isall = true;
-						}
-						if (obj.order_time_hour.toString()) {
-							that.EAdata.order_time_hour = obj.order_time_hour
-						} else {
-							isall = true;
-						}
-						if (obj.order_time_min.toString()) {
-							that.EAdata.order_time_min = obj.order_time_min
-						} else {
-							isall = true;
-						}
-						if(obj.left_time_hour.toString()){
-							that.EAdata.left_time_hour = obj.left_time_hour;
-							that.left_time_hour = obj.left_time_hour;
-						} else {
-							isall = true;
-						}
-						if(obj.left_time_min.toString()){
-							that.EAdata.left_time_min = obj.left_time_min;
-							that.left_time_min = obj.left_time_min;
-						} else {
-							isall = true;
-						}
-						if(obj.warm_time_hour.toString()){
-							that.EAdata.warm_time_hour = obj.warm_time_hour;
-							that.warm_time_hour = obj.warm_time_hour;
-						} else {
-							isall = true;
-						}
-						if(obj.warm_time_min.toString()){
-							that.EAdata.warm_time_min = obj.warm_time_min;
-							that.warm_time_min = obj.warm_time_min;
 						} else {
 							isall = true;
 						}
