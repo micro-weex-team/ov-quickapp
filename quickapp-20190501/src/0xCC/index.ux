@@ -11,7 +11,7 @@
 		<midea-head title="中央空调" language="{{language}}" onclose-websocket="closeWebsocket" power="{{isopen?'on':'off'}}" isnew="false" coloron="{{headColor}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="refreshData" refreshing="{{isRefreshing}}">
 
-			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?Color:bgColor}};">
+			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?Color:bgColor}};" class="hh">
 				<list-item type="refresh" class="wrap">
 					<midea-logo isopen="{{isopen}}"></midea-logo>
 					<div class="nav_data_show">
@@ -52,14 +52,15 @@
 						</div> -->
 		
 						<!-- 这里是我的加的 -->
-						<div class="ctrl" style="background-color:{{$item.color}};">
-							<text class="text_in" style="color: {{isopen?'#5D75F6':'#C1C1C1'}}" if="{{$item.textt != ''}}">{{$item.textt}}</text>
+						<div class="ctrl" 
+						style="background-color:{{isopen?$item.color:'#fff'}}; border-width: {{isopen&&$item.name!=='开关'?'0':'3px'}};border-style:solid;border-color: #d5d5d5;">
+							<text class="text_in" style="color:{{isopen?'#fff':'#000'}};opacity: {{isopen?'1':'0.3'}};" if="{{$item.textt != ''}}">{{$item.textt}}</text>
 							<image class="img" else="{{$item.flagImg}}" src="{{$item.icon}}"></image>
 						</div>
 						
 						<div class="nav_icon">
 						<!-- 开关、模式、风速 颜色为 常黑 -->
-							<text class="text" style="color:#000000">
+							<text class="text" style="color: #000;opacity: {{isopen||$item.name=='开关'?'1':'0.3'}};">
 								{{$item.nameNew}}
 							</text>
 						</div>
@@ -153,8 +154,8 @@ import net from '../Common/api/networkAPI.js'
 	
     module.exports = {
         private: {
-			onColor:'#E9EDFF',
-			offColor:'#F2F2F2',
+			onColor:'#FFF', //#E9EDFF
+			offColor:'#FFF', //F2F2F2
 			isagain:true,
 			lanOnline:'false',
 			isLanInit:false,
@@ -175,8 +176,8 @@ import net from '../Common/api/networkAPI.js'
 			isfirst:false,
 			dataHeight: "height: 600px",
 			humidity:"--",
-			indoor: "--",
-			value: '--',
+			indoor: "--", //室内温度
+			value: '--', //设定温度
 			fixed_time: '',
 			bgColor: '#CCCCCC',
 			dataColor: '#666666',
@@ -206,7 +207,7 @@ import net from '../Common/api/networkAPI.js'
 				"data":'开关',
 				"icon":"./assets/img/off.png",
 				"id":'',
-				"color": "",
+				"color": "#fff",
 				"flagImg": true,
 				'textt':''
 			},
@@ -215,7 +216,7 @@ import net from '../Common/api/networkAPI.js'
 				"nameNew":"模式",
 				"value":'model',
 				"data": "模式|制冷",
-				"icon":"./assets/img/model_2.png",
+				"icon":"./assets/img/model_off_2.png",
 				"id":0,
 				"color": "",
 				"flagImg": true,
@@ -388,8 +389,8 @@ import net from '../Common/api/networkAPI.js'
 						}
 						this.productList[0].color=this.offColor
 						this.productList[0].icon='./assets/img/off.png'
-						this.productList[1].color=this.onColor
-						this.productList[2].color=this.onColor
+						// this.productList[1].color=this.onColor
+						// this.productList[2].color=this.onColor
 					}else{
 						this.params = {
 							power: 'off'
@@ -623,7 +624,7 @@ import net from '../Common/api/networkAPI.js'
 				return false;
 			}
 			if(bol){
-				if(parseInt(this.dataLists.temperature)<=30){
+				if(parseInt(this.dataLists.temperature)<30){
 					if (that.productList[1].name == '模式|送风') {
 						//送风模式不能调温
 						prompt.showToast({message: '送风模式下无法设置温度'})
@@ -650,7 +651,8 @@ import net from '../Common/api/networkAPI.js'
 				return false;
 			}
 			if(bol){
-				if(parseInt(this.dataLists.temperature)>=17){
+				if(parseInt(this.dataLists.temperature)>17){
+					
 					if (that.productList[1].name == '模式|送风') {
 						//送风模式不能调温
 						prompt.showToast({message: '送风模式下无法设置温度'})
@@ -662,7 +664,6 @@ import net from '../Common/api/networkAPI.js'
 						delete status.temperature;
 						this.postDeviceControl(this.params,status);
 					}
-					
 				}else{
 					prompt.showToast({message: '温度最低为17°C'})
 				}
@@ -1174,6 +1175,8 @@ import net from '../Common/api/networkAPI.js'
 				case 'cool':
 					this.productList[1].icon = `./assets/img/model_${status}_1.png`;
 					this.productList[1].name = '模式|制冷'
+					this.productList[1].color = '#627BFF'
+					this.productList[2].color = '#627BFF'
 					this.productList[1].id = 0;
 					this.Color = '#627BFF'
 					this.headColor = '#627BFF'
@@ -1181,6 +1184,8 @@ import net from '../Common/api/networkAPI.js'
 				case 'heat':
 					this.productList[1].icon = `./assets/img/model_${status}_2.png`;
 					this.productList[1].name = '模式|制热'
+					this.productList[1].color = '#FF9500'
+					this.productList[2].color = '#FF9500'
 					this.productList[1].id = 1;
 					this.Color = '#FF9500'
 					this.headColor = '#FF9500'
@@ -1188,6 +1193,8 @@ import net from '../Common/api/networkAPI.js'
 				case 'fan':
 					this.productList[1].icon = `./assets/img/model_${status}_3.png`;
 					this.productList[1].name = '模式|送风'
+					this.productList[1].color = '#3CCD55'
+					this.productList[2].color = '#3CCD55'
 					this.productList[1].id = 2;
 					this.Color = '#3CCD55'
 					this.headColor = '#3CCD55'
@@ -1196,6 +1203,8 @@ import net from '../Common/api/networkAPI.js'
 				case 'dry':
 					this.productList[1].icon = `./assets/img/model_${status}_4.png`;
 					this.productList[1].name = '模式|除湿'
+					this.productList[1].color = '#5939CF'
+					this.productList[2].color = '#5939CF'
 					this.productList[1].id = 3;
 					this.Color = '#5939CF'
 					this.headColor = '#5939CF'

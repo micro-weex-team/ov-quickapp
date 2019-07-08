@@ -160,6 +160,10 @@
 			"0xFD": {
                 "component": "index"
             },
+            "0xCC": {
+                "component": "index"
+            },
+            
             "config_network": {
                 "component": "index"
             },
