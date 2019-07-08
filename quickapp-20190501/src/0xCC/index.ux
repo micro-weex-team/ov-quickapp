@@ -205,7 +205,7 @@ import net from '../Common/api/networkAPI.js'
 				"nameNew":"开关",
 				"value": "open",
 				"data":'开关',
-				"icon":"./assets/img/off.png",
+				"icon":"./assets/img/on.png",
 				"id":'',
 				"color": "#fff",
 				"flagImg": true,
@@ -387,18 +387,18 @@ import net from '../Common/api/networkAPI.js'
 						this.params = {
 							power: 'on'
 						}
-						this.productList[0].color=this.offColor
-						this.productList[0].icon='./assets/img/off.png'
+						// this.productList[0].color=this.offColor
+						this.productList[0].icon='./assets/img/on.png'
 						// this.productList[1].color=this.onColor
 						// this.productList[2].color=this.onColor
 					}else{
 						this.params = {
 							power: 'off'
 						}
-						this.productList[0].color=this.onColor
+						// this.productList[0].color=this.onColor
 						this.productList[0].icon='./assets/img/on.png'
-						this.productList[1].color=this.offColor
-						this.productList[2].color=this.offColor
+						// this.productList[1].color=this.offColor
+						// this.productList[2].color=this.offColor
 
 					}
 					delete status.power;
@@ -1068,10 +1068,10 @@ import net from '../Common/api/networkAPI.js'
 			if(that.online == 'true'){
 				if(data.power == 'on'){
 					
-					that.productList[0].color = that.offColor
+					// that.productList[0].color = that.offColor
 					that.productList[0].icon = './assets/img/on.png';
-					that.productList[1].color = that.onColor
-					that.productList[2].color = that.onColor
+					// that.productList[1].color = that.onColor
+					// that.productList[2].color = that.onColor
 
 					that.isopen = true;
 					that.dataLists = data;
@@ -1112,8 +1112,8 @@ import net from '../Common/api/networkAPI.js'
 					}
 				}else{
 
-					that.productList[0].color = that.onColor
-					that.productList[0].icon = './assets/img/off.png';
+					// that.productList[0].color = that.onColor
+					that.productList[0].icon = './assets/img/on.png';
 					that.productList[1].color = that.offColor
 					that.productList[2].color = that.offColor
 
