@@ -327,6 +327,8 @@
 
 			that.isshowLoading = true;
 			that.showAlert = false;
+			that.getDeviceList();
+			that.startInterval();
 			that.ctrDevice(params,status);
 		},
 		//停止
@@ -632,6 +634,7 @@
 				this.power = 'on';
 			}else{
 				this.power = 'off';
+				this.istips = true;
 			}
 			if(that.timeoutInter != ''){
 				clearTimeout(that.timeoutInter)
@@ -641,8 +644,14 @@
 			this.work_mode = this.EAdata.work_mode;
 			console.log(this.work_mode);
 			this.current_time = this.EAdata.current_time;
-			if(this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule'){
-				that.timeGetdata();
+			if(this.work_status == 2){
+				if(this.getStatusInterval == null) {
+					that.startInterval();
+				}
+			} else {
+				if(this.getStatusInterval != null) {
+					that.stopInterval();
+				}
 			}
 		},
 		//网络检查
@@ -1299,6 +1308,16 @@
 				})
 			}
 		},
+		startInterval() {
+			let that = this;
+			this.getStatusInterval = setInterval(function() {
+				that.getDeviceList();
+			}, 5000)
+		},
+		stopInterval() {
+			clearInterval(this.getStatusInterval);
+			this.getStatusInterval = null;
+		},
 		onShow(){
 			let that = this;
 			that.isclosews = false;
@@ -1333,9 +1352,7 @@
 		  //初始化
 		  this.initData();
 		  let that = this;
-		  this.getStatusInterval = setInterval(function() {
-			that.getDeviceList();
-		  }, 5000)
+		  
 		  // this.deviceHeight = this.$app.options.env.deviceHeight;
 		  api.getlanguage().then((res) => {
 		  	if (res === 'ug') {
