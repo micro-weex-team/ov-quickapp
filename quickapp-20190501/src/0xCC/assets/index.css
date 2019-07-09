@@ -39,7 +39,7 @@ list{
 	font-size: 300px;
 	height: 387px;
 	line-height: 387px;
-	margin-left: 172px;
+	margin-left: 160px;
 }
 /* .l_nav_data_text{
 	font-size: 330px;
@@ -49,11 +49,12 @@ list{
 .nav_data_text2{
 	/* font-size: 160px; */
 	font-size: 130px;
+	width: 160px;
 	/* margin-left: 30px; */
 	color: #ffffff;
 	/* position: absolute;
 	right: 230px; */
-	margin-top: 50px;
+	margin-top: 60px;
 }
 .nav_tip_show{
 	/* margin-top: 60px; */

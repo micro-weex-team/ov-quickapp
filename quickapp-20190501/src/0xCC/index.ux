@@ -53,7 +53,7 @@
 		
 						<!-- 这里是我的加的 -->
 						<div class="ctrl" 
-						style="background-color:{{isopen?$item.color:'#fff'}}; border-width: {{isopen&&$item.name!=='开关'?'0':'3px'}};border-style:solid;border-color: #d5d5d5;">
+						style="background-color:{{isopen?$item.color:'#fff'}}; border-width: {{isopen&&$item.name!=='开关'?'0':'3px'}};border-style:solid;border-color: {{$item.name=='开关'?'#d5d5d5':'#f3f3f3'}};">
 							<text class="text_in" style="color:{{isopen?'#fff':'#000'}};opacity: {{isopen?'1':'0.3'}};" if="{{$item.textt != ''}}">{{$item.textt}}</text>
 							<image class="img" else="{{$item.flagImg}}" src="{{$item.icon}}"></image>
 						</div>
@@ -205,7 +205,7 @@ import net from '../Common/api/networkAPI.js'
 				"nameNew":"开关",
 				"value": "open",
 				"data":'开关',
-				"icon":"./assets/img/on.png",
+				"icon":"./assets/img/on_off.png",
 				"id":'',
 				"color": "#fff",
 				"flagImg": true,
@@ -374,6 +374,7 @@ import net from '../Common/api/networkAPI.js'
 		showDialog(str,index){
 			let that = this;
 			let status = that.dataLists;
+			// prompt.showToast({message:str+ ',showDialog,'+index})
 			if(this.online == 'false' || !this.online){
 				this.isshowclose();
 				// prompt.showToast({message: '设备离线状态'})
@@ -388,7 +389,7 @@ import net from '../Common/api/networkAPI.js'
 							power: 'on'
 						}
 						// this.productList[0].color=this.offColor
-						this.productList[0].icon='./assets/img/on.png'
+						this.productList[0].icon='./assets/img/on_off.png'
 						// this.productList[1].color=this.onColor
 						// this.productList[2].color=this.onColor
 					}else{
@@ -396,7 +397,7 @@ import net from '../Common/api/networkAPI.js'
 							power: 'off'
 						}
 						// this.productList[0].color=this.onColor
-						this.productList[0].icon='./assets/img/on.png'
+						this.productList[0].icon='./assets/img/on_off.png'
 						// this.productList[1].color=this.offColor
 						// this.productList[2].color=this.offColor
 
@@ -502,7 +503,7 @@ import net from '../Common/api/networkAPI.js'
 		closeDialog(bol){
 			this.closeFun();
 		},
-		selectData(index){
+		selectData(index){ //模式选择
 			let that = this;
 			let status = that.dataLists;
 			let str = "";
@@ -589,7 +590,8 @@ import net from '../Common/api/networkAPI.js'
 						break;
 					case 3:
 						this.params = {
-							mode: 'dry'
+							mode: 'dry',
+							wind_speed:'auto'
 						}
 						break;
 					default:
@@ -996,7 +998,9 @@ import net from '../Common/api/networkAPI.js'
 			}
 		},
         //设备控制接口
-        postDeviceControl(obj,status){
+    postDeviceControl(obj,status){
+			// prompt.showToast({message: obj.wind_speed+'设备控制接口'+status})
+
             this.isshowLoading = true;
 			let that = this;
 			if(status.online){
@@ -1065,11 +1069,12 @@ import net from '../Common/api/networkAPI.js'
 			that.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
 			that.listDevice = data;
 			that.dataLists = data;
+			// prompt.showToast({message: data.wind_speed+'风速'+data.mode})
 			if(that.online == 'true'){
 				if(data.power == 'on'){
 					
 					// that.productList[0].color = that.offColor
-					that.productList[0].icon = './assets/img/on.png';
+					that.productList[0].icon = './assets/img/on_off.png';
 					// that.productList[1].color = that.onColor
 					// that.productList[2].color = that.onColor
 
@@ -1113,7 +1118,7 @@ import net from '../Common/api/networkAPI.js'
 				}else{
 
 					// that.productList[0].color = that.onColor
-					that.productList[0].icon = './assets/img/on.png';
+					that.productList[0].icon = './assets/img/on_off.png';
 					that.productList[1].color = that.offColor
 					that.productList[2].color = that.offColor
 
@@ -1171,6 +1176,7 @@ import net from '../Common/api/networkAPI.js'
 			this.windcolor = '#666666';
 		},
 		switchMode(mode,status){
+			// prompt.showToast({message: mode + "，选择"+status,}) 
 			switch (mode){
 				case 'cool':
 					this.productList[1].icon = `./assets/img/model_${status}_1.png`;
@@ -1226,14 +1232,18 @@ import net from '../Common/api/networkAPI.js'
 				}
 			}
 		},
-		windSelect(index){
+		windSelect(index){ //风速选择
 			this.windIndex = index;
+			// prompt.showToast({message: index + "index"}) 
+
 		},
 		windCancel(){
 			this.closeFun();
 		},
-		windSure(evt){
-			if(this.windTypeIndex === 0){
+		windSure(evt){  //风速确定
+			// prompt.showToast({message: this.windTypeIndex + "this.windTypeIndex"}) 
+
+			if(this.windTypeIndex === 0){ //手动
 
 				if (this.windIndex === 0) {
 					this.params = {
@@ -1281,7 +1291,7 @@ import net from '../Common/api/networkAPI.js'
 				}	 
 				
 			}
-			if(this.windTypeIndex === 1){
+			if(this.windTypeIndex === 1){ //自动
 				this.params = {
 					wind_speed:'auto'
 				}
