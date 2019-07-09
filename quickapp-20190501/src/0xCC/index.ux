@@ -357,6 +357,8 @@ import net from '../Common/api/networkAPI.js'
             deviceId: '',
             deviceSeries: '',
 			openid: '',
+			windCache:'',
+			windTypeCache:''
         },
 		getDataItem(obj){
 			let that = this;
@@ -507,6 +509,7 @@ import net from '../Common/api/networkAPI.js'
 			let that = this;
 			let status = that.dataLists;
 			let str = "";
+			// prompt.showToast({message: that.windCache  + ",this.windIndex "+this.windTypeCache}) 
 			if(that.closeDia === 'model'){
 				str = "模式|";
 			}
@@ -543,6 +546,36 @@ import net from '../Common/api/networkAPI.js'
 				}
 			}
 			else{
+				let wind_speed = ''
+				if (this.windTypeCache === 0) { //手动
+					if (this.windCache === 0) {
+						wind_speed='sleep'
+					}
+					if (this.windCache === 1) {
+						wind_speed='micron'
+					}
+					if (this.windCache === 2) {
+						wind_speed='low'
+
+					}
+					if (this.windCache === 3) {
+						wind_speed='middle'
+					} 
+					if (this.windCache === 4) {
+						wind_speed='high'
+					} 
+					if (this.windCache === 5) {
+						wind_speed='super_high'
+					} 
+					if (this.windCache === 6) {
+						wind_speed='power'
+					}	 
+				}
+				if (this.windTypeCache === 1||this.windCache==='auto') { //自动
+					wind_speed='auto'
+				}
+
+				
 				switch(index){
 					// case 0:
 					// 	that.params = {
@@ -558,7 +591,7 @@ import net from '../Common/api/networkAPI.js'
 							ismodel = false;
 							that.params = {
 								mode: 'cool',
-								wind_speed: 102
+								wind_speed: wind_speed
 							}
 						}
 						break;
@@ -571,7 +604,7 @@ import net from '../Common/api/networkAPI.js'
 							ismodel = false;
 							that.params = {
 								mode: 'heat',
-								wind_speed: 102
+								wind_speed: wind_speed
 							}
 						}
 						break;
@@ -584,7 +617,7 @@ import net from '../Common/api/networkAPI.js'
 							ismodel = false;
 							that.params = {
 								mode: 'fan',
-								wind_speed: 102
+								wind_speed: wind_speed
 							}
 						}
 						break;
@@ -1069,7 +1102,38 @@ import net from '../Common/api/networkAPI.js'
 			that.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
 			that.listDevice = data;
 			that.dataLists = data;
-			// prompt.showToast({message: data.wind_speed+'风速'+data.mode})
+			// prompt.showToast({message: data.wind_speed+'风速接口'+data.mode})
+			if (!this.windCache||this.windCache==='') {
+				// prompt.showToast({message: data.wind_speed+'风速接口22'+data.mode})
+				if (data.wind_speed==='auto') {
+					this.windCache = 'auto'
+					this.windTypeCache = 1
+				}else{
+					this.windTypeCache = 0
+					if (data.wind_speed === 'sleep') {
+						this.windCache = 0
+					}
+					if (data.wind_speed === 'micron') {
+						this.windCache=1
+					}
+					if (data.wind_speed === 'low') {
+						this.windCache=2
+					}
+					if (data.wind_speed === 'middle') {
+						this.windCache=3
+					} 
+					if (data.wind_speed === 'high') {
+						this.windCache=4
+					} 
+					if (data.wind_speed === 'super_high') {
+						this.windCache=5
+					} 
+					if (data.wind_speed === 'power') {
+						this.windCache=6
+					}	 
+				}
+			}
+			
 			if(that.online == 'true'){
 				if(data.power == 'on'){
 					
@@ -1219,7 +1283,7 @@ import net from '../Common/api/networkAPI.js'
 					break;
 			}
 		},
-		windTypeSelect(index){
+		windTypeSelect(index){ //风速类型选择
 			this.windTypeIndex = index;
 			this.tabContentShow = index;
 			if(index == 1){
@@ -1234,7 +1298,8 @@ import net from '../Common/api/networkAPI.js'
 		},
 		windSelect(index){ //风速选择
 			this.windIndex = index;
-			// prompt.showToast({message: index + "index"}) 
+			
+			// prompt.showToast({message: index + "index,"+this.windIndex}) 
 
 		},
 		windCancel(){
@@ -1242,7 +1307,8 @@ import net from '../Common/api/networkAPI.js'
 		},
 		windSure(evt){  //风速确定
 			// prompt.showToast({message: this.windTypeIndex + "this.windTypeIndex"}) 
-
+			this.windCache = this.windIndex;
+			this.windTypeCache = this.windTypeIndex 
 			if(this.windTypeIndex === 0){ //手动
 
 				if (this.windIndex === 0) {
