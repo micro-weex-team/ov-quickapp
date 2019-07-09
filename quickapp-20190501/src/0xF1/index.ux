@@ -634,7 +634,7 @@
 				this.power = 'on';
 			}else{
 				this.power = 'off';
-				this.istips = true;
+				// this.istips = true;
 			}
 			if(that.timeoutInter != ''){
 				clearTimeout(that.timeoutInter)
@@ -795,6 +795,7 @@
 					that.online = that.EAdata.online;
 					if (that.online != 'true') {
 						that.isshowclose();
+						that.istips = true;
 					}
 				} else {
 					that.initall();
@@ -809,7 +810,8 @@
 							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 								that.isshowclose();
 							} else {
-								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+								// that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+								that.istips = true;
 							}
 						} else {
 							str1 = data.code;
@@ -859,6 +861,8 @@
 					that.isRefreshing = false;
 					that.isshowLoading = false;
 					that.isfirst = true;
+					that.istips = true;
+
 				}else{
 					that.isagain = false;
 					that.lanOnline = "false";
