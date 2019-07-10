@@ -425,7 +425,8 @@ export default {
 		}
 		    strObj.signature = that.getSignatureDeviceBind(objStr,strObj.accessToken,strObj.nonce,strObj.timestamp)
 			if(lanonline == 'true'){
-				return net.getqueryDeviceStatus(deviceid);
+				let getdevice = params.devices[0].orders?params.devices[0].orders:false;
+				return net.getqueryDeviceStatus(deviceid,getdevice);
 			}else{
 				var p = new Promise(function(resolve, reject){
 							if((typeof params) === 'object'){

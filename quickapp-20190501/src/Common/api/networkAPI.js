@@ -247,28 +247,59 @@ export default {
 	/**
 	 * 设备状态查询
 	 */
-	getqueryDeviceStatus(deviceId){
+	getqueryDeviceStatus(deviceId,param){
 		let that = this;
 		let params = {
 			deviceId: deviceId
 		}
+		
 		let p = new Promise(function(resolve, reject){
-			IOT.send({
-				action: 'queryDeviceStatus',
-				data: {
-					deviceInfo:{
-						deviceUuid:deviceId
+			if(param){
+				if(typeof(param) == 'object'){
+					console.log("局域网控制设置属性参数"+JSON.stringify(param))
+					IOT.send({
+						action: 'CustomerHandler.queryDeviceStatus',
+						data: {
+							deviceInfo:{
+								deviceUuid:deviceId
+							},
+							queryData:param
+						},
+						success: function(res) {
+							console.log("局域网设备信息："+JSON.stringify(res));
+							resolve(res)
+						},
+						fail: function(data, code) {
+							console.log("设备信息失败了"+JSON.stringify(data));
+							reject(data)
+						}
+					})
+				}else{
+					let obj = {
+						msg:'参数有误，类型需要json',
+						error:"0000"
 					}
-				},
-				success: function(res) {
-					console.log("设备信息："+JSON.stringify(res));
-					resolve(res)
-				},
-				fail: function(data, code) {
-					console.log("设备信息失败了"+JSON.stringify(data));
-					reject(data)
+					reject(obj)
 				}
-			})
+			}else{
+				console.log("局域网控制不设置属性参数"+param)
+				IOT.send({
+					action: 'queryDeviceStatus',
+					data: {
+						deviceInfo:{
+							deviceUuid:deviceId
+						}
+					},
+					success: function(res) {
+						console.log("局域网设备信息："+JSON.stringify(res));
+						resolve(res)
+					},
+					fail: function(data, code) {
+						console.log("设备信息失败了"+JSON.stringify(data));
+						reject(data)
+					}
+				})
+			}
 		})
 		return p;
 	},
