@@ -810,7 +810,7 @@
 							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 								that.isshowclose();
 							} else {
-								// that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
 								that.istips = true;
 							}
 						} else {
@@ -1068,47 +1068,52 @@
 			}
 			if(that.iswarm){
 				that.istips = true;
-				that.timeTips = setTimeout(() => {
-					that.istips = false;
-				},3000)
+				// that.timeTips = setTimeout(() => {
+				// 	that.istips = false;
+				// },3000)
 			}
 		},
 		//下拉刷新
 		scrollbottom(e) {
 			let that = this;
 			that.isRefreshing = e.refreshing;
-			let timestamp = Date.parse(new Date());
+			that.regetdata();
 			// if(that.isfirst){
-				that.isshowLoading = true;
-				storage.get({
-					key: 'openidToken',
-					success: function (data) {
-						that.iswarm = true;
-						if(data === ''){
+				
+			// }
+		},
+		regetdata(){
+			let that = this;
+			let timestamp = Date.parse(new Date());
+			that.isshowLoading = true;
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					that.iswarm = true;
+					if(data === ''){
+						that.getAuthor();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
 							that.getAuthor();
 						}else{
-							let obj = JSON.parse(data);
-							if(parseInt(timestamp) > parseInt(obj.time)){
-								that.getAuthor();
-							}else{
-								if(obj.openid === that.openid){
-									that.openId = obj.openid;
-									that.accessToken = obj.accessToken;
-									if(!that.isLanInit){
-										that.LanOnlineGet();
-									}
-									that.getDeviceList();
-								}else{
-									that.getAuthor();
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
 								}
+								that.getDeviceList();
+							}else{
+								that.getAuthor();
 							}
 						}
-					},
-					fail: function (data, code) {
-						console.log(`handling fail, code = ${code}`)
 					}
-				})
-			// }
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
 		},
 		timeGetdata(){
 			let that = this;
@@ -1402,6 +1407,7 @@
 		  })
 		  that.$on('closetips', function(e) {
 		  	that.istips = false;
+			that.regetdata();
 		  })
 		  let timestamp = Date.parse(new Date());
 		  storage.get({

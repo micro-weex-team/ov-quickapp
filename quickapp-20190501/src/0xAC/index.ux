@@ -17,7 +17,7 @@
 					<div class="nav_data_show">
 						<div class="nav_data nav_data2">
 							<text class="nav_data_text2" if="{{!language}}" style="color: {{isopen?bgCo:dataColor}};">°</text>
-							<text class="nav_data_text" style="color: {{isopen?bgCo:dataColor}};">{{value}}</text>
+							<text class="nav_data_text" style="color: {{isopen?bgCo:dataColor}};">{{value == '--'?value:Math.floor(Number(value))}}</text>
 							<text class="nav_data_text2" if="{{language}}" style="color: {{isopen?bgCo:dataColor}};">°</text>
 						</div>
 					</div>
@@ -650,12 +650,24 @@
 				return false;
 			}
 			if(bol){
-				if(parseInt(this.dataLists.temperature)<30){
-					this.params = {
-						temperature: parseInt(this.value)+1
+				if(that.dataLists.mode == 'fan'){
+					prompt.showToast({message: '送风模式下不能调节温度'})
+					return false;
+				}
+				
+				if(Number(that.dataLists.temperature) < 30){
+					let params = {};
+					if(29 < Number(that.dataLists.temperature)){
+						params = {
+							temperature: 30
+						}
+					}else{
+						params = {
+							temperature: Number(that.value)+1
+						}
 					}
 					delete status.temperature;
-					this.postDeviceControl(this.params,status);
+					that.postDeviceControl(params,status);
 				}else{
 					prompt.showToast({message: '温度最高为30°'})
 				}
@@ -671,12 +683,24 @@
 				return false;
 			}
 			if(bol){
-				if(parseInt(this.dataLists.temperature)>17){
-					this.params = {
-						temperature: parseInt(this.value)-1
+				if(that.dataLists.mode == 'fan'){
+					prompt.showToast({message: '送风模式下不能调节温度'})
+					return false;
+				}
+				
+				if(Number(that.dataLists.temperature) > 17){
+					let params = {};
+					if(18 > Number(that.dataLists.temperature)){
+						params = {
+							temperature: 17
+						}
+					}else{
+						params = {
+							temperature: Number(that.value)-1
+						}
 					}
 					delete status.temperature;
-					this.postDeviceControl(this.params,status);
+					that.postDeviceControl(params,status);
 				}else{
 					prompt.showToast({message: '温度最低为17°'})
 				}
@@ -1109,7 +1133,7 @@
 					// 	this.selected_type = 1;
 					// 	this.selected_content = parseInt(data.wind_speed) - 1;
 					// }
-					if(parseInt(data.wind_speed) == 102){
+					if(parseInt(data.wind_speed) == 102 || parseInt(data.wind_speed) == 101){
 						that.productList[2].data = 'AUTO';
 						that.windIndex = 0;
 						that.windTypeIndex = 1;
@@ -1375,48 +1399,52 @@
 				clearTimeout(that.timeTips)
 			}
 			that.istips = true;
-			that.timeTips = setTimeout(() => {
-				that.istips = false;
-			},3000)
+			// that.timeTips = setTimeout(() => {
+			// 	that.istips = false;
+			// },3000)
 		},
 		refreshData(e){
 			let that = this;
 			that.isRefreshing = e.refreshing;
-			let timestamp = Date.parse(new Date());
 			if(that.isfirst){
-				that.isshowLoading = true;
-				storage.get({
-					key: 'openidToken',
-					success: function (data) {
-						// prompt.showToast({message:"data"+JSON.stringify(data)})
-						if(data === ''){
-							that.getdevicelist();
-						}else{
-							let obj = JSON.parse(data);
-							if(parseInt(timestamp) > parseInt(obj.time)){
-								that.getdevicelist();
-							}else{
-								if(obj.openid === that.openid){
-									that.openId = obj.openid;
-									that.accessToken = obj.accessToken;
-									if(!that.isLanInit){
-										that.LanOnlineGet();
-									}
-									that.getDeviceStatus();
-								}else{
-									that.getdevicelist();
-								}
-							}
-						}
-						console.log('handling success')
-					},
-					fail: function (data, code) {
-						console.log(`handling fail, code = ${code}`)
-					}
-				})
+				that.regetdata();
 			}
 			
         },
+		regetdata(){
+			let that = this;
+			let timestamp = Date.parse(new Date());
+			that.isshowLoading = true;
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					// prompt.showToast({message:"data"+JSON.stringify(data)})
+					if(data === ''){
+						that.getdevicelist();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
+								that.getDeviceStatus();
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
 		gettime(){
 			let timestamp = Date.parse(new Date());
 			return parseInt(timestamp) + 3600000;
@@ -1584,11 +1612,10 @@
 			}
 			that.$on('cancel', function(e){
 				that.isabout = false;
-				// prompt.showToast({message:"shdf" + e})
 			})
 			that.$on('closetips', function(e){
 				that.istips = false;
-				// prompt.showToast({message:"shdf" + e})
+				that.regetdata();
 			})
 			that.$on('openmenu', function(e){
 				that.isabout = !that.isabout;

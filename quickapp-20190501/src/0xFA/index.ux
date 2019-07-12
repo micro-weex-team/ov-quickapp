@@ -352,9 +352,9 @@ export default {
 			clearTimeout(that.timeTips)
 		}
 		that.istips = true;
-		that.timeTips = setTimeout(() => {
-			that.istips = false;
-		},3000)
+		// that.timeTips = setTimeout(() => {
+		// 	that.istips = false;
+		// },3000)
 	},
 	downMeiju(){
 		let that = this;
@@ -416,40 +416,44 @@ export default {
 	scrollbottom(e){
 		let that = this;
 		that.isRefreshing = e.refreshing;
-		let timestamp = Date.parse(new Date());
+		
 		if(that.loadfirst){
-			that.isshowLoading = true;
-			storage.get({
-				key: 'openidToken',
-				success: function (data) {
-					that.iswarm = true;
-					// prompt.showToast({message:"data"+JSON.stringify(data)})
-					if(data === ''){
+			that.regetdata();
+		}
+	},
+	regetdata(){
+		let that = this;
+		let timestamp = Date.parse(new Date());
+		that.isshowLoading = true;
+		storage.get({
+			key: 'openidToken',
+			success: function (data) {
+				that.iswarm = true;
+				if(data === ''){
+					that.getdevicelist();
+				}else{
+					let obj = JSON.parse(data);
+					if(parseInt(timestamp) > parseInt(obj.time)){
 						that.getdevicelist();
 					}else{
-						let obj = JSON.parse(data);
-						if(parseInt(timestamp) > parseInt(obj.time)){
-							that.getdevicelist();
-						}else{
-							if(obj.openid === that.openid){
-								that.openId = obj.openid;
-								that.accessToken = obj.accessToken;
-								if(!that.isLanInit){
-									that.LanOnlineGet();
-								}
-								that.getDeviceStatus();
-							}else{
-								that.getdevicelist();
+						if(obj.openid === that.openid){
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							if(!that.isLanInit){
+								that.LanOnlineGet();
 							}
+							that.getDeviceStatus();
+						}else{
+							that.getdevicelist();
 						}
 					}
-					console.log('handling success')
-				},
-				fail: function (data, code) {
-					console.log(`handling fail, code = ${code}`)
 				}
-			})
-		}
+				console.log('handling success')
+			},
+			fail: function (data, code) {
+				console.log(`handling fail, code = ${code}`)
+			}
+		})
 	},
 	timeDataFilter(data1,data2){
 		let num = 0;
@@ -1812,6 +1816,7 @@ export default {
 		})
 		that.$on('closetips', function(e){
 			that.istips = false;
+			that.regetdata();
 		})
 		that.$on('openmenu', function(e){
 			that.isabout = !that.isabout;

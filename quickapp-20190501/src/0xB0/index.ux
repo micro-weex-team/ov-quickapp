@@ -639,11 +639,12 @@
 				that.istips = false;
 				clearTimeout(that.timeTips)
 			}
+			
 			if(that.iswarm){
 				that.istips = true;
-				that.timeTips = setTimeout(function() {
-					that.istips = false;
-				}, 3000)
+				// that.timeTips = setTimeout(function() {
+				// 	that.istips = false;
+				// }, 3000)
 			}
 		},
 		//获取后一天的时间戳
@@ -1052,44 +1053,49 @@
 		scrollbottom(e) {
 			let that = this;
 			that.isRefreshing = e.refreshing;
-			let timestamp = Date.parse(new Date());
+			
 			if (that.isfirst) {
-				storage.get({
-					key: 'openidToken',
-					success: function(data) {
-						that.isshowLoading = true;
-						if(that.isworking){
-							that.iswarm = true;
-							if (data === '') {
+				that.regetdata();
+			}
+		},
+		regetdata(){
+			let that = this;
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function(data) {
+					that.isshowLoading = true;
+					if(that.isworking){
+						that.iswarm = true;
+						if (data === '') {
+							that.getAuthor();
+						} else {
+							let obj = JSON.parse(data);
+							if (parseInt(timestamp) > parseInt(obj.time)) {
 								that.getAuthor();
 							} else {
-								let obj = JSON.parse(data);
-								if (parseInt(timestamp) > parseInt(obj.time)) {
-									that.getAuthor();
-								} else {
-									if (obj.openid === that.openid) {
-										that.openId = obj.openid;
-										that.accessToken = obj.accessToken;
-										if(!that.isLanInit){
-											that.LanOnlineGet();
-										}
-										that.getDeviceList();
-									} else {
-										that.getAuthor();
+								if (obj.openid === that.openid) {
+									that.openId = obj.openid;
+									that.accessToken = obj.accessToken;
+									if(!that.isLanInit){
+										that.LanOnlineGet();
 									}
+									that.getDeviceList();
+								} else {
+									that.getAuthor();
 								}
 							}
-						}else{
-							prompt.showToast({
-								message: "爱心"+(3-that.num)+"秒后再重试"
-							})
 						}
-					},
-					fail: function(data, code) {
-						console.log(`handling fail, code = ${code}`)
+					}else{
+						prompt.showToast({
+							message: "爱心"+(3-that.num)+"秒后再重试"
+						})
 					}
-				})
-			}
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
 		},
 		/**
 		 * 局域网初始化
@@ -1269,6 +1275,7 @@
 			})
 			that.$on('closetips', function(e){
 				that.istips = false;
+				that.regetdata();
 				// prompt.showToast({message:"shdf" + e})
 			})
 			that.$on('openmenu', function(e){

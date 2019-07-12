@@ -275,39 +275,43 @@ module.exports = {
 	scrollbottom(e) {
 		let that = this;
 		that.isRefreshing = e.refreshing;
-		let timestamp = Date.parse(new Date());
 		if (that.isfirst) {
-			storage.get({
-				key: 'openidToken',
-				success: function(data) {
-					that.isloading = true;
-					that.iswarm = true;
-					if (data === '') {
+			that.regetdata();
+		}
+	},
+	regetdata(){
+		let that = this;
+		let timestamp = Date.parse(new Date());
+		storage.get({
+			key: 'openidToken',
+			success: function(data) {
+				that.isloading = true;
+				that.iswarm = true;
+				if (data === '') {
+					that.getdevicelist();
+				} else {
+					let obj = JSON.parse(data);
+					if (parseInt(timestamp) > parseInt(obj.time)) {
 						that.getdevicelist();
 					} else {
-						let obj = JSON.parse(data);
-						if (parseInt(timestamp) > parseInt(obj.time)) {
-							that.getdevicelist();
-						} else {
-							if (obj.openid === that.openid) {
-								that.openId = obj.openid;
-								that.accessToken = obj.accessToken;
-								if(!that.isLanInit){
-									that.LanOnlineGet();
-								}
-								that.getDeviceStatus(that.openId);
-							} else {
-								that.getdevicelist();
+						if (obj.openid === that.openid) {
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							if(!that.isLanInit){
+								that.LanOnlineGet();
 							}
+							that.getDeviceStatus(that.openId);
+						} else {
+							that.getdevicelist();
 						}
 					}
-					console.log('handling success');
-				},
-				fail: function(data, code) {
-					console.log(`handling fail, code = ${code}`);
 				}
-			});
-		}
+				console.log('handling success');
+			},
+			fail: function(data, code) {
+				console.log(`handling fail, code = ${code}`);
+			}
+		});
 	},
 	timeGetData() {
 		let that = this;
@@ -851,6 +855,7 @@ module.exports = {
 		});
 		that.$on('closetips', function(e) {
 			that.istips = false;
+			that.regetdata();
 		});
 		that.$on('openmenu', function(e) {
 			that.isabout = !that.isabout;
