@@ -11,7 +11,7 @@
 		<midea-head title="中央空调" language="{{language}}" onclose-websocket="closeWebsocket" power="{{isopen?'on':'off'}}" isnew="false" coloron="{{headColor}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="refreshData" refreshing="{{isRefreshing}}">
 
-			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?Color:bgColor}};" class="hh">
+			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?Color:bgColor}};">
 				<list-item type="refresh" class="wrap">
 					<midea-logo isopen="{{isopen}}"></midea-logo>
 					<div class="nav_data_show">
@@ -32,13 +32,17 @@
 						</text>
 						<!-- <text class="fixed_time" style="color: {{isopen?bgCo:dataColor}};">{{fixed_time}}</text> -->
 					</div>
+					<div class="nav_btn">
+						<image class="{{language?'nav_del_data':'nav_del_data_in'}}" src="{{isopen?'./assets/img/del.png':'./assets/img/del2.png'}}" @click="delData(isopen)"></image>
+						<image class="{{language?'nav_del_data_in':'nav_del_data'}}" src="{{isopen?'./assets/img/add.png':'./assets/img/add2.png'}}"  @click="addData(isopen)"></image>
+					</div>
 				</list-item>    
 			</list>
 			</refresh>
-			<div class="nav_btn">
+			<!-- <div class="nav_btn">
 				<image class="{{language?'nav_del_data':'nav_del_data_in'}}" src="{{isopen?'./assets/img/del.png':'./assets/img/del2.png'}}" @click="delData(isopen)"></image>
 				<image class="{{language?'nav_del_data_in':'nav_del_data'}}" src="{{isopen?'./assets/img/add.png':'./assets/img/add2.png'}}"  @click="addData(isopen)"></image>
-			</div>
+			</div> -->
 			<!--lua control-->
 			<div class="control" @swipe="swiperData({direction:[up]})">
 				<div class="tabs">
