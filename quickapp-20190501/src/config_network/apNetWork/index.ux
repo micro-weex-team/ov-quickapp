@@ -655,7 +655,7 @@
 					  		that.getwifiList(15000);
 					  	}
 					  }).catch((error) => {
-					  	$this.setSucc = true;
+					  	that.setSucc = true;
 					  })
 						
 				  }
