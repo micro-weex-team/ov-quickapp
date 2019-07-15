@@ -425,11 +425,7 @@
 				ssid = api.getUrlSSid($this.iot_url);
 			}
 			
-			net.lanHelpInit().then((e) => {
-				console.log(JSON.stringify(e))
-			}).catch((error) => {
-				
-			})
+			
 			// prompt.showToast({message:"停止配网"});
 			IOT.send({
 			  action: 'stopConfigDevice',
@@ -496,6 +492,7 @@
 						},
 						fail: function(data, code) {
 							$this.setSucc = true;
+							console.log('配网失败')
 							// prompt.showToast({message:"配网失败",duration:1})
 						}
 					})
@@ -623,14 +620,14 @@
 			})
 		},
         onInit(){
-					this.isap = this.is_ap;
-					api.getlanguage().then((res) => {
-						if(res === 'ug'){
-							this.language = false;
-						}else{
-							this.language = true;
-						}
-					})
+			this.isap = this.is_ap;
+			api.getlanguage().then((res) => {
+				if(res === 'ug'){
+					this.language = false;
+				}else{
+					this.language = true;
+				}
+			})
 					
 			if(this.iot_call_from === 'AP_SCAN'){
 				router.clear();
@@ -651,11 +648,16 @@
 					  prompt.showToast({message:"网络异常，请检查网络是否正常再重新尝试"})
 				  }else{
 					  that.$page.setTitleBar({text: '配置设备'});
-						if(that.iot_config_type.toString() === '1'){
-							that.startConfigDevice();
-						}else{
-							that.getwifiList(15000);
-						}
+					  net.lanHelpInit().then((e) => {
+					  	if(that.iot_config_type.toString() === '1'){
+					  		that.startConfigDevice();
+					  	}else{
+					  		that.getwifiList(15000);
+					  	}
+					  }).catch((error) => {
+					  	$this.setSucc = true;
+					  })
+						
 				  }
 				console.log('handling callback')
 			  }
