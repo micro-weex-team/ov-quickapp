@@ -198,13 +198,24 @@
 								let wifilist = (typeof res.message) === "object"? res.message.wifiList:JSON.parse(res.message).wifiList;
 								if(that.iot_url != '' || that.ssidDevice != ''){
 									let type = api.getDeviceInformation(that.iot_url);
-									if(type || that.ssidDevice != ''){
+									// if(type || that.ssidDevice != ''){
+									// 	let str = ''
+									// 	if(type){
+									// 		str = type.substring(type.length-2,type.length).toLowerCase();
+									// 	}else{
+									// 		str = that.ssidDevice.toLowerCase();
+									// 	}
+									if(that.ssidDevice != '' || type){
 										let str = ''
-										if(type){
-											str = type.substring(type.length-2,type.length).toLowerCase();
-										}else{
+										if(that.ssidDevice != ''){
 											str = that.ssidDevice.toLowerCase();
+										}else{
+											str = type.substring(type.length-2,type.length).toLowerCase();
 										}
+										if(str == '00' || str == 'ab'){
+											str = 'ac'
+										}
+										console.log("设备类型:"+str)
 										that.ssidDevice = str;
 										let obj = [];
 										wifilist.forEach(function(item,i){

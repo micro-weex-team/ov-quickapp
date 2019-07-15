@@ -913,41 +913,45 @@
         },
         refreshData(e){
 			let that = this;
-			let timestamp = Date.parse(new Date());
 			that.isRefreshing = e.refreshing;
 			if(that.isfirst){
-				storage.get({
-					key: 'openidToken',
-					success: function (data) {
-						that.isshowLoading = true;
-						// prompt.showToast({message:"data"+JSON.stringify(data)})
-						if(data === ''){
-							that.getdevicelist();
-						}else{
-							let obj = JSON.parse(data);
-							if(parseInt(timestamp) > parseInt(obj.time)){
-								that.getdevicelist();
-							}else{
-								if(obj.openid === that.openid){
-									that.openId = obj.openid;
-									that.accessToken = obj.accessToken;
-									if(!that.isLanInit){
-										that.LanOnlineGet();
-									}
-									that.getDeviceStatus();
-								}else{
-									that.getdevicelist();
-								}
-							}
-						}
-						console.log('handling success')
-					},
-					fail: function (data, code) {
-						console.log(`handling fail, code = ${code}`)
-					}
-				})
+				that.regetdata();
 			}
         },
+		regetdata(){
+			let that = this;
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					that.isshowLoading = true;
+					// prompt.showToast({message:"data"+JSON.stringify(data)})
+					if(data === ''){
+						that.getdevicelist();
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								if(!that.isLanInit){
+									that.LanOnlineGet();
+								}
+								that.getDeviceStatus();
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
 		gettime(){
 			let timestamp = Date.parse(new Date());
 			return parseInt(timestamp) + 3600000;
@@ -1096,6 +1100,7 @@
 			})
 			that.$on('closetips', function(e){
 				that.istips = false;
+				that.regetdata();
 			})
 			that.$on('openmenu', function(e){
 				that.isabout = !that.isabout;
@@ -1139,9 +1144,9 @@
 				clearTimeout(that.timeTips)
 			}
 			that.istips = true;
-			that.timeTips = setTimeout(() => {
-				that.istips = false;
-			},3000)
+			// that.timeTips = setTimeout(() => {
+			// 	that.istips = false;
+			// },3000)
 		},
 		onMenuPress(){
 			this.isabout = !this.isabout;

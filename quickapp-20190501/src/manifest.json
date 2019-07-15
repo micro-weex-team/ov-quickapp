@@ -121,6 +121,12 @@
     "router": {
         "entry": "Demo",
         "pages": {
+			"0xF1": {
+			    "component": "index"
+			},
+			"0xCC": {
+			    "component": "index"
+			},
             "0xAC": {
                 "component": "index"
             },
@@ -160,10 +166,6 @@
 			"0xFD": {
                 "component": "index"
             },
-            "0xCC": {
-                "component": "index"
-            },
-            
             "config_network": {
                 "component": "index"
             },
