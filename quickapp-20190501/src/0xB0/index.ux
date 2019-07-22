@@ -22,9 +22,9 @@
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'end'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text class="b0_nav_list_status" if="{{power === 'on' && work_status != 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">火力 {{firpower(fire_power)}}档 | {{statusData(work_status)}}</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">待机中</text>
-					<text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
+					<!-- <text class="b0_nav_list_doneText" if="{{power === 'on' && work_status === 'cancel'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text> -->
 					<text class="b0_nav_list_done" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已关机</text>
-					<text class="b0_nav_list_doneText" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">点击下方开关</text>
+					<!-- <text class="b0_nav_list_doneText" if="{{power === 'off'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">点击下方开关</text> -->
 				</list-item>
 			</list>
 		</refresh>
@@ -768,6 +768,9 @@
 							if(str1.toString() === '-6'){
 								that.isshowclose();
 								return false;
+							}
+							if(str1.toString() == '-1'){
+								that.isagain = false
 							}
 							if (str1.toString() != '-100') {
 								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))

@@ -16,7 +16,7 @@
 					<text class="B6_nav_list_usemeiju" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">使用美居</text>
 					<text if="{{(power === 'on' || power === 'delay_off') && gear < 4}}" class="B6_nav_gear" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{(10 > parseInt(gear) && power == 'on' && parseInt(gear) > 0)?gear:'--'}}</text>
 					<text if="{{power === 'off'}}" class="B6_nav_close" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">已关机</text>
-					<text if="{{power === 'off'}}" class="B6_nav_warm" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">点击下方开关</text>
+					<!-- <text if="{{power === 'off'}}" class="B6_nav_warm" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">点击下方开关</text> -->
 					<text if="{{(power === 'on' || power === 'delay_off') && gear > 3}}" class="B6_nav_height" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">{{power == 'on'?'爆炒模式':'--'}}</text>
 					<text if="{{power === 'delay_off'}}" class="B6_nav_status" style="color: {{(power === 'on' || power === 'delay_off')?'#ffffff':'#666666'}};">延迟关机中</text>
 				</list-item>
@@ -613,6 +613,9 @@ module.exports = {
 						if (str1.toString() === '-6') {
 							that.isshowclose();
 							return false;
+						}
+						if(str1.toString() == '-1'){
+							that.isagain = false
 						}
 						if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 							that.isshowclose();

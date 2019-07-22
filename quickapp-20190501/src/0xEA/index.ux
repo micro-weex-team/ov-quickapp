@@ -21,7 +21,7 @@
 					<text class="EA_nav_list_text" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">大约{{mode === 'heat_rice'?'还剩':'需要'}}</text>
 					<text class="EA_nav_list_status" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{mode === 'heat_rice'?'加热中':work_status_fun(mode,work_status)}}</text>
 					<text class="EA_nav_list_cancel" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">待机中</text>
-					<text class="EA_nav_list_canceltext" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能</text>
+					<!-- <text class="EA_nav_list_canceltext" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能</text> -->
 					<text class="EA_nav_list_keepwarm" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{keepTime(warm_time_hour,warm_time_min)}}</text>
 					<text class="EA_nav_list_keeptext" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">已持续保温</text>
 					<text class="EA_nav_list_keepstatus" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">保温中</text>
@@ -842,6 +842,9 @@
 							if(str1.toString() === '-6'){
 								that.isshowclose();
 								return false;
+							}
+							if(str1.toString() == '-1'){
+								that.isagain = false
 							}
 							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 								that.isshowclose();

@@ -526,6 +526,9 @@
 								that.isshowclose();
 								return false;
 							}
+							if(str1.toString() == '-1'){
+								that.isagain = false
+							}
 							if (str1.toString() != '-100') {
 								that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
 							} else {

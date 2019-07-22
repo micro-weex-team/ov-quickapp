@@ -800,6 +800,9 @@
 					if(that.online == 'false' || !that.online){
 						that.isshowclose();
 					}
+					if(obj.small_temprature){
+						obj.temperature = parseInt(obj.temperature)+Number(obj.small_temprature);
+					}
 			        that.dataFormat(obj);
 				}else{
 					that.initData();
@@ -811,6 +814,9 @@
 								if(str1.toString() === '-6'){
 									that.isshowclose();
 									return false;
+								}
+								if(str1.toString() == '-1'){
+									that.isagain = false
 								}
 								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 									// that.netWorkGet('设备离线')
@@ -848,6 +854,9 @@
 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 				that.online = 'true';
 				data.online = 'true';
+				if(data.small_temprature){
+					data.temperature = parseInt(data.temperature)+Number(data.small_temprature);
+				}
 				that.dataFormat(data);
 			}else{
 				that.isagain = false;
@@ -911,6 +920,9 @@
 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 				data.online = 'true';
 				that.online = "true";
+				if(data.small_temprature){
+					data.temperature = parseInt(data.temperature)+Number(data.small_temprature);
+				}
 				that.dataFormat(data);
 			}else{
 				that.isagain = false;
@@ -952,6 +964,9 @@
 						}
 						if(obj.temperature){
 							objdata.temperature = obj.temperature;
+							if(obj.small_temprature){
+								objdata.temperature = parseInt(objdata.temperature)+obj.small_temprature;
+							}
 						}else{
 							isall = true;
 						}

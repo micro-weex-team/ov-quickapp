@@ -15,15 +15,15 @@
 					<text class="E1_nav_list_usemeiju">使用美居</text>
 					<div if="{{wash_stage != 5}}" class="text_list">
 						<text class="E1_nav_standby" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">待机中</text>
-						<text class="E1_nav_warm" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">请选择下方功能</text>
+						<!-- <text class="E1_nav_warm" if="{{work_status != 'work' && work_status != 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">请选择下方功能</text> -->
 						<text class="E1_nav_close" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">已关机</text>
-						<text class="E1_nav_warm" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">点击下方开关</text>
+						<!-- <text class="E1_nav_warm" if="{{work_status === 'power_off'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">点击下方开关</text> -->
 						<text class="E1_nav_data" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{leftTime(left_time)}}</text>
 						<text class="E1_nav_text" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">大约剩余</text>
-						<text class="E1_nav_mode" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}}丨{{washStage(wash_stage)}}</text>
+						<!-- <text class="E1_nav_mode" if="{{work_status === 'work' && wash_stage != 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}}丨{{washStage(wash_stage)}}</text> -->
 					</div>
 					<text class="E1_nav_standby" if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">保管中</text>
-					<text class="E1_nav_keepend"  if="{{work_status === 'work' && wash_stage === 5}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}} | {{washStage(wash_stage)}}</text>
+					<text class="E1_nav_keepend"  if="{{work_status === 'work'}}" style="color: {{work_status === 'power_off'?'#666666':'#FFFFFF'}};">{{modeShow(mode)}} | {{washStage(wash_stage)}}</text>
 				</list-item>
 			</list>
 		</refresh>
@@ -388,7 +388,8 @@ module.exports = {
 			return false;
 		}
 		if(e.detail.params === "节能洗"){
-			that.isalert = true;
+			// that.isalert = true;
+			that.startDevice();
 		}
 	},
 	closealert(){
@@ -548,6 +549,9 @@ module.exports = {
 						if(str1.toString() === '-6'){
 							that.isshowclose();
 							return false;
+						}
+						if(str1.toString() == '-1'){
+							that.isagain = false;
 						}
 						if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 							that.isshowclose();

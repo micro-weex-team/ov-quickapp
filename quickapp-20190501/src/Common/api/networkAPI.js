@@ -435,6 +435,21 @@ export default {
 				console.log(JSON.stringify(data))
 			}
 		})
+	},
+	/**
+	 * 跳转wifi设置
+	 */
+	setWifi(){
+		IOT.send({
+			action:'CustomerHandler.gotoWifiSetting',
+			data:'随便的参数',
+			success: function(data) {
+				console.log('跳转wifi设置：'+JSON.stringify(data))
+			},
+			fail: function(data, code) {
+				console.log(JSON.stringify(data))
+			}
+		})
 	}
 	
 }

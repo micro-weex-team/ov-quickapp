@@ -1,8 +1,8 @@
 {
 	"package": "com.midea.iot.application",
     "name": "Midea-IoT",
-    "versionName": "1.8.0",
-    "versionCode": 180,
+    "versionName": "1.8.1",
+    "versionCode": 181,
     "icon": "/Common/logo.png",
     "minPlatformVersion": 1030,
     "features": [{
@@ -106,6 +106,9 @@
 		},
 		{	
 			"name": "system.websocketfactory"
+		},
+		{   
+			"name": "system.wifi" 
 		}
     ],
     "permissions": [{

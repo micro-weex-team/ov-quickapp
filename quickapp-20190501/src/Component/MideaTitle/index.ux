@@ -44,7 +44,7 @@
     import router from '@system.router';
 	import prompt from '@system.prompt';
     module.exports = {
-		props: ['title','back','language'],
+		props: ['title','back','language','url'],
 		data: {
 			back: false,
 			language: true
@@ -56,9 +56,13 @@
 				router.clear();
 				router.back();
 			}else{
-				router.clear();
-				// router.back();
-				this.$app.exit();
+				if(this.url){
+					router.push(this.url)
+				}else{
+					router.clear();
+					// router.back();
+					this.$app.exit();
+				}
 			}
 		},
 		onDestroy(){

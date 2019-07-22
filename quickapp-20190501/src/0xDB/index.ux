@@ -22,9 +22,9 @@
 							<span>大约需要</span>
 						</text>
 						<text if="{{col === 'on' && running_status === 'standby'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">待机中</text>
-						<text if="{{col === 'on' && running_status === 'standby'}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
+						<!-- <text if="{{col === 'on' && running_status === 'standby'}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text> -->
 						<text if="{{col != 'on'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">已关机</text>
-						<text if="{{col != 'on'}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">点击下方开关</text>
+						<!-- <text if="{{col != 'on'}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">点击下方开关</text> -->
 					</list-item>
 				</list>
 			</refresh>
@@ -908,6 +908,9 @@
 							if(str1.toString() === '-6'){
 								that.isshowclose();
 								return false;
+							}
+							if(str1.toString() == '-1'){
+								that.isagain = false
 							}
 							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 								that.isshowclose();

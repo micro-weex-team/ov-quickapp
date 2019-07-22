@@ -1243,6 +1243,9 @@ export default {
 							that.isshowclose();
 							return false;
 						}
+						if(str1.toString() == '-1'){
+							that.isagain = false
+						}
 						if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
 							that.isshowclose();
 						}else{

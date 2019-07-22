@@ -46,7 +46,6 @@
 	                </list-item>
 	            </list>
 	        </div>
-	        
 	    </div>
 	</midea-showdialog>
 	<!-- <midea-select></midea-select> -->
@@ -149,6 +148,7 @@
 <script>
 import prompt from '@system.prompt';
 import account from '@service.account';
+import net from '../Common/api/networkAPI.js';
 // import api from '../Common/api/api.js';
 import index from "./assets/index.js";
 export default {
@@ -234,6 +234,9 @@ export default {
 		 }else{
 			 this.power = 'on';
 		 }
+	},
+	setwifi(){
+		net.setWifi();
 	},
 	btnclick(){
 	},
