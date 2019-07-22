@@ -29,6 +29,7 @@
 								<span>已完成上述操作</span>
 							</text>
 						</div>
+						<!-- <text @click="setwifi()">设置wifi</text> -->
 						<text if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" @click="nextPage()">下一步</text>
 						<!-- <input type="button" if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" value="下一步" @click="nextPage()" disabled="{{checked}}"> -->
 					</div>
@@ -48,11 +49,12 @@
     import router from '@system.router';
     import prompt from '@system.prompt';
 	import fetch from '@system.fetch';
-	import account from '@service.account';
+	// import account from '@service.account';
 	import storage from '@system.storage';
-	import barcode from '@system.barcode';
+	// import barcode from '@system.barcode';
 	import api from '../Common/api/api.js';
 	import net from '../Common/api/networkAPI.js';
+	import wifi from '@system.wifi';
     module.exports = {
         private: {
 			isall:false,
@@ -214,6 +216,27 @@
 			}
 			
 			// prompt.showToast({message:'iot_series:' + this.iot_series,duration:1})
+		},
+		onShow() {
+			console.log("sssss");
+			// this.getWifiInfo();
+		},
+		setwifi(){
+			net.setWifi();
+		},
+		/**
+		 * 获取已连接的wifi信息
+		 */
+		getWifiInfo(){
+			wifi.getConnectedWifi({
+				success: function(data) {
+					console.log("获取已连接sifi"+JSON.stringify(data))
+					
+				},
+				fail: function(data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
 		},
 		/**
 		 * 退出界面

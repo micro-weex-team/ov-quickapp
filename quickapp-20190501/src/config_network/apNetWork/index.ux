@@ -17,7 +17,7 @@
 							<span class="nav_progress">{{progress}}</span>
 							<span class="text_progress">%</span>
 						</text>
-						<text class="nav_time" if="{{!isdone}}">大概还需要{{time}}s</text>
+						<text class="nav_time" show="{{!isdone}}">大概还需要{{time}}s</text>
 					</div>
 					<div class="nav_bottom">
 						<text class="seting-tips">正在努力链接，请耐心等待...</text>
@@ -85,12 +85,12 @@
 
 <script>
 	import app from '@system.app';
-  import fetch from '@system.fetch';
+  // import fetch from '@system.fetch';
   import router from '@system.router';
 	import prompt from '@system.prompt';
 	import account from '@service.account';
 	import storage from '@system.storage';
-	import barcode from '@system.barcode';
+	// import barcode from '@system.barcode';
 	import network from '@system.network';
 	import IOT from '@service.iot';
 	import api from '../../Common/api/api.js';
