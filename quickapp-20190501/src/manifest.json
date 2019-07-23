@@ -169,6 +169,9 @@
 			"0xFD": {
                 "component": "index"
             },
+            "0xCE": {
+                "component": "index"
+            },
             "config_network": {
                 "component": "index"
             },
