@@ -1,0 +1,1144 @@
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<import name="midea-logo" src="../Component/MideaLogo/index"></import>
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+
+<template>
+    <div class="container">
+		<midea-head title="新风机" language="{{language}}" onclose-websocket="closeWebsocket" power="{{isopen?'on':'off'}}" isnew="{{false}}" coloron="{{allBgColorOn}}"></midea-head>
+		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="refreshData" refreshing="{{isRefreshing}}">
+			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?allBgColorOn:bgColor}};">
+				<list-item type="refresh" class="wrap">
+					<midea-logo isopen="{{isopen}}"></midea-logo>
+					<div class="nav_data_show">
+						<div class="nav_data nav_data2">
+							<text class="nav_data_text" style="color: {{isopen?dataColorOn:dataColorOff}};">{{roomApi}}</text>
+						</div>
+					</div>
+					<div class="nav_all_show">
+						<div class="nav_data nav_data_text_1">
+								<text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};">温度:{{room_temp_value}}°C</text>
+								<text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};padding-left: 124px;">湿度:{{humidity_value}}%</text>
+            </div>
+            <div class=" nav_data nav_data_text_2" >
+							<text class="nav_data_tip_in" style="color: {{isopen?hchoColor:dataColorOff}};">甲醛:{{hcho_value}}mg/m³</text>
+							<!-- <text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};padding-left: 40px;">TVOC:{{tvoc_value}}</text> -->
+						</div>
+          </div>
+          <div class="nav_all_show nav_all_show_2">
+						<div class="indoor_text">
+							<image src="{{isopen?'./assets/img/outdoor_on.png':'./assets/img/outdoor_off.png'}}"></image>
+							<text style="font-size: 48px;color: {{isopen?'#f6f6f6':'#666666'}};opacity: 0.6;">室内</text>
+            </div>
+            <div class="nav_data nav_data_text_3">
+							<text class="nav_data_tip_in" style="color: {{isopen?hchoCO2On:dataColorOff}};">{{pm25_value}}</text>
+							<text class="nav_data_tip_in" style="color: {{isopen?hchoCO2On:dataColorOff}};padding-left: 65px;">{{co2_value}}</text>
+            </div>
+            <div class="nav_data nav_data_text_4">
+							<text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};">PM2.5 ug/m³</text>
+							<text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};padding-left: 65px;">CO2 ppm</text>
+						</div>
+					</div>
+
+					<!--用于显示接口返回start  -->
+					<!-- <div class="api">
+							<text>{{testData}}</text>
+					</div> -->
+					<!-- 用于显示接口返回end -->
+				</list-item>    
+			</list>
+		</refresh>
+			<!--lua control-->
+			<div class="control" @swipe="swiperData({direction:[up]})">
+				<div class="tabs">
+					<div class="tabs_in" for="productList" @click="showDialog($item.value,$idx)">
+
+						<div class="ctrl" 
+						style="background-color:{{isopen?$item.color:'#fff'}}; border-width: {{!$item.isBorder||footBtnIndex=='$inx'?'0':'3px'}};border-style:solid;border-color: {{isopen||$item.name=='开关'?'#d5d5d5':'#f3f3f3'}};">
+							<text class="text_in" style="color:{{isopen?'#fff':'#000'}};opacity: {{isopen?'1':'0.3'}};" if="{{$item.text != ''}}">{{$item.text}}</text>
+							<image class="img" else="{{$item.flagImg}}" src="{{$item.icon}}"></image>
+						</div>
+						
+						<div class="nav_icon">
+						<!-- 开关、风速 颜色为 常黑 -->
+							<text class="text" style="color: #000;opacity: {{isopen||$item.name=='开关'?'1':'0.3'}};">
+								{{$item.nameNew}}
+							</text>
+						</div>
+
+					</div>
+				</div>
+      </div>
+      
+		<div class="wind_dia_bg" if="{{is_wind_dia}}" @click="closeFun"></div>
+		<div class="wind_dia {{Height}}" if="{{is_wind_dia}}">
+			<div class="windtabs">
+				<div class="tabcontent">
+					<div class="tabcontent-section">
+						<list class="list-wind">
+							<block for="windList">
+								<list-item type="wind-speed" class="wind-item" @click="windSelect($idx)">
+									<text class="txt {{windIndex==$idx?'curColor':''}}" style="text-align:center">{{$item}}</text>
+									<image class="img-icon {{windIndex==$idx?'img-icon2':''}}" src="./assets/img/icon_selected.png"></image>
+								</list-item>
+							</block>
+						</list>
+					</div>
+				</div>
+			</div>
+			<div class="btn-grounp">
+				<text class="btn btn-cancel" @click="windCancel">取消</text>
+				<text class="btn btn-sure" @click="windSure">确定</text>
+			</div>
+		</div>
+		
+		<midea-loading if="{{isshowLoading}}"></midea-loading>
+		<!-- 提示：当前设备离线，请检查连接状态 -->
+		<midea-tips if="{{istips}}"></midea-tips> 
+
+		
+    </div>
+</template>
+
+<style>
+    @import "./assets/index.css";
+</style>
+
+<script>
+/* eslint-disable indent */
+import router from '@system.router' //路由
+import prompt from '@system.prompt' //弹窗消息
+import account from '@service.account' //获取服务商信息
+import storage from '@system.storage' //本地存储
+import device from '@system.device' //设备信息
+import network from '@system.network' //获取网络类型
+
+import api from '../Common/api/api.js'
+import net from '../Common/api/networkAPI.js'
+	
+  module.exports = {
+    private: {
+			isagain:true,
+			lanOnline:'false',
+			isLanInit:false,
+			timeTips:'',
+			isoffset:'-1000px',
+			isRefreshing:false,
+			ws: '',
+			isws: false,
+			isclosews: false,
+      language:true,
+			deviceHeight:0,
+			istips: false,
+			isabout: false,
+			isshowLoading: false,
+			config_network: '',
+			online:'false',
+			id: "",
+			isfirst:false,
+			dataHeight: "height: 600px",
+			humidity:"--",
+			roomApi: "--", //室内空气质量
+			fixed_time: '',
+			bgColor: '#CCCCCC', //全屏背景色
+			allBgColorOn: "#627BFF",//全屏背景色
+
+			footBtnIndex:null, //底部按钮选择索引
+
+			dataColorOff: '#666666', //数据字体颜色
+			dataColorOn: '#ffffff',
+			hchoColor:'#ffffff',//甲醛字体颜色
+			hchoCO2On:'#FFFFFF', //甲醛和CO2上升下降值
+			headColor:"#627BFF",
+			isopen: false,
+			issmork: false,
+			isdata: false,
+			is_smork: false,
+			is_wind_dia: false, //风速选择弹窗
+			date: true,
+			closeDia: "",
+			Height: '',
+			listDevice: {},
+			productList: [
+				{
+				"name":"开关",
+				"nameNew":"开关",
+				"value": "open",
+				"data":'开关',
+				"icon":"./assets/img/on_off.png",
+				"id":'',
+				"color": "#fff",
+				"flagImg": true,
+				'text':'',
+				"isBorder":true
+			},
+			{
+				"name":"风速",
+				"nameNew":"风速",
+				"value": "wind",
+				"data": "--",
+				"icon":"./assets/img/wind_off.png",
+				"id":0,
+				"color": "",
+				"flagImg": true,
+				'text':'',
+				"isBorder":true
+      },
+      {
+				"name":"节能",
+				"nameNew":"节能",
+				"value":'ECO',
+				"data": "节能",
+				"icon":"./assets/img/ECO_off.png",
+				"id":1,
+				"color": "",
+				"flagImg": true,
+				'text':'',
+				"isBorder":true
+      },
+      {
+				"name":"强净",
+				"nameNew":"强净",
+				"value":'strong',
+				"data": "强净",
+				"icon":"./assets/img/strong_off.png",
+				"id":2,
+				"color": "",
+				"flagImg": true,
+				'text':'',
+				"isBorder":true
+			},
+    ],
+			
+			list:[],
+		
+			time:[],
+			DBdata: ['power','mode','wind_speed','temperature','indoor_temperature','power_on_timer','power_on_time_value','power_off_timer',  'power_off_time_value','wind_swing_lr','wind_swing_ud','ptc'],
+			dataLists: {},
+					
+			baseData: {},
+			windList: [],
+			windIndex: 0,
+		
+			params: {}, //入参
+			accessToken: '',
+      openId: '',
+
+      room_temp_value:'--',//室内温度
+      humidity_value:'--',
+      pm25_value:'--',
+      co2_value:'--',
+      hcho_value:'0.000',
+      tvoc_value:'1档',
+			testData:'' //显示接口返回用
+    },
+		public: { 
+      deviceId: '',
+      deviceSeries: '',
+			openid: '',
+    },
+
+		showDialog(str,index){ //底部按钮触发
+			let that = this;
+			let status = that.dataLists;
+			// prompt.showToast({message:str+ ',showDialog,'+index})
+			if(this.online == 'false' || !this.online){
+				this.isshowclose();
+				// prompt.showToast({message: '设备离线状态'})
+			}else{
+				var i = 0;
+				let height = 300;
+				that.closeDia = str;
+				that.id = index;
+				that.footBtnIndex = index
+				if(str === "open"){
+					if(this.dataLists.power == 'off'){
+						this.params = {
+							power: 'on'
+						}
+					}else{
+						this.params = {
+							power: 'off'
+						}
+					}
+					delete status.power;
+					this.postDeviceControl(this.params,status);
+				}else{
+					if(that.isopen){
+						if(str == 'wind'){ //点击风速
+              that.issmork = true;
+              that.is_wind_dia = true;
+              that.Height = "animate_S";
+						
+						}else if(str == 'ECO'){ //点击节能
+							if(this.dataLists.function_set_energy_save == 'off'){
+								this.params = {
+                  function_set_energy_save: 'on',
+									fan_set:'0', //节能时自动风
+                }
+								delete status.fan_set;
+              }else{
+                this.params = {
+                  function_set_energy_save: 'off',
+                }
+              }
+							delete status.function_set_energy_save;
+							
+							this.postDeviceControl(this.params,status);
+						}else if(str == 'strong'){ //点击强劲
+              if(this.dataLists.function_set_ultimate == 'off'){
+								this.params = {
+                  function_set_ultimate: 'on',
+                }
+                
+              }else{
+                this.params = {
+                  function_set_ultimate: 'off'
+                }
+              }
+							this.params.fan_set = this.dataLists.fan_set
+							
+							delete status.function_set_ultimate;
+							delete status.fan_set;
+							this.postDeviceControl(this.params,status);
+						}
+					}else{
+						prompt.showToast({message: '设备关机状态'})
+					}
+				}
+			}
+		},
+			//初始化数据
+		initData(){
+			this.isfirst = true;
+			let obj = {
+						'power': 'off',
+						'mode': 'auto',
+						'wind_speed': 'high',
+						'temperature':'--',
+						'indoor_temperature':'--',
+						'power_on_timer':'off',
+						'power_on_time_value':'--',
+						'power_off_timer':'off',
+						'power_off_time_value':'--',
+						'wind_swing_lr':'off',
+						'wind_swing_ud':'off',
+						'ptc':'off'
+					}
+			this.dataFormat(obj);
+		},
+		//接口成功数据处理
+		dataFormat(data){
+			let that = this;
+			that.isRefreshing = false;
+			that.isshowLoading = false;
+			that.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
+			that.listDevice = data;
+			that.dataLists = data;
+			// that.testData = JSON.stringify(data) //显示接口返回用
+			// 初始化数据
+
+			that.room_temp_value = data.room_temp_value?data.room_temp_value:'--℃'//室内温度
+			that.humidity_value = data.humidity_value?data.humidity_value:'--%'
+			that.pm25_value = data.pm25_value>75?data.pm25_value+'↑':data.pm25_value+'↓'
+			that.co2_value = data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓'
+			that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
+			
+			// prompt.showToast({message: '接口'})
+
+			if(that.online == 'true'){
+				if(data.power == 'on'){
+
+					that.isopen = true;
+					that.dataLists = data;
+          
+          // that.room_temp_value = data.room_temp_value?data.room_temp_value:'--'//室内温度
+          // that.humidity_value = data.humidity_value?data.humidity_value:'--'
+          // that.pm25_value = data.pm25_value>75?data.pm25_value+'↓':data.pm25_value+'↑'
+          // that.co2_value = data.co2_value>=1000?data.co2_value+'↓':data.co2_value+'↑'
+          // that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
+          // that.tvoc_value = data.tvoc_value?data.tvoc_value:'1档'
+
+					if (data.room_aqi_value==='0') {
+						that.roomApi = "净氧"
+						that.hchoCO2On = "#F7B500" //上升下降颜色
+						that.allBgColorOn = '#4CD964'
+						that.hchoColor = "#ffffff" //甲醛字体颜色
+					}else if(data.room_aqi_value==='1'){
+						that.roomApi = "清新"
+						that.hchoCO2On = "#F7B500"
+						that.allBgColorOn = '#5BD2FF'
+						that.hchoColor = "#ffffff"
+					}else if(data.room_aqi_value==='2'){
+						that.roomApi = "超标"
+						that.hchoCO2On = "#E02020"
+						that.allBgColorOn = '#FFA800'
+						that.hchoColor = "#E02020"
+					}else{
+						that.roomApi = "--"
+						that.hchoCO2On = "#FFF"
+						that.allBgColorOn = '#5D75F6'
+						that.hchoColor = "#ffffff"
+					}
+					//初始化图标显示
+					that.productList[1].color = that.allBgColorOn
+					that.productList[1].isBorder= false
+					if (data.function_set_energy_save==='on') { //节能
+						that.productList[2].color = that.allBgColorOn
+						that.productList[2].icon = "./assets/img/ECO_on.png"
+						that.productList[2].isBorder= false
+					}else{
+						that.productList[2].color = "#FFF"
+						that.productList[2].icon = "./assets/img/ECO_on_1.png"
+						that.productList[2].isBorder= true
+					}
+					if (data.function_set_ultimate==='on') { //强净
+						that.productList[3].color = that.allBgColorOn
+						that.productList[3].icon = "./assets/img/strong_on.png"
+						that.productList[3].isBorder= false
+					}else{
+						that.productList[3].color = "#FFF"
+						that.productList[3].icon = "./assets/img/strong_on_1.png"
+						that.productList[3].isBorder= true
+					}
+					that.switchWind(data.fan_set)
+					
+					
+					
+				}else{ //关机状态
+
+					that.defaultData(data);
+          // that.switchWind(data.fan_set)
+				}
+			}else{
+				// this.isshowclose();
+				that.defaultData(data);
+				
+			}
+		},
+		defaultData(data){
+      // this.room_temp_value = '--',//室内温度
+      // this.humidity_value = '--',
+      // this.pm25_value = '',
+      // this.co2_value = '',
+      // this.hcho_value = '0.000',
+      // this.tvoc_value = '1档'
+
+			this.roomApi = '--'
+			this.isopen = false;
+			
+			this.productList[1].text = '';
+			this.productList[1].icon = './assets/img/wind_off.png';
+			this.productList[2].icon = './assets/img/ECO_off.png';
+			this.productList[3].icon = './assets/img/strong_off.png';
+			this.productList[1].isBorder= true
+			this.productList[2].isBorder= true
+			this.productList[3].isBorder= true
+		},
+		popData(str,index){
+			var that = this;
+			that.Height = "animate_S";
+			for(let i = 0;i < that.list.length;i++){
+				that.list[i].color = "";
+			}
+			switch(str){
+				case "model":
+					that.list = that.model;
+					for(let i = 0;i < that.list.length;i++){
+						that.list[i].icon = "./assets/img/modelimg_" + (i+1) + ".png"
+					}
+					that.list[that.productList[index].id].icon = "./assets/img/modelimg_on_" + (that.productList[index].id+1) + ".png";
+					that.list[that.productList[that.id].id].color = "#3191FD";
+					that.isdata = true;
+				break;
+				case "time":
+					that.is_smork = true;
+				break;
+			}
+			that.issmork = true;
+		},
+		closeDialog(bol){
+			this.closeFun();
+		},
+
+		closeFun(){
+			let that = this;
+			that.Height = "animate_D";
+			setTimeout(function(){
+				that.is_smork = false;
+				that.isdata = false;
+				that.issmork = false;
+				that.is_wind_dia = false;
+			},400)
+		},
+		
+		//向上滑动
+		swiperData(e){
+			console.log(e)
+		},
+		//获取第三方登录信息
+		getdevicelist(){
+      this.isshowLoading = true
+			let that = this
+			account.authorize({
+				type: 'code',
+				success: function(data) {
+					let params = {
+							thirdUId: data.code,
+					}
+					api.getUserToken(params).then((res) => {
+							let data_accesstoken = res
+							if (data_accesstoken.code && data_accesstoken.code === 200) {
+									let result_data = (typeof data_accesstoken.data) === "object"?data_accesstoken.data:JSON.parse(data_accesstoken.data);
+									if (parseInt(result_data.code) === 0 && result_data.accessToken) {
+										that.accessToken = result_data.accessToken
+										that.openid = result_data.openId
+										that.openId = result_data.openId
+								let obj = {
+									openid: that.openId,
+									accessToken: that.accessToken,
+									time: that.gettime()
+								}
+								storage.set({
+									key: 'openidToken',
+									value: JSON.stringify(obj),
+									success: function (data) {
+										
+									},
+									fail: function (data, code) {
+										
+									}
+								})
+								that.LanOnlineGet();
+									that.getDeviceStatus();
+							} else {
+								that.isRefreshing = false;
+								that.isshowLoading = false;
+								that.isfirst = true;
+								that.netWorkGet(that.getCode(result_data.code,"获取访问令牌失败"))
+                            }
+                        } else {
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+							that.isfirst = true;
+							that.netWorkGet('获取访问令牌失败,请稍后重试');
+                        }
+          }).catch((error) => {
+						console.log("获取访问令牌失败,请稍后重试")
+						that.isfirst = true;
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.netWorkGet('获取访问令牌失败,请稍后重试')
+					})
+				},
+				fail: function(data, code) {
+					that.isfirst = true;
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.netWorkGet('授权失败,请稍后重试')
+				}
+			})
+		},
+		/**
+		 * 联网获取
+		 */
+		getdataLan(res){
+			let that = this;
+			that.isRefreshing = false;
+			that.isshowLoading = false;
+			that.isfirst = true;
+			let num = false;
+			if(res.code === 200){
+				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+				if(!parseInt(data.code) && !parseInt(data.devices[0].status)){
+					num = true;
+					let obj = data.devices[0].properties;
+					that.online = obj.online;
+					if(that.online == 'false' || !that.online){
+						that.isshowclose();
+					}
+			        that.dataFormat(obj);
+				}else{
+					that.initData();
+					if(data.msg === ''){
+						if(!num){
+							let str1 = '';
+							if(data.devices[0].status){
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
+								}
+							}else{
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
+							}
+							that.isRefreshing = false;
+							that.isshowLoading = false;
+						}
+					}else{
+						that.netWorkGet(data.msg)
+					}
+				}
+			}else{
+				that.initData();
+				if(!num){
+					that.isRefreshing = false;
+					that.netWorkGet('获取设备状态失败,请稍后重试')
+					that.isshowLoading = false;
+				}
+			}
+		},
+		/**
+		 * 局域网获取
+		 */
+		getLanData(res){
+			// prompt.showToast({message:"局域网获取"+JSON.stringify(res)})
+			
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			if(parseInt(obj.code) == 0){
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				that.online = 'true';
+				data.online = 'true';
+				that.dataFormat(data);
+			}else{
+				that.isagain = false;
+				that.lanOnline = "false";
+				that.getDeviceStatus();
+			}
+		},
+        //查询状态
+		getDeviceStatus(){
+			// prompt.showToast({message:"查询状态"})
+			
+      this.isshowLoading = true;
+			let that = this;
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: that.DBdata
+				}]
+			}
+			that.istips = false;
+			// that.webSocketdata();
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
+			api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				if(res.lanonline){
+					that.getdataLan(res); //联网获取
+				}else{
+					that.getLanData(res); //局域网获取
+				}
+			}).catch((error,code) => {
+				console.log("授权接口：error"+error+":::code"+code)
+				if(error.online){
+					that.isfirst = true;
+					that.initData();
+					if(!num){
+						that.isRefreshing = false;
+						that.netWorkGet('获取设备状态失败,请稍后重试')
+						that.isshowLoading = false;
+					}
+				}else{
+					that.isagain = false;
+					that.lanOnline = "false";
+					that.getDeviceStatus();
+				}
+			})
+        },
+		/**
+		 * 局域网控制
+		 */
+		lanControl(res,obj1,status){
+			let that = this;
+			let obj = (typeof res) == 'object'?res:JSON.parse(res);
+			// prompt.showToast({message:"局域网控制"+JSON.stringify(res)})
+
+			that.isRefreshing = false;
+			that.isshowLoading = false;
+			if(parseInt(obj.code) == 0){
+				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+				data.online = 'true';
+				that.online = "true";
+				that.dataFormat(data);
+			}else{
+				that.isagain = false;
+				that.lanOnline = 'false';
+				that.postDeviceControl(obj1, status);
+			}
+		},
+		/**
+		 * 广域网控制
+		 */
+		wlanControl(res){
+			let that = this;
+			if (res.code && res.code == 200){
+				let data = (typeof res.data) === "object"? res.data:JSON.parse(res.data);
+				if(parseInt(data.code) == 0){
+					if(!parseInt(data.devices[0].status)){
+						// prompt.showToast({message:"广域网控制"+JSON.stringify(data)})
+						let isall = false;
+						let objdata = {};
+						objdata.online = 'true';
+						that.online = "true";
+						let obj = typeof data.devices[0].props === 'object'? data.devices[0].props:JSON.parse(data.devices[0].props);
+
+						objdata = {...obj}
+						
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.dataFormat(objdata);
+					}else{
+						that.isRefreshing = false;
+						that.isshowLoading = false;
+						that.initData();
+						if(data.msg === ''){
+							let str1 = '';
+							if(data.devices[0].status){
+								str1 = data.devices[0].status;
+								if(str1.toString() === '-6'){
+									that.isshowclose();
+									return false;
+								}
+								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+									// that.netWorkGet('设备离线')
+									that.isshowclose();
+								}else{
+									that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+								}
+							}else{
+								str1 = data.code;
+								that.netWorkGet(api.getCode(str1,'操作设备失败'))
+							}
+						}else{
+							that.netWorkGet(data.msg)
+						}
+					}
+				}else{
+					that.isRefreshing = false;
+					that.isshowLoading = false;
+					that.initData();
+					let str1 = '';
+					if (data.msg === '') {
+						str1 = data.code;
+						that.netWorkGet(api.getCode(str1, '操作设备失败'));
+					}else{
+						that.netWorkGet(data.msg);
+					}
+				}
+			}else{
+				that.isshowLoading = false;
+				that.initData();
+				that.isRefreshing = false;
+				that.netWorkGet('操作设备失败,请稍后重试')
+			}
+		},
+        //设备控制接口
+    postDeviceControl(obj,status){
+			// prompt.showToast({message: JSON.stringify(obj)+'设备控制接口'+JSON.stringify(status)})
+
+      this.isshowLoading = true;
+			let that = this;
+			if(status.online){
+				delete status.online
+			}
+			let params = {
+				openId: that.openId,
+				devices: [{
+					deviceId: that.deviceId,
+					properties: obj,
+					status:that.listDevice
+					// status:status
+				}]
+			}
+			console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
+			if(net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain){
+				that.lanOnline = 'true';
+			}else{
+				that.lanOnline = 'false';
+			}
+			api.postDeviceControl(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
+				that.isagain = true;
+				if(res.lanonline){
+					that.wlanControl(res); //广域网控制
+				}else{
+					that.lanControl(res,obj,status) //局域网控制
+				}
+			}).catch((error) => {
+				if(error.online){
+					that.initData();
+					that.isRefreshing = false;
+					that.netWorkGet('操作设备失败,请稍后重试')
+					that.isshowLoading = false;
+				}else{
+					that.isagain = false;
+					that.lanOnline = 'false';
+					that.postDeviceControl(obj, status);
+				}
+			})
+		},
+	
+
+		netWorkGet(str){ //获取网络类型
+			network.getType({ 
+				success: function (data) {
+					// prompt.showToast({message: data.type  + "获取网络类型"}) 
+					if(data.type === 'none'){
+						prompt.showToast({
+							message: str + "，请检查网络",
+							duration:1
+						}) 
+					}else{
+						prompt.showToast({
+							message: str,
+							duration:1
+						}) 
+					}
+				}
+			})
+		},
+		
+		
+
+		windSelect(index){ //风速选择
+			this.windIndex = index;
+    },
+    switchWind(fan_set){ //风速匹配
+      // prompt.showToast({message: fan_set + "风速匹配"}) 
+      this.productList[1].id = fan_set;
+			this.windIndex = fan_set
+			switch (fan_set){
+				case '0':
+					this.productList[1].text = '自动风'
+					break;
+				case '1':
+					this.productList[1].text = '1挡'
+					break;
+				case '2':
+					this.productList[1].text = '2挡'
+					break;
+				case '3':
+					this.productList[1].text = '3挡'
+          break;
+        case '4':
+					this.productList[1].text = '4挡'
+          break;
+        case '5':
+					this.productList[1].text = '5挡'
+          break;
+        case '6':
+					this.productList[1].text = '6挡'
+          break;
+        case '7':
+					this.productList[1].text = '7挡'
+					break;
+				default:
+					break;
+			}
+		},
+		windCancel(){
+			this.closeFun();
+		},
+		windSure(evt){  //风速确定
+			// prompt.showToast({message: typeof this.windIndex + "是否节能状态"}) 
+			this.windIndex = Number(this.windIndex)
+			this.windCache = this.windIndex;
+			this.windTypeCache = this.windTypeIndex 
+			if (this.windIndex === 0) {  //自动风时不解除节能
+        this.params = {
+          fan_set:this.windIndex,
+					function_set_energy_save:this.baseData.function_set_energy_save==='on'?'on':'off'
+        }
+        this.productList[1].text = '自动风'
+      }else{
+				this.params = {
+					fan_set:this.windIndex,
+					function_set_energy_save:'off' //解除节能模式
+				}
+			}
+      if (this.windIndex === 1) {
+        this.productList[1].text = '1档'
+      }
+      if (this.windIndex === 2) {
+        this.productList[1].text = '2档'
+      }
+      if (this.windIndex === 3) {
+        this.productList[1].text = '3档'
+      }
+      if (this.windIndex === 4) {
+        this.productList[1].text = '4档'
+      } 
+      if (this.windIndex === 5) {
+        this.productList[1].text = '5档'
+      } 
+      if (this.windIndex === 6) {
+        this.productList[1].text = '6档'
+      } 
+      if (this.windIndex === 7) {
+        this.productList[1].text = '7档'
+        
+      }	 
+
+
+			
+			let status = this.dataLists;
+			delete status.fan_set;
+			delete status.function_set_energy_save;
+			this.postDeviceControl(this.params,status);
+			this.closeFun();
+		},
+	
+		
+		isshowclose(){ //设备离线
+			let that = this;
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
+			that.istips = true;
+			that.timeTips = setTimeout(() => {
+				that.istips = false;
+			},3000)
+		},
+		refreshData(e){
+			let that = this;
+			that.isRefreshing = e.refreshing;
+			let timestamp = Date.parse(new Date());
+			if(that.isfirst){
+				that.isshowLoading = true;
+				storage.get({
+					key: 'openidToken',
+					success: function (data) {
+						// prompt.showToast({message:"刷新"+JSON.stringify(data)})
+						if(data === ''){
+							that.getdevicelist();
+						}else{
+							let obj = JSON.parse(data);
+							if(parseInt(timestamp) > parseInt(obj.time)){
+								that.getdevicelist();
+							}else{
+								if(obj.openid === that.openid){
+									that.openId = obj.openid;
+									that.accessToken = obj.accessToken;
+									if(!that.isLanInit){
+										that.LanOnlineGet();
+									}
+									that.getDeviceStatus();
+								}else{
+									that.getdevicelist();
+								}
+							}
+						}
+						console.log('handling success')
+					},
+					fail: function (data, code) {
+						console.log(`handling fail, code = ${code}`)
+					}
+				})
+			}
+			
+        },
+		gettime(){
+			let timestamp = Date.parse(new Date());
+			return parseInt(timestamp) + 3600000;
+		},
+		//websocket
+		webSocketdata() {
+					let that = this;
+					api.createWensocket(that.deviceId).then((ws) => {
+						that.ws = ws;
+						that.isws = true;
+						ws.onopen = function() {
+							console.log("websocket连接成功")
+						}
+						ws.onerror = function(data) {
+							// 连接失败
+							//失败之后再重启
+							that.webSocketdata();
+							console.log('websocket连接失败');
+						}
+						ws.onmessage = function(res) {
+
+							let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+							let objdata = {};
+							if(obj.status.online){
+								objdata.online = obj.status.online;
+								that.online = obj.status.online;
+							}else{
+								objdata.online = "true";
+								that.online = "true";
+							}
+							if(obj.status.power){
+								objdata.power = obj.status.power;
+							}
+							if(obj.status.mode){
+								objdata.mode = obj.status.mode;
+							}
+							if(obj.status.wind_speed){
+								objdata.wind_speed = obj.status.wind_speed;
+							}
+							if(obj.status.temperature){
+								objdata.temperature = obj.status.temperature;
+							}
+							if(obj.status.indoor_temperature){
+								objdata.indoor_temperature = obj.status.indoor_temperature;
+							}
+							if(obj.status.power_on_timer){
+								objdata.power_on_timer = obj.status.power_on_timer;
+							}
+							if(obj.status.power_on_time_value){
+								objdata.power_on_time_value = obj.status.power_on_time_value;
+							}
+							if(obj.status.power_off_timer){
+								objdata.power_off_timer = obj.status.power_off_timer;
+							}
+							if(obj.status.power_off_time_value){
+								objdata.power_off_time_value = obj.status.power_off_time_value;
+							}
+							if(obj.status.wind_swing_lr){
+								objdata.wind_swing_lr = obj.status.wind_swing_lr;
+							}
+							if(obj.status.wind_swing_ud){
+								objdata.wind_swing_ud = obj.status.wind_swing_ud;
+							}
+							if(obj.status.ptc){
+								objdata.ptc = obj.status.ptc;
+							}
+						}
+						ws.onclose = function() {
+							// 关闭 websocket
+							// 关闭之后再重启
+							if(!that.isclosews){
+								that.webSocketdata();
+							}
+							console.log("websocket连接已关闭...")
+						};
+					});
+		},
+		onclickFn(e){
+			this.isabout = false;
+		},
+		closeWebsocket(e){
+			let that = this;
+			that.isclosews = true;
+			if(that.ws != ''){
+				that.ws.close({
+					code: 1000,
+					reason: '退出关闭',
+					success: function() {
+						that.ws = '';
+						console.log("关闭websocket成功")
+					},
+					fail: function(data, code) {
+						console.log("关闭websocke失败, code = "+JSON.stringify(code))
+					}
+				})
+			}
+		},
+		/**
+		 * 局域网初始化
+		 */
+		LanOnlineGet(){
+			let that = this;
+			net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+				that.isLanInit = true;
+			}).catch((error) => {
+				that.isLanInit = false;
+			});
+		},
+		onHide(){
+			let that = this;
+			that.istips = false;
+			that.closeWebsocket();
+		},
+		onShow(){
+			let that = this;
+			that.isclosews = false;
+			if(that.ws === '' && that.isws){
+				// that.webSocketdata();
+			}
+		},
+		onBackPress () { //当用户点击返回实体按键、左上角返回菜单、调用返回API时触发该事件
+			console.log('back');
+			
+			let that = this;
+			that.closeWebsocket();
+			router.clear();
+			this.$app.exit();
+		},
+		onInit(){ //数据初始化
+			api.getlanguage().then((res) => {
+				if(res === 'ug'){
+					this.language = false;
+				}else{
+					this.language = true;
+				}
+			})
+			let that = this;
+
+			device.getInfo({ //获取设备信息
+				success: function(ret) {
+					console.log(`handling success， brand = ${ret.brand}`);
+					console.log("屏幕高度："+ret.screenHeight);
+					that.deviceHeight = ret.screenHeight;
+				}
+			})
+			router.clear();
+			that.$page.setTitleBar({ text: '新风机' })
+		
+			// that.$on('cancel', function(e){
+			// 	that.isabout = false;
+			// })
+			// that.$on('closetips', function(e){
+			// 	that.istips = false;
+
+			// })
+			// that.$on('openmenu', function(e){
+			// 	that.isabout = !that.isabout;
+			// })	
+			that.windList.push('自动风','1档','2档','3档','4档','5档','6档','7档');
+			let timestamp = Date.parse(new Date());
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					if(data === ''){
+						that.getdevicelist(); //获取登录信息
+					}else{
+						let obj = JSON.parse(data);
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist();
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid;
+								that.accessToken = obj.accessToken;
+								that.LanOnlineGet();
+								that.getDeviceStatus();
+							}else{
+								that.getdevicelist();
+							}
+						}
+					}
+					console.log('handling success————')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
+		onMenuPress(){ //点击顶部菜单触发
+
+			this.isabout = !this.isabout;
+		},
+  }
+</script>
