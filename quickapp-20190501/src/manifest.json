@@ -130,6 +130,12 @@
 			"0xCC": {
 			    "component": "index"
 			},
+			"0xCE": {
+			    "component": "index"
+			},
+			"0xCF": {
+			    "component": "index"
+			},
             "0xAC": {
                 "component": "index"
             },
@@ -167,9 +173,6 @@
                 "component": "index"
             },
 			"0xFD": {
-                "component": "index"
-            },
-            "0xCF": {
                 "component": "index"
             },
             "config_network": {

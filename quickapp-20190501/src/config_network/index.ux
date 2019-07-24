@@ -1,46 +1,41 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
 <import name="midea-title" src="../Component/MideaTitle/index"></import>
+
+<import name="midea-set" src="./setLan/index.ux"></import>
 <template>
     <div class="container">
 		<midea-title title="配网帮助" language="{{language}}" back="{{isback}}"></midea-title>
-        <div class="nav_divce" if="{{is_device}}">
-			<image class="{{img === ''?'nav_divce_img_l':'nav_divce_img'}}" src="{{img}}" alt="./assets/alt.png"></image>
-		</div>
 		<list class="nav_tops">
-			<block>
-				<list-item type="product">
-					<text class="nav_tops_title" if="{{is_device}}">
-						<span>操作指引</span>
-					</text>
-				</list-item>
-				<list-item type="product" if="{{is_device}}">
-					<text class="nav_tops_text">
-						{{main_mode_summary}}
-					</text>
-				</list-item>
-				<list-item type="product">
-					<div class="nav_tops_btn" if="{{is_device}}">
-						<div class="nav_tops_btn_radio" @click="selectData()">
-							<text class="nav_tops_btn_radio_text" if="{{!language}}">
-								<span>已完成上述操作</span>
-							</text>
-							<image src="{{checked?'./assets/checked_off.png':'./assets/checked_on.png'}}" class="nav_tops_btn_radio_btn"></image>
-							<text class="nav_tops_btn_radio_text" if="{{language}}">
-								<span>已完成上述操作</span>
-							</text>
-						</div>
-						<!-- <text @click="setwifi()">设置wifi</text> -->
-						<text if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" @click="nextPage()">下一步</text>
-						<!-- <input type="button" if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" value="下一步" @click="nextPage()" disabled="{{checked}}"> -->
-					</div>
-				</list-item>
-			</block>
+			<list-item type="listItem" class="nav_tops_list">
+				<div class="nav_divce" if="{{is_device}}">
+					<image class="{{img === ''?'nav_divce_img_l':'nav_divce_img'}}" src="{{img}}" alt="./assets/alt.png"></image>
+				</div>
+				<text class="nav_tops_title" if="{{is_device}}">
+					<span>操作指引</span>
+				</text>
+				<text class="nav_tops_text">
+					{{main_mode_summary}}
+				</text>
+			</list-item>
 		</list>
+		<div class="nav_tops_btn" if="{{is_device}}">
+			<div class="nav_tops_btn_radio" @click="selectData()">
+				<text class="nav_tops_btn_radio_text" if="{{!language}}">
+					<span>已完成上述操作</span>
+				</text>
+				<image src="{{checked?'./assets/checked_off.png':'./assets/checked_on.png'}}" class="nav_tops_btn_radio_btn"></image>
+				<text class="nav_tops_btn_radio_text" if="{{language}}">
+					<span>已完成上述操作</span>
+				</text>
+			</div>
+			<text if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" @click="nextPage()">下一步</text>
+		</div>
 		<midea-loading if="{{isloading}}"></midea-loading>
+		<!-- <midea-set if="{{issetlan}}" onback="goback()" onclose="closedia()"></midea-set> -->
     </div>
 </template>
 
-<style lang="less">
+<style lang="less" scoped>
     @import "./assets/index.less";
 </style>
 
@@ -54,9 +49,10 @@
 	// import barcode from '@system.barcode';
 	import api from '../Common/api/api.js';
 	import net from '../Common/api/networkAPI.js';
-	import wifi from '@system.wifi';
     module.exports = {
         private: {
+			issetlan:false,
+			abc:'',
 			isall:false,
 			isap_lan:'fasle',
 			firsType:'',
@@ -118,7 +114,6 @@
 			if(that.iot_url != ""){
 				console.log("二维码url："+that.iot_url)
 				console.log("二维码"+api.getUrlCan(that.iot_url,"cd"));
-				// prompt.showToast({message:'url'+that.iot_url})
 				if(api.getUrlCan(that.iot_url,"cd") || api.getUrlCan(that.iot_url,"v").toString() == '3'){
 					net.getInfoByQrCode(that.iot_url).then((res) => {
 						console.log("二维码信息"+JSON.stringify(res))
@@ -219,23 +214,35 @@
 		},
 		onShow() {
 			console.log("sssss");
-			// this.getWifiInfo();
+			console.log(this.abc)
+			this.getWifiInfo();
+		},
+		onHide(){
+			this.abc = "aaa";
 		},
 		setwifi(){
 			net.setWifi();
+		},
+		goback(e){
+			// this.issetlan = false;
+			this.clearData();
+			router.clear();
+			router.back();
+			// prompt.showToast({
+			// 	message:JSON.stringify(e)
+			// })
+		},
+		closedia(){
+			this.issetlan = false;
 		},
 		/**
 		 * 获取已连接的wifi信息
 		 */
 		getWifiInfo(){
-			wifi.getConnectedWifi({
-				success: function(data) {
-					console.log("获取已连接sifi"+JSON.stringify(data))
-					
-				},
-				fail: function(data, code) {
-					console.log(`handling fail, code = ${code}`)
-				}
+			net.getwifiinfo().then((res) => {
+				console.log(JSON.stringify(res))
+			}).catch((error) => {
+				
 			})
 		},
 		/**
@@ -296,6 +303,7 @@
 			}else{
 				that.isap = "true";
 			}
+			that.issetlan = true;
 			that.iot_wifi_password = that.iot_wifi_password?that.iot_wifi_password:'';
 			if(that.ssidDevice.toString() == '00' || that.ssidDevice.toUpperCase() == 'AB'){
 				that.ssidDevice = 'AC'
@@ -687,7 +695,7 @@
 			})
 		},
 		onBackPress(){
-			this.clearData()
+			this.clearData();
 			router.clear();
 			router.back();
 		},

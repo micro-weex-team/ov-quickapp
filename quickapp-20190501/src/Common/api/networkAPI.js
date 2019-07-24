@@ -2,6 +2,7 @@ import IOT from '@service.iot';
 import prompt from '@system.prompt';
 import device from '@system.device';
 import storage from '@system.storage';
+import wifi from '@system.wifi';
 import util from "../../util.js";
 const sethost = util.hostData.setHost;  //配置环境（true：pro环境；false：sit环境）
 let clientId = "";
@@ -450,6 +451,23 @@ export default {
 				console.log(JSON.stringify(data))
 			}
 		})
+	},
+	/**
+	 * 获取wifi信息
+	 */
+	getwifiinfo(){
+		let that = this;
+		let p = new Promise(function(resolve, reject){
+			wifi.getConnectedWifi({
+				success: function(data) {
+					resolve(data)
+				},
+				fail: function(data, code) {
+					reject(data)
+				}
+			})
+		})
+		return p;
 	}
 	
 }

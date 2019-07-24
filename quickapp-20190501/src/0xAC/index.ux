@@ -816,7 +816,7 @@
 									return false;
 								}
 								if(str1.toString() == '-1'){
-									that.isagain = false
+									that.isagain = false;
 								}
 								if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
 									// that.netWorkGet('设备离线')

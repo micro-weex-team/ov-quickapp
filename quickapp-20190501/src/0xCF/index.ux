@@ -1182,42 +1182,45 @@ import net from '../Common/api/networkAPI.js'
 		refreshData(e){
 			console.log('下拉刷新');
 			let that = this
-		
-			that.isRefreshing = true
-			let timestamp = Date.parse(new Date())
 			if(that.isfirst){
-				that.isshowLoading = true;
-				storage.get({
-					key: 'openidToken',
-					success: function (data) {
-						if(data === ''){
-							that.getdevicelist()
-						}else{
-							let obj = JSON.parse(data)
-							if(parseInt(timestamp) > parseInt(obj.time)){
-								that.getdevicelist()
-							}else{
-								if(obj.openid === that.openid){
-									that.openId = obj.openid
-									that.accessToken = obj.accessToken
-									if(!that.isLanInit){
-										that.LanOnlineGet()
-									}
-									that.getDeviceStatus()
-								}else{
-									that.getdevicelist()
-								}
-							}
-						}
-						console.log('handling success')
-					},
-					fail: function (data, code) {
-						console.log(`handling fail, code = ${code}`)
-					}
-				})
+				that.regetdata();
 			}
 			
         },
+		regetdata(){
+			let that = this;
+			that.isRefreshing = true
+			let timestamp = Date.parse(new Date())
+			that.isshowLoading = true;
+			storage.get({
+				key: 'openidToken',
+				success: function (data) {
+					if(data === ''){
+						that.getdevicelist()
+					}else{
+						let obj = JSON.parse(data)
+						if(parseInt(timestamp) > parseInt(obj.time)){
+							that.getdevicelist()
+						}else{
+							if(obj.openid === that.openid){
+								that.openId = obj.openid
+								that.accessToken = obj.accessToken
+								if(!that.isLanInit){
+									that.LanOnlineGet()
+								}
+								that.getDeviceStatus()
+							}else{
+								that.getdevicelist()
+							}
+						}
+					}
+					console.log('handling success')
+				},
+				fail: function (data, code) {
+					console.log(`handling fail, code = ${code}`)
+				}
+			})
+		},
 		gettime(){
 			let timestamp = Date.parse(new Date());
 			return parseInt(timestamp) + 3600000;
@@ -1365,8 +1368,8 @@ import net from '../Common/api/networkAPI.js'
 				that.isabout = false
 			})
 			that.$on('closetips', function(e){
-				that.istips = false
-
+				that.istips = false;
+				that.regetdata();
 			})
 			that.$on('openmenu', function(e){
 				that.isabout = !that.isabout;

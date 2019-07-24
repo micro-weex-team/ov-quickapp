@@ -424,8 +424,6 @@
 			if(!ssid){
 				ssid = api.getUrlSSid($this.iot_url);
 			}
-			
-			
 			// prompt.showToast({message:"停止配网"});
 			IOT.send({
 			  action: 'stopConfigDevice',
@@ -481,7 +479,6 @@
 										}
 									}else{
 										$this.setSucc = true;
-										// prompt.showToast({message:"配网失败",duration:1})
 									}
 								},
 								fail: function(data) {
