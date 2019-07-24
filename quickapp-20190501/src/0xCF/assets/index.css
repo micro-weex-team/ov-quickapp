@@ -263,7 +263,9 @@ list{
 .modeSelect .mSelectLeft{
 	/* flex: 1; */
 	width: 480px;
-	border-right: 3px solid #f1f1f1;
+	border-right-width: 3px ;
+	border-right-color:#f1f1f1;
+	border-style: solid ;
 	justify-content: center;
 	align-items: center;
 }
