@@ -1,2 +1,4 @@
 node_modules/
 .idea/
+build/
+quickapp-20190501/dist
