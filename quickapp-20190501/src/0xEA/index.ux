@@ -25,22 +25,23 @@
 					<text class="EA_nav_list_keepwarm" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{keepTime(warm_time_hour,warm_time_min)}}</text>
 					<text class="EA_nav_list_keeptext" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">已持续保温</text>
 					<text class="EA_nav_list_keepstatus" if="{{work_status === 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">保温中</text>
+					<text class="EA_nav_list_choosetips" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能</text>
 				</list-item>
 			</list>
 		</refresh>
 		<div class="EA_ctr" if="{{online === 'false' || (work_status != 'cooking' && work_status != 'keep_warm')}}">
 			<div class="EA_ctr_list">
-				<div class="EA_ctr_list_constrl" @click="selectData('fast_rice')">
+				<div class="EA_ctr_list_constrl" @click="selectData('luscious_rice')">
 					<image src="./assets/img/fast.png" class="EA_ctr_list_constrl_img"></image>
-					<text class="EA_ctr_list_constrl_text">快速饭</text>
+					<text class="EA_ctr_list_constrl_text">香甜饭</text>
 				</div>
-				<div class="EA_ctr_list_constrl" @click="selectData('keep_warm')">
+				<div class="EA_ctr_list_constrl" @click="selectData('cook_congee')">
 					<image src="./assets/img/keep_warm.png" class="EA_ctr_list_constrl_img"></image>
-					<text class="EA_ctr_list_constrl_text">保温</text>
+					<text class="EA_ctr_list_constrl_text">煮粥</text>
 				</div>
-				<div class="EA_ctr_list_constrl" @click="selectData('heat_rice')">
+				<div class="EA_ctr_list_constrl" @click="selectData('cook_soup')">
 					<image src="./assets/img/heat.png" class="EA_ctr_list_constrl_img"></image>
-					<text class="EA_ctr_list_constrl_text">加热</text>
+					<text class="EA_ctr_list_constrl_text">煲汤</text>
 				</div>
 			</div>
 		</div>
