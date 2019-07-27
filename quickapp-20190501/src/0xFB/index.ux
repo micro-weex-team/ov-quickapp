@@ -3,6 +3,7 @@
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-dialog" src="../Component/MideaDialog/index"></import>
+<import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
 <template>
 <div class="container">
 	<midea-head title="电风扇" onclose-websocket="closeWebsocket" language="{{language}}" power="{{power}}"></midea-head>
@@ -10,9 +11,8 @@
 		<list onscroll="" style="background-color: {{ power === 'on'? '#3191FD':'#cccccc'}}" class="main-nav" id="listdeviceNav">
 			<list-item type="deviceNav" class="main-nav-nav">
 				<div class="child-{{language?'lock':'lock-l'}}">
-					<image src="{{power + online === 'ontrue'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" @click="downMeiju()" class="child-lock-image"></image>
+					<midea-meiju power="{{power + online === 'ontrue'}}"></midea-meiju>
 				</div>
-				<text class="child-lock-text" style="color:{{power + online === 'ontrue'?'#ffffff':'#666666'}}">使用美居</text>
 				<div class="gear">
 					<text class="gear-grade" if="{{!language}}" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">档</text>
 					<text class="gear-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">{{gear?gear:'--'}}</text>
