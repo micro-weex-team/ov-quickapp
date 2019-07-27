@@ -3,6 +3,7 @@
 <!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
 
 <template>
 	<div class="container" id="container_body">
@@ -11,10 +12,9 @@
 		<refresh class="EA_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{online === 'true'?'#F9CB3D':'#cccccc'}};" class="EA_nav" id="list">
 				<list-item type="listItem" class="EA_nav_list">
-					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}" @click="isMeiju()">
-						<image src="{{online === 'true'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="EA_nav_list_lock_img"></image>
+					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}">
+						<midea-meiju power="{{online === 'true'? 'on' : 'off'}}"></midea-meiju>
 					</div>
-					<text class="EA_nav_list_usemeiju" style="color: {{online === 'true'?'#ffffff':'#666666'}};">使用美居</text>
 					<div class="EA_nav_list_data" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}">
 						<text class="EA_nav_list_data_data_change" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status === 'cooking'?tiemData(left_time_hour,left_time_min):'--'}}</text>
 					</div>
