@@ -7,7 +7,8 @@
 
 <template>
 	<div class="container" id="container_body">
-		<text if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:{{padingLeft(left_time_hour,left_time_min)}}px;">分</text>
+		<text if="{{work_status === 'schedule'}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:880px;">完成</text>
+		<text if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}" class="EA_nav_list_data_fen" style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:{{padingLeft(left_time_hour,left_time_min)}}px;">分</text>
 		<midea-head title="电饭煲" onclose-websocket="closeWebsocket" language="{{language}}" isnew="{{bgColor}}" power="{{online === 'true'?'on':'false'}}"></midea-head>
 		<refresh class="EA_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{online === 'true'?'#F9CB3D':'#cccccc'}};" class="EA_nav" id="list">
@@ -15,10 +16,14 @@
 					<div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}">
 						<midea-meiju power="{{online === 'true'? 'on' : 'off'}}"></midea-meiju>
 					</div>
-					<div class="EA_nav_list_data" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}">
+					<div class="EA_nav_list_data" if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}">
 						<text class="EA_nav_list_data_data_change" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status === 'cooking'?tiemData(left_time_hour,left_time_min):'--'}}</text>
 					</div>
-					<text class="EA_nav_list_text" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">大约{{mode === 'heat_rice'?'还剩':'需要'}}</text>
+					<div class="EA_nav_list_data" if="{{work_status === 'schedule'}}">
+						<text class="EA_nav_list_data_data_change" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{keepTime(order_time_hour,order_time_min)}}</text>
+					</div>
+					<text class="EA_nav_list_text" if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">大约{{mode === 'heat_rice'?'还剩':'需要'}}</text>
+					<text class="EA_nav_list_text" if="{{work_status === 'schedule'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{todayOrTomorrow(order_time_hour, order_time_min)}}</text>
 					<text class="EA_nav_list_status" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{mode === 'heat_rice'?'加热中':work_status_fun(mode,work_status)}}</text>
 					<text class="EA_nav_list_cancel" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">待机中</text>
 					<!-- <text class="EA_nav_list_canceltext" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能</text> -->
@@ -29,7 +34,7 @@
 				</list-item>
 			</list>
 		</refresh>
-		<div class="EA_ctr" if="{{online === 'false' || (work_status != 'cooking' && work_status != 'keep_warm')}}">
+		<div class="EA_ctr" if="{{online === 'false' || (work_status != 'cooking' && work_status != 'keep_warm' && work_status != 'schedule')}}">
 			<div class="EA_ctr_list">
 				<div class="EA_ctr_list_constrl" @click="selectData('luscious_rice')">
 					<image src="./assets/img/fast.png" class="EA_ctr_list_constrl_img"></image>
@@ -45,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="EA_contrl" if="{{online === 'true' && (work_status === 'cooking' || work_status === 'keep_warm')}}">
+		<div class="EA_contrl" if="{{online === 'true' && (work_status === 'cooking' || work_status === 'keep_warm' || work_status === 'schedule')}}">
 			<div class="EA_contrl_btn" @click="stopDevice()">
 				<image src="./assets/img/stop.png" class="EA_contrl_btn_img"></image>
 				<text class="EA_contrl_btn_text">停止</text>
@@ -329,6 +334,15 @@
 		//switch开关
 		switchChang() {
 			this.isswitch = !this.isswitch;
+		},
+		//预约中显示今天还是明天
+        todayOrTomorrow(hour, min) {
+            let date = new Date();
+            if (hour * 60 + min <= date.getHours() * 60 + date.getMinutes()) {
+                return '明天'
+            } else {
+                return '今天'
+            }
 		},
 		//保温时间过滤
 		keepTime(hour,min){
@@ -679,9 +693,9 @@
 			}else{
 				this.power = 'off';
 			}
-			if(that.timeoutInter != ''){
-				clearTimeout(that.timeoutInter)
-			}
+			// if(that.timeoutInter != ''){
+			// 	clearTimeout(that.timeoutInter)
+			// }
 			this.warm_time_hour = this.EAdata.warm_time_hour;
 			this.warm_time_min = this.EAdata.warm_time_min;
 			this.left_time_hour = this.EAdata.left_time_hour;
@@ -1370,9 +1384,9 @@
 		closeWebsocket(e){
 			let that = this;
 			that.isclosews = true;
-			if(that.timeoutInter != ''){
-				clearInterval(that.timeoutInter)
-			}
+			// if(that.timeoutInter != ''){
+			// 	clearInterval(that.timeoutInter)
+			// }
 			if(that.ws != ''){
 				that.ws.close({
 					code: 1000,
@@ -1390,9 +1404,9 @@
 		onShow(){
 			let that = this;
 			that.isclosews = false;
-			if(that.timeoutInter != ''){
-				clearInterval(that.timeoutInter)
-			}
+			// if(that.timeoutInter != ''){
+			// 	clearInterval(that.timeoutInter)
+			// }
 			if(that.online === 'true'){
 				if(this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule'){
 					that.timeGetdata();
