@@ -135,7 +135,7 @@
 				padding-right: 60px;
 				// padding-top: 60px;
 			}
-			.gear {
+			.temp {
 				flex-direction: row;
 				justify-content: center;
 				align-items: flex-start;
@@ -147,11 +147,28 @@
 					color: #FFFFFF;
 				}
 				&-grade {
-					padding-top: 100px;
-					padding-left: 20px;
-					font-size: 54px;
+					font-family:PingFangSC-Light;
+					position: absolute;
+					font-size: 80px;
+					right: 250px;
 					color: #FFFFFF;
 				}
+			}
+			.tips {
+				width: 100%;
+				font-family: PingFangSC-Regular;
+				font-size: 48px;
+				color: #666666;
+				text-align: center;
+			}
+			.indoor {
+				width: 100%;
+				font-family: PingFangSC-Regular;
+				font-size: 54px;
+				color: #666666;
+				letter-spacing: 0;
+				text-align: center;
+				margin-top: 192px;
 			}
 			.wind {
 				flex-direction: row;
@@ -180,18 +197,18 @@
 				}
 				&-setting {
 					width: 100%;
-					padding: 30px 336px;
+					padding: 30px 324px;
 					flex-direction: row;
 					justify-content: space-between;
 					align-items: center;
 					margin-top:100px;
 					&-plus {
-						width: 84px;
-						height: 84px;
+						width: 112px;
+						height: 112px;
 					}
 					&-reduce {
-						width: 84px;
-						height: 84px;
+						width: 112px;
+						height: 112px;
 					}
 				}
 			}
@@ -204,7 +221,7 @@
         align-items: center;
         width: 100%;
         height: 85%;
-    }
+	}
 	
     .footer {
         width: 100%;
@@ -248,6 +265,7 @@
 			width: 100%;
 			background-color: #FFFFFF;
 			padding: 0 70px;
+			margin-bottom: 70px;
 		}
         &-switch {
 			margin-top: 70px;
@@ -274,6 +292,26 @@
             &-img {
                 width: 150px;
                 height: 150px;
+            }
+            &-desc {
+                margin-top: 21px;
+                font-size: 36px;
+                color: #000000;
+            }
+		}
+        &-normal {
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            &-img {
+                width: 150px;
+				height: 150px;
+				&-disabled {
+					width: 150px;
+					height: 150px;
+					opacity: 0.1;
+				}
             }
             &-desc {
                 margin-top: 21px;
