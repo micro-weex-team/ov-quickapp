@@ -457,7 +457,7 @@
 										$this.deviceType = JSON.parse(res.message).deviceType
 										$this.modelNumber = JSON.parse(res.message).deviceSubType
 										$this.deviceName = JSON.parse(res.message).deviceName
-										$this.sn = JSON.parse(res.message).deviceSN;
+										$this.sn = JSON.parse(res.message).deviceSN?JSON.parse(res.message).deviceSN:'';
 										$this.deviceSSID = JSON.parse(res.message).deviceSSID;
 										$this.iswork = true;
 										$this.getDeviceinfo();
@@ -506,7 +506,7 @@
 				quickAppPackage: $this.quickAppPackage,
 				deviceName: $this.deviceName,
 				deviceCategory: $this.deviceType,
-				deviceSeries:$this.sn.substring(9,17),
+				deviceSeries:$this.sn != ''?'':$this.sn.substring(9,17),
 				// deviceSeries: $this.sn.substring($this.sn.length-8,$this.sn.length),
 				deviceUuid: $this.binddeviceid,
 				resultCode: bol,

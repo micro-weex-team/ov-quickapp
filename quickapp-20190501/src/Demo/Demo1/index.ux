@@ -1,19 +1,82 @@
-<import name="midea-head" src="../../Component/MideaHead/index"></import>
 <template>
-	<div>
-		<midea-head title="标题" show-menu="{{showMenu}}" coloroff="{{defaultColor}}" coloron="{{hight_Color}}" power="{{power}}"></midea-head>
-	</div>
+  <div class="page">
+    <text class=glo-type>{{globalCompositeOperation}}</text>
+    <canvas id="cavs" class="canvas"></canvas>
+    <input class="btn" value="切换合成方式" type="button" onclick="changeGlobalCompositeOperation"></input>
+  </div>
 </template>
+
+<style>
+  .page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .glo-type {
+    margin: 20px;
+  }
+
+  .canvas {
+    width: 320px;
+    height: 320px;
+    border: 1px solid red;
+  }
+
+  .btn {
+    width: 500px;
+    height: 80px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 20px;
+    color: #ffffff;
+    font-size: 30px;
+    background-color: #0faeff;
+  }
+</style>
+
 <script>
-	export default {
-		data: {
-			showMenu:true,
-			hight_Color:"#3191FD",
-			defaultColor:'#CCCCCC',
-			power:'off'
-		},
-		onInit () {
-			
-		}
-	}
+  export default {
+    private: {
+      globalCompositeOperation: 'source-over'
+    },
+    onShow () {
+      this.draw()
+    },
+    draw () {
+      const ctx = this.$element('cavs').getContext('2d')
+
+      // 清除画布
+      ctx.clearRect(0, 0, 320, 320)
+
+      // 正常绘制第一个矩形
+      ctx.globalCompositeOperation = 'source-over'
+      ctx.fillStyle = 'skyblue'
+      ctx.fillRect(10, 10, 200, 200)
+
+      // 设置canvas的合成方式
+      ctx.globalCompositeOperation = this.globalCompositeOperation
+
+      // 绘制第二个矩形
+      ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'
+      ctx.fillRect(110, 110, 200, 200)
+    },
+    // 切换canvas合成方式
+    changeGlobalCompositeOperation () {
+      const globalCompositeOperationArr = ['source-over', 'source-atop',
+        'source-in', 'source-out',
+        'destination-over', 'destination-atop',
+        'destination-in', 'destination-out',
+        'lighter', 'copy', 'xor']
+
+      const index = globalCompositeOperationArr.indexOf(this.globalCompositeOperation)
+      if (index < globalCompositeOperationArr.length - 1) {
+        this.globalCompositeOperation = globalCompositeOperationArr[index + 1]
+      }
+      else {
+        this.globalCompositeOperation = globalCompositeOperationArr[0]
+      }
+
+      this.draw()
+    }
+  }
 </script>
