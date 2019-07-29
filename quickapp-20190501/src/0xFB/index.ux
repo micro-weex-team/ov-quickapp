@@ -17,7 +17,7 @@
                     </div>
                     <div class="temp">
                         <text class="temp-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                            {{tempOrGear(mode, temperature, gear)}}
+                            {{tempOrGear(power, mode, temperature, gear)}}
                         </text>
                         <text class="temp-grade" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">℃</text>
                     </div>
@@ -1964,7 +1964,8 @@
         isTimerOn(onHour, onMin, offHour, offMin) {
             return onHour != 0 || onMin != 0 || offHour != 0 || offMin != 0
         },
-        tempOrGear(m, t, g) {
+        tempOrGear(p, m, t, g) {
+            if (p === 'off') return '--';
             if (m == 'normal') {
                 return t ? t : '--';
             } else if (m == 'cold_air') {
