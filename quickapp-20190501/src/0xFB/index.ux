@@ -212,18 +212,18 @@ export default {
 		swing_angle_n: '90',
 		select_gear:0,
 		time1: "off",
-		FAstatus: ["power", "mode", "swing", "swing_angle", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour", "gear"],
-		FAdata: {
-			power: "off",
-			mode: "normal",
-			swing: 'off',
-			swing_angle: '90',
-			timer_off_minute: "clean",
-			timer_off_hour: '0',
-			timer_on_minute: 'clean',
-			timer_on_hour: "0",
-			gear: '--',
-		},
+		// FAstatus: ["power", "mode", "swing", "swing_angle", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour", "gear"],
+		// FAdata: {
+		// 	power: "off",
+		// 	mode: "normal",
+		// 	swing: 'off',
+		// 	swing_angle: '90',
+		// 	timer_off_minute: "clean",
+		// 	timer_off_hour: '0',
+		// 	timer_on_minute: 'clean',
+		// 	timer_on_hour: "0",
+		// 	gear: '--',
+		// },
 		listDevice:{},
 		//模式 
 		modeselect:[{
@@ -330,6 +330,7 @@ export default {
 			gear: '--',
 			temperature: 0,
 		},
+		FBstatus: ["power", "mode", "cur_temperature", "shake_switch", "humidification", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour","gear","temperature"],
 	},
 	public: {
 		deviceSeries: '',
@@ -370,7 +371,7 @@ export default {
 // 		prompt.showToast({
 // 			message:"ssdasd"+that.select_gear
 // 		})
-		let status = that.FAdata;
+		let status = that.FBdata;
 		delete status.gear;
 		that.startControlDevice(control_params,status);
 		that.closeDia();
@@ -455,8 +456,10 @@ export default {
 		LanOnlineGet(){
 			let that = this;
 			net.deviceInit(that.accessToken,that.deviceId).then((res) => {
+				console.log('net.deviceInit ' + JSON.stringify(res));
 				that.isLanInit = true;
 			}).catch((error) => {
+				console.error('net.deviceInit ' + JSON.stringify(error));
 				that.isLanInit = false;
 			});
 		},
@@ -704,7 +707,7 @@ export default {
 						timer_on_minute: "0",
 						timer_on_hour: '0'
 					}
-					let status = this.FAdata;
+					let status = this.FBdata;
 					delete status.timer_on_minute;
 					delete status.timer_on_hour;
 					delete status.timer_off_minute;
@@ -721,7 +724,7 @@ export default {
 					timer_on_minute: "clean",
 					timer_on_hour: '0'
 				}
-				let status = this.FAdata;
+				let status = this.FBdata;
 				delete status.timer_on_minute;
 				delete status.timer_on_hour;
 				delete status.timer_off_minute;
@@ -745,7 +748,7 @@ export default {
 						timer_off_minute: "clean",
 						timer_off_hour: '0'
 					}
-					let status = this.FAdata;
+					let status = this.FBdata;
 					delete status.timer_on_minute;
 					delete status.timer_on_hour;
 					delete status.timer_off_minute;
@@ -762,7 +765,7 @@ export default {
 					timer_off_minute: "clean",
 					timer_off_hour: '0'
 				}
-				let status = this.FAdata;
+				let status = this.FBdata;
 				delete status.timer_on_minute;
 				delete status.timer_on_hour;
 				delete status.timer_off_minute;
@@ -787,7 +790,7 @@ export default {
 					let control_params = {
 						'mode': item,
 					}
-					let status = that.FAdata;
+					let status = that.FBdata;
 					delete status.mode;
 					that.startControlDevice(control_params,status);
 				}
@@ -923,7 +926,7 @@ export default {
 // 					'timer_on_hour': that.timer_on_hour,
 				}
 			}
-			let status = this.FAdata;
+			let status = this.FBdata;
 			delete status.swing;
 			delete status.swing_angle;
 			this.startControlDevice(control_params,status);
@@ -1000,7 +1003,7 @@ export default {
 		const control_params = {
 			"gear": parseInt(gear)
 		}
-		let status = this.FAdata;
+		let status = this.FBdata;
 		delete status.gear;
 		this.startControlDevice(control_params,status);
 	},
@@ -1024,7 +1027,7 @@ export default {
 			const control_params = {
 				"gear": gear
 			}
-			let status = this.FAdata;
+			let status = this.FBdata;
 			delete status.gear;
 			this.startControlDevice(control_params,status);
 		}
@@ -1036,15 +1039,15 @@ export default {
 				let control_params = {
 					"power": "off"
 				}
-				let status = this.FAdata;
+				let status = this.FBdata;
 				delete status.power;
 				this.startControlDevice(control_params,status);
 			} else {
-				//this.FAdata.power = "on";
+				//this.FBdata.power = "on";
 				let control_params = {
 					"power": "on"
 				}
-				let status = this.FAdata;
+				let status = this.FBdata;
 				delete status.power;
 				this.startControlDevice(control_params,status);
 			}	
@@ -1091,13 +1094,13 @@ export default {
 		let control_params = {
 			"swing": this.swing,
 		}
-		let status = this.FAdata;
+		let status = this.FBdata;
 		this.startControlDevice(control_params,delete status.swing);
 		this.isshowswingDialog = false;
 	},
 	babyLock() {
 		let param = {};
-		if (this.FAdata.lock == "off") {
+		if (this.FBdata.lock == "off") {
 			param = {
 				lock: "on"
 			}
@@ -1106,7 +1109,7 @@ export default {
 				lock: "off"
 			}
 		}
-		let status = this.FAdata;
+		let status = this.FBdata;
 		this.startControlDevice(param,delete status.lock)
 	},
 	filterData(){
@@ -1214,6 +1217,7 @@ export default {
 	getLanData(res){
 		let that = this;
 		let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		console.log('getLanData code ' + obj.code);
 		if(parseInt(obj.code) == 0){
 			that.loadfirst = true;
 			that.isRefreshing = false;
@@ -1228,8 +1232,8 @@ export default {
 			that.timer_on_minute = data.timer_on_minute;
 			that.timer_on_hour = data.timer_on_hour;
 			that.gear = data.gear;
-			that.FAdata = data;
-			that.FAdata.online = "true";
+			that.FBdata = data;
+			that.FBdata.online = "true";
 			that.online = "true";
 			that.select_gear = that.gear;
 			that.timeFilter2();
@@ -1244,12 +1248,12 @@ export default {
 	/**
 	 * 联网获取
 	 */
-	getdataLan(res){
-		let that = this;
+    getdataLan(res){
+        let that = this;
 		that.loadfirst = true;
-		that.isRefreshing = false;
-		that.isshowLoading = false;
-		if (res.code === 200) {
+        that.isRefreshing = false;
+        that.isshowLoading = false;
+        if (res.code === 200) {
 			let res_data = typeof res.data === 'object'? res.data:JSON.parse(res.data);
 			if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
 				that.online = res_data.devices[0].properties.online;
@@ -1275,45 +1279,45 @@ export default {
 					timer_on_hour: res_data.devices[0].properties.timer_on_hour?res_data.devices[0].properties.timer_on_hour:0,
 					gear: res_data.devices[0].properties.gear?res_data.devices[0].properties.gear:'--',
 				}
-				if (that.online != 'true') {
-					that.isshowclose();
-				}
+                if (that.online != 'true') {
+                    that.isshowclose();
+                }
 				that.select_gear = that.gear;
 				that.timeFilter2();
 				that.listDevice = typeof res_data.devices[0].properties === 'object'? res_data.devices[0].properties:JSON.parse(res_data.devices[0].properties);
-			}else{
+            } else {
 				if(res_data.msg === ''){
-					let str1 = '';
+                    let str1 = '';
 					if(res_data.devices[0].status){
 						str1 = res_data.devices[0].status;
-						if(str1.toString() === '-6'){
-							that.isshowclose();
-							return false;
-						}
-						if(str1.toString() == '-1'){
-							that.isagain = false
-						}
+                        if(str1.toString() === '-6'){
+                            that.isshowclose();
+                            return false;
+                        }
+                        if(str1.toString() == '-1'){
+                            that.isagain = false
+                        }
 						if(str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123'){
-							that.isshowclose();
-						}else{
-							that.netWorkGet(api.getStatus("get",str1,'获取设备状态失败'))
-						}
-					}else{
+                            that.isshowclose();
+                        } else {
+                            that.netWorkGet(api.getStatus("get",str1, '获取设备状态失败'))
+                        }
+                    } else {
 						str1 = res_data.code;
-						that.netWorkGet(api.getCode(str1,'获取设备状态失败'))
-					}
-				}else{
+                        that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
+                    }
+                } else {
 					that.netWorkGet(res_data.msg)
-				}
+                }
 				that.initData();
-			}
-		}else{
+            }
+        } else {
 			if(that.iswarm){
 				that.initData();
 			}
-			that.netWorkGet('获取设备状态失败,请稍后重试')
-		}
-	},
+            that.netWorkGet('获取设备状态失败,请稍后重试')
+        }
+    },
 	datafilter_null(str){
 		if(str){
 			return str;
@@ -1328,7 +1332,7 @@ export default {
 			openId: that.openId,
 			devices: [{
 				deviceId: that.deviceId,
-				properties: that.FAstatus
+				properties: that.FBstatus
 			}]
 		}
 		console.log("$Lanonline:"+JSON.stringify(net.$Lanonline)+"::::::::isagain:"+that.isagain)
@@ -1340,6 +1344,7 @@ export default {
 		that.istips = false;
 		api.postDeviceStatusQuery(params, that.accessToken,that.lanOnline,that.deviceId).then((res) => {
 			that.isagain = true;
+			console.log('postDeviceStatusQuery ' +JSON.stringify(res));
 			if(res.lanonline){
 				that.getdataLan(res);
 			}else{
@@ -1373,33 +1378,33 @@ export default {
 			$this.isshowLoading = false;
 			
 			$this.online = 'true';
-			$this.FAdata.gear = '--';
+			$this.FBdata.gear = '--';
 			$this.gear = '--';
 			$this.select_gear = 0;
 			let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 			
-			$this.FAdata.power = data.power;
+			$this.FBdata.power = data.power;
 			$this.power = data.power;
-			$this.FAdata.mode = data.mode;
+			$this.FBdata.mode = data.mode;
 			$this.mode_n = data.mode;
 			$this.swing =  data.swing
-			$this.FAdata.swing = data.swing
+			$this.FBdata.swing = data.swing
 			$this.timer_on_minute = data.timer_on_minute
-			$this.FAdata.timer_on_minute = data.timer_on_minute;
+			$this.FBdata.timer_on_minute = data.timer_on_minute;
 			$this.swing_angle_n = data.swing_angle;
-			$this.FAdata.swing_angle = data.swing_angle;
-			$this.FAdata.timer_off_minute = data.timer_off_minute
+			$this.FBdata.swing_angle = data.swing_angle;
+			$this.FBdata.timer_off_minute = data.timer_off_minute
 			$this.timer_off_minute = data.timer_off_minute;
 			$this.timer_off_hour = data.timer_off_hour
-			$this.FAdata.timer_off_hour = data.timer_off_hour;
-			$this.FAdata.timer_on_hour = data.timer_on_hour
+			$this.FBdata.timer_off_hour = data.timer_off_hour;
+			$this.FBdata.timer_on_hour = data.timer_on_hour
 			$this.timer_on_hour = data.timer_on_hour
-			$this.FAdata.gear = data.gear
+			$this.FBdata.gear = data.gear
 			$this.gear = data.gear;
 			$this.select_gear = data.gear;
 			$this.listDevice = data;
 			$this.listDevice.online = "true";
-			$this.FAdata.online = "true";
+			$this.FBdata.online = "true";
 			$this.timeFilter2();
 		}else{
 			$this.isagain = false;
@@ -1418,62 +1423,62 @@ export default {
 				if(!parseInt(bind_res_data.devices[0].status)){
 					let isall = false;
 					$this.online = 'true';
-					$this.FAdata.gear = '--';
+					$this.FBdata.gear = '--';
 					$this.gear = '--';
 					$this.select_gear = 0;
 					let obj = typeof bind_res_data.devices[0].props === 'object'? bind_res_data.devices[0].props:JSON.parse(bind_res_data.devices[0].props);
 					if(obj.power){
-						$this.FAdata.power = obj.power;
+						$this.FBdata.power = obj.power;
 						$this.power = obj.power;
 					}else{
 						isall = true;
 					}
 					if(obj.mode){
-						$this.FAdata.mode = obj.mode;
+						$this.FBdata.mode = obj.mode;
 						$this.mode_n = obj.mode;
 					}else{
 						isall = true;
 					}
 					if(obj.swing){
 						$this.swing =  obj.swing
-						$this.FAdata.swing = obj.swing
+						$this.FBdata.swing = obj.swing
 					}else{
 						isall = true;
 					}
 					if(obj.timer_on_minute.toString()){
 						$this.timer_on_minute = obj.timer_on_minute
-						$this.FAdata.timer_on_minute = obj.timer_on_minute
+						$this.FBdata.timer_on_minute = obj.timer_on_minute
 					}else{
 						isall = true;
 					}
 					if(obj.swing_angle){
 						$this.swing_angle_n = obj.swing_angle;
-						$this.FAdata.swing_angle = obj.swing_angle;
+						$this.FBdata.swing_angle = obj.swing_angle;
 					}else{
 						$this.swing_angle_n = "unknown";
-						$this.FAdata.swing_angle = "unknown";
+						$this.FBdata.swing_angle = "unknown";
 					}
 					
 					if(parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0){
-						$this.FAdata.timer_off_minute = obj.timer_off_minute
+						$this.FBdata.timer_off_minute = obj.timer_off_minute
 						$this.timer_off_minute = obj.timer_off_minute
 					}else{
 						isall = true;
 					}
 					if(parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0){
 						$this.timer_off_hour = obj.timer_off_hour
-						$this.FAdata.timer_off_hour = obj.timer_off_hour
+						$this.FBdata.timer_off_hour = obj.timer_off_hour
 					}else{
 						isall = true;
 					}
 					if(parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0){
-						$this.FAdata.timer_on_hour = obj.timer_on_hour
+						$this.FBdata.timer_on_hour = obj.timer_on_hour
 						$this.timer_on_hour = obj.timer_on_hour
 					}else{
 						isall = true;
 					}
 					if(parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0){
-						$this.FAdata.gear = obj.gear
+						$this.FBdata.gear = obj.gear
 						$this.gear = obj.gear;
 						$this.select_gear = obj.gear;
 					}else{
@@ -1539,7 +1544,7 @@ export default {
 		if(status_params.online){
 			delete status_params.online
 		}
-		let obj = $this.FAdata;
+		let obj = $this.FBdata;
 		if(control_params.gear){
 			obj.gear = parseInt(control_params.gear)
 		}else{
@@ -1588,28 +1593,38 @@ export default {
 	},
 	initData(){
 		this.loadfirst = true;
-		this.FAdata = {
-			power: "off",
-			mode: "",
-			// lock: 'invalid',
-			swing: 'off',
-			swing_angle: "unknown",
-			// swing_direction: "unknown",
-			timer_off_minute: "clean",
-			timer_off_hour: '0',
-			timer_on_minute: 'clean',
-			timer_on_hour: "0",
-			gear: '--',
-		}
-		this.power = "off";
-		this.mode_n = "";
-		this.swing = 'off';
-		this.swing_angle_n = "unknown";
-		this.timer_off_minute = "clean";
-		this.timer_off_hour = '0';
-		this.timer_on_minute = 'clean';
-		this.timer_on_hour = "0";
-		this.gear = '--';
+		this.FBdata = {
+			"mode": "efficient",
+			"error_code": 0,
+			"timer_off_hour": 0,
+			"voice": "close_buzzer",
+			"screen_close": "off",
+			"lock": "off",
+			"version": 6,
+			"timer_on_minute": 0,
+			"power": "on",
+			"timer_on_hour": 0,
+			"timer_off_minute": 0,
+			"cur_temperature": 26,
+			"temperature": 26,
+			"humidification": "off",
+			"shake_switch": "off"
+		};
+		this.mode= "efficient";
+		this.error_code= 0;
+		this.timer_off_hour= 0;
+		this.voice="close_buzzer";
+		this.screen_close= "off",
+		this.lock= "off";
+		this.version = 6;
+		this.timer_on_minute= 0;
+		this.power="on";
+		this.timer_on_hour= 0,
+		this.timer_off_minute= 0,
+		this.cur_temperature= 26,
+		this.temperature= 26,
+		this.humidification="off",
+		this.shake_switch="off"
 		this.timeFilter2();
 	},
 	gettime(){
@@ -1697,61 +1712,61 @@ export default {
 							let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 							if(obj.status.online){
 								that.online = obj.status.online;
-								that.FAdata.online = obj.status.online;
+								that.FBdata.online = obj.status.online;
 							}else{
-								that.FAdata.online = 'true';
+								that.FBdata.online = 'true';
 								that.online = 'true';
 							}
 							if(obj.status.power){
-								that.FAdata.power = obj.status.power;
+								that.FBdata.power = obj.status.power;
 								that.power = obj.status.power;
 							}
 							if(obj.status.mode){
-								that.FAdata.mode = obj.status.mode;
+								that.FBdata.mode = obj.status.mode;
 								that.mode_n = obj.status.mode;
 							}
 							if(obj.status.swing){
 								that.swing =  obj.status.swing
-								that.FAdata.swing = obj.status.swing
+								that.FBdata.swing = obj.status.swing
 							}
 							
 							if(parseInt(obj.status.timer_on_minute) > -1){
 								that.timer_off_minute = obj.status.timer_on_minute
-								that.FAdata.timer_on_minute = obj.status.timer_on_minute
+								that.FBdata.timer_on_minute = obj.status.timer_on_minute
 							}else{
 								that.timer_off_minute = '0';
-								that.FAdata.timer_on_minute = '0'
+								that.FBdata.timer_on_minute = '0'
 							}
 							if(obj.status.swing_angle){
 								that.swing_angle_n = obj.status.swing_angle;
-								that.FAdata.swing_angle = obj.status.swing_angle;
+								that.FBdata.swing_angle = obj.status.swing_angle;
 							}
 							if(parseInt(obj.status.timer_off_minute) > -1){
-								that.FAdata.timer_off_minute = obj.status.timer_off_minute
+								that.FBdata.timer_off_minute = obj.status.timer_off_minute
 								that.timer_off_minute = obj.status.timer_off_minute
 							}else{
 								that.timer_off_minute = '0';
-								that.FAdata.timer_off_minute = '0'
+								that.FBdata.timer_off_minute = '0'
 							}
 							if(parseInt(obj.status.timer_off_hour) > -1){
 								that.timer_off_hour = obj.status.timer_off_hour
-								that.FAdata.timer_off_hour = obj.status.timer_off_hour
+								that.FBdata.timer_off_hour = obj.status.timer_off_hour
 							}else{
 								that.timer_off_hour = '0';
-								that.FAdata.timer_off_hour = '0'
+								that.FBdata.timer_off_hour = '0'
 							}
 							if(parseInt(obj.status.timer_on_hour) > -1){
-								that.FAdata.timer_on_hour = obj.status.timer_on_hour
+								that.FBdata.timer_on_hour = obj.status.timer_on_hour
 								that.timer_on_hour = obj.status.timer_on_hour
 							}else{
 								that.timer_on_hour = '0';
-								that.FAdata.timer_on_hour = '0'
+								that.FBdata.timer_on_hour = '0'
 							}
 							if(parseInt(obj.status.gear) > -1){
-								that.FAdata.gear = obj.status.gear
+								that.FBdata.gear = obj.status.gear
 								that.gear = obj.status.gear
 							}
-							that.listDevice = that.FAdata;
+							that.listDevice = that.FBdata;
 // 							that.dataCan();
 						}
 						ws.onclose = function() {
@@ -1813,11 +1828,11 @@ export default {
 	onInit() {
 		let that = this;
 		api.getlanguage().then((res) => {
-			if(res === 'ug'){
-				this.language = false;
-			}else{
+			// if(res === 'ug'){
+			// 	this.language = false;
+			// }else{
 				this.language = true;
-			}
+			// }
 		})
 		that.setGear();
 		// this.deviceHeight = this.$app.options.env.deviceHeight;
@@ -1829,9 +1844,8 @@ export default {
 			}
 		})
 		router.clear();
-		this.$page.setTitleBar({
-			text: '电风扇'
-		})
+
+		// TODO ben
 		let param;
 		for(let i = 1; i < 13;i++){
 			if(i === 0){
@@ -1858,38 +1872,41 @@ export default {
 					this.listtime.push(param)
 				}
 			}
-			
-			
 		}
-		that.$on('cancel', function(e){
-			that.isabout = false;
-		})
-		that.$on('closetips', function(e){
-			that.istips = false;
-			that.regetdata();
-		})
-		that.$on('openmenu', function(e){
-			that.isabout = !that.isabout;
-		})
+
+		// that.$on('cancel', function(e){
+		// 	that.isabout = false;
+		// })
+		// that.$on('closetips', function(e){
+		// 	that.istips = false;
+		// 	that.regetdata();
+		// })
+		// that.$on('openmenu', function(e){
+		// 	that.isabout = !that.isabout;
+		// })
 		
 		let timestamp = Date.parse(new Date());
 		storage.get({
 			key: 'openidToken',
 			success: function (data) {
 				that.isshowLoading = true;
+				console.log('storage openidToken ' + data)
 				if(data === ''){
 					that.getdevicelist();
 				}else{
 					let obj = JSON.parse(data);
 					if(parseInt(timestamp) > parseInt(obj.time)){
+						console.log('storage openidToken expire')
 						that.getdevicelist();
 					}else{
 						if(obj.openid === that.openid){
+							console.log('storage openidToken openid same: ' + obj.openId + " " + that.openid)
 							that.openId = obj.openid;
 							that.accessToken = obj.accessToken;
 							that.LanOnlineGet();
 							that.getDeviceStatus();
 						}else{
+							console.log('storage openidToken openid not same: ' + obj.openId + " " + that.openid)
 							that.getdevicelist();
 						}
 					}
@@ -1899,8 +1916,7 @@ export default {
 			fail: function (data, code) {
 				console.log(`handling fail, code = ${code}`)
 			}
-		})
-		
+		})		
 	},
 	onBackPress(){
 		let that = this;
