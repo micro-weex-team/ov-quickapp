@@ -17,7 +17,7 @@
                     </div>
                     <div class="temp">
                         <text class="temp-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                            {{gear?gear:'--'}}
+                            {{tempOrGear(mode, temperature, gear)}}
                         </text>
                         <text class="temp-grade" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">℃</text>
                     </div>
@@ -1255,18 +1255,24 @@
                 that.isRefreshing = false;
                 that.isshowLoading = false;
                 let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
-                that.power = data.power;
-                that.mode_n = data.mode;
-                that.swing = data.swing;
-                that.swing_angle_n = data.swing_angle;
-                that.timer_off_minute = data.timer_off_minute;
-                that.timer_off_hour = data.timer_off_hour;
-                that.timer_on_minute = data.timer_on_minute;
-                that.timer_on_hour = data.timer_on_hour;
-                that.gear = data.gear;
                 that.FBdata = data;
-                that.FBdata.online = "true";
-                that.online = "true";
+                that.voice = that.FBdata.voice;
+                that.timer_off_hour = that.FBdata.timer_off_hour;
+                that.shake_switch = that.FBdata.shake_switch;
+                that.version = that.FBdata.version;
+                that.timer_on_minute = that.FBdata.timer_on_minute;
+                that.timer_off_minute = that.FBdata.timer_off_minute;
+                that.mode = that.FBdata.mode;
+                that.humidification = that.FBdata.humidification;
+                that.temperature = that.FBdata.temperature;
+                that.lock = that.FBdata.lock;
+                that.timer_on_hour = that.FBdata.timer_on_hour;
+                that.online = that.FBdata.online;
+                that.error_code = that.FBdata.error_code;
+                that.power = that.FBdata.power;
+                that.screen_close = that.FBdata.screen_close;
+                that.cur_temperature = that.FBdata.cur_temperature;
+                that.gear = that.FBdata.gear;
                 that.select_gear = that.gear;
                 that.timeFilter2();
                 that.listDevice = data;
@@ -1288,29 +1294,24 @@
             if (res.code === 200) {
                 let res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
                 if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
-                    that.online = res_data.devices[0].properties.online;
-                    that.power = res_data.devices[0].properties.power ? res_data.devices[0].properties.power : "off";
-                    that.mode_n = res_data.devices[0].properties.mode ? res_data.devices[0].properties.mode : "";
-                    that.swing = res_data.devices[0].properties.swing ? res_data.devices[0].properties.swing : "off"
-                    that.swing_angle_n = res_data.devices[0].properties.swing_angle ? res_data.devices[0].properties.swing_angle : "unknown"
-                    that.timer_off_minute = res_data.devices[0].properties.timer_off_minute ? res_data.devices[0].properties.timer_off_minute : "clean"
-                    that.timer_off_hour = res_data.devices[0].properties.timer_off_hour ? res_data.devices[0].properties.timer_off_hour : '0'
-                    that.timer_on_minute = res_data.devices[0].properties.timer_on_minute ? res_data.devices[0].properties.timer_on_minute : 'clean'
-                    that.timer_on_hour = res_data.devices[0].properties.timer_on_hour ? res_data.devices[0].properties.timer_on_hour : "0"
-                    that.gear = res_data.devices[0].properties.gear ? res_data.devices[0].properties.gear : '--',
-                        that.FAdata = {
-                            online: res_data.devices[0].properties.online ? res_data.devices[0].properties.online : 'false',
-                            power: res_data.devices[0].properties.power ? res_data.devices[0].properties.power : "off",
-                            mode: res_data.devices[0].properties.mode ? res_data.devices[0].properties.mode : "",
-                            lock: res_data.devices[0].properties.lock ? res_data.devices[0].properties.lock : "off",
-                            swing: res_data.devices[0].properties.swing ? res_data.devices[0].properties.swing : "off",
-                            swing_angle: res_data.devices[0].properties.swing_angle ? res_data.devices[0].properties.swing_angle : "unknown",
-                            timer_off_minute: res_data.devices[0].properties.timer_off_minute ? res_data.devices[0].properties.timer_off_minute : "clean",
-                            timer_off_hour: res_data.devices[0].properties.timer_off_hour ? res_data.devices[0].properties.timer_off_hour : 0,
-                            timer_on_minute: res_data.devices[0].properties.timer_on_minute ? res_data.devices[0].properties.timer_on_minute : 'clean',
-                            timer_on_hour: res_data.devices[0].properties.timer_on_hour ? res_data.devices[0].properties.timer_on_hour : 0,
-                            gear: res_data.devices[0].properties.gear ? res_data.devices[0].properties.gear : '--',
-                        }
+                    that.FBdata = res_data.devices[0].properties;
+                    that.voice = that.FBdata.voice;
+                    that.timer_off_hour = that.FBdata.timer_off_hour;
+                    that.shake_switch = that.FBdata.shake_switch;
+                    that.version = that.FBdata.version;
+                    that.timer_on_minute = that.FBdata.timer_on_minute;
+                    that.timer_off_minute = that.FBdata.timer_off_minute;
+                    that.mode = that.FBdata.mode;
+                    that.humidification = that.FBdata.humidification;
+                    that.temperature = that.FBdata.temperature;
+                    that.lock = that.FBdata.lock;
+                    that.timer_on_hour = that.FBdata.timer_on_hour;
+                    that.online = that.FBdata.online;
+                    that.error_code = that.FBdata.error_code;
+                    that.power = that.FBdata.power;
+                    that.screen_close = that.FBdata.screen_close;
+                    that.cur_temperature = that.FBdata.cur_temperature;
+                    that.gear = that.FBdata.gear;
                     if (that.online != 'true') {
                         that.isshowclose();
                     }
@@ -1842,7 +1843,7 @@
             if (that.timeoutInter != '') {
                 clearInterval(that.timeoutInter)
             }
-            // that.timeGetData();
+            that.timeGetData();
             if (that.ws === '' && that.isws) {
                 // that.webSocketdata();
             }
@@ -1962,6 +1963,15 @@
 
         isTimerOn(onHour, onMin, offHour, offMin) {
             return onHour != 0 || onMin != 0 || offHour != 0 || offMin != 0
+        },
+        tempOrGear(m, t, g) {
+            if (m == 'normal') {
+                return t ? t : '--';
+            } else if (m == 'cold_air') {
+                return g ? g : '--';
+            } else {
+                return '--';
+            }
         }
     }
 </script>
