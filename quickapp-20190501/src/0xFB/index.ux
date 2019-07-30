@@ -8,9 +8,10 @@
     <div class="container">
         <midea-head title="{{realSn8=='57000644'?'SEASONS':'取暖器'}}" onclose-websocket="closeWebsocket"
                     language="{{language}}"
+                    coloron="{{backgroundColor(power, mode)}}"
                     power="{{power}}"></midea-head>
         <refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
-            <list onscroll="" style="background-color: {{ power === 'on'? '#3191FD':'#cccccc'}}" class="main-nav"
+            <list onscroll="" style="background-color: {{backgroundColor(power, mode)}}" class="main-nav"
                   id="listdeviceNav">
                 <list-item type="deviceNav" class="main-nav-nav">
                     <div class="child-{{language?'lock':'lock-l'}}">
@@ -30,7 +31,7 @@
                     <text class="indoor" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
                         {{'室内温度:'+cur_temperature+'°'}}
                     </text>
-                    <div class="timeout-setting">
+                    <div class="timeout-setting" if={{showPlusAndMinus(power,mode)}}>
                         <image src="{{ power === 'on'? './assets/img/minus-on.png':'./assets/img/minus-off.png'}}"
                                class="timeout-setting-plus"></image>
                         <image src="{{ power === 'on'? './assets/img/plus-on.png':'./assets/img/plus-off.png'}}"
@@ -59,7 +60,9 @@
             <div class="footer-normal">
                 <image src="{{'./assets/img/gear-' + (power === 'on'? (mode==='cold_air'?'highlight-cold':(mode==='normal'?'highlight-normal':'on')):'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">档位</text>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">
+                    {{gearDesc(power, mode, gear)}}
+                </text>
             </div>
             <!-- <div class="footer-wind" @click="change()">
                 <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
@@ -91,7 +94,7 @@
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>
             </div>
             <div class="footer-normal">
-                <image src="{{'./assets/img/humidity-' + (humidification ==='on'? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                <image src="{{'./assets/img/humidity-' + (humidification ==='off'? 'on':(mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on'))) + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>
             </div>
@@ -2004,7 +2007,40 @@
             } else {
                 return '--';
             }
-        }
+        },
+        backgroundColor(power, mode) {
+            if (power === 'on') {
+                if (mode == 'cold_air') {
+                    return '#1478FE'
+                } else {
+                    return '#F9CB3D';
+                }
+            } else {
+                return '#cccccc'
+            }
+        },
+        showPlusAndMinus(power, mode) {
+            if (power === 'on') {
+                if (mode == 'cold_air') {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        },
+        gearDesc(power, mode, gear) {
+            if (power === 'on') {
+                if (mode == 'cold_air' || mode == 'normal') {
+                    return gear ? gear + '挡' : '挡位';
+                } else {
+                    return '挡位';
+                }
+            } else {
+                return '挡位';
+            }
+        },
     }
 </script>
 <style lang="less">
