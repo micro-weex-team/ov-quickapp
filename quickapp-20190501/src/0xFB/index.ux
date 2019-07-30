@@ -4,6 +4,8 @@
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <import name="midea-dialog" src="../Component/MideaDialog/index"></import>
 <import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
+<import name="qui-switch" src="../Component/qui-switch/index"></import>
+
 <template>
     <div class="container">
         <midea-head title="{{realSn8=='57000644'?'SEASONS':'取暖器'}}" onclose-websocket="closeWebsocket"
@@ -145,27 +147,30 @@
             <div class="timeselect_list">
                 <div class="timeselect_list_title">
                     <text class="timeselect_list_title_text_1" if="{{language}}">定时{{power === 'off'?'开机':'关机'}}</text>
-                    <switch checked="{{isSwitch}}" onchange="changTimer()"
-                            class="{{language?'timeselect_list_title_text_switch':'timeselect_list_title_text_switch_l'}}"></switch>
+                    <qui-switch value="{{isSwitch?'1':'0'}}" onqui-Switch-Change="changTimer()"
+                                class="{{language?'timeselect_list_title_text_switch':'timeselect_list_title_text_switch_l'}}"></qui-switch>
                     <text class="timeselect_list_title_l_text" if="{{!language}}">定时{{power === 'off'?'开机':'关机'}}</text>
                 </div>
                 <div class="timeselect_list_title">
                     <text class="timeselect_list_title_text" if="{{language}}">设置时间</text>
-                    <text class="timeselect_list_title_data" if="{{language}}">{{selectData ===
-                        '--'?'无':timeDataFilter(hours,minute)}}
-                    </text>
-                    <image class="{{language?'timeselect_list_title_img':'timeselect_list_title_img_l'}}"
-                           src="./assets/img/down.png"></image>
-                    <text class="timeselect_list_title_data" if="{{!language}}">{{selectData ===
-                        '--'?'无':timeDataFilter(hours,minute)}}
-                    </text>
-                    <text class="timeselect_list_title_text_l" if="{{!language}}">设置时间</text>
+                    <div onclick="toggleList()">
+                        <text class="timeselect_list_title_data" if="{{language}}">{{selectData ===
+                            '--'?'无':timeDataFilter(hours,minute)}}
+                        </text>
+                        <image class="{{language?'timeselect_list_title_img':'timeselect_list_title_img_l'}}"
+                               src="{{listOpen?'./assets/img/up.png':'./assets/img/down.png'}}"></image>
+                        <text class="timeselect_list_title_data" if="{{!language}}">{{selectData ===
+                            '--'?'无':timeDataFilter(hours,minute)}}
+                        </text>
+                        <text class="timeselect_list_title_text_l" if="{{!language}}">设置时间</text>
+                    </div>
                 </div>
-                <div class="timeselect_list_nav">
+                <div class="timeselect_list_nav" if={{listOpen}}>
                     <div class="timeselect_list_nav_l">
                         <div class="midea-select">
                             <list class="midea-select-list" id="list">
-                                <list-item type="listItem" class="midea-select-item" for="{{listtime}}"
+                                <list-item type="listItem" class="midea-select-item{{$idx==0?'':'-hasborder'}}"
+                                           for="{{listtime}}"
                                            @click="selectValue($idx,false)">
                                     <text class="midea-select-item-text"
                                           style="color:{{isselectTime === $idx?'#3191FD':'#cccccc'}}">{{$item.name}}
@@ -177,7 +182,7 @@
                     </div>
                 </div>
             </div>
-            <div class="timeselect_btnList">
+            <div class="timeselect_btnList{{listOpen?'_open':''}}">
                 <text class="timeselect_btnList_btn1" @click="closeDialog_">取消</text>
                 <text class="timeselect_btnList_btn2" @click="doingTimeSet()">确定</text>
             </div>
@@ -345,7 +350,6 @@
                 value: "w形摇头",
                 data: ""
             }],
-            hours_min: '',
 
             mode: "normal",
             cur_temperature: '--',
@@ -372,6 +376,8 @@
             },
             FBstatus: ["power", "mode", "cur_temperature", "shake_switch", "humidification", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour", "gear", "temperature"],
             realSn8: '',
+            hours_min: '1',
+            listOpen: false,
         },
         public: {
             deviceSeries: '',
@@ -418,14 +424,22 @@
             that.closeDia();
         },
         changTimer(e) {
+            console.log('changTimer ' + JSON.stringify(e));
             let that = this;
-            if (e.checked) {
+            if (e.detail.value === '1') {
                 this.isSwitch = true;
                 this.isselectTime = this.isadd;
                 this.minute = '0';
                 this.hours = this.hours_min;
                 // this.showTimeDialog();
+                this.listOpen = true;
+                setTimeout(() => {
+                    let index = parseInt(this.hours) - 1;
+                    that.$element('list').scrollTo({index: index})
+                    that.selectValue(index, false);
+                }, 50);
             } else {
+                this.listOpen = false;
                 this.isSwitch = false;
                 this.hours_min = this.hours;
                 this.minute = '0';
@@ -547,23 +561,25 @@
             })
         },
         timeDataFilter(data1, data2) {
-            let num = 0;
-            if (data2 === 'clean' || data2.toString() === '0') {
-                num = 0
-            } else {
-                num = parseInt(data2) / 60;
-            }
-            if ((data2 === 'clean' || data2.toString() === '0') && data1.toString() === '0') {
-                return '--';
-            } else if (num.toFixed(1).toString() === '1.0') {
-                return parseInt(data1) + 1 + '小时';
-            } else {
-                if (data1 === '') {
-                    return '--';
-                } else {
-                    return data1 + num.toFixed(1).toString().substring(1, 3) + '小时'
-                }
-            }
+            // let num = 0;
+            // if (data2 === 'clean' || data2.toString() === '0') {
+            //     num = 0
+            // } else {
+            //     num = parseInt(data2) / 60;
+            // }
+            // if ((data2 === 'clean' || data2.toString() === '0') && data1.toString() === '0') {
+            //     return '--';
+            // } else if (num.toFixed(1).toString() === '1.0') {
+            //     return parseInt(data1) + 1 + '小时';
+            // } else {
+            //     if (data1 === '') {
+            //         return '--';
+            //     } else {
+            //         return data1 + num.toFixed(1).toString().substring(1, 3) + '小时'
+            //     }
+            // }
+            if (!this.isSwitch) return '--';
+            return data1 + '小时';
 // 		if(data1.toString() === '0'){
 // 			return '--';
 // 		}else{
@@ -1272,6 +1288,7 @@
                 that.timer_on_minute = that.FBdata.timer_on_minute;
                 that.timer_off_minute = that.FBdata.timer_off_minute;
                 that.mode = that.FBdata.mode;
+                console.log("getdataLan mode: " + that.mode);
                 that.humidification = that.FBdata.humidification;
                 that.temperature = that.FBdata.temperature;
                 that.lock = that.FBdata.lock;
@@ -1311,6 +1328,7 @@
                     that.timer_on_minute = that.FBdata.timer_on_minute;
                     that.timer_off_minute = that.FBdata.timer_off_minute;
                     that.mode = that.FBdata.mode;
+                    console.log("getdataLan mode: " + that.mode);
                     that.humidification = that.FBdata.humidification;
                     that.temperature = that.FBdata.temperature;
                     that.lock = that.FBdata.lock;
@@ -1386,7 +1404,7 @@
             that.istips = false;
             api.postDeviceStatusQuery(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
                 that.isagain = true;
-                console.log('postDeviceStatusQuery ' + JSON.stringify(res));
+                // console.log('postDeviceStatusQuery ' + JSON.stringify(res));
                 if (res.lanonline) {
                     that.getdataLan(res);
                 } else {
@@ -1644,7 +1662,7 @@
                 "lock": "off",
                 "version": 6,
                 "timer_on_minute": 0,
-                "power": "on",
+                "power": "off",
                 "timer_on_hour": 0,
                 "timer_off_minute": 0,
                 "cur_temperature": 26,
@@ -1652,7 +1670,8 @@
                 "humidification": "off",
                 "shake_switch": "off"
             };
-            this.mode = "efficient";
+            this.mode = "";
+            console.log('initData mode: ' + this.mode);
             this.error_code = 0;
             this.timer_off_hour = 0;
             this.voice = "close_buzzer";
@@ -1660,7 +1679,7 @@
                 this.lock = "off";
             this.version = 6;
             this.timer_on_minute = 0;
-            this.power = "on";
+            this.power = "off";
             this.timer_on_hour = 0,
                 this.timer_off_minute = 0,
                 this.cur_temperature = 26,
@@ -2023,6 +2042,9 @@
                 return '挡位';
             }
         },
+        toggleList() {
+            this.listOpen = !this.listOpen;
+        }
     }
 </script>
 <style lang="less">
