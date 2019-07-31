@@ -62,9 +62,9 @@
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">冷风</text>
             </div>
-            <div class="footer-normal">
+            <div class="footer-normal" @click="showGearDia()">
                 <image src="{{'./assets/img/gear-' + (power === 'on'? (mode==='cold_air'?'highlight-cold':(mode==='normal'?'highlight-normal':'on')):'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                       class="footer-normal-img{{power === 'on' && mode != 'efficient' ? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">
                     {{gearDesc(power, mode, gear)}}
                 </text>
@@ -196,8 +196,36 @@
                 </text>
             </div>
         </div>
-        <midea-dialog if="{{isGeardialog}}" list="{{listGear}}" language="{{language}}" data="{{select_gear}}"
-                      oncon-Data="conData" onclose-Dia="closeDia" onselect-Gear="selectGear"></midea-dialog>
+        <div class="Midea-compont" if="{{isGeardialog}}" @click="closeDia">
+            <div class="Midea-dialog">
+                <list class="Midea-list" id="list">
+                    <list-item class="Midea-item" type="listItem" for="{{listGear}}" @click="selectGear($item.id)">
+                        <text class="Midea-text" if="{{language}}"
+                              style="color: {{select_gear === $item.id?checkedColor(power, mode):'#cccccc'}};">
+                            {{$item.data}}
+                        </text>
+                        <div class="Midea-{{language?'imgage':'imgage_l'}}">
+                            <image class="Midea-img" show="{{select_gear === $item.id}}"
+                                   src="{{mode=='cold_air'?'./assets/img/ic_select.png':'./assets/img/ic_select_normal.png'}}"></image>
+                        </div>
+                        <text class="Midea-text" if="{{!language}}"
+                              style="color: {{select_gear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}
+                        </text>
+                    </list-item>
+                </list>
+                <div class="Midea-btn">
+                    <div if="{{language}}" class="Midea-btn1" @click="closeDia">
+                        <text class="Midea-btn1text">取消</text>
+                    </div>
+                    <div class="Midea-btn1" @click="conData">
+                        <text class="Midea-btn2text" style="color:{{checkedColor(power, mode)}}">确定</text>
+                    </div>
+                    <div if="{{!language}}" class="Midea-btn1" @click="closeDia">
+                        <text class="Midea-btn1text">取消</text>
+                    </div>
+                </div>
+            </div>
+        </div>
         <midea-loading if="{{isshowLoading}}"></midea-loading>
         <!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
         <midea-tips if="{{istips}}"></midea-tips>
@@ -400,18 +428,19 @@
             this.isabout = false;
         },
         showGearDia() {
+            this.setGear();
             let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             if (that.power === 'on' && that.online === "true") {
-                if (that.mode_n === 'normal') {
+                if (that.mode === 'normal' || that.mode === 'cold_air') {
                     that.isGeardialog = true;
                     that.select_gear = that.gear;
-                } else {
-                    prompt.showToast({message: "只有正常风模式下才能操作风速"})
                 }
             } else if (that.online === "false") {
                 that.isshowclose();
-            } else if (that.power === "off") {
-                prompt.showToast({message: "设备关机状态,不能操作"})
             }
         },
         closeDia() {
@@ -1058,12 +1087,12 @@
                 return false;
             }
         },
-        selectGear(e) {
+        selectGear(id) {
             let that = this;
 // 		prompt.showToast({
 // 			message:"sss"+JSON.stringify(e)
 // 		})
-            that.select_gear = e.detail.param;
+            that.select_gear = id;
         },
         gearreduce() {
             let gear;
@@ -1322,7 +1351,7 @@
                 that.screen_close = that.FBdata.screen_close;
                 that.cur_temperature = that.FBdata.cur_temperature;
                 that.gear = that.FBdata.gear;
-                that.select_gear = that.gear;
+                // that.select_gear = that.gear;
                 that.timeFilter2();
                 that.listDevice = data;
                 that.listDevice.online = "true";
@@ -1365,7 +1394,7 @@
                     if (that.online != 'true') {
                         that.isshowclose();
                     }
-                    that.select_gear = that.gear;
+                    // that.select_gear = that.gear;
                     that.timeFilter2();
                     that.listDevice = typeof res_data.devices[0].properties === 'object' ? res_data.devices[0].properties : JSON.parse(res_data.devices[0].properties);
                 } else {
@@ -1463,7 +1492,7 @@
                 $this.online = 'true';
                 $this.FBdata.gear = '--';
                 $this.gear = '--';
-                $this.select_gear = 0;
+                // $this.select_gear = 0;
                 let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
 
                 $this.FBdata.power = data.power;
@@ -1484,7 +1513,7 @@
                 $this.timer_on_hour = data.timer_on_hour
                 $this.FBdata.gear = data.gear
                 $this.gear = data.gear;
-                $this.select_gear = data.gear;
+                // $this.select_gear = data.gear;
                 $this.listDevice = data;
                 $this.listDevice.online = "true";
                 $this.FBdata.online = "true";
@@ -1529,7 +1558,7 @@
                         if (that.online != 'true') {
                             that.isshowclose();
                         }
-                        that.select_gear = that.gear;
+                        // that.select_gear = that.gear;
                         that.timeFilter2();
                         that.listDevice = JSON.parse(bind_res_data.devices[0].props);
                     } else {
@@ -1857,7 +1886,9 @@
         },
         setGear() {
             let that = this;
-            for (let i = 1; i < 13; i++) {
+            that.listGear = [];
+            for (let i = 1; i <= 3; i++) {
+                if (this.mode == 'normal' && i == 2) continue;
                 let data = {
                     "id": i,
                     "data": i + "档"
@@ -1899,7 +1930,7 @@
                 this.language = true;
                 // }
             })
-            that.setGear();
+            // that.setGear();
             // this.deviceHeight = this.$app.options.env.deviceHeight;
             device.getInfo({
                 success: function (ret) {
@@ -2001,7 +2032,7 @@
         },
         showPlusAndMinus(power, mode) {
             if (power === 'on') {
-                if (mode == 'cold_air' || mode=='efficient') {
+                if (mode == 'cold_air' || mode == 'efficient') {
                     return false;
                 } else {
                     return true;
