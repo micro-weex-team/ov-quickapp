@@ -94,12 +94,12 @@
         </div> -->
         <div class="footer-down">
             <div class="footer-normal" @click="shakeBtn()">
-                <image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                <image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>
             </div>
             <div class="footer-normal" @click="humidityBtn()">
-                <image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"
+                <image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>
             </div>
@@ -109,7 +109,7 @@
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">节能</text>
             </div>
             <div class="footer-normal" @click="showTimeDialog()">
-                <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (mode==='normal' || mode=='efficient'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img"></image>
                 <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
                     timer_on_minute, timer_off_hour, timer_off_minute)}}
@@ -2001,7 +2001,7 @@
         },
         showPlusAndMinus(power, mode) {
             if (power === 'on') {
-                if (mode == 'cold_air') {
+                if (mode == 'cold_air' || mode=='efficient') {
                     return false;
                 } else {
                     return true;
