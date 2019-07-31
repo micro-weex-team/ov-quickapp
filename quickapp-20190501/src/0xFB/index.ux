@@ -2091,28 +2091,53 @@
             }
         },
         normalBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             this.startControlDevice({
                 mode: 'normal'
             }, this.FBdata)
         },
         coldAirBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             this.startControlDevice({
                 mode: 'cold_air'
             }, this.FBdata)
         },
         shakeBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             let s = this.shake_switch;
             this.startControlDevice({
                 shake_switch: s == 'on' ? 'off' : 'on'
             }, this.FBdata)
         },
         humidityBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             let h = this.humidification;
             this.startControlDevice({
                 humidification: h == 'off' ? 'no_change' : 'off'
             }, this.FBdata)
         },
         ecoBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
             this.startControlDevice({
                 mode: 'efficient'
             }, this.FBdata)
