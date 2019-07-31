@@ -932,6 +932,7 @@
                         that.isSwitch = false;
                         that.minute = 0;
                         that.hours = 0;
+                        that.listOpen = false;
                     } else {
                         let num = 0;
                         if (that.timer_on_minute === 'clean' || that.timer_on_minute.toString() === '0') {
@@ -945,6 +946,12 @@
                             that.hours = that.timer_on_hour;
                         }
                         that.isSwitch = true;
+                        that.listOpen = true;
+                        setTimeout(() => {
+                            let index = parseInt(that.hours) - 1;
+                            that.$element('list').scrollTo({index: index})
+                            that.selectValue(index, false);
+                        }, 50);
                         that.listtime.forEach(function (item, i) {
                             if (parseInt(item.name) === parseInt(that.hours)) {
                                 if ((parseInt(that.minute) / 60).toFixed(1).toString() === '0.0') {
@@ -1998,7 +2005,7 @@
                     return true;
                 }
             } else {
-                return true;
+                return false;
             }
         },
         gearDesc(power, mode, gear) {
@@ -2040,7 +2047,7 @@
                 }
             } else if (power === 'off') {
                 if (timer_on_hour != 0) {
-                    return timer_off_hour+'小时开'
+                    return timer_on_hour+'小时开'
                 } else  {
                     return '定时';
                 }
@@ -2055,7 +2062,7 @@
                 }
             } else if (power === 'off') {
                 if (timer_on_hour != 0) {
-                    return '将于'+timer_off_hour+'小时后开机'
+                    return '将于'+timer_on_hour+'小时后开机'
                 } else  {
                     return '';
                 }
