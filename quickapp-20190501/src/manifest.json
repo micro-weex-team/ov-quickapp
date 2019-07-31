@@ -124,6 +124,9 @@
     "router": {
         "entry": "Demo",
         "pages": {
+			"0xFB": {
+			    "component": "index"
+			},
 			"0xF1": {
 			    "component": "index"
 			},

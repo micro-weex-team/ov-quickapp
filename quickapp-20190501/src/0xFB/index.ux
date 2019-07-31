@@ -1,0 +1,2180 @@
+<import name="midea-loading" src="../Component/MideaLoading/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
+<import name="midea-tips" src="../Component/MideaTips/index"></import>
+<import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-dialog" src="../Component/MideaDialog/index"></import>
+<import name="midea-meiju" src="../Component/MideaMeiju/index"></import>
+<import name="qui-switch" src="../Component/qui-switch/index"></import>
+
+<template>
+    <div class="container">
+        <midea-head title="{{realSn8=='57000644'?'SEASONS':'取暖器'}}" onclose-websocket="closeWebsocket"
+                    language="{{language}}"
+                    coloron="{{backgroundColor(power, mode)}}"
+                    power="{{power}}"></midea-head>
+        <refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+            <list onscroll="" style="background-color: {{backgroundColor(power, mode)}}" class="main-nav"
+                  id="listdeviceNav">
+                <list-item type="deviceNav" class="main-nav-nav">
+                    <div class="child-{{language?'lock':'lock-l'}}">
+                        <midea-meiju power="{{(power + online === 'ontrue')?'on':'off'}}"></midea-meiju>
+                    </div>
+                    <div class="temp">
+                        <text class="temp-position" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                            {{tempOrGear(power, mode, temperature, gear)}}
+                        </text>
+                        <text class="temp-grade" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                            {{power==="off"?'℃':(mode==="normal"?'℃':(mode==="cold_air"?'挡':''))}}
+                        </text>
+                    </div>
+                    <text class="tips" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                        {{power==="off"?'设定温度':(mode==="normal"?'设定温度':(mode==="cold_air"?'设定挡位':''))}}
+                    </text>
+                    <text class="indoor" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                        {{'室内温度:'+cur_temperature+'°'}}
+                    </text>
+                    <text class="timer" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                        {{timerOnStatusText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)}}
+                    </text>
+                    <div class="timeout-setting" if={{showPlusAndMinus(power,mode)}}>
+                        <image src="{{ power === 'on'? './assets/img/minus-on.png':'./assets/img/minus-off.png'}}"
+                               class="timeout-setting-plus" onclick="tempDown(temperature)"></image>
+                        <image src="{{ power === 'on'? './assets/img/plus-on.png':'./assets/img/plus-off.png'}}"
+                               class="timeout-setting-reduce" onclick="tempUp(temperature)"></image>
+                    </div>
+                </list-item>
+            </list>
+        </refresh>
+        <div class="footer">
+            <div class="footer-switch" @click="powerBtn()">
+                <image src="./assets/img/switch.png" class="footer-switch-img"></image>
+                <text class="footer-switch-desc">
+                    开关
+                </text>
+            </div>
+            <div class="footer-normal" @click="normalBtn()">
+                <image src="{{'./assets/img/normal-' + (power === 'on'? (mode==='normal'?'highlight':'on'):'on') + '.png'}}"
+                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">暖风</text>
+            </div>
+            <div class="footer-normal" @click="coldAirBtn()">
+                <image src="{{'./assets/img/cold-air-' + (power === 'on'? (mode==='cold_air'?'highlight':'on'):'on') + '.png'}}"
+                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">冷风</text>
+            </div>
+            <div class="footer-normal" @click="showGearDia()">
+                <image src="{{'./assets/img/gear-' + (power === 'on'? (mode==='cold_air'?'highlight-cold':(mode==='normal'?'highlight-normal':'on')):'on') + '.png'}}"
+                       class="footer-normal-img{{power === 'on' && mode != 'efficient' ? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">
+                    {{gearDesc(power, mode, gear)}}
+                </text>
+            </div>
+            <!-- <div class="footer-wind" @click="change()">
+                <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
+                <text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
+            </div>
+            <div class="footer-shake" @click="showDialog_()">
+                <image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>
+                <text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
+            </div>
+            <div class="footer-timeout" @click="showTimeDialog()">
+                <div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">
+                    <text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
+                </div>
+                <text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
+            </div> -->
+        </div>
+        <!-- <div class="footer-down">
+            <div class="footer-gear" @click="showGearDia()">
+                <div class="footer-gear-img" style="background-color: {{gear && mode_n === 'normal' && power === 'on'?'#3191FD':'#ffffff'}}">
+                    <text class="footer-gear-text" style="color: {{gear && mode_n === 'normal' && power === 'on'?'#ffffff':'#cccccc'}};">{{gear && gear != '--'?gear+'档':'--'}}</text>
+                </div>
+                <text class="footer-gear-title" style="color: {{ gear && mode_n === 'normal' && power === 'on'? '#000000':'#cccccc'}};">风速</text>
+            </div>
+        </div> -->
+        <div class="footer-down">
+            <div class="footer-normal" @click="shakeBtn()">
+                <image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>
+            </div>
+            <div class="footer-normal" @click="humidityBtn()">
+                <image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"
+                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>
+            </div>
+            <div class="footer-normal" @click="ecoBtn()">
+                <image src="{{'./assets/img/eco-' + (power==='on' && mode ==='efficient'? 'highlight':'on') + '.png'}}"
+                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
+                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">节能</text>
+            </div>
+            <div class="footer-normal" @click="showTimeDialog()">
+                <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (power==='off' || mode==='normal' || mode=='efficient'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                       class="footer-normal-img"></image>
+                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
+                    timer_on_minute, timer_off_hour, timer_off_minute)}}
+                </text>
+            </div>
+            <!-- <div class="footer-wind" @click="change()">
+                <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
+                <text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
+            </div>
+            <div class="footer-shake" @click="showDialog_()">
+                <image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>
+                <text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
+            </div>
+            <div class="footer-timeout" @click="showTimeDialog()">
+                <div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">
+                    <text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
+                </div>
+                <text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
+            </div> -->
+        </div>
+        <div class="nav_mark" if="{{isshowDialog}}" @click="closeDialog()">
+            <div class="nav_mark_dialog">
+                <div class="{{$idx === (mode.length-1)?'nav_mark_dialog_list':'nav_mark_dialog_list_1'}}" for="mode"
+                     @click="selectMode($item.name)">
+                    <text class="nav_mark_dialog_list_text" if="{{!language}}"
+                          style="color:{{$item.name === mode_n?'#3191FD':'#000000'}}">{{$item.value}}
+                    </text>
+                    <image src="{{$item.name === mode_n?'./assets/img/highlight/':'./assets/img/single/'}}{{$item.data}}{{$item.name === mode_n?'highlight.png':'single.png'}}"
+                           class="nav_mark_dialog_list_img"></image>
+                    <text class="nav_mark_dialog_list_text" if="{{language}}"
+                          style="color:{{$item.name === mode_n?'#3191FD':'#000000'}}">{{$item.value}}
+                    </text>
+                </div>
+            </div>
+        </div>
+        <div class="nav_mark" if="{{isshowtimedialog}}" @click="closeDialog_()">
+
+        </div>
+        <div class="timeselect" if="{{isshowtimedialog}}" style="top:{{(deviceHeight-900)/2}}px">
+            <div class="timeselect_list">
+                <div class="timeselect_list_title">
+                    <text class="timeselect_list_title_text_1" if="{{language}}">定时{{power === 'off'?'开机':'关机'}}</text>
+                    <qui-switch value="{{isSwitch?'1':'0'}}" onqui-Switch-Change="changTimer()"
+                                checked-color="{{checkedColor(power, mode)}}"
+                                class="{{language?'timeselect_list_title_text_switch':'timeselect_list_title_text_switch_l'}}"></qui-switch>
+                    <text class="timeselect_list_title_l_text" if="{{!language}}">定时{{power === 'off'?'开机':'关机'}}</text>
+                </div>
+                <div class="timeselect_list_title">
+                    <text class="timeselect_list_title_text" if="{{language}}">设置时间</text>
+                    <div onclick="toggleList()">
+                        <text class="timeselect_list_title_data" if="{{language}}">{{selectData ===
+                            '--'?'无':timeDataFilter(hours,minute)}}
+                        </text>
+                        <image class="{{language?'timeselect_list_title_img':'timeselect_list_title_img_l'}}"
+                               src="{{listOpen?'./assets/img/up.png':'./assets/img/down.png'}}"></image>
+                        <text class="timeselect_list_title_data" if="{{!language}}">{{selectData ===
+                            '--'?'无':timeDataFilter(hours,minute)}}
+                        </text>
+                        <text class="timeselect_list_title_text_l" if="{{!language}}">设置时间</text>
+                    </div>
+                </div>
+                <div class="timeselect_list_nav" if={{listOpen}}>
+                    <div class="timeselect_list_nav_l">
+                        <div class="midea-select">
+                            <list class="midea-select-list" id="list">
+                                <list-item type="listItem" class="midea-select-item{{$idx==0?'':'-hasborder'}}"
+                                           for="{{listtime}}"
+                                           @click="selectValue($idx,false)">
+                                    <text class="midea-select-item-text"
+                                          style="color:{{isselectTime === $idx? checkedColor(power, mode):'#cccccc'}}">
+                                        {{$item.name}}
+                                    </text>
+                                    <!--<image class="midea-select-item-img" show="{{isselectTime === $idx?true:false}}" src="./assets/img/ic_select.png"></image>-->
+                                </list-item>
+                            </list>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="timeselect_btnList{{listOpen?'_open':''}}">
+                <text class="timeselect_btnList_btn1" @click="closeDialog_">取消</text>
+                <text class="timeselect_btnList_btn2" style="color:{{checkedColor(power, mode)}}"
+                      @click="doingTimeSet()">确定
+                </text>
+            </div>
+        </div>
+        <div class="Midea-compont" if="{{isGeardialog}}" @click="closeDia">
+            <div class="Midea-dialog">
+                <list class="Midea-list" id="list">
+                    <list-item class="Midea-item" type="listItem" for="{{listGear}}" @click="selectGear($item.id)">
+                        <text class="Midea-text" if="{{language}}"
+                              style="color: {{select_gear === $item.id?checkedColor(power, mode):'#cccccc'}};">
+                            {{$item.data}}
+                        </text>
+                        <div class="Midea-{{language?'imgage':'imgage_l'}}">
+                            <image class="Midea-img" show="{{select_gear === $item.id}}"
+                                   src="{{mode=='cold_air'?'./assets/img/ic_select.png':'./assets/img/ic_select_normal.png'}}"></image>
+                        </div>
+                        <text class="Midea-text" if="{{!language}}"
+                              style="color: {{select_gear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}
+                        </text>
+                    </list-item>
+                </list>
+                <div class="Midea-btn">
+                    <div if="{{language}}" class="Midea-btn1" @click="closeDia">
+                        <text class="Midea-btn1text">取消</text>
+                    </div>
+                    <div class="Midea-btn1" @click="conData">
+                        <text class="Midea-btn2text" style="color:{{checkedColor(power, mode)}}">确定</text>
+                    </div>
+                    <div if="{{!language}}" class="Midea-btn1" @click="closeDia">
+                        <text class="Midea-btn1text">取消</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <midea-loading if="{{isshowLoading}}"></midea-loading>
+        <!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
+        <midea-tips if="{{istips}}"></midea-tips>
+    </div>
+</template>
+<script>
+    import api from '../Common/api/api.js';
+    import prompt from '@system.prompt';
+    import router from '@system.router';
+    import account from '@service.account';
+    import storage from '@system.storage';
+    import device from '@system.device';
+    // import IOT from '@service.iot';
+    import pkg from '@system.package';
+    import network from '@system.network';
+    import fetch from '@system.fetch';
+    import net from '../Common/api/networkAPI.js';
+    import util from '../util.js';
+
+    export default {
+        private: {
+            isagain: true,
+            lanOnline: 'false',
+            isLanInit: false,
+            timeTips: '',
+            isoffset: '-1000px',
+            isRefreshing: false,
+            ws: '',
+            isws: false,
+            isclosews: false,
+            language: true,
+            deviceHeight: 0,
+            isselectTime: '',
+            istips: false,
+            isabout: false,
+            online: 'false',
+            loadfirst: false,
+            isshowtimedialog: false,
+            isshowLoading: false,
+            isswing: true,
+            isshowswingDialog: false,
+            isshowDialog: false,
+            animateClass: '',
+            minute: 0,
+            hours: 0,
+            openId: '',
+            isGeardialog: false,
+            timeoutInter: '',
+            iswarm: true,
+            isSwitch: false,
+            accessToken: '',
+            listtime: [],
+            listGear: [],
+            sectime: [{
+                name: "0分钟",
+                data: '0'
+            }, {
+                name: "30分钟",
+                data: '30'
+            }],
+            isadd: '',
+            selectsec: 'clean',
+            selectData: '10',
+            power: 'off',
+            swing: 'off',
+            swing_angle_n: '90',
+            select_gear: 0,
+            time1: "off",
+            // FAstatus: ["power", "mode", "swing", "swing_angle", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour", "gear"],
+            // FAdata: {
+            // 	power: "off",
+            // 	mode: "normal",
+            // 	swing: 'off',
+            // 	swing_angle: '90',
+            // 	timer_off_minute: "clean",
+            // 	timer_off_hour: '0',
+            // 	timer_on_minute: 'clean',
+            // 	timer_on_hour: "0",
+            // 	gear: '--',
+            // },
+            listDevice: {},
+            //模式
+            modeselect: [{
+                name: "normal",
+                value: "正常风",
+                data: "wind-normal-"
+            }, {
+                name: "sleep",
+                value: "睡眠风",
+                data: "wind-sleep-"
+            }, {
+                name: "natural",
+                value: "自然风",
+                data: "wind-natural-"
+            }, {
+                name: "comfort",
+                value: "舒适风",
+                data: "wind-comfort-"
+            }, {
+                name: "feel",
+                value: "人感",
+                data: "wind-feel-"
+            }, {
+                name: "baby",
+                value: "宝宝风",
+                data: "wind-baby-"
+            }, {
+                name: "mute",
+                value: "静音风",
+                data: "wind-mute-"
+            }],
+            //摇头角度
+            swing_angle: [{
+                name: "30",
+                value: "30度",
+                data: ""
+            }, {
+                name: "60",
+                value: "60度",
+                data: ""
+            }, {
+                name: "90",
+                value: "90度",
+                data: ""
+            }, {
+                name: "120",
+                value: "120度",
+                data: ""
+            }, {
+                name: "180",
+                value: "180度",
+                data: ""
+            }, {
+                name: "360",
+                value: "360度",
+                data: ""
+            }],
+            //摇头角度
+            swing_angle_boby: [{
+                name: "60",
+                value: "60度",
+                data: ""
+            }, {
+                name: "90",
+                value: "90度",
+                data: ""
+            }],
+            //摇头方向
+            swing_direction: [{
+                name: "ud",
+                value: "上下摇头",
+                data: ""
+            }, {
+                name: "lr",
+                value: "左右摇头",
+                data: ""
+            }, {
+                name: "w",
+                value: "w形摇头",
+                data: ""
+            }],
+
+            mode: "normal",
+            cur_temperature: '--',
+            shake_switch: 'off',
+            humidification: 'off',
+            timer_off_minute: 0,
+            timer_off_hour: 0,
+            timer_on_minute: 0,
+            timer_on_hour: 0,
+            gear: '--',
+            temperature: 0,
+            FBdata: {
+                power: "off",
+                mode: "normal",
+                cur_temperature: '--',
+                shake_switch: 'off',
+                humidification: 'off',
+                timer_off_minute: 0,
+                timer_off_hour: 0,
+                timer_on_minute: 0,
+                timer_on_hour: 0,
+                gear: '--',
+                temperature: 0,
+            },
+            FBstatus: ["power", "mode", "cur_temperature", "shake_switch", "humidification", "timer_off_minute", "timer_off_hour", "timer_on_minute", "timer_on_hour", "gear", "temperature"],
+            realSn8: '',
+            hours_min: '1',
+            listOpen: false,
+        },
+        public: {
+            deviceSeries: '',
+            deviceId: '',
+            openid: ''
+        },
+        onMenuPress() {
+            this.isabout = !this.isabout;
+        },
+        onclickFn(e) {
+            this.isabout = false;
+        },
+        showGearDia() {
+            this.setGear();
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            if (that.power === 'on' && that.online === "true") {
+                if (that.mode === 'normal' || that.mode === 'cold_air') {
+                    that.isGeardialog = true;
+                    that.select_gear = that.gear;
+                }
+            } else if (that.online === "false") {
+                that.isshowclose();
+            }
+        },
+        closeDia() {
+            this.isGeardialog = false;
+            this.select_gear = 0;
+        },
+        conData() {
+            let that = this;
+
+            let control_params = {
+                "gear": that.select_gear
+            }
+// 		prompt.showToast({
+// 			message:"ssdasd"+that.select_gear
+// 		})
+            let status = that.FBdata;
+            delete status.gear;
+            that.startControlDevice(control_params, status);
+            that.closeDia();
+        },
+        changTimer(e) {
+            console.log('changTimer ' + JSON.stringify(e));
+            let that = this;
+            if (e.detail.value === '1') {
+                this.isSwitch = true;
+                this.isselectTime = this.isadd;
+                this.minute = '0';
+                this.hours = this.hours_min;
+                // this.showTimeDialog();
+                this.listOpen = true;
+                setTimeout(() => {
+                    let index = parseInt(this.hours) - 1;
+                    that.$element('list').scrollTo({index: index})
+                    that.selectValue(index, false);
+                }, 50);
+            } else {
+                this.listOpen = false;
+                this.isSwitch = false;
+                this.hours_min = this.hours;
+                this.minute = '0';
+                this.hours = '0';
+                this.isadd = this.isselectTime;
+                this.isselectTime = '';
+            }
+        },
+        isshowclose() {
+            let that = this;
+            that.istips = false;
+            if (that.timeTips != '') {
+                clearTimeout(that.timeTips)
+            }
+            that.istips = true;
+            // that.timeTips = setTimeout(() => {
+            // 	that.istips = false;
+            // },3000)
+        },
+        downMeiju() {
+            let that = this;
+            let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+            let str2 = "您还没安装美居app，是否确定下载安装?";
+            pkg.hasInstalled({
+                package: 'com.midea.ai.appliances',
+                success: function (res) {
+                    prompt.showDialog({
+                        title: '提示',
+                        message: res.result ? str1 : str2,
+                        buttons: [
+                            {
+                                text: res.result ? '直接打开' : '去下载',
+                                color: '#33dd44'
+                            }
+                        ],
+                        success: function (data) {
+                            if (res.result) {
+                                router.push({uri: 'meiju://com.midea.meiju/main'});
+                            } else {
+                                pkg.install({
+                                    package: 'com.midea.ai.appliances',
+                                    success: function (resp) {
+                                        console.log(`handling success: ${resp.result}`);
+                                    },
+                                    fail: function (resp, code) {
+                                        console.log(`handling fail, code = ${code}`);
+                                    }
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            console.log('handling cancel');
+                        },
+                        fail: function (data, code) {
+                            console.log(`handling fail, code = ${code}`);
+                        }
+                    });
+
+                    console.log(`handling success: ${res.result}`);
+                },
+                fail: function (res, code) {
+                    console.log(`handling fail, code = ${code}`);
+                }
+            });
+        },
+        /**
+         * 局域网初始化
+         */
+        LanOnlineGet() {
+            let that = this;
+            net.deviceInit(that.accessToken, that.deviceId).then((res) => {
+                console.log('net.deviceInit ' + JSON.stringify(res));
+                that.isLanInit = true;
+            }).catch((error) => {
+                console.error('net.deviceInit ' + JSON.stringify(error));
+                that.isLanInit = false;
+            });
+        },
+        scrollbottom(e) {
+            let that = this;
+            that.isRefreshing = e.refreshing;
+
+            if (that.loadfirst) {
+                that.regetdata();
+            }
+        },
+        regetdata() {
+            let that = this;
+            let timestamp = Date.parse(new Date());
+            that.isshowLoading = true;
+            storage.get({
+                key: 'openidToken',
+                success: function (data) {
+                    that.iswarm = true;
+                    if (data === '') {
+                        that.getdevicelist();
+                    } else {
+                        let obj = JSON.parse(data);
+                        if (parseInt(timestamp) > parseInt(obj.time)) {
+                            that.getdevicelist();
+                        } else {
+                            if (obj.openid === that.openid) {
+                                that.openId = obj.openid;
+                                that.accessToken = obj.accessToken;
+                                if (!that.isLanInit) {
+                                    that.LanOnlineGet();
+                                }
+                                that.getDeviceStatus();
+                            } else {
+                                that.getdevicelist();
+                            }
+                        }
+                    }
+                    console.log('handling success')
+                },
+                fail: function (data, code) {
+                    console.log(`handling fail, code = ${code}`)
+                }
+            })
+        },
+        timeDataFilter(data1, data2) {
+            // let num = 0;
+            // if (data2 === 'clean' || data2.toString() === '0') {
+            //     num = 0
+            // } else {
+            //     num = parseInt(data2) / 60;
+            // }
+            // if ((data2 === 'clean' || data2.toString() === '0') && data1.toString() === '0') {
+            //     return '--';
+            // } else if (num.toFixed(1).toString() === '1.0') {
+            //     return parseInt(data1) + 1 + '小时';
+            // } else {
+            //     if (data1 === '') {
+            //         return '--';
+            //     } else {
+            //         return data1 + num.toFixed(1).toString().substring(1, 3) + '小时'
+            //     }
+            // }
+            if (!this.isSwitch) return '--';
+            return data1 + '小时';
+// 		if(data1.toString() === '0'){
+// 			return '--';
+// 		}else{
+// 			return data1 + '小时';
+// 		}
+        },
+        isonlineData(str) {
+            if (str === 'on') {
+                if (this.timer_off_minute.toString() === '0') {
+                    return false
+                } else {
+                    return true;
+                }
+            } else {
+                if (this.timer_on_minute.toString() === '0') {
+                    return false
+                } else {
+                    return true;
+                }
+            }
+        },
+        timeFilter1() {
+            let that = this;
+            let hour = '0';
+            let min = 'clean';
+            if (this.power === 'on') {
+                if (this.timer_off_minute && this.timer_off_hour) {
+                    min = this.timer_off_minute;
+                    hour = this.timer_off_hour;
+                } else {
+                    min = "clean";
+                    hour = '0';
+                }
+            } else {
+                if (this.timer_on_minute && this.timer_on_hour) {
+                    min = this.timer_on_minute;
+                    hour = this.timer_on_hour;
+                } else {
+                    min = "clean";
+                    hour = '0';
+                }
+            }
+            if (min === 'clean') {
+                let data = "定时";
+                return data;
+            } else {
+                let num = parseInt(min) / 60;
+                if (num === 0) {
+                    return hour + "小时关";
+                } else {
+                    return hour + (parseInt(min) / 60).toFixed(1).toString().substring(1, 3) + "小时关";
+                }
+// 			if(min === '0'){
+// 				return hour + "小时关";
+// 			}else{
+// 				return hour + ".5小时关";
+// 			}
+            }
+        },
+        timeFilter2() {
+            let that = this;
+            let hour = '0';
+            let min = 'clean';
+
+            if (that.power === 'on') {
+                if (!that.timer_off_minute) {
+                    if ((that.timer_off_minute === 'clean' || that.timer_off_minute.toString() === '0') && that.timer_off_hour.toString() === '0') {
+                        min = "clean";
+                        hour = '0';
+                    } else {
+                        min = that.timer_off_minute;
+                        hour = that.timer_off_hour;
+                    }
+                } else {
+                    // prompt.showToast({message:"asdu:"+that.timer_off_minute});
+                    min = that.timer_off_minute;
+                    hour = that.timer_off_hour;
+// 				if(that.timer_off_hour){
+// 					min = that.timer_off_minute;
+// 					hour = that.timer_off_hour;
+// 				}else{
+// 					min = "clean";
+// 					hour ='0';
+// 				}
+                }
+            } else {
+                if (!that.timer_on_minute) {
+                    if ((that.timer_on_minute === 'clean' || that.timer_on_minute.toString() === '0') && that.timer_on_hour.toString() === '0') {
+                        min = "clean";
+                        hour = '0';
+                    } else {
+                        min = that.timer_on_minute;
+                        hour = that.timer_on_hour;
+                    }
+                } else {
+                    min = that.timer_on_minute;
+                    hour = that.timer_on_hour;
+// 				if(that.timer_on_hour){
+// 					min = that.timer_on_minute;
+// 					hour = that.timer_on_hour;
+// 				}else{
+// 					min = "clean";
+// 					hour ='0';
+// 				}	
+                }
+            }
+            // prompt.showToast({message:"asdu:"+min})
+            if ((min === 'clean' || min.toString() === '0') && hour.toString() === '0') {
+                let data = "off";
+                that.time1 = data;
+                // return data;
+            } else {
+                let num = 0;
+                if (min === 'clean' || min.toString() === '0') {
+                    num = 0
+                } else {
+                    num = parseInt(min) / 60;
+                }
+                if (num === 0) {
+                    that.time1 = hour;
+                    // return hour + '.0';
+                } else if (num.toFixed(1).toString() === '1.0') {
+                    that.time1 = (parseInt(hour) + 1).toString();
+                    // return (parseInt(hour) + 1).toString() + '.0';
+                } else {
+                    that.time1 = hour + num.toFixed(1).toString().substring(1, 3);
+                    // return hour + num.toFixed(1).toString().substring(1,3);
+                }
+            }
+        },
+        timeFilter(hour, min) {
+            let that = this;
+            if (min === 'clean') {
+                let data = "无";
+                return data;
+            } else {
+                return hour + min;
+            }
+        },
+        time_2(hour) {
+            let that = this;
+            if (hour) {
+                if (hour === 'clean') {
+                    let data = "--";
+                    return data;
+                } else {
+                    return hour;
+                }
+            } else {
+                return '--';
+            }
+        },
+        selectValue(str, bol) {
+            if (this.isSwitch) {
+                this.selectData = this.listtime[str].data;
+                this.hours = parseInt(this.listtime[str].name).toString();
+                this.minute = this.listtime[str].data.substring(this.listtime[str].data.indexOf(".") + 1, this.listtime[str].data.length) * 6;
+                this.isselectTime = str;
+            } else {
+                if (!bol) {
+                    prompt.showToast({message: "请打开定时开关再选择", duration: 1})
+                }
+            }
+        },
+        doingTimeSet() {
+            let params;
+            let that = this;
+            // prompt.showToast({message:"saqsa:"+this.hours+"sas:"+this.minute+"kkk:"+that.selectData})
+            if (this.power === 'on') {
+                let offhonr = '';
+                let offminute = '';
+                if (that.isSwitch) {
+                    if ((that.hours.toString() === '0' || that.hours.toString() === '') && (that.minute.toString() === '0' || that.minute.toString() === '')) {
+                        prompt.showToast({message: "请设置定时时间", duration: 1})
+                    } else {
+                        that.isshowtimedialog = false;
+                        offhonr = that.hours;
+                        offminute = that.minute;
+                        params = {
+                            timer_off_minute: '0',
+                            timer_off_hour: offhonr.toString(),
+                            // timer_on_minute: "0",
+                            // timer_on_hour: '0'
+                        }
+                        let status = this.FBdata;
+                        delete status.timer_on_minute;
+                        delete status.timer_on_hour;
+                        delete status.timer_off_minute;
+                        delete status.timer_off_hour;
+                        that.startControlDevice(params, status)
+                    }
+                } else {
+                    that.isshowtimedialog = false;
+                    offhonr = that.hours;
+                    offminute = that.minute;
+                    params = {
+                        timer_off_minute: 'clean',
+                        // timer_off_hour: offhonr.toString(),
+                        // timer_on_minute: "clean",
+                        // timer_on_hour: '0'
+                    }
+                    let status = this.FBdata;
+                    delete status.timer_on_minute;
+                    delete status.timer_on_hour;
+                    delete status.timer_off_minute;
+                    delete status.timer_off_hour;
+                    that.startControlDevice(params, status)
+                }
+
+            } else if (this.power === 'off') {
+                let onhonr = '';
+                let onminute = '';
+                if (that.isSwitch) {
+                    if ((that.hours.toString() === '0' || that.hours.toString() === '') && (that.minute.toString() === '0' || that.minute.toString() === '')) {
+                        prompt.showToast({message: "请设置定时时间", duration: 1})
+                    } else {
+                        that.isshowtimedialog = false;
+                        onhonr = that.hours;
+                        onminute = that.minute;
+                        params = {
+                            timer_on_minute: '0',
+                            timer_on_hour: onhonr.toString(),
+                            // timer_off_minute: "clean",
+                            // timer_off_hour: '0'
+                        }
+                        let status = this.FBdata;
+                        delete status.timer_on_minute;
+                        delete status.timer_on_hour;
+                        delete status.timer_off_minute;
+                        delete status.timer_off_hour;
+                        that.startControlDevice(params, status)
+                    }
+                } else {
+                    that.isshowtimedialog = false;
+                    onhonr = that.hours;
+                    onminute = that.minute;
+                    params = {
+                        timer_on_minute: 'clean',
+                        // timer_on_hour: onhonr.toString(),
+                        // timer_off_minute: "clean",
+                        // timer_off_hour: '0'
+                    }
+                    let status = this.FBdata;
+                    delete status.timer_on_minute;
+                    delete status.timer_on_hour;
+                    delete status.timer_off_minute;
+                    delete status.timer_off_hour;
+                    that.startControlDevice(params, status)
+                }
+
+            }
+        },
+        selectMode(item) {
+            let that = this;
+            network.getType({
+                success: function (data) {
+                    if (data.type === 'none') {
+                        prompt.showToast({
+                            message: "网络异常，请检查网络",
+                            duration: 1
+                        })
+                    } else {
+                        // this.mode = item;
+                        that.closeDialog();
+                        let control_params = {
+                            'mode': item,
+                        }
+                        let status = that.FBdata;
+                        delete status.mode;
+                        that.startControlDevice(control_params, status);
+                    }
+                }
+            })
+        },
+        selectSingData(type, val) {
+            if (type === 'swing_angle') {
+                this.swing_angle = val;
+                this.swing_angle_n = val;
+            } else {
+                this.swing_direction = val;
+            }
+        },
+        closeDialog() {
+            this.animateClass = "animate_D";
+            let that = this;
+            that.isshowDialog = false
+// 		setTimeout(function() {
+// 			that.isshowDialog = false
+// 		}, 400)
+        },
+        showTimeDialog() {
+            let that = this;
+            that.minute = 0;
+            that.hours = 0;
+            that.isselectTime = '--';
+            that.selectData = '--';
+            // that.isSwitch = false;
+            if (that.online === "true") {
+                that.isshowtimedialog = true;
+                if (that.power === 'on') {
+                    if ((that.timer_off_minute === 'clean' || that.timer_off_minute.toString() === '0') && that.timer_off_hour.toString() === '0') {
+                        that.selectData = '--';
+                        that.isSwitch = false;
+                        that.minute = 0;
+                        that.hours = 0;
+                        that.listOpen = false;
+                    } else {
+                        if (that.timer_off_minute === 'clean' || that.timer_off_minute.toString() === '0') {
+                            that.minute = 0;
+                        } else {
+                            that.minute = that.timer_off_minute;
+                        }
+                        if (that.timer_off_hour === 'clean' || that.timer_off_hour.toString() === '0') {
+                            that.hours = 0;
+                        } else {
+                            that.hours = that.timer_off_hour;
+                        }
+                        that.isSwitch = true;
+                        that.listOpen = true;
+                        setTimeout(() => {
+                            let index = parseInt(that.hours) - 1;
+                            that.$element('list').scrollTo({index: index})
+                            that.selectValue(index, false);
+                        }, 50);
+                        that.listtime.forEach(function (item, i) {
+                            if (parseInt(item.name) === parseInt(that.hours)) {
+                                if ((parseInt(that.minute) / 60).toFixed(1).toString() === '0.0') {
+                                    that.isselectTime = i;
+                                } else {
+                                    that.isselectTime = '';
+                                }
+                            }
+                        })
+                        if (that.minute.toString() === '0') {
+                            that.selectData = that.hours + '.0'
+                        } else {
+                            that.selectData = (parseInt(that.hours) + (parseInt(that.minute) / 60).toFixed(1)).toString();
+                        }
+                    }
+                } else {
+                    if ((that.timer_on_minute === 'clean' || that.timer_on_minute.toString() === '0') && that.timer_on_hour.toString() === '0') {
+                        that.selectData = '--';
+                        that.isSwitch = false;
+                        that.minute = 0;
+                        that.hours = 0;
+                        that.listOpen = false;
+                    } else {
+                        let num = 0;
+                        if (that.timer_on_minute === 'clean' || that.timer_on_minute.toString() === '0') {
+                            that.minute = 0;
+                        } else {
+                            that.minute = that.timer_on_minute;
+                        }
+                        if (that.timer_on_hour === 'clean' || that.timer_on_hour.toString() === '0') {
+                            that.hours = 0;
+                        } else {
+                            that.hours = that.timer_on_hour;
+                        }
+                        that.isSwitch = true;
+                        that.listOpen = true;
+                        setTimeout(() => {
+                            let index = parseInt(that.hours) - 1;
+                            that.$element('list').scrollTo({index: index})
+                            that.selectValue(index, false);
+                        }, 50);
+                        that.listtime.forEach(function (item, i) {
+                            if (parseInt(item.name) === parseInt(that.hours)) {
+                                if ((parseInt(that.minute) / 60).toFixed(1).toString() === '0.0') {
+                                    that.isselectTime = i;
+                                } else {
+                                    that.isselectTime = '';
+                                }
+                            }
+                        })
+                        if (that.minute.toString() === '0') {
+                            that.selectData = that.hours + '.0'
+                        } else {
+                            let nun = parseInt(that.minute) / 60;
+                            if (nun.toFixed(1).toString() === '1.0') {
+                                that.selectData = (parseInt(that.hours) + 1).toString();
+                            } else {
+                                that.selectData = that.hours + nun.toFixed(1).toString().substring(1, 3);
+                            }
+
+                        }
+                    }
+                }
+                that.filterData();
+            } else {
+                that.isshowclose();
+                // prompt.showToast({message:"设备离线状态不能操作"})
+            }
+            // this.$element('timePicker').show()
+        },
+        closeDialog_() {
+            this.isshowswingDialog = false;
+            this.isshowtimedialog = false;
+        },
+        showDialog_() {
+            let that = this;
+            let control_params = {};
+            if (this.power === 'on' && this.online === "true") {
+                if (this.swing != 'on') {
+                    control_params = {
+                        "swing": 'on',
+                        "swing_angle": "90",
+// 					'timer_on_minute': that.timer_on_minute,
+// 					'timer_on_hour': that.timer_on_hour,
+                    }
+                } else {
+                    control_params = {
+                        "swing": 'off',
+                        "swing_angle": "90",
+// 					'timer_on_minute': that.timer_on_minute,
+// 					'timer_on_hour': that.timer_on_hour,
+                    }
+                }
+                let status = this.FBdata;
+                delete status.swing;
+                delete status.swing_angle;
+                this.startControlDevice(control_params, status);
+                // this.isshowswingDialog = true;
+// 			this.isshowswingDialog = true;
+// 			this.scolltoswing_angle(this.swing_angle, that.swing_angle, 'list')
+            } else if (this.online === "false") {
+                this.isshowclose();
+                // prompt.showToast({message:"设备离线状态不能操作"})
+            } else if (this.power === "off") {
+                prompt.showToast({message: "设备关机状态,不能操作"})
+            }
+        },
+        scolltoswing_angle(obj, str, id) {
+            let that = this;
+            obj.forEach(function (item, i) {
+                if (item.name === str) {
+                    setTimeout(function () {
+                        that.$element(id).scrollTo({
+                            index: i
+                        });
+                    }, 150)
+                }
+            })
+        },
+        change() {
+            let that = this;
+            if (this.power === 'on' && this.online === "true") {
+                this.animateClass = "animate_S";
+                that.isshowDialog = true;
+// 			setTimeout(function() {
+// 				that.isshowDialog = true;
+// 			}, 100)
+            } else if (this.online === "false") {
+                this.isshowclose();
+                // prompt.showToast({message:"设备离线状态不能操作"})
+            } else if (this.power === "off") {
+                prompt.showToast({message: "设备关机状态,不能操作"})
+            }
+        },
+        isRealNum(val) {
+            // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+            if (val === "" || val == null) {
+                return false;
+            }
+            if (!isNaN(val)) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        selectGear(id) {
+            let that = this;
+// 		prompt.showToast({
+// 			message:"sss"+JSON.stringify(e)
+// 		})
+            that.select_gear = id;
+        },
+        gearreduce() {
+            let gear;
+// 		console.log("this.gear:"+this.FAdata.gear)
+// 		console.log("this.isRealNum(this.gear):"+this.isRealNum(this.FAdata.gear))
+            if (this.isRealNum(this.gear)) {
+                if (this.gear > 1) {
+                    gear = parseInt(this.gear) - 1;
+                } else {
+                    gear = parseInt(this.gear);
+                    prompt.showToast({message: '已经是最小的档位了，不能再调小'})
+                    console.log("已经是最小的档位，不能再调小");
+                }
+            } else {
+                gear = 1;
+            }
+            const control_params = {
+                "gear": parseInt(gear)
+            }
+            let status = this.FBdata;
+            delete status.gear;
+            this.startControlDevice(control_params, status);
+        },
+        gearplus() {
+            let gear;
+            console.log("this.gear:" + this.gear)
+            console.log("this.isRealNum(this.FAdata.gear):" + this.isRealNum(this.gear))
+
+            if (this.online === 'true') {
+                if (this.isRealNum(this.gear)) {
+                    if (this.gear < 26) {
+                        gear = parseInt(this.gear) + 1;
+                    } else {
+                        gear = parseInt(this.gear);
+                        prompt.showToast({message: '已经是最大的档位了，不能再调大'})
+                        console.log("已经是最大的档位，不能再调大");
+                    }
+                } else {
+                    gear = 1;
+                }
+                const control_params = {
+                    "gear": gear
+                }
+                let status = this.FBdata;
+                delete status.gear;
+                this.startControlDevice(control_params, status);
+            }
+        },
+        powerBtn() {
+            if (this.online === 'true') {
+                if (this.power === "on") {
+                    //this.power = "off";
+                    let control_params = {
+                        "power": "off"
+                    }
+                    let status = this.FBdata;
+                    delete status.power;
+                    this.startControlDevice(control_params, status);
+                } else {
+                    //this.FBdata.power = "on";
+                    let control_params = {
+                        "power": "on"
+                    }
+                    let status = this.FBdata;
+                    delete status.power;
+                    this.startControlDevice(control_params, status);
+                }
+            } else {
+                this.isshowclose();
+            }
+        },
+        showData(obj, str, type) {
+            let data = '';
+            if (type === '') {
+                data = '';
+            }
+            obj.forEach(function (item, i) {
+                if (item.name === str) {
+                    data = item.value;
+                }
+            })
+            return data;
+        },
+        changSwing(e) {
+            if (e.checked) {
+                this.swing = 'on'
+                this.swing = 'on'
+            } else {
+                this.swing = 'off'
+                this.swing = 'off'
+            }
+            this.swing_angle = "90";
+            this.swing_angle_n = "90";
+        },
+        selectswing_direction() {
+            if (this.isswing) {
+                this.scolltoswing_angle(this.swing_direction, this.swing_direction, 'list_');
+            }
+            this.isswing = false;
+        },
+        selectswing_angle() {
+            if (!this.isswing) {
+                this.scolltoswing_angle(this.swing_angle, this.swing_angle_n, 'list')
+            }
+            this.isswing = true;
+        },
+        SwingChangeSure() {
+            let control_params = {
+                "swing": this.swing,
+            }
+            let status = this.FBdata;
+            this.startControlDevice(control_params, delete status.swing);
+            this.isshowswingDialog = false;
+        },
+        babyLock() {
+            let param = {};
+            if (this.FBdata.lock == "off") {
+                param = {
+                    lock: "on"
+                }
+            } else {
+                param = {
+                    lock: "off"
+                }
+            }
+            let status = this.FBdata;
+            this.startControlDevice(param, delete status.lock)
+        },
+        filterData() {
+            let that = this;
+            if (this.power === "on") {
+                if (this.timer_off_minute && this.timer_off_hour) {
+                    if (this.timer_off_minute === "clean") {
+                        that.selectsec = this.timer_off_minute;
+                        that.selectData = this.timer_off_hour;
+                    } else {
+                        that.selectsec = this.timer_off_minute;
+                        that.selectData = this.timer_off_hour;
+                    }
+                } else {
+                    that.selectsec = "clean";
+                    that.selectData = "clean";
+                }
+            } else {
+                if (this.timer_on_minute && this.timer_on_hour) {
+                    if (this.timer_on_minute === "clean") {
+                        that.selectsec = this.timer_on_minute;
+                        that.selectData = this.timer_on_hour;
+                    } else {
+                        that.selectsec = this.timer_on_minute;
+                        that.selectData = this.timer_on_hour;
+                    }
+                } else {
+                    that.selectsec = "clean";
+                    that.selectData = "clean";
+                }
+
+            }
+        },
+        getdevicelist() {
+            this.isshowLoading = true;
+            console.log("开始用户授权和获取token和openid,设备查询。");
+            let $this = this;
+            account.authorize({
+                type: 'code',
+                success: function (data) {
+                    let params = {
+                        thirdUId: data.code,
+                    }
+                    api.getUserToken(params).then((res) => {
+                        let data_accesstoken = res;
+                        console.log("获取token和openid返回值res:" + JSON.stringify(res));
+                        if (data_accesstoken.code && data_accesstoken.code == 200) {
+                            let result_data = typeof data_accesstoken.data === 'object' ? data_accesstoken.data : JSON.parse(data_accesstoken.data);
+                            if (!parseInt(result_data.code) && result_data.accessToken) {
+                                $this.accessToken = result_data.accessToken;
+                                $this.openid = result_data.openId;
+                                $this.openId = result_data.openId;
+                                let obj = {
+                                    openid: $this.openId,
+                                    accessToken: $this.accessToken,
+                                    time: $this.gettime()
+                                }
+                                storage.set({
+                                    key: 'openidToken',
+                                    value: JSON.stringify(obj),
+                                    success: function (data) {
+
+                                    },
+                                    fail: function (data, code) {
+
+                                    }
+                                })
+                                $this.LanOnlineGet();
+                                $this.getDeviceStatus();
+                            } else {
+                                $this.loadfirst = true;
+                                $this.netWorkGet(that.getCode(result_data.code, "获取访问令牌失败"))
+                                // $this.netWorkGet('获取访问令牌失败')
+                                $this.isshowLoading = false;
+                                $this.isRefreshing = false;
+                            }
+                        } else {
+                            $this.loadfirst = true;
+                            $this.netWorkGet('获取访问令牌失败,请稍后重试')
+                            $this.isshowLoading = false;
+                            $this.isRefreshing = false;
+                        }
+                    }).catch((error, code) => {
+                        console.log("授权接口：error" + error + ":::code" + code)
+                        $this.loadfirst = true;
+                        $this.netWorkGet('获取访问令牌失败,请稍后重试')
+                        $this.isshowLoading = false;
+                        $this.isRefreshing = false;
+                    })
+                },
+                fail: function (data, code) {
+                    $this.loadfirst = true;
+                    $this.netWorkGet('授权失败,请稍后重试')
+                    $this.isshowLoading = false;
+                    $this.isRefreshing = false;
+// 				 prompt.showToast({
+// 					message: 'authorize:' + code
+// 				}) 
+                }
+            })
+        },
+        /**
+         * 局域网获取
+         */
+        getLanData(res) {
+            let that = this;
+            let obj = (typeof res) == 'object' ? res : JSON.parse(res);
+            console.log('getLanData code ' + obj.code);
+            if (parseInt(obj.code) == 0) {
+                that.loadfirst = true;
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+                that.FBdata = data;
+                that.voice = that.FBdata.voice;
+                that.timer_off_hour = that.FBdata.timer_off_hour;
+                that.shake_switch = that.FBdata.shake_switch;
+                that.version = that.FBdata.version;
+                that.timer_on_minute = that.FBdata.timer_on_minute;
+                that.timer_off_minute = that.FBdata.timer_off_minute;
+                that.mode = that.FBdata.mode;
+                console.log("getdataLan mode: " + that.mode);
+                that.humidification = that.FBdata.humidification;
+                that.temperature = that.FBdata.temperature;
+                that.lock = that.FBdata.lock;
+                that.timer_on_hour = that.FBdata.timer_on_hour;
+                that.online = true;
+                that.error_code = that.FBdata.error_code;
+                that.power = that.FBdata.power;
+                that.screen_close = that.FBdata.screen_close;
+                that.cur_temperature = that.FBdata.cur_temperature;
+                that.gear = that.FBdata.gear;
+                // that.select_gear = that.gear;
+                that.timeFilter2();
+                that.listDevice = data;
+                that.listDevice.online = "true";
+            } else {
+                that.isagain = false;
+                that.lanOnline = "false";
+                that.getDeviceStatus();
+            }
+        },
+        /**
+         * 联网获取
+         */
+        getdataLan(res) {
+            let that = this;
+            that.loadfirst = true;
+            that.isRefreshing = false;
+            that.isshowLoading = false;
+            if (res.code === 200) {
+                let res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                if (!parseInt(res_data.code) && !parseInt(res_data.devices[0].status)) {
+                    that.FBdata = res_data.devices[0].properties;
+                    that.voice = that.FBdata.voice;
+                    that.timer_off_hour = that.FBdata.timer_off_hour;
+                    that.shake_switch = that.FBdata.shake_switch;
+                    that.version = that.FBdata.version;
+                    that.timer_on_minute = that.FBdata.timer_on_minute;
+                    that.timer_off_minute = that.FBdata.timer_off_minute;
+                    that.mode = that.FBdata.mode;
+                    console.log("getdataLan mode: " + that.mode);
+                    that.humidification = that.FBdata.humidification;
+                    that.temperature = that.FBdata.temperature;
+                    that.lock = that.FBdata.lock;
+                    that.timer_on_hour = that.FBdata.timer_on_hour;
+                    that.online = that.FBdata.online;
+                    that.error_code = that.FBdata.error_code;
+                    that.power = that.FBdata.power;
+                    that.screen_close = that.FBdata.screen_close;
+                    that.cur_temperature = that.FBdata.cur_temperature;
+                    that.gear = that.FBdata.gear;
+                    if (that.online != 'true') {
+                        that.isshowclose();
+                    }
+                    // that.select_gear = that.gear;
+                    that.timeFilter2();
+                    that.listDevice = typeof res_data.devices[0].properties === 'object' ? res_data.devices[0].properties : JSON.parse(res_data.devices[0].properties);
+                } else {
+                    if (res_data.msg === '') {
+                        let str1 = '';
+                        if (res_data.devices[0].status) {
+                            str1 = res_data.devices[0].status;
+                            if (str1.toString() === '-6') {
+                                that.isshowclose();
+                                return false;
+                            }
+                            if (str1.toString() == '-1') {
+                                that.isagain = false
+                            }
+                            if (str1.toString() === '-100' && res_data.devices[0].description.toString() === '3123') {
+                                that.isshowclose();
+                            } else {
+                                that.netWorkGet(api.getStatus("get", str1, '获取设备状态失败'))
+                            }
+                        } else {
+                            str1 = res_data.code;
+                            that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
+                        }
+                    } else {
+                        that.netWorkGet(res_data.msg)
+                    }
+                    that.initData();
+                }
+            } else {
+                if (that.iswarm) {
+                    that.initData();
+                }
+                that.netWorkGet('获取设备状态失败,请稍后重试')
+            }
+        },
+        datafilter_null(str) {
+            if (str) {
+                return str;
+            } else {
+                return '';
+            }
+        },
+        //查询状态
+        getDeviceStatus() {
+            let that = this;
+            let params = {
+                openId: that.openId,
+                devices: [{
+                    deviceId: that.deviceId,
+                    properties: that.FBstatus
+                }]
+            }
+            console.log("$Lanonline:" + JSON.stringify(net.$Lanonline) + "::::::::isagain:" + that.isagain)
+            if (net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain) {
+                that.lanOnline = 'true';
+            } else {
+                that.lanOnline = 'false';
+            }
+            that.istips = false;
+            api.postDeviceStatusQuery(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
+                that.isagain = true;
+                // console.log('postDeviceStatusQuery ' + JSON.stringify(res));
+                if (res.lanonline) {
+                    that.getdataLan(res);
+                } else {
+                    that.getLanData(res);
+                }
+            }).catch((error) => {
+                console.log("跑这里干嘛来了")
+                if (error.online) {
+                    if (that.iswarm) {
+                        that.initData();
+                    }
+                    that.netWorkGet('获取设备状态失败,请稍后重试');
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                } else {
+                    that.isagain = false;
+                    that.lanOnline = "false";
+                    that.getDeviceStatus();
+                }
+            })
+        },
+        /**
+         * 局域网控制
+         */
+        lanControl(res, obj1, status) {
+            let $this = this;
+            let obj = (typeof res) == 'object' ? res : JSON.parse(res);
+            console.log("局域网：" + JSON.stringify(res))
+            if (parseInt(obj.code) == 0) {
+                $this.isRefreshing = false;
+                $this.isshowLoading = false;
+
+                $this.online = 'true';
+                $this.FBdata.gear = '--';
+                $this.gear = '--';
+                // $this.select_gear = 0;
+                let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+
+                $this.FBdata.power = data.power;
+                $this.power = data.power;
+                $this.FBdata.mode = data.mode;
+                $this.mode_n = data.mode;
+                $this.swing = data.swing
+                $this.FBdata.swing = data.swing
+                $this.timer_on_minute = data.timer_on_minute
+                $this.FBdata.timer_on_minute = data.timer_on_minute;
+                $this.swing_angle_n = data.swing_angle;
+                $this.FBdata.swing_angle = data.swing_angle;
+                $this.FBdata.timer_off_minute = data.timer_off_minute
+                $this.timer_off_minute = data.timer_off_minute;
+                $this.timer_off_hour = data.timer_off_hour
+                $this.FBdata.timer_off_hour = data.timer_off_hour;
+                $this.FBdata.timer_on_hour = data.timer_on_hour
+                $this.timer_on_hour = data.timer_on_hour
+                $this.FBdata.gear = data.gear
+                $this.gear = data.gear;
+                // $this.select_gear = data.gear;
+                $this.listDevice = data;
+                $this.listDevice.online = "true";
+                $this.FBdata.online = "true";
+                $this.timeFilter2();
+            } else {
+                $this.isagain = false;
+                $this.lanOnline = 'false';
+                $this.startControlDevice(obj1, status);
+            }
+        },
+        /**
+         * 广域网控制
+         */
+        wlanControl(res) {
+            let $this = this;
+            let that = this;
+            if (res.code && res.code === 200) {
+                let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                if (parseInt(bind_res_data.code) == 0) {
+                    if (!parseInt(bind_res_data.devices[0].status)) {
+                        $this.isRefreshing = false;
+                        $this.isshowLoading = false;
+
+                        that.FBdata = JSON.parse(bind_res_data.devices[0].props);
+                        that.voice = that.FBdata.voice;
+                        that.timer_off_hour = that.FBdata.timer_off_hour;
+                        that.shake_switch = that.FBdata.shake_switch;
+                        that.version = that.FBdata.version;
+                        that.timer_on_minute = that.FBdata.timer_on_minute;
+                        that.timer_off_minute = that.FBdata.timer_off_minute;
+                        that.mode = that.FBdata.mode;
+                        that.humidification = that.FBdata.humidification;
+                        that.temperature = that.FBdata.temperature;
+                        that.lock = that.FBdata.lock;
+                        that.timer_on_hour = that.FBdata.timer_on_hour;
+                        that.online = 'true'; // 有回复，那肯定在线啦
+                        that.error_code = that.FBdata.error_code;
+                        that.power = that.FBdata.power;
+                        that.screen_close = that.FBdata.screen_close;
+                        that.cur_temperature = that.FBdata.cur_temperature;
+                        that.gear = that.FBdata.gear;
+                        if (that.online != 'true') {
+                            that.isshowclose();
+                        }
+                        // that.select_gear = that.gear;
+                        that.timeFilter2();
+                        that.listDevice = JSON.parse(bind_res_data.devices[0].props);
+                    } else {
+                        $this.isRefreshing = false;
+                        $this.isshowLoading = false;
+                        $this.initData();
+                        if (bind_res_data.msg === '') {
+                            let str1 = '';
+                            if (bind_res_data.devices[0].status) {
+                                str1 = bind_res_data.devices[0].status;
+                                if (str1.toString() === '-6') {
+                                    $this.isshowclose();
+                                    return false;
+                                }
+                                if (str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123') {
+                                    $this.isshowclose();
+                                } else {
+                                    $this.netWorkGet(api.getStatus("post", str1, '操作设备失败'))
+                                }
+                            } else {
+                                str1 = bind_res_data.devices[0].description;
+                                $this.netWorkGet(api.getCode(str1, '操作设备失败'))
+                            }
+                        } else {
+                            $this.netWorkGet(bind_res_data.msg)
+                        }
+                    }
+                } else {
+                    $this.isRefreshing = false;
+                    $this.isshowLoading = false;
+                    $this.initData();
+                    if (bind_res_data.msg === '') {
+                        let str1 = '';
+                        str1 = bind_res_data.devices[0].description;
+                        $this.netWorkGet(api.getCode(str1, '操作设备失败'))
+                    } else {
+                        $this.netWorkGet(bind_res_data.msg)
+                    }
+                }
+
+            } else {
+                $this.isRefreshing = false;
+                $this.isshowLoading = false;
+                $this.initData();
+                $this.netWorkGet('操作设备失败,请稍后重试')
+            }
+        },
+        startControlDevice(control_params, status_params) {
+            let $this = this;
+            this.isshowLoading = true;
+            if (status_params.online) {
+                delete status_params.online
+            }
+            let obj = $this.FBdata;
+            if (control_params.gear) {
+                obj.gear = parseInt(control_params.gear)
+            } else {
+                if (obj.gear == "--") {
+                    obj.gear = 0
+                } else {
+                    obj.gear = parseInt(obj.gear)
+                }
+            }
+            if (control_params.mode == 'sleep') {
+                delete obj.gear
+            }
+            let params = {
+                'openId': this.openId,
+                'devices': [{
+                    "deviceId": this.deviceId,
+                    "properties": control_params,
+                    "status": obj
+                    // "status":status_params
+                }]
+            }
+            console.log("$Lanonline:" + JSON.stringify(net.$Lanonline) + "::::::::isagain:" + $this.isagain)
+            if (net.$Lanonline.deviceid == $this.deviceId && net.$Lanonline.isonLan == 'true' && $this.isagain) {
+                $this.lanOnline = 'true';
+            } else {
+                $this.lanOnline = 'false';
+            }
+            api.postDeviceControl(params, $this.accessToken, $this.lanOnline, $this.deviceId).then((res) => {
+                $this.isagain = true;
+                if (res.lanonline) {
+                    $this.wlanControl(res);
+                } else {
+                    $this.lanControl(res, control_params, status_params)
+                }
+            }).catch((error) => {
+                if (error.online) {
+                    $this.initData();
+                    $this.isRefreshing = false;
+                    $this.isshowLoading = false;
+                } else {
+                    $this.isagain = false;
+                    $this.lanOnline = 'false';
+                    $this.startControlDevice(control_params, status_params);
+                }
+            })
+        },
+        initData() {
+            this.loadfirst = true;
+            this.FBdata = {
+                "mode": "efficient",
+                "error_code": 0,
+                "timer_off_hour": 0,
+                "voice": "close_buzzer",
+                "screen_close": "off",
+                "lock": "off",
+                "version": 6,
+                "timer_on_minute": 0,
+                "power": "off",
+                "timer_on_hour": 0,
+                "timer_off_minute": 0,
+                "cur_temperature": 26,
+                "temperature": 26,
+                "humidification": "off",
+                "shake_switch": "off"
+            };
+            this.mode = "";
+            console.log('initData mode: ' + this.mode);
+            this.error_code = 0;
+            this.timer_off_hour = 0;
+            this.voice = "close_buzzer";
+            this.screen_close = "off",
+                this.lock = "off";
+            this.version = 6;
+            this.timer_on_minute = 0;
+            this.power = "off";
+            this.timer_on_hour = 0,
+                this.timer_off_minute = 0,
+                this.cur_temperature = 26,
+                this.temperature = 26,
+                this.humidification = "off",
+                this.shake_switch = "off"
+            this.timeFilter2();
+        },
+        gettime() {
+            let timestamp = Date.parse(new Date());
+            return parseInt(timestamp) + 3600000;
+        },
+        timeGetData() {
+            let that = this;
+            that.iswarm = false;
+            let timestamp = Date.parse(new Date());
+            that.timeoutInter = setInterval(function () {
+                storage.get({
+                    key: 'openidToken',
+                    success: function (data) {
+                        // prompt.showToast({message:"data"+JSON.stringify(data)})
+                        if (data === '') {
+                            that.getdevicelist();
+                        } else {
+                            let obj = JSON.parse(data);
+                            if (parseInt(timestamp) > parseInt(obj.time)) {
+                                that.getdevicelist();
+                            } else {
+                                if (obj.openid === that.openid) {
+                                    that.openId = obj.openid;
+                                    that.accessToken = obj.accessToken;
+                                    if (!that.isLanInit) {
+                                        that.LanOnlineGet();
+                                    }
+                                    that.getDeviceStatus();
+                                } else {
+                                    that.getdevicelist();
+                                }
+                            }
+                        }
+                        console.log('handling success')
+                    },
+                    fail: function (data, code) {
+                        console.log(`handling fail, code = ${code}`)
+                    }
+                })
+            }, 3000)
+        },
+        netWorkGet(str) {
+            let that = this;
+            if (that.iswarm) {
+                network.getType({
+                    success: function (data) {
+                        if (data.type === 'none') {
+                            prompt.showToast({
+                                message: str + "，请检查网络",
+                                duration: 1
+                            })
+                        } else {
+                            prompt.showToast({
+                                message: str,
+                                duration: 1
+                            })
+                        }
+                    }
+                })
+            }
+        },
+        //websocket
+        webSocketdata() {
+            let that = this;
+            api.createWensocket(that.deviceId).then((ws) => {
+                that.ws = ws;
+                that.isws = true;
+                ws.onopen = function () {
+                    console.log("websocket连接成功")
+// 												prompt.showToast({
+// 													message: "连接成功"
+// 												})
+                }
+                ws.onerror = function (data) {
+                    // 连接失败
+                    //失败之后再重启
+                    that.webSocketdata();
+                    console.log('websocket连接失败')
+// 												prompt.showToast({
+// 													message: "连接失败"
+// 												})
+                }
+                ws.onmessage = function (res) {
+                    let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                    if (obj.status.online) {
+                        that.online = obj.status.online;
+                        that.FBdata.online = obj.status.online;
+                    } else {
+                        that.FBdata.online = 'true';
+                        that.online = 'true';
+                    }
+                    if (obj.status.power) {
+                        that.FBdata.power = obj.status.power;
+                        that.power = obj.status.power;
+                    }
+                    if (obj.status.mode) {
+                        that.FBdata.mode = obj.status.mode;
+                        that.mode_n = obj.status.mode;
+                    }
+                    if (obj.status.swing) {
+                        that.swing = obj.status.swing
+                        that.FBdata.swing = obj.status.swing
+                    }
+
+                    if (parseInt(obj.status.timer_on_minute) > -1) {
+                        that.timer_off_minute = obj.status.timer_on_minute
+                        that.FBdata.timer_on_minute = obj.status.timer_on_minute
+                    } else {
+                        that.timer_off_minute = '0';
+                        that.FBdata.timer_on_minute = '0'
+                    }
+                    if (obj.status.swing_angle) {
+                        that.swing_angle_n = obj.status.swing_angle;
+                        that.FBdata.swing_angle = obj.status.swing_angle;
+                    }
+                    if (parseInt(obj.status.timer_off_minute) > -1) {
+                        that.FBdata.timer_off_minute = obj.status.timer_off_minute
+                        that.timer_off_minute = obj.status.timer_off_minute
+                    } else {
+                        that.timer_off_minute = '0';
+                        that.FBdata.timer_off_minute = '0'
+                    }
+                    if (parseInt(obj.status.timer_off_hour) > -1) {
+                        that.timer_off_hour = obj.status.timer_off_hour
+                        that.FBdata.timer_off_hour = obj.status.timer_off_hour
+                    } else {
+                        that.timer_off_hour = '0';
+                        that.FBdata.timer_off_hour = '0'
+                    }
+                    if (parseInt(obj.status.timer_on_hour) > -1) {
+                        that.FBdata.timer_on_hour = obj.status.timer_on_hour
+                        that.timer_on_hour = obj.status.timer_on_hour
+                    } else {
+                        that.timer_on_hour = '0';
+                        that.FBdata.timer_on_hour = '0'
+                    }
+                    if (parseInt(obj.status.gear) > -1) {
+                        that.FBdata.gear = obj.status.gear
+                        that.gear = obj.status.gear
+                    }
+                    that.listDevice = that.FBdata;
+// 							that.dataCan();
+                }
+                ws.onclose = function () {
+                    // 关闭 websocket
+                    // 关闭之后再重启
+                    if (!that.isclosews) {
+                        that.webSocketdata();
+                    }
+                    console.log("websocket连接已关闭...")
+                };
+            });
+        },
+        closeWebsocket(e) {
+            let that = this;
+            that.isclosews = true;
+            if (that.timeoutInter != '') {
+                clearInterval(that.timeoutInter)
+            }
+            if (that.ws != '') {
+                that.ws.close({
+                    code: 1000,
+                    reason: '退出关闭',
+                    success: function () {
+                        that.ws = '';
+                        console.log("关闭websocket成功")
+                    },
+                    fail: function (data, code) {
+                        console.log("关闭websocke失败, code = " + JSON.stringify(code))
+                    }
+                })
+            }
+        },
+        onHide() {
+            let that = this;
+            that.istips = false;
+            that.closeWebsocket();
+        },
+        onShow() {
+            let that = this;
+            that.isclosews = false;
+            if (that.timeoutInter != '') {
+                clearInterval(that.timeoutInter)
+            }
+            that.timeGetData();
+            if (that.ws === '' && that.isws) {
+                // that.webSocketdata();
+            }
+        },
+        setGear() {
+            let that = this;
+            that.listGear = [];
+            for (let i = 1; i <= 3; i++) {
+                if (this.mode == 'normal' && i == 2) continue;
+                let data = {
+                    "id": i,
+                    "data": i + "档"
+                }
+                that.listGear.push(data);
+            }
+        },
+        fetchRealSn8() {
+            let that = this;
+            fetch.fetch({
+                url: (util.hostData.setHost ? 'https://ce2.midea.com' : 'https://ce5.midea.com') + '/remote-control/base2mcloud/getApplianceInfoById',
+                data: {applianceId: that.deviceId},
+                method: 'GET',
+                success: function (response) {
+                    if (response.code === 200) {
+                        let data = (typeof response.data) === "object" ? response.data : JSON.parse(response.data);
+                        console.log(`getApplianceInfoById, response.data = ${JSON.stringify(data)}`)
+                        if (data && data.code == 0) {
+                            that.realSn8 = data.data.sn.substring(9, 17);
+                            console.log(`getApplianceInfoById success, set realSn8 = ${that.realSn8}`)
+                        }
+                    } else {
+                        console.log(`getApplianceInfoById fail, response.code = ${response.code}`)
+                    }
+                },
+                fail: function (data, code) {
+                    console.log(`getApplianceInfoById fail, errMsg = ${data}`)
+                    console.log(`getApplianceInfoById fail, errCode = ${code}`)
+                }
+            })
+        },
+        onInit() {
+            this.fetchRealSn8();
+            let that = this;
+            api.getlanguage().then((res) => {
+                // if(res === 'ug'){
+                // 	this.language = false;
+                // }else{
+                this.language = true;
+                // }
+            })
+            // that.setGear();
+            // this.deviceHeight = this.$app.options.env.deviceHeight;
+            device.getInfo({
+                success: function (ret) {
+                    console.log(`handling success， brand = ${ret.brand}`);
+                    console.log("屏幕高度：" + ret.screenHeight);
+                    that.deviceHeight = ret.screenHeight;
+                }
+            })
+            router.clear();
+
+            // TODO ben
+            let param;
+            for (let i = 1; i <= 24; i++) {
+                let num2 = i;
+                param = {
+                    name: num2,
+                    data: num2.toString()
+                };
+                this.listtime.push(param);
+            }
+
+            // that.$on('cancel', function(e){
+            // 	that.isabout = false;
+            // })
+            // that.$on('closetips', function(e){
+            // 	that.istips = false;
+            // 	that.regetdata();
+            // })
+            // that.$on('openmenu', function(e){
+            // 	that.isabout = !that.isabout;
+            // })
+
+            let timestamp = Date.parse(new Date());
+            storage.get({
+                key: 'openidToken',
+                success: function (data) {
+                    that.isshowLoading = true;
+                    console.log('storage openidToken ' + data)
+                    if (data === '') {
+                        that.getdevicelist();
+                    } else {
+                        let obj = JSON.parse(data);
+                        if (parseInt(timestamp) > parseInt(obj.time)) {
+                            console.log('storage openidToken expire')
+                            that.getdevicelist();
+                        } else {
+                            if (obj.openid === that.openid) {
+                                console.log('storage openidToken openid same: ' + obj.openId + " " + that.openid)
+                                that.openId = obj.openid;
+                                that.accessToken = obj.accessToken;
+                                that.LanOnlineGet();
+                                that.getDeviceStatus();
+                            } else {
+                                console.log('storage openidToken openid not same: ' + obj.openId + " " + that.openid)
+                                that.getdevicelist();
+                            }
+                        }
+                    }
+                    console.log('handling success')
+                },
+                fail: function (data, code) {
+                    console.log(`handling fail, code = ${code}`)
+                }
+            })
+        },
+        onBackPress() {
+            let that = this;
+            that.closeWebsocket();
+            router.clear();
+            this.$app.exit();
+// 		IOT.send({
+// 		   action: 'jumpMainPage', 
+// 		})
+        },
+
+        isTimerOn(onHour, onMin, offHour, offMin) {
+            return onHour != 0 || onMin != 0 || offHour != 0 || offMin != 0
+        },
+        tempOrGear(p, m, t, g) {
+            if (p === 'off') return '--';
+            if (m == 'normal') {
+                return t ? t : '--';
+            } else if (m == 'cold_air') {
+                return g ? g : '--';
+            } else {
+                return '--';
+            }
+        },
+        backgroundColor(power, mode) {
+            if (power === 'on') {
+                if (mode == 'cold_air') {
+                    return '#1478FE'
+                } else {
+                    return '#F9CB3D';
+                }
+            } else {
+                return '#cccccc'
+            }
+        },
+        showPlusAndMinus(power, mode) {
+            if (power === 'on') {
+                if (mode == 'cold_air' || mode == 'efficient') {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        },
+        gearDesc(power, mode, gear) {
+            if (power === 'on') {
+                if (mode == 'cold_air' || mode == 'normal') {
+                    return gear ? gear + '挡' : '挡位';
+                } else {
+                    return '挡位';
+                }
+            } else {
+                return '挡位';
+            }
+        },
+        toggleList() {
+            this.listOpen = !this.listOpen;
+            let that = this;
+            if (this.listOpen) {
+                setTimeout(() => {
+                    let index = parseInt(that.hours) - 1;
+                    that.$element('list').scrollTo({index: index})
+                    that.selectValue(index, false);
+                }, 50);
+            }
+        },
+        checkedColor(power, mode) {
+            console.log('checkedColor ' + power + ' ' + mode);
+            if (power == 'on' && mode == 'cold_air') {
+                return '#1478FE';
+            } else {
+                return '#F9CB3D';
+            }
+        },
+        timerOnText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
+            if (power === 'on') {
+                if (timer_off_hour != 0) {
+                    return timer_off_hour + '小时关'
+                } else {
+                    return '定时';
+                }
+            } else if (power === 'off') {
+                if (timer_on_hour != 0) {
+                    return timer_on_hour + '小时开'
+                } else {
+                    return '定时';
+                }
+            }
+        },
+        timerOnStatusText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
+            if (power === 'on') {
+                if (timer_off_hour != 0) {
+                    return '将于' + timer_off_hour + '小时后关闭'
+                } else {
+                    return '';
+                }
+            } else if (power === 'off') {
+                if (timer_on_hour != 0) {
+                    return '将于' + timer_on_hour + '小时后开机'
+                } else {
+                    return '';
+                }
+            }
+        },
+        tempUp(temperature) {
+            let t = parseInt(temperature.toString());
+            if (t == 35) {
+                prompt.showToast({message: "已经是最高温度了"})
+            } else if (t >= 5 && t < 35) {
+                this.startControlDevice({
+                    temperature: t + 1
+                }, this.FBdata)
+            }
+        },
+        tempDown(temperature) {
+            let t = parseInt(temperature.toString());
+            if (t == 5) {
+                prompt.showToast({message: "已经是最低温度了"})
+            } else if (t > 5 && t <= 35) {
+                this.startControlDevice({
+                    temperature: t - 1
+                }, this.FBdata)
+            }
+        },
+        normalBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            this.startControlDevice({
+                mode: 'normal'
+            }, this.FBdata)
+        },
+        coldAirBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            this.startControlDevice({
+                mode: 'cold_air'
+            }, this.FBdata)
+        },
+        shakeBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            let s = this.shake_switch;
+            this.startControlDevice({
+                shake_switch: s == 'on' ? 'off' : 'on'
+            }, this.FBdata)
+        },
+        humidityBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            let h = this.humidification;
+            this.startControlDevice({
+                humidification: h == 'off' ? 'no_change' : 'off'
+            }, this.FBdata)
+        },
+        ecoBtn() {
+            let that = this;
+            if (that.power === "off") {
+                prompt.showToast({message: "设备关机状态，不能操作"})
+                return;
+            }
+            this.startControlDevice({
+                mode: 'efficient'
+            }, this.FBdata)
+        }
+    }
+</script>
+<style lang="less">
+    @import "./assets/index.less";
+</style>
