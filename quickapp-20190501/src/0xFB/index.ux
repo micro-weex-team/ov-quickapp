@@ -108,7 +108,7 @@
             <div class="footer-normal" @click="showTimeDialog()">
                 <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img"></image>
-                <text class="footer-normal-desc" style="color: '#000000'}};">定时</text>
+                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)}}</text>
             </div>
             <!-- <div class="footer-wind" @click="change()">
                 <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
@@ -765,8 +765,8 @@
                         params = {
                             timer_off_minute: '0',
                             timer_off_hour: offhonr.toString(),
-                            timer_on_minute: "0",
-                            timer_on_hour: '0'
+                            // timer_on_minute: "0",
+                            // timer_on_hour: '0'
                         }
                         let status = this.FBdata;
                         delete status.timer_on_minute;
@@ -781,9 +781,9 @@
                     offminute = that.minute;
                     params = {
                         timer_off_minute: 'clean',
-                        timer_off_hour: offhonr.toString(),
-                        timer_on_minute: "clean",
-                        timer_on_hour: '0'
+                        // timer_off_hour: offhonr.toString(),
+                        // timer_on_minute: "clean",
+                        // timer_on_hour: '0'
                     }
                     let status = this.FBdata;
                     delete status.timer_on_minute;
@@ -806,8 +806,8 @@
                         params = {
                             timer_on_minute: '0',
                             timer_on_hour: onhonr.toString(),
-                            timer_off_minute: "clean",
-                            timer_off_hour: '0'
+                            // timer_off_minute: "clean",
+                            // timer_off_hour: '0'
                         }
                         let status = this.FBdata;
                         delete status.timer_on_minute;
@@ -822,9 +822,9 @@
                     onminute = that.minute;
                     params = {
                         timer_on_minute: 'clean',
-                        timer_on_hour: onhonr.toString(),
-                        timer_off_minute: "clean",
-                        timer_off_hour: '0'
+                        // timer_on_hour: onhonr.toString(),
+                        // timer_off_minute: "clean",
+                        // timer_off_hour: '0'
                     }
                     let status = this.FBdata;
                     delete status.timer_on_minute;
@@ -889,6 +889,7 @@
                         that.isSwitch = false;
                         that.minute = 0;
                         that.hours = 0;
+                        that.listOpen = false;
                     } else {
                         if (that.timer_off_minute === 'clean' || that.timer_off_minute.toString() === '0') {
                             that.minute = 0;
@@ -901,6 +902,12 @@
                             that.hours = that.timer_off_hour;
                         }
                         that.isSwitch = true;
+                        that.listOpen = true;
+                        setTimeout(() => {
+                            let index = parseInt(that.hours) - 1;
+                            that.$element('list').scrollTo({index: index})
+                            that.selectValue(index, false);
+                        }, 50);
                         that.listtime.forEach(function (item, i) {
                             if (parseInt(item.name) === parseInt(that.hours)) {
                                 if ((parseInt(that.minute) / 60).toFixed(1).toString() === '0.0') {
@@ -1481,82 +1488,38 @@
          */
         wlanControl(res) {
             let $this = this;
+            let that = this;
             if (res.code && res.code === 200) {
                 let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
                 if (parseInt(bind_res_data.code) == 0) {
                     if (!parseInt(bind_res_data.devices[0].status)) {
-                        let isall = false;
-                        $this.online = 'true';
-                        $this.FBdata.gear = '--';
-                        $this.gear = '--';
-                        $this.select_gear = 0;
-                        let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
-                        if (obj.power) {
-                            $this.FBdata.power = obj.power;
-                            $this.power = obj.power;
-                        } else {
-                            isall = true;
-                        }
-                        if (obj.mode) {
-                            $this.FBdata.mode = obj.mode;
-                            $this.mode_n = obj.mode;
-                        } else {
-                            isall = true;
-                        }
-                        if (obj.swing) {
-                            $this.swing = obj.swing
-                            $this.FBdata.swing = obj.swing
-                        } else {
-                            isall = true;
-                        }
-                        if (obj.timer_on_minute.toString()) {
-                            $this.timer_on_minute = obj.timer_on_minute
-                            $this.FBdata.timer_on_minute = obj.timer_on_minute
-                        } else {
-                            isall = true;
-                        }
-                        if (obj.swing_angle) {
-                            $this.swing_angle_n = obj.swing_angle;
-                            $this.FBdata.swing_angle = obj.swing_angle;
-                        } else {
-                            $this.swing_angle_n = "unknown";
-                            $this.FBdata.swing_angle = "unknown";
-                        }
+                        $this.isRefreshing = false;
+                        $this.isshowLoading = false;
 
-                        if (parseInt(obj.timer_off_minute) > 0 || parseInt(obj.timer_off_minute) == 0) {
-                            $this.FBdata.timer_off_minute = obj.timer_off_minute
-                            $this.timer_off_minute = obj.timer_off_minute
-                        } else {
-                            isall = true;
+                        that.FBdata = JSON.parse(bind_res_data.devices[0].props);
+                        that.voice = that.FBdata.voice;
+                        that.timer_off_hour = that.FBdata.timer_off_hour;
+                        that.shake_switch = that.FBdata.shake_switch;
+                        that.version = that.FBdata.version;
+                        that.timer_on_minute = that.FBdata.timer_on_minute;
+                        that.timer_off_minute = that.FBdata.timer_off_minute;
+                        that.mode = that.FBdata.mode;
+                        that.humidification = that.FBdata.humidification;
+                        that.temperature = that.FBdata.temperature;
+                        that.lock = that.FBdata.lock;
+                        that.timer_on_hour = that.FBdata.timer_on_hour;
+                        that.online = 'true'; // 有回复，那肯定在线啦
+                        that.error_code = that.FBdata.error_code;
+                        that.power = that.FBdata.power;
+                        that.screen_close = that.FBdata.screen_close;
+                        that.cur_temperature = that.FBdata.cur_temperature;
+                        that.gear = that.FBdata.gear;
+                        if (that.online != 'true') {
+                            that.isshowclose();
                         }
-                        if (parseInt(obj.timer_off_hour) > 0 || parseInt(obj.timer_off_hour) == 0) {
-                            $this.timer_off_hour = obj.timer_off_hour
-                            $this.FBdata.timer_off_hour = obj.timer_off_hour
-                        } else {
-                            isall = true;
-                        }
-                        if (parseInt(obj.timer_on_hour) > 0 || parseInt(obj.timer_on_hour) == 0) {
-                            $this.FBdata.timer_on_hour = obj.timer_on_hour
-                            $this.timer_on_hour = obj.timer_on_hour
-                        } else {
-                            isall = true;
-                        }
-                        if (parseInt(obj.gear) > 0 || parseInt(obj.gear) == 0) {
-                            $this.FBdata.gear = obj.gear
-                            $this.gear = obj.gear;
-                            $this.select_gear = obj.gear;
-                        } else {
-                            isall = true;
-                        }
-                        if (isall) {
-                            $this.isshowLoading = true;
-                            $this.getDeviceStatus();
-                        } else {
-                            $this.isRefreshing = false;
-                            $this.isshowLoading = false;
-                            $this.timeFilter2();
-                        }
-                        $this.listDevice = obj;
+                        that.select_gear = that.gear;
+                        that.timeFilter2();
+                        that.listDevice = JSON.parse(bind_res_data.devices[0].props);
                     } else {
                         $this.isRefreshing = false;
                         $this.isshowLoading = false;
@@ -2048,6 +2011,14 @@
         },
         toggleList() {
             this.listOpen = !this.listOpen;
+            let that = this;
+            if (this.listOpen) {
+                setTimeout(() => {
+                    let index = parseInt(that.hours) - 1;
+                    that.$element('list').scrollTo({index: index})
+                    that.selectValue(index, false);
+                    }, 50);
+            }
         },
         checkedColor(power, mode) {
             console.log('checkedColor ' + power + ' ' + mode);
@@ -2055,6 +2026,21 @@
                 return '#1478FE';
             } else {
                 return '#F9CB3D';
+            }
+        },
+        timerOnText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
+            if (power === 'on') {
+                if (timer_off_hour != 0) {
+                    return timer_off_hour+'小时关'
+                } else  {
+                    return '定时';
+                }
+            } else if (power === 'off') {
+                if (timer_on_hour != 0) {
+                    return timer_off_hour+'小时开'
+                } else  {
+                    return '定时';
+                }
             }
         }
     }
