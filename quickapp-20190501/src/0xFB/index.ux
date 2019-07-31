@@ -52,12 +52,12 @@
                     开关
                 </text>
             </div>
-            <div class="footer-normal">
+            <div class="footer-normal" @click="normalBtn()">
                 <image src="{{'./assets/img/normal-' + (power === 'on'? (mode==='normal'?'highlight':'on'):'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">暖风</text>
             </div>
-            <div class="footer-normal">
+            <div class="footer-normal" @click="coldAirBtn()">
                 <image src="{{'./assets/img/cold-air-' + (power === 'on'? (mode==='cold_air'?'highlight':'on'):'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">冷风</text>
@@ -93,17 +93,17 @@
             </div>
         </div> -->
         <div class="footer-down">
-            <div class="footer-normal">
+            <div class="footer-normal" @click="shakeBtn()">
                 <image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>
             </div>
-            <div class="footer-normal">
+            <div class="footer-normal" @click="humidityBtn()">
                 <image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>
             </div>
-            <div class="footer-normal">
+            <div class="footer-normal" @click="ecoBtn()">
                 <image src="{{'./assets/img/eco-' + (power==='on' && mode ==='efficient'? 'highlight':'on') + '.png'}}"
                        class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">节能</text>
@@ -2089,6 +2089,33 @@
                     temperature: t - 1
                 }, this.FBdata)
             }
+        },
+        normalBtn() {
+            this.startControlDevice({
+                mode: 'normal'
+            }, this.FBdata)
+        },
+        coldAirBtn() {
+            this.startControlDevice({
+                mode: 'cold_air'
+            }, this.FBdata)
+        },
+        shakeBtn() {
+            let s = this.shake_switch;
+            this.startControlDevice({
+                shake_switch: s == 'on' ? 'off' : 'on'
+            }, this.FBdata)
+        },
+        humidityBtn() {
+            let h = this.humidification;
+            this.startControlDevice({
+                humidification: h == 'off' ? 'no_change' : 'off'
+            }, this.FBdata)
+        },
+        ecoBtn() {
+            this.startControlDevice({
+                mode: 'efficient'
+            }, this.FBdata)
         }
     }
 </script>
