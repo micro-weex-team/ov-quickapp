@@ -33,6 +33,9 @@
                     <text class="indoor" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
                         {{'室内温度:'+cur_temperature+'°'}}
                     </text>
+                    <text class="timer" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
+                        {{timerOnStatusText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)}}
+                    </text>
                     <div class="timeout-setting" if={{showPlusAndMinus(power,mode)}}>
                         <image src="{{ power === 'on'? './assets/img/minus-on.png':'./assets/img/minus-off.png'}}"
                                class="timeout-setting-plus"></image>
@@ -2040,6 +2043,21 @@
                     return timer_off_hour+'小时开'
                 } else  {
                     return '定时';
+                }
+            }
+        },
+        timerOnStatusText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
+            if (power === 'on') {
+                if (timer_off_hour != 0) {
+                    return '将于'+timer_off_hour+'小时后关闭'
+                } else  {
+                    return '';
+                }
+            } else if (power === 'off') {
+                if (timer_on_hour != 0) {
+                    return '将于'+timer_off_hour+'小时后开机'
+                } else  {
+                    return '';
                 }
             }
         }
