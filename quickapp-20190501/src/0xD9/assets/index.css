@@ -72,7 +72,7 @@
 .nav_time_show{
 	width: 100%;
 	/*width: 600px;*/
-	margin-top:300px;
+	margin-top:120px;
 	height: 400px;
 	/*margin-left: 300px;*/
 	flex-direction: row;
@@ -81,6 +81,7 @@
 	margin-top: 200px;
 	font-size: 144px;
 	width: 100%;
+	height: 144px;
 	text-align: center;
 	color: #FFFFFF;
 }
@@ -363,4 +364,50 @@
 	margin-top: 50px;
 	font-size: 48px;
 	color: #3191FD;
+}
+
+.midea-D9-tab-container {
+	width: 100%;
+	margin-top: 100px;
+	text-align: center;
+	flex-direction: row; 
+	justify-content: space-around;
+}
+
+.midea-D9-tabs {
+	position: relative;
+	margin: 0 auto;
+	flex-direction: row;
+	justify-content: center;
+	width: 365px;
+	height: 80px;
+	border-width: 2px;
+	border-radius: 5px;
+	border-color: #ffffff;
+}
+
+.midea-D9-tube {
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	color: #ffffff;
+	font-size: 48px;
+}
+
+.midea-D9-tube_active {
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	background-color: #ffffff;
+	color: #4682b4;
+	font-size: 48px;
+}
+
+.midea-D9-tube_active_off {
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	background-color: #ffffff;
+	color: #CCCCCC;
+	font-size: 48px;
 }

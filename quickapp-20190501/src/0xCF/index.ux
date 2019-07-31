@@ -255,7 +255,7 @@ import net from '../Common/api/networkAPI.js'
 				'color': '',
 				'flagImg': true
 			},{
-				'name':'电辅热',
+				'name':'辅热',
 				'value': 'elecHeat',
 				'data': 'on',
 				'icon':'./assets/img/elecHeat.png',
@@ -423,7 +423,7 @@ import net from '../Common/api/networkAPI.js'
 								}
 								delete status.pre_heat;
 								this.postDeviceControl(this.params,status);
-								prompt.showToast({message: '电辅热指令已发送'})
+								prompt.showToast({message: '辅热指令已发送'})
 
 							}else{
 								prompt.showToast({message: '当前模式不可设置辅热'})

@@ -4,21 +4,28 @@
 <import name="midea-head" src="../Component/MideaHead/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="滚筒洗衣机" onclose-websocket="closeWebsocket" language="{{language}}" power="{{col}}"></midea-head>
-		<!-- <div class="nav_ac" style="background-color: {{col == 'on'?Color:bgColor}};"> -->
+		<midea-head title="复式洗衣机" onclose-websocket="closeWebsocket" language="{{language}}" power="{{col}}"></midea-head>
+		<!-- <div class="nav_ac" style="background-color: {{col === 'on'?Color:bgColor}};"> -->
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
-			<list onscrollbottom="" onscroll="" class="main-nav" id="listdeviceNav" style="background-color: {{col == 'on'?Color:bgColor}};">
+			<list onscrollbottom="" onscroll="" class="main-nav" id="listdeviceNav" style="background-color: {{col === 'on'?Color:bgColor}};">
 				<list-item type="deviceNav" class="main-nav-nav">
 					<div class="nav_clock" style="justify-content:{{language?'flex-end':'flex-start'}}">
 						<image src="{{col === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" @click="downMeiju()" class="child-lock-image"></image>
 					</div>
 					<text class="child-lock-text" style="color: {{col === 'on'?'#ffffff':'#666666'}};">使用美居</text>
-					<div class="nav_time_show" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}}">
+					<div class="midea-D9-tab-container">
+						<div class="midea-D9-tabs">
+							<text class="{{firstTubeClass}}" @click="changeTube('da')">上筒</text>
+							<text class="{{lastTubeClass}}" @click="changeTube('db')">下筒</text>
+						</div>
+					</div>
+					<div class="nav_time_show" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}">
 						<text class="nav_time_data" style="color: {{col === 'on'?'#ffffff':'#666666'}};">
 							<span>{{showRemainTime()}}</span>
 						</text>
 					</div>
-					<text class="nav_time_show_label" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}">
+					<text class="nav_time_show_label" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}" 
+						style="color: {{col === 'on'?'#ffffff':'#666666'}};">
 						<span>大约需要</span>
 					</text>
 					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}}" 
@@ -48,31 +55,7 @@
 				<image class="nav_img" src="./assets/img/start2.png"></image>
 				<text class="nav_control_text">启动</text>
 			</div>
-
-			<!-- <div class="nav_listDetails" @click="pauseDevice()">
-				<image class="nav_img" src="./assets/img/off.png"></image>
-				<text class="nav_control_text">启动</text>
-			</div> -->
-
-			<!-- <div class="nav_listDetails" @click="openData('cotton')">
-                        <image class="nav_img" src="{{(col + program) === 'oncotton'?'./assets/img/cotton_on.png':'./assets/img/cotton_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'oncotton'?'#000000':'#cccccc'}};">棉麻洗</text>
-                    </div>
-					<div class="nav_listDetails" @click="openData('mixed_wash')">
-                        <image class="nav_img" src="{{(col + program) === 'onmixed_wash'?'./assets/img/max_on.png':'./assets/img/max_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'onmixed_wash'?'#000000':'#cccccc'}};">混合洗</text>
-                    </div>
-					<div class="nav_listDetails" @click="openData('fast_wash')">
-                        <image class="nav_img" src="{{(col + program) === 'onfast_wash'?'./assets/img/fast_on.png':'./assets/img/fast_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'onfast_wash'?'#000000':'#cccccc'}};">快洗</text>
-                    </div> -->
 		</div>
-		<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="nav_start_stop" if="{{running_status + col === 'starton'}}">
-			<image class="nav_start" src="./assets/img/pause.png" @click="pauseDevice"></image>
-			<text class="nav_start_text">暂停</text>
-		</div> -->
 		<div class="nav_start_stop" if="{{col === 'on' && running_status !== 'start' && running_status !== 'pause' && running_status !== 'standby'}}">
 			<image class="nav_start" src="./assets/img/stop.png" @click="stopDevice"></image>
 			<text class="nav_start_text">关机</text>
@@ -172,17 +155,29 @@ module.exports = {
 			running_status: "pause",
 			remain_time: 15
 		},
-		DBdata: ["power", "control_status", "running_status", "program", "remain_time", "error_code"],
+		DBdata: ["db_power", "db_running_status", "db_program", "db_remain_time", "db_error_code"],
+		DAdata: ["da_power", "da_running_status", "da_program", "da_remain_time", "da_error_code"],
 		list_1: [],
 		list_2: [],
 		listDevice: {},
-		time: []
+		time: [],
+		firstTubeClass: 'midea-D9-tube',
+		lastTubeClass: 'midea-D9-tube_active_off',
+		currentTube: 'db'
 	},
 	public: {
 		deviceSeries: '',
 		deviceId: '',
 		openid: ''
 	},
+	// firstClick() {
+	// 	this.firstTubeClass = 'tube_active';
+	// 	this.lastTubeClass = 'tube';
+	// },
+	// lastClick() {
+	// 	this.firstTubeClass = 'tube';
+	// 	this.lastTubeClass = 'tube_active';
+	// },
 	isshowclose() {
 		let that = this;
 		if (that.timeTips != '') {
@@ -191,9 +186,9 @@ module.exports = {
 		}
 		if (that.iswarm) {
 			that.istips = true;
-			// that.timeTips = setTimeout(() => {
-			// 	that.istips = false;
-			// }, 3000)
+			that.timeTips = setTimeout(() => {
+				that.istips = false;
+			}, 3000)
 		}
 		return false;
 	},
@@ -207,7 +202,7 @@ module.exports = {
 		} else if (this.running_status === 'delay') {
 			return '预约中';
 		} else if (this.running_status === 'end') {
-			return '';
+			return '洗衣完成';
 		} else {
 			return '';
 		}
@@ -269,23 +264,74 @@ module.exports = {
 			}
 		});
 	},
-	pauseDevice() {
-		let params = {
-			control_status: 'pause'
+	// 上下筒切换
+	changeTube(tube) {
+		if (!tube) {
+			return;
 		}
+
+		if (this.col === "off") {
+			return;
+		}
+
+		if (tube === this.currentTube) {
+			return;
+		}
+
+		let params;
+		if ('da' === tube) {
+			params = {
+				bucket: 'da',
+				da_position: 1
+			}
+		} else {
+			params = {
+				bucket: 'db',
+				db_position: 1
+			}
+		}
+		this.postDeviceControl(params, {});
+	},
+	pauseDevice() {
+		let that = this;
+		let params;
 		let status = this.dataLists;
-		// status.control_status = 'pause';
-		status.running_status = 'pause';
-		delete status.control_status;
+		if ('da' === that.currentTube) {
+			params = {
+				bucket: 'da',
+				da_control_status: 'pause'
+			}
+			status.da_running_status = 'pause';
+			delete status.da_control_status;
+		} else {
+			params = {
+				bucket: 'db',
+				db_control_status: 'pause'
+			}
+			status.db_running_status = 'pause';
+			delete status.db_control_status;
+		}
 		this.postDeviceControl(params, status);
 	},
 	startDevice() {
-		let params = {
-			control_status: 'start'
-		}
+		let that = this;
+		let params;
 		let status = this.dataLists;
-		status.running_status = 'start';
-		delete status.control_status;
+		if ('da' === that.currentTube) {
+			params = {
+				bucket: 'da',
+				da_control_status: 'start'
+			}
+			status.da_running_status = 'start';
+			delete status.da_control_status;
+		} else {
+			params = {
+				bucket: 'db',
+				db_control_status: 'start'
+			}
+			status.db_running_status = 'start';
+			delete status.db_control_status;
+		}
 		this.postDeviceControl(params, status);
 	},
 	stopDevice() {
@@ -293,12 +339,23 @@ module.exports = {
 		let that = this;
 		that.isloading = true;
 		let params;
-		params = {
-			power: "off"
-		}
 		let status = that.dataLists;
-		status.power = 'off';
-		delete status.running_status;
+
+		if ('da' === that.currentTube) {
+			params = {
+				bucket: 'da',
+				da_power: "off"
+			}
+			status.da_power = 'off';
+			delete status.da_running_status;
+		} else {
+			params = {
+				bucket: 'db',
+				db_power: "off"
+			}
+			status.db_power = 'off';
+			delete status.db_running_status;
+		}
 		that.postDeviceControl(params, status);
 	},
 	scrollbottom(e) {
@@ -317,11 +374,11 @@ module.exports = {
 				that.isloading = true;
 				that.iswarm = true;
 				if (data === '') {
-					that.getdevicelist();
+					that.authorize();
 				} else {
 					let obj = JSON.parse(data);
 					if (parseInt(timestamp) > parseInt(obj.time)) {
-						that.getdevicelist();
+						that.authorize();
 					} else {
 						if (obj.openid === that.openid) {
 							that.openId = obj.openid;
@@ -331,7 +388,7 @@ module.exports = {
 							}
 							that.getDeviceStatus(that.openId);
 						} else {
-							that.getdevicelist();
+							that.authorize();
 						}
 					}
 				}
@@ -351,11 +408,11 @@ module.exports = {
 				key: 'openidToken',
 				success: function (data) {
 					if (data === '') {
-						that.getdevicelist();
+						that.authorize();
 					} else {
 						let obj = JSON.parse(data);
 						if (parseInt(timestamp) > parseInt(obj.time)) {
-							that.getdevicelist();
+							that.authorize();
 						} else {
 							if (obj.openid === that.openid) {
 								that.openId = obj.openid;
@@ -365,7 +422,7 @@ module.exports = {
 								}
 								that.getDeviceStatus(that.openId);
 							} else {
-								that.getdevicelist();
+								that.authorize();
 							}
 						}
 					}
@@ -375,7 +432,7 @@ module.exports = {
 					console.log(`handling fail, code = ${code}`)
 				}
 			})
-		}, 3000)
+		}, 5000)
 	},
 	openData1() {
 		let that = this;
@@ -385,25 +442,47 @@ module.exports = {
 		}
 		let params;
 		let status = that.dataLists;
-		console.log("为什么跑到这里")
+		console.log("为什么跑到这里");
 		if (that.col === "on") {
-			params = {
-				power: "off"
+			if ('da' === that.currentTube) {
+				params = {
+					bucket: 'da',
+					da_power: "off"
+				}
+				delete status.da_running_status;
+				delete status.da_power;
+			} else {
+				params = {
+					bucket: 'db',
+					db_power: "off"
+				}
+				delete status.db_running_status;
+				delete status.db_power;
 			}
-			// status.power = 'off';
 		} else {
-			params = {
-				power: "on"
+			if ('da' === that.currentTube) {
+				params = {
+					bucket: 'da',
+					da_power: "on"
+				}
+				delete status.da_control_status
+				delete status.da_running_status;
+				delete status.da_power;
+			} else {
+				params = {
+					bucket: 'db',
+					db_power: "on"
+				}
+				delete status.db_control_status
+				delete status.db_running_status;
+				delete status.db_power;
 			}
-			delete status.control_status
 		}
 		that.isloading = true;
-		delete status.running_status;
-		delete status.power;
 		that.postDeviceControl(params, status);
 	},
 	//获取第三方登录信息
-	getdevicelist() {
+	authorize() {
 		let that = this;
 		// that.isloading = true;
 		account.authorize({
@@ -479,41 +558,39 @@ module.exports = {
 	 * 局域网获取
 	 */
 	getLanData(res) {
+		// console.log("getLanData res: " + JSON.stringify(res));
 		let that = this;
-		let obj = (typeof res) == 'object' ? res : JSON.parse(res);
-		if (parseInt(obj.code) == 0) {
-			let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
-			if (data.running_status) {
-				that.running_status = data.running_status;
-			} else {
-				that.running_status = 'fault';
-			}
-			console.log("getLanData that.running_status：" + that.running_status);
-			that.col = data.power;
-			that.online = "true";
-			that.remain_time = data.remain_time;
-			that.program = data.program;
-			that.dataLists = data;
-			that.listDevice = data;
-			that.dataLists.online = "true";
-			that.listDevice.online = "true";
-			// if (that.timeoutInter != '') {
-			// 	clearInterval(that.timeoutInter);
-			// }
-
-			if (data.error_code && data.error_code !== '0' && data.error_code !== 'ff' && data.error_code !== 'FF') {
-				that.running_status = 'fault'
-			}
-
-			if (data.running_status === 'start' || data.running_status === 'pause') {
-				that.isstop = false;
-			} else if (data.running_status === 'fault') {
-			}
-			console.log("开关：" + that.col)
+		// prompt.showToast({
+		// 	message: '局域网'
+		// })
+		console.log("getLanData: res: " + res);
+		let obj = (typeof res) === 'object' ? res : JSON.parse(res);
+		if (parseInt(obj.code) === 0) {
+			let data = (typeof obj.message) === 'object' ? obj.message : JSON.parse(obj.message);
+			that.handleData(data);
 		} else {
 			that.isagain = false;
 			that.lanOnline = "false";
 			that.getDeviceStatus(that.openId);
+		}
+	},
+	// 判断设备是否开机了
+	isPowerOn(res) {
+		if (res.code !== 200) {
+			return null;
+		}
+
+		let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
+		if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+			let obj = data.devices[0].properties;
+			if ('da' === obj.bucket && 'on' === obj.da_power) {
+				return true;
+			} else if ('db' === obj.bucket && 'on' === obj.db_power) {
+				return true;
+			}
+			return false;
+		} else {
+			return null;
 		}
 	},
 	/**
@@ -528,36 +605,15 @@ module.exports = {
 			let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
 			if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
 				let obj = data.devices[0].properties;
+				// 只更新当前筒的状态到页面
 				that.retryCount = 0;
 				that.firstError = false;
-				if (obj.running_status) {
-					that.running_status = obj.running_status;
-				} else {
-					that.running_status = 'fault';
-				}
-				console.log("getdataLan that.running_status：" + that.running_status);
-				that.col = obj.power;
-				that.online = obj.online;
-				that.remain_time = obj.remain_time;
-				that.program = obj.program;
-				that.dataLists = obj;
-				that.listDevice = obj;
-
-				if (obj.error_code && obj.error_code !== '0' && obj.error_code !== 'ff' && obj.error_code !== 'FF') {
-					that.running_status = 'fault'
-				}
-
-				if (that.online != 'true') {
-					that.isshowclose()
-				}
-				if (obj.running_status === 'start' || obj.running_status === 'pause') {
-					that.isstop = false;
-				} else if (obj.running_status === 'fault') {
-				}
-
+				that.handleData(obj);
 			} else {
 				that.initData();
 				that.isstop = true;
+				that.isloading = false;
+				that.isRefreshing = false;
 				if (data.msg === '') {
 					let str1 = '';
 					if (data.devices[0].status) {
@@ -568,8 +624,8 @@ module.exports = {
 							return false;
 						}
 						if (str1.toString() === '-100' && online === 'false' && that.isOnLine) {
-							// 离线，弹出提示框，退出插件页
 							if (that.firstError || that.retryCount >= 3) {
+								// 离线，弹出提示框，退出插件页
 								that.isOnLine = false;
 								if (that.timeoutInter != '') {
 									clearInterval(that.timeoutInter);
@@ -606,36 +662,112 @@ module.exports = {
 			}
 		} else {
 			that.initData();
+			that.isloading = false;
+			that.isRefreshing = false;
 			that.isstop = true;
 			that.netWorkGet('获取设备状态失败,请稍后重试')
 		}
 	},
-	//查询状态
-	getDeviceStatus(opid) {
+	// 处理设备状态数据
+	handleData(obj) {
+		let that = this;
+		var position = 0;
+		if ('da' === obj.bucket) {
+			// 上筒
+			if (1 === obj.da_position || '1' === obj.da_position) {
+				if (obj.da_running_status) {
+					that.running_status = obj.da_running_status;
+				} else {
+					that.running_status = 'fault';
+				}
+				that.col = obj.da_power;
+				if (obj.online) {
+					that.online = obj.online;
+				}
+				that.remain_time = obj.da_remain_time;
+				that.program = obj.da_program;
+				that.firstTubeClass = 'on' === that.col ? 'midea-D9-tube_active' : 'midea-D9-tube_active_off';
+				that.lastTubeClass = 'midea-D9-tube';
+				that.currentTube = 'da';
+				position = 1;
+				if (obj.da_error_code && obj.da_error_code !== '0' && obj.da_error_code !== 'ff' && obj.da_error_code !== 'FF') {
+					that.running_status = 'fault';
+				}
+			}
+		} else {
+			// 下筒
+			if (1 === obj.db_position || '1' === obj.db_position) {
+				if (obj.db_running_status) {
+					that.running_status = obj.db_running_status;
+				} else {
+					that.running_status = 'fault';
+				}
+				that.col = obj.db_power;
+				if (obj.online) {
+					that.online = obj.online;
+				}
+				that.remain_time = obj.db_remain_time;
+				that.program = obj.db_program;
+				that.firstTubeClass = 'midea-D9-tube';
+				that.lastTubeClass = 'on' === that.col ? 'midea-D9-tube_active' : 'midea-D9-tube_active_off';
+				that.currentTube = 'db';
+				position = 1;
+				if (obj.db_error_code && obj.db_error_code !== '0' && obj.db_error_code !== 'ff' && obj.db_error_code !== 'FF') {
+					that.running_status = 'fault';
+				}
+			}
+		}
+
+		if (1 === position) {
+			that.isloading = false;
+			that.isRefreshing = false;
+			that.dataLists = obj;
+			that.listDevice = obj;
+			if (that.online != 'true') {
+				that.isshowclose()
+			}
+			if (that.running_status === 'start' || that.running_status === 'pause') {
+				that.isstop = false;
+				// if (that.running_status === 'start') {
+				// 	that.timeGetData();
+				// }
+			} else if (that.running_status === 'fault') {
+				// prompt.showToast({
+				// 	message: '设备运行出错，请检查洗衣机是否故障'
+				// })
+			}
+		}
+	},
+	getTubeInfo(opid, deviceType) {
 		let that = this;
 		let params = {
 			openId: opid,
 			devices: [{
 				deviceId: that.deviceId,
-				properties: that.DBdata
+				properties: deviceType === 'da' ? that.DAdata : that.DBdata,
+				orders: {query_type: deviceType}
 			}]
 		}
-		this.retryCount++;
 		that.istips = false;
-		if (net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain) {
+		if (net.$Lanonline.deviceid === that.deviceId && net.$Lanonline.isonLan === 'true' && that.isagain) {
 			that.lanOnline = 'true';
+			console.log('getTubeInfo: ' + deviceType + ' 局域网');
 		} else {
 			that.lanOnline = 'false';
+			console.log('getTubeInfo: ' + deviceType + ' 广域网');
 		}
 		// api.postDeviceStatusQuery(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
 		api.postDeviceStatusQuery(params, that.accessToken, 'false', that.deviceId).then((res) => {
 			that.isfirst = true;
-			that.isloading = false;
-			that.isRefreshing = false;
+			// that.isloading = false;
+			// that.isRefreshing = false;
 			if (res.lanonline) {
 				that.getdataLan(res);
 			} else {
 				that.getLanData(res);
+			}
+			if (deviceType === 'db') {
+				that.getTubeInfo(opid, 'da');
 			}
 		}).catch((error) => {
 			if (error.online) {
@@ -652,55 +784,24 @@ module.exports = {
 			}
 		})
 	},
+	//查询状态
+	getDeviceStatus(opid) {
+		this.retryCount++;
+		this.getTubeInfo(opid, 'db');
+	},
 	/**
 	 * 局域网控制
 	 */
 	lanControl(res, obj1, status) {
 		let that = this;
-		let obj = (typeof res) == 'object' ? res : JSON.parse(res);
+		let obj = (typeof res) === 'object' ? res : JSON.parse(res);
 		console.log("局域网：" + JSON.stringify(res))
-		if (parseInt(obj.code) == 0) {
-			setTimeout(function () {
-				that.getDeviceStatus(that.openId); 
-			}, 1000)
-			// 				that.isRefreshing = false;
-			// 				that.isloading = false;
-			// 				that.isstop = true;
-			// 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
-			// 				that.running_status = data.running_status;
-			// 				that.col = data.power;
-			// 				that.online = "true";
-			// 				that.remain_time = data.remain_time;
-			// 				that.program = data.program;
-			// 				that.dataLists = data;
-			// 				that.listDevice = data;
-			// 				that.dataLists.online = "true";
-			// 				that.listDevice.online = "true";
-			// 				if(that.timeoutInter != ''){
-			// 					clearInterval(that.timeoutInter);
-			// 				}
-			// 				if(data.running_status === 'start' || data.running_status === 'pause'){
-			// 					that.isstop = false;
-			// 				}else if(data.running_status === 'fault'){
-			// 					prompt.showToast({
-			// 						message:'设备运行出错，请检查洗衣机是否故障'
-			// 					})
-			// 				}
-			// 				console.log("开关："+that.col)
-			// 				that.CAdata.storage_power = data.storage_power;
-			// 				that.storage_power = data.storage_power;
-			// 				that.freezing_power = data.freezing_power;
-			// 				that.CAdata.freezing_power = data.freezing_power;
-			// 				that.storage_temperature = data.storage_temperature;
-			// 				that.CAdata.storage_temperature = data.storage_temperature;
-			// 				that.freezing_temperature = data.freezing_temperature;
-			// 				that.CAdata.freezing_temperature = data.freezing_temperature;
-			// 				if(that.CAdata.storage_power === 'on'){
-			// 					that.isselect = true;
-			// 				}else{
-			// 					that.isselect = false;
-			// 				}
+		if (parseInt(obj.code) === 0) {
+			// setTimeout(function () {
+			// 	that.getDeviceStatus(that.openId);
+			// }, 1000)
 		} else {
+			console.log('getLanData: set isagain = false 3');
 			that.isagain = false;
 			that.lanOnline = 'false';
 			that.postDeviceControl(obj1, status);
@@ -713,11 +814,11 @@ module.exports = {
 		let that = this;
 		if (res.code === 200) {
 			let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
-			if (parseInt(data.code) == 0) {
+			if (parseInt(data.code) === 0) {
 				if (!parseInt(data.devices[0].status)) {
-					setTimeout(function () {
-						that.getDeviceStatus(that.openId);
-					}, 1000)
+					// setTimeout(function () {
+					// 	that.getDeviceStatus(that.openId);
+					// }, 1000)
 				} else {
 					that.initData();
 					that.isRefreshing = false;
@@ -731,10 +832,8 @@ module.exports = {
 								that.isshowclose();
 								return false;
 							}
-							if(str1.toString() == '-1'){
-								that.isagain = false
-							}
-							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+								// that.netWorkGet('设备离线')
 								that.isshowclose();
 							} else {
 								that.netWorkGet(api.getStatus("post", str1, '操作设备失败'))
@@ -780,13 +879,13 @@ module.exports = {
 		that.isloading = true;
 
 		console.log("$Lanonline:" + JSON.stringify(net.$Lanonline) + "::::::::isagain:" + that.isagain)
-		// if (net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain) {
-		// 	that.lanOnline = 'true';
-		// } else {
-		// 	that.lanOnline = 'false';
-		// }
+		if (net.$Lanonline.deviceid === that.deviceId && net.$Lanonline.isonLan === 'true' && that.isagain) {
+			that.lanOnline = 'true';
+		} else {
+			that.lanOnline = 'false';
+		}
 		// api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
-		api.postDeviceControl(params, that.accessToken, "false", that.deviceId).then((res) => {
+		api.postDeviceControl(params, that.accessToken, 'false', that.deviceId).then((res) => {
 			that.isagain = true;
 			if (res.lanonline) {
 				that.wlanControl(res);
@@ -809,22 +908,6 @@ module.exports = {
 	},
 	initData() {
 		this.isfirst = true;
-		// 			this.dataLists = {
-		// 				power: "off",
-		// 				program: "cotton",
-		// 				control_status: "pause",
-		// 				running_status: "pause",
-		// 				remain_time: 15
-		// 			}
-		// 			this.program = "cotton";
-		// 			this.control_status = "pause";
-		// 			this.running_status = "pause";
-		// 			this.remain_time = 0;
-		// 			this.col = "off";
-		// 			this.online = "false";
-		// 			if(this.timeoutInter != ''){
-		// 				clearInterval(this.timeoutInter);
-		// 			}
 	},
 	netWorkGet(str) {
 		if (this.iswarm) {
@@ -849,10 +932,14 @@ module.exports = {
 		let timestamp = Date.parse(new Date());
 		return parseInt(timestamp) + 3600000;
 	},
+	onMenuPress() {
+		this.isabout = !this.isabout;
+	},
 	/**
 	 * 局域网初始化
 	 */
 	LanOnlineGet() {
+		console.log("LanOnlineGet 局域网初始化")
 		let that = this;
 		net.deviceInit(that.accessToken, that.deviceId).then((res) => {
 			that.isLanInit = true;
@@ -889,6 +976,9 @@ module.exports = {
 		}
 	},
 	onShow() {
+		console.log('deviceSeries: ' + this.deviceSeries);
+		console.log('deviceId: ' + this.deviceId);
+		console.log('openid: ' + this.openid);
 		let that = this;
 		that.isclosews = false;
 		if (that.timeoutInter != '') {
@@ -899,7 +989,6 @@ module.exports = {
 		}
 	},
 	onInit() {
-		console.log('onInit 0xDB')
 		api.getlanguage().then((res) => {
 			if (res === 'ug') {
 				this.language = false;
@@ -911,7 +1000,7 @@ module.exports = {
 		router.clear();
 		// prompt.showToast({message:"deviceid" + this.deviceId + ":::::::openid" + this.openid})
 		this.$page.setTitleBar({
-			text: '滚筒洗衣机'
+			text: '复式洗衣机'
 		})
 		that.$on('cancel', function (e) {
 			that.isabout = false;
@@ -941,11 +1030,11 @@ module.exports = {
 			key: 'openidToken',
 			success: function (data) {
 				if (data === '') {
-					that.getdevicelist();
+					that.authorize();
 				} else {
 					let obj = JSON.parse(data);
 					if (parseInt(timestamp) > parseInt(obj.time)) {
-						that.getdevicelist();
+						that.authorize();
 					} else {
 						if (obj.openid === that.openid) {
 							that.openId = obj.openid;
@@ -953,7 +1042,7 @@ module.exports = {
 							that.LanOnlineGet();
 							that.getDeviceStatus(that.openId);
 						} else {
-							that.getdevicelist();
+							that.authorize();
 						}
 					}
 				}
@@ -963,7 +1052,6 @@ module.exports = {
 				console.log(`handling fail, code = ${code}`)
 			}
 		})
-		// this.getdevicelist();
 	},
 	onCreate() {
 		this.firstError = true;
