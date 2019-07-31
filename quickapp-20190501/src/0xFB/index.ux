@@ -148,6 +148,7 @@
                 <div class="timeselect_list_title">
                     <text class="timeselect_list_title_text_1" if="{{language}}">定时{{power === 'off'?'开机':'关机'}}</text>
                     <qui-switch value="{{isSwitch?'1':'0'}}" onqui-Switch-Change="changTimer()"
+                                checked-color="{{checkedColor(power, mode)}}"
                                 class="{{language?'timeselect_list_title_text_switch':'timeselect_list_title_text_switch_l'}}"></qui-switch>
                     <text class="timeselect_list_title_l_text" if="{{!language}}">定时{{power === 'off'?'开机':'关机'}}</text>
                 </div>
@@ -173,7 +174,8 @@
                                            for="{{listtime}}"
                                            @click="selectValue($idx,false)">
                                     <text class="midea-select-item-text"
-                                          style="color:{{isselectTime === $idx?'#3191FD':'#cccccc'}}">{{$item.name}}
+                                          style="color:{{isselectTime === $idx? checkedColor(power, mode):'#cccccc'}}">
+                                        {{$item.name}}
                                     </text>
                                     <!--<image class="midea-select-item-img" show="{{isselectTime === $idx?true:false}}" src="./assets/img/ic_select.png"></image>-->
                                 </list-item>
@@ -184,7 +186,9 @@
             </div>
             <div class="timeselect_btnList{{listOpen?'_open':''}}">
                 <text class="timeselect_btnList_btn1" @click="closeDialog_">取消</text>
-                <text class="timeselect_btnList_btn2" @click="doingTimeSet()">确定</text>
+                <text class="timeselect_btnList_btn2" style="color:{{checkedColor(power, mode)}}"
+                      @click="doingTimeSet()">确定
+                </text>
             </div>
         </div>
         <midea-dialog if="{{isGeardialog}}" list="{{listGear}}" language="{{language}}" data="{{select_gear}}"
@@ -2044,6 +2048,14 @@
         },
         toggleList() {
             this.listOpen = !this.listOpen;
+        },
+        checkedColor(power, mode) {
+            console.log('checkedColor ' + power + ' ' + mode);
+            if (power == 'on' && mode == 'cold_air') {
+                return '#1478FE';
+            } else {
+                return '#F9CB3D';
+            }
         }
     }
 </script>
