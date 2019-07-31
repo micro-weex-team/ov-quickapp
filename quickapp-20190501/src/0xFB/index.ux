@@ -38,9 +38,9 @@
                     </text>
                     <div class="timeout-setting" if={{showPlusAndMinus(power,mode)}}>
                         <image src="{{ power === 'on'? './assets/img/minus-on.png':'./assets/img/minus-off.png'}}"
-                               class="timeout-setting-plus"></image>
+                               class="timeout-setting-plus" onclick="tempDown(temperature)"></image>
                         <image src="{{ power === 'on'? './assets/img/plus-on.png':'./assets/img/plus-off.png'}}"
-                               class="timeout-setting-reduce"></image>
+                               class="timeout-setting-reduce" onclick="tempUp(temperature)"></image>
                     </div>
                 </list-item>
             </list>
@@ -111,7 +111,9 @@
             <div class="footer-normal" @click="showTimeDialog()">
                 <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (mode==='normal'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img"></image>
-                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)}}</text>
+                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
+                    timer_on_minute, timer_off_hour, timer_off_minute)}}
+                </text>
             </div>
             <!-- <div class="footer-wind" @click="change()">
                 <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
@@ -2027,7 +2029,7 @@
                     let index = parseInt(that.hours) - 1;
                     that.$element('list').scrollTo({index: index})
                     that.selectValue(index, false);
-                    }, 50);
+                }, 50);
             }
         },
         checkedColor(power, mode) {
@@ -2041,14 +2043,14 @@
         timerOnText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
             if (power === 'on') {
                 if (timer_off_hour != 0) {
-                    return timer_off_hour+'小时关'
-                } else  {
+                    return timer_off_hour + '小时关'
+                } else {
                     return '定时';
                 }
             } else if (power === 'off') {
                 if (timer_on_hour != 0) {
-                    return timer_on_hour+'小时开'
-                } else  {
+                    return timer_on_hour + '小时开'
+                } else {
                     return '定时';
                 }
             }
@@ -2056,16 +2058,36 @@
         timerOnStatusText(power, timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute) {
             if (power === 'on') {
                 if (timer_off_hour != 0) {
-                    return '将于'+timer_off_hour+'小时后关闭'
-                } else  {
+                    return '将于' + timer_off_hour + '小时后关闭'
+                } else {
                     return '';
                 }
             } else if (power === 'off') {
                 if (timer_on_hour != 0) {
-                    return '将于'+timer_on_hour+'小时后开机'
-                } else  {
+                    return '将于' + timer_on_hour + '小时后开机'
+                } else {
                     return '';
                 }
+            }
+        },
+        tempUp(temperature) {
+            let t = parseInt(temperature.toString());
+            if (t == 35) {
+                prompt.showToast({message: "已经是最高温度了"})
+            } else if (t >= 5 && t < 35) {
+                this.startControlDevice({
+                    temperature: t + 1
+                }, this.FBdata)
+            }
+        },
+        tempDown(temperature) {
+            let t = parseInt(temperature.toString());
+            if (t == 5) {
+                prompt.showToast({message: "已经是最低温度了"})
+            } else if (t > 5 && t <= 35) {
+                this.startControlDevice({
+                    temperature: t - 1
+                }, this.FBdata)
             }
         }
     }
