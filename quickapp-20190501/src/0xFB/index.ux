@@ -69,20 +69,6 @@
                     {{gearDesc(power, mode, gear)}}
                 </text>
             </div>
-            <!-- <div class="footer-wind" @click="change()">
-                <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
-                <text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
-            </div>
-            <div class="footer-shake" @click="showDialog_()">
-                <image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>
-                <text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
-            </div>
-            <div class="footer-timeout" @click="showTimeDialog()">
-                <div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">
-                    <text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
-                </div>
-                <text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
-            </div> -->
         </div>
         <!-- <div class="footer-down">
             <div class="footer-gear" @click="showGearDia()">
@@ -892,14 +878,6 @@
                 }
             })
         },
-        selectSingData(type, val) {
-            if (type === 'swing_angle') {
-                this.swing_angle = val;
-                this.swing_angle_n = val;
-            } else {
-                this.swing_direction = val;
-            }
-        },
         closeDialog() {
             this.animateClass = "animate_D";
             let that = this;
@@ -1015,39 +993,6 @@
         closeDialog_() {
             this.isshowswingDialog = false;
             this.isshowtimedialog = false;
-        },
-        showDialog_() {
-            let that = this;
-            let control_params = {};
-            if (this.power === 'on' && this.online === "true") {
-                if (this.swing != 'on') {
-                    control_params = {
-                        "swing": 'on',
-                        "swing_angle": "90",
-// 					'timer_on_minute': that.timer_on_minute,
-// 					'timer_on_hour': that.timer_on_hour,
-                    }
-                } else {
-                    control_params = {
-                        "swing": 'off',
-                        "swing_angle": "90",
-// 					'timer_on_minute': that.timer_on_minute,
-// 					'timer_on_hour': that.timer_on_hour,
-                    }
-                }
-                let status = this.FBdata;
-                delete status.swing;
-                delete status.swing_angle;
-                this.startControlDevice(control_params, status);
-                // this.isshowswingDialog = true;
-// 			this.isshowswingDialog = true;
-// 			this.scolltoswing_angle(this.swing_angle, that.swing_angle, 'list')
-            } else if (this.online === "false") {
-                this.isshowclose();
-                // prompt.showToast({message:"设备离线状态不能操作"})
-            } else if (this.power === "off") {
-                prompt.showToast({message: "设备关机状态,不能操作"})
-            }
         },
         scolltoswing_angle(obj, str, id) {
             let that = this;
@@ -1175,29 +1120,6 @@
                 }
             })
             return data;
-        },
-        changSwing(e) {
-            if (e.checked) {
-                this.swing = 'on'
-                this.swing = 'on'
-            } else {
-                this.swing = 'off'
-                this.swing = 'off'
-            }
-            this.swing_angle = "90";
-            this.swing_angle_n = "90";
-        },
-        selectswing_direction() {
-            if (this.isswing) {
-                this.scolltoswing_angle(this.swing_direction, this.swing_direction, 'list_');
-            }
-            this.isswing = false;
-        },
-        selectswing_angle() {
-            if (!this.isswing) {
-                this.scolltoswing_angle(this.swing_angle, this.swing_angle_n, 'list')
-            }
-            this.isswing = true;
         },
         SwingChangeSure() {
             let control_params = {
