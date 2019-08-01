@@ -437,7 +437,7 @@
             if (that.power === 'on' && that.online === "true") {
                 if (that.mode === 'normal' || that.mode === 'cold_air') {
                     that.isGeardialog = true;
-                    that.select_gear = that.gear;
+                    that.select_gear = parseInt(that.gear.toString());
                 }
             } else if (that.online === "false") {
                 that.isshowclose();
@@ -1345,7 +1345,7 @@
                 that.temperature = that.FBdata.temperature;
                 that.lock = that.FBdata.lock;
                 that.timer_on_hour = that.FBdata.timer_on_hour;
-                that.online = true;
+                that.online = 'true';
                 that.error_code = that.FBdata.error_code;
                 that.power = that.FBdata.power;
                 that.screen_close = that.FBdata.screen_close;
@@ -1483,41 +1483,39 @@
          */
         lanControl(res, obj1, status) {
             let $this = this;
+            let that = this;
             let obj = (typeof res) == 'object' ? res : JSON.parse(res);
-            console.log("局域网：" + JSON.stringify(res))
+            console.log("lanControl " + JSON.stringify(obj))
             if (parseInt(obj.code) == 0) {
                 $this.isRefreshing = false;
                 $this.isshowLoading = false;
 
-                $this.online = 'true';
-                $this.FBdata.gear = '--';
-                $this.gear = '--';
-                // $this.select_gear = 0;
-                let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
-
-                $this.FBdata.power = data.power;
-                $this.power = data.power;
-                $this.FBdata.mode = data.mode;
-                $this.mode_n = data.mode;
-                $this.swing = data.swing
-                $this.FBdata.swing = data.swing
-                $this.timer_on_minute = data.timer_on_minute
-                $this.FBdata.timer_on_minute = data.timer_on_minute;
-                $this.swing_angle_n = data.swing_angle;
-                $this.FBdata.swing_angle = data.swing_angle;
-                $this.FBdata.timer_off_minute = data.timer_off_minute
-                $this.timer_off_minute = data.timer_off_minute;
-                $this.timer_off_hour = data.timer_off_hour
-                $this.FBdata.timer_off_hour = data.timer_off_hour;
-                $this.FBdata.timer_on_hour = data.timer_on_hour
-                $this.timer_on_hour = data.timer_on_hour
-                $this.FBdata.gear = data.gear
-                $this.gear = data.gear;
-                // $this.select_gear = data.gear;
-                $this.listDevice = data;
-                $this.listDevice.online = "true";
-                $this.FBdata.online = "true";
-                $this.timeFilter2();
+                that.FBdata = JSON.parse(obj.message);
+                console.log("lanControl " + JSON.stringify(that.FBdata));
+                that.voice = that.FBdata.voice;
+                that.timer_off_hour = that.FBdata.timer_off_hour;
+                that.shake_switch = that.FBdata.shake_switch;
+                that.version = that.FBdata.version;
+                that.timer_on_minute = that.FBdata.timer_on_minute;
+                that.timer_off_minute = that.FBdata.timer_off_minute;
+                that.mode = that.FBdata.mode;
+                console.log("lanControl mode: " + that.mode);
+                that.humidification = that.FBdata.humidification;
+                that.temperature = that.FBdata.temperature;
+                that.lock = that.FBdata.lock;
+                that.timer_on_hour = that.FBdata.timer_on_hour;
+                that.online = 'true';
+                that.error_code = that.FBdata.error_code;
+                that.power = that.FBdata.power;
+                that.screen_close = that.FBdata.screen_close;
+                that.cur_temperature = that.FBdata.cur_temperature;
+                that.gear = that.FBdata.gear;
+                if (that.online != 'true') {
+                    that.isshowclose();
+                }
+                // that.select_gear = that.gear;
+                that.timeFilter2();
+                that.listDevice = JSON.parse(obj.message);
             } else {
                 $this.isagain = false;
                 $this.lanOnline = 'false';
@@ -1778,64 +1776,65 @@
 // 												})
                 }
                 ws.onmessage = function (res) {
-                    let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-                    if (obj.status.online) {
-                        that.online = obj.status.online;
-                        that.FBdata.online = obj.status.online;
-                    } else {
-                        that.FBdata.online = 'true';
-                        that.online = 'true';
-                    }
-                    if (obj.status.power) {
-                        that.FBdata.power = obj.status.power;
-                        that.power = obj.status.power;
-                    }
-                    if (obj.status.mode) {
-                        that.FBdata.mode = obj.status.mode;
-                        that.mode_n = obj.status.mode;
-                    }
-                    if (obj.status.swing) {
-                        that.swing = obj.status.swing
-                        that.FBdata.swing = obj.status.swing
-                    }
+                    console.log('ws.onmessage ' + JSON.stringify(res));
+                    // let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                    // if (obj.status.online) {
+                    //     that.online = obj.status.online;
+                    //     that.FBdata.online = obj.status.online;
+                    // } else {
+                    //     that.FBdata.online = 'true';
+                    //     that.online = 'true';
+                    // }
+                    // if (obj.status.power) {
+                    //     that.FBdata.power = obj.status.power;
+                    //     that.power = obj.status.power;
+                    // }
+                    // if (obj.status.mode) {
+                    //     that.FBdata.mode = obj.status.mode;
+                    //     that.mode_n = obj.status.mode;
+                    // }
+                    // if (obj.status.swing) {
+                    //     that.swing = obj.status.swing
+                    //     that.FBdata.swing = obj.status.swing
+                    // }
 
-                    if (parseInt(obj.status.timer_on_minute) > -1) {
-                        that.timer_off_minute = obj.status.timer_on_minute
-                        that.FBdata.timer_on_minute = obj.status.timer_on_minute
-                    } else {
-                        that.timer_off_minute = '0';
-                        that.FBdata.timer_on_minute = '0'
-                    }
-                    if (obj.status.swing_angle) {
-                        that.swing_angle_n = obj.status.swing_angle;
-                        that.FBdata.swing_angle = obj.status.swing_angle;
-                    }
-                    if (parseInt(obj.status.timer_off_minute) > -1) {
-                        that.FBdata.timer_off_minute = obj.status.timer_off_minute
-                        that.timer_off_minute = obj.status.timer_off_minute
-                    } else {
-                        that.timer_off_minute = '0';
-                        that.FBdata.timer_off_minute = '0'
-                    }
-                    if (parseInt(obj.status.timer_off_hour) > -1) {
-                        that.timer_off_hour = obj.status.timer_off_hour
-                        that.FBdata.timer_off_hour = obj.status.timer_off_hour
-                    } else {
-                        that.timer_off_hour = '0';
-                        that.FBdata.timer_off_hour = '0'
-                    }
-                    if (parseInt(obj.status.timer_on_hour) > -1) {
-                        that.FBdata.timer_on_hour = obj.status.timer_on_hour
-                        that.timer_on_hour = obj.status.timer_on_hour
-                    } else {
-                        that.timer_on_hour = '0';
-                        that.FBdata.timer_on_hour = '0'
-                    }
-                    if (parseInt(obj.status.gear) > -1) {
-                        that.FBdata.gear = obj.status.gear
-                        that.gear = obj.status.gear
-                    }
-                    that.listDevice = that.FBdata;
+                    // if (parseInt(obj.status.timer_on_minute) > -1) {
+                    //     that.timer_off_minute = obj.status.timer_on_minute
+                    //     that.FBdata.timer_on_minute = obj.status.timer_on_minute
+                    // } else {
+                    //     that.timer_off_minute = '0';
+                    //     that.FBdata.timer_on_minute = '0'
+                    // }
+                    // if (obj.status.swing_angle) {
+                    //     that.swing_angle_n = obj.status.swing_angle;
+                    //     that.FBdata.swing_angle = obj.status.swing_angle;
+                    // }
+                    // if (parseInt(obj.status.timer_off_minute) > -1) {
+                    //     that.FBdata.timer_off_minute = obj.status.timer_off_minute
+                    //     that.timer_off_minute = obj.status.timer_off_minute
+                    // } else {
+                    //     that.timer_off_minute = '0';
+                    //     that.FBdata.timer_off_minute = '0'
+                    // }
+                    // if (parseInt(obj.status.timer_off_hour) > -1) {
+                    //     that.timer_off_hour = obj.status.timer_off_hour
+                    //     that.FBdata.timer_off_hour = obj.status.timer_off_hour
+                    // } else {
+                    //     that.timer_off_hour = '0';
+                    //     that.FBdata.timer_off_hour = '0'
+                    // }
+                    // if (parseInt(obj.status.timer_on_hour) > -1) {
+                    //     that.FBdata.timer_on_hour = obj.status.timer_on_hour
+                    //     that.timer_on_hour = obj.status.timer_on_hour
+                    // } else {
+                    //     that.timer_on_hour = '0';
+                    //     that.FBdata.timer_on_hour = '0'
+                    // }
+                    // if (parseInt(obj.status.gear) > -1) {
+                    //     that.FBdata.gear = obj.status.gear
+                    //     that.gear = obj.status.gear
+                    // }
+                    // that.listDevice = that.FBdata;
 // 							that.dataCan();
                 }
                 ws.onclose = function () {
