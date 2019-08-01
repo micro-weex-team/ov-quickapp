@@ -129,6 +129,8 @@
 			deviceSubType: '',
 			deviceName: '',
 			sn: '',
+			sn8:'',
+			deviceid:'',
 			openId: '',
 			deviceSSID: '',
 			time_list:[1,1,4,1,1,5,1,1,1,1,10,3]
@@ -453,12 +455,14 @@
 									console.log(JSON.stringify(data))
 									let res = (typeof data != 'object') ? JSON.parse(data) : data;
 									if(!res.code || res.code.toString() == '0'){
+										let obj = (typeof res.message != 'object') ? JSON.parse(res.message) : res.message;
 										// prompt.showToast({message:JSON.stringify(res)});
-										$this.deviceType = JSON.parse(res.message).deviceType
-										$this.modelNumber = JSON.parse(res.message).deviceSubType
-										$this.deviceName = JSON.parse(res.message).deviceName
-										$this.sn = JSON.parse(res.message).deviceSN?JSON.parse(res.message).deviceSN:'';
-										$this.deviceSSID = JSON.parse(res.message).deviceSSID;
+										$this.deviceType = obj.deviceType?obj.deviceType:'';
+										$this.modelNumber = obj.deviceSubType?obj.deviceSubType:'';
+										$this.deviceName = obj.deviceName?obj.deviceName:'';
+										$this.sn = obj.deviceSN?obj.deviceSN:'';
+										$this.deviceSSID = obj.deviceSSID;
+										$this.deviceid = obj.deviceID?obj.deviceID:'';
 										$this.iswork = true;
 										$this.getDeviceinfo();
 									}else if(res.code.toString() === '1'){
@@ -506,7 +510,7 @@
 				quickAppPackage: $this.quickAppPackage,
 				deviceName: $this.deviceName,
 				deviceCategory: $this.deviceType,
-				deviceSeries:$this.sn != ''?'':$this.sn.substring(9,17),
+				deviceSeries:$this.sn8==''?$this.sn.substring(9,17):$this.sn8,
 				// deviceSeries: $this.sn.substring($this.sn.length-8,$this.sn.length),
 				deviceUuid: $this.binddeviceid,
 				resultCode: bol,
@@ -564,7 +568,7 @@
 		startBindDevice() {
 			this.isloadindone = 3;
 			let params = {
-				'physicalId': this.physicalId,
+				'physicalId': this.deviceid,
 				'modelNumber': this.modelNumber,
 				'deviceName': this.deviceName,
 				'deviceType': this.deviceType,
@@ -581,6 +585,7 @@
 					if (!parseInt(bind_res_data.code) && bind_res_data.deviceId) {
 						$this.binddeviceid = bind_res_data.deviceId;
 						$this.isdone = true;
+						$this.sn8 = bind_res_data.sn8;
 						$this.classname = 'top_done_1';
 						$this.progress = 100;
 						$this.time = 0;
