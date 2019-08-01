@@ -22,10 +22,14 @@
 					<text class="nav_time_show_label" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}">
 						<span>大约需要</span>
 					</text>
-					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}}" 
-						style="color: {{running_status !== 'error'?'#ffffff':'#ff0000'}};">
+					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end' && running_status !== 'error'}}">
 						<span>{{showTimeLabel()}}</span>
 					</text>
+					<div class="nav_time_show_text_error_container" if="{{col === 'on' && running_status === 'error'}}">
+						<text class="nav_time_show_text_error">
+							错误: 请检查洗衣机是否故障
+						</text>
+					</div>
 					<text if="{{col === 'on' && running_status === 'standby'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">待机中</text>
 					<text if="{{col === 'on' && running_status === 'end'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text if="{{col === 'on' && (running_status === 'standby' || running_status === 'end')}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
@@ -47,7 +51,7 @@
 
 				<div class="nav_listDetails" @click="isStartPaurseButtonEnable && startPauseDevice()">
 					<image class="nav_img" src="{{btnStartPaurseImgSrc}}"></image>
-					<text class="nav_control_text" style="color: {{btnTextColor}};">{{btnStartPaurseText}}</text>
+					<text class="nav_control_text" style="color: {{btnStartPaurseTextColor}};">{{btnStartPaurseText}}</text>
 				</div>
 			</div>
 		</div>
@@ -170,6 +174,7 @@ module.exports = {
 		btnStartPaurseText: '启动',
 		btnBgColor: '#ffffff',
 		btnTextColor: '#666666',
+		btnStartPaurseTextColor: '#33666666',
 		showErrorDialog: false,
 		isErrorReminded: false
 	},
@@ -549,6 +554,7 @@ module.exports = {
 					that.btnBgColor = '#ffffff';
 					that.btnPowOnOffImgSrc = './assets/img/off.png';
 					that.btnTextColor = '#666666';
+					that.btnStartPaurseTextColor = '#33666666';
 					that.isStartPaurseButtonEnable = false;
 					that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
 					that.btnStartPaurseText = '启动';
@@ -560,6 +566,7 @@ module.exports = {
 						that.btnBgColor = that.Color;
 						that.btnPowOnOffImgSrc = './assets/img/off2.png';
 						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#ffffff';
 						that.isStartPaurseButtonEnable = true;
 						that.btnStartPaurseImgSrc = './assets/img/pause.png';
 						that.btnStartPaurseText = '暂停';
@@ -568,6 +575,7 @@ module.exports = {
 						that.btnBgColor = that.Color;
 						that.btnPowOnOffImgSrc = './assets/img/off2.png';
 						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#ffffff';
 						that.isStartPaurseButtonEnable = true;
 						that.btnStartPaurseImgSrc = './assets/img/start.png';
 						that.btnStartPaurseText = '继续';
@@ -576,6 +584,7 @@ module.exports = {
 						that.btnBgColor = '#ffffff';
 						that.btnPowOnOffImgSrc = './assets/img/off.png';
 						that.btnTextColor = '#666666';
+						that.btnStartPaurseTextColor = '#666666';
 						that.isStartPaurseButtonEnable = true;
 						that.btnStartPaurseImgSrc = './assets/img/start2.png';
 						that.btnStartPaurseText = '启动';
@@ -584,6 +593,7 @@ module.exports = {
 						that.btnBgColor = that.Color;
 						that.btnPowOnOffImgSrc = './assets/img/off2.png';
 						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#33ffffff';
 						that.isStartPaurseButtonEnable = false;
 						that.btnStartPaurseImgSrc = './assets/img/start_disable.png';
 						that.btnStartPaurseText = '启动';
@@ -592,6 +602,7 @@ module.exports = {
 						that.btnBgColor = '#ffffff';
 						that.btnPowOnOffImgSrc = './assets/img/off.png';
 						that.btnTextColor = '#666666';
+						that.btnStartPaurseTextColor = '#33666666';
 						that.isStartPaurseButtonEnable = false;
 						that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
 						that.btnStartPaurseText = '启动';
