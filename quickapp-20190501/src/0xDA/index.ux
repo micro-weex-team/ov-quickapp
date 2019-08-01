@@ -2,6 +2,7 @@
 <!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-showdialog" src="../Component/MideaShowdialog/index"></import>
 <template>
 	<div class="container">
 		<midea-head title="波轮洗衣机" onclose-websocket="closeWebsocket" language="{{language}}" power="{{col}}"></midea-head>
@@ -37,66 +38,23 @@
 			style="color: {{col === 'on'?'#ffffff':'#666666'}};left: {{parseInt(remain_time)>99?'850px':'750px'}};">
 			<span>分</span>
 		</text>
-		<div class="nav_control_btn" if="{{col === 'off' || running_status + col === 'standbyon'}}">
-			<!-- <div class="nav_List_1"> -->
-			<div class="nav_listDetails" @click="openData1()">
-				<image class="nav_img" src="./assets/img/off.png"></image>
-				<text class="nav_control_text">{{col === 'off' ? '开机' : '关机'}}</text>
-			</div>
+		<div class="nav_control_btn" style="background-color: {{btnBgColor}};">
+			<div class="nav_control_btn_group">
+				<div class="nav_listDetails" @click="powOnOff()">
+					<image class="nav_img" src="{{btnPowOnOffImgSrc}}"></image>
+					<text class="nav_control_text" style="color: {{btnTextColor}};">{{col === 'off' ? '开机' : '关机'}}</text>
+				</div>
 
-			<div class="nav_listDetails" if="{{running_status + col === 'standbyon'}}" @click="startDevice()">
-				<image class="nav_img" src="./assets/img/start2.png"></image>
-				<text class="nav_control_text">启动</text>
-			</div>
-
-			<!-- <div class="nav_listDetails" @click="pauseDevice()">
-				<image class="nav_img" src="./assets/img/off.png"></image>
-				<text class="nav_control_text">启动</text>
-			</div> -->
-
-			<!-- <div class="nav_listDetails" @click="openData('cotton')">
-                        <image class="nav_img" src="{{(col + program) === 'oncotton'?'./assets/img/cotton_on.png':'./assets/img/cotton_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'oncotton'?'#000000':'#cccccc'}};">棉麻洗</text>
-                    </div>
-					<div class="nav_listDetails" @click="openData('mixed_wash')">
-                        <image class="nav_img" src="{{(col + program) === 'onmixed_wash'?'./assets/img/max_on.png':'./assets/img/max_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'onmixed_wash'?'#000000':'#cccccc'}};">混合洗</text>
-                    </div>
-					<div class="nav_listDetails" @click="openData('fast_wash')">
-                        <image class="nav_img" src="{{(col + program) === 'onfast_wash'?'./assets/img/fast_on.png':'./assets/img/fast_off.png'}}"></image>
-                        <text class="nav_control_text" style="color: {{(col + program) === 'onfast_wash'?'#000000':'#cccccc'}};">快洗</text>
-                    </div> -->
-		</div>
-		<!-- </div> -->
-		<!-- </div> -->
-		<!-- <div class="nav_start_stop" if="{{running_status + col === 'workon'}}">
-			<image class="nav_start" src="./assets/img/pause.png" @click="pauseDevice"></image>
-			<text class="nav_start_text">暂停</text>
-		</div> -->
-		<div class="nav_start_stop" if="{{col === 'on' && running_status !== 'work' && running_status !== 'pause' && running_status !== 'standby'}}">
-			<image class="nav_start" src="./assets/img/stop.png" @click="stopDevice"></image>
-			<text class="nav_start_text">关机</text>
-		</div>
-		<div class="nav_stop_start" if="{{running_status + col === 'workon'}}">
-			<div class="nav_stop1" @click="stopDevice">
-				<image class="{{language?'nav_stop_img':'l_nav_stop_img'}}" src="./assets/img/stop.png"></image>
-				<text class="{{language?'nav_stop_text':'l_nav_stop_text'}}">关机</text>
-			</div>
-			<div class="nav_stop1" @click="pauseDevice">
-				<image class="{{language?'nav_stop_img1':'l_nav_stop_img1'}}" src="./assets/img/pause.png"></image>
-				<text class="{{language?'nav_stop_text1':'l_nav_stop_text1'}}">暂停</text>
+				<div class="nav_listDetails" @click="isStartPaurseButtonEnable && startPauseDevice()">
+					<image class="nav_img" src="{{btnStartPaurseImgSrc}}"></image>
+					<text class="nav_control_text" style="color: {{btnTextColor}};">{{btnStartPaurseText}}</text>
+				</div>
 			</div>
 		</div>
-		<div class="nav_stop_start" if="{{running_status + col === 'pauseon'}}">
-			<div class="nav_stop1" @click="stopDevice">
-				<image class="{{language?'nav_stop_img':'l_nav_stop_img'}}" src="./assets/img/stop.png"></image>
-				<text class="{{language?'nav_stop_text':'l_nav_stop_text'}}">关机</text>
-			</div>
-			<div class="nav_stop1" @click="startDevice">
-				<image class="{{language?'nav_stop_img1':'l_nav_stop_img1'}}" src="./assets/img/start.png"></image>
-				<text class="{{language?'nav_stop_text1':'l_nav_stop_text1'}}">继续</text>
-			</div>
-		</div>
+		<midea-showdialog if="{{showErrorDialog}}" header="{{dialogHead}}" footer="{{dialogFoot}}" 
+			onclick-event1="closeErrorDialog()" onclick-event2="closeErrorDialog()" onclick-event3="closeErrorDialog()">
+			<text class="error_dialog_content">请检查设备是否故障</text>
+		</midea-showdialog>
 		<midea-loading if="{{isloading}}"></midea-loading>
 		<!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
 		<midea-tips if="{{istips}}"></midea-tips>
@@ -185,187 +143,43 @@ module.exports = {
 			remain_time: 15
 		},
 		DBdata: ["power", "control_status", "running_status", "program", "remain_time", "error_code"],
-		pro_list: [{
-			name: "水位",
-			bol: true,
-			value: "low",
-			data: 1,
-		}, {
-			name: "水温",
-			bol: false,
-			value: "60",
-			data: 4,
-		}, {
-			name: "脱水速度",
-			bol: false,
-			value: "0",
-			data: 0,
-		}, {
-			name: "洗涤次数",
-			bol: false,
-			value: "5",
-			data: 5,
-		}, {
-			name: "脱水时间",
-			bol: false,
-			value: "10",
-			data: 1,
-		}],
 		list_1: [],
 		list_2: [],
-		datalist: [],
 		listDevice: {},
 		time: [],
-		water: [{
-			"name": "低水位",
-			"value": "low",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "中水位",
-			"value": "middle",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "高水位",
-			"value": "high",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "自动",
-			"value": "auto",
-			"icon": "",
-			"color": ''
+		dialogHead:{
+		    title:'错误',
+		    fontSize:48,
+		    color:"#000000",
+		    fontWeight:'bold'
+		},
+		dialogFoot:[{
+		    name:'取消',
+		    fontSize:48,
+		    color:"#333333",
+		    fontWeight:'nomal'
+		},{
+		    name:'确定',
+		    fontSize:48,
+		    color:"#3191FD",
+		    fontWeight:'nomal'
 		}],
-		water_T: [{
-			"name": "冷水",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "20℃",
-			"value": "20",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "30℃",
-			"value": "30",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "40℃",
-			"value": "40",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "60℃",
-			"value": "60",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "95℃",
-			"value": "95",
-			"icon": "",
-			"color": ''
-		}],
-		water_s: [{
-			"name": "0",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "600",
-			"value": "600",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "800",
-			"value": "800",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1000",
-			"value": "1000",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1400",
-			"value": "1400",
-			"icon": "",
-			"color": ''
-		}],
-		water_num: [{
-			"name": "0",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1",
-			"value": "1",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "2",
-			"value": "2",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "3",
-			"value": "3",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "4",
-			"value": "4",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "智能",
-			"value": "5",
-			"icon": "",
-			"color": ''
-		}],
-		water_time: [{
-			"name": "0",
-			"value": 0,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "10分钟",
-			"value": 10,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "20分钟",
-			"value": 20,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "30分钟",
-			"value": 30,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "40分钟",
-			"value": "",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "50分钟",
-			"value": 50,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "60分钟",
-			"value": 60,
-			"icon": "",
-			"color": ''
-		}]
+		btnPowOnOffImgSrc: './assets/img/off.png',
+		isStartPaurseButtonEnable: false,
+		btnStartPaurseImgSrc: './assets/img/start_disable2.png',
+		btnStartPaurseText: '启动',
+		btnBgColor: '#ffffff',
+		btnTextColor: '#666666',
+		showErrorDialog: false,
+		isErrorReminded: false
 	},
 	public: {
 		deviceSeries: '',
 		deviceId: '',
 		openid: ''
+	},
+	closeErrorDialog() {
+		this.showErrorDialog = false;
 	},
 	isshowclose() {
 		let that = this;
@@ -454,154 +268,46 @@ module.exports = {
 			}
 		});
 	},
-	lockDevice() {
+	powOnOff() {
+		let that = this;
+		if (that.online === 'false') {
+			that.isshowclose();
+			return false;
+		}
 		let params;
-		if (this.dataLists.lock === 'off') {
+		let status = that.dataLists;
+		if (that.col === "on") {
 			params = {
-				lock: 'on'
+				power: "off"
 			}
+			// status.power = 'off';
 		} else {
 			params = {
-				lock: 'off'
+				power: "on"
 			}
+			delete status.control_status
 		}
-		let status = this.dataLists;
-		delete status.lock;
-		this.postDeviceControl(params, status);
-	},
-	pauseDevice() {
-		let params = {
-			control_status: 'pause'
-		}
-		let status = this.dataLists;
-		// status.control_status = 'pause';
-		status.running_status = 'pause';
-		delete status.control_status;
-		this.postDeviceControl(params, status);
-	},
-	startDevice() {
-		let params = {
-			control_status: 'start'
-		}
-		let status = this.dataLists;
-		status.running_status = 'start';
-		delete status.control_status;
-		this.postDeviceControl(params, status);
-	},
-	stopDevice() {
-		this.isstop = true;
-		let that = this;
 		that.isloading = true;
-		let params;
-		params = {
-			power: "off"
-		}
-		let status = that.dataLists;
-		status.power = 'off';
 		delete status.running_status;
+		delete status.power;
 		that.postDeviceControl(params, status);
 	},
-	open_Data() {
-		let that = this;
-		if (that.dataLists.power === 'on' && that.dataLists.online === 'true') {
-			that.showDialog = true;
-			that.water_1 = that.dataLists.water_level;
-			that.water_2 = that.dataLists.temperature;
-			that.water_3 = that.dataLists.dehydration_speed;
-			that.water_4 = that.dataLists.soak_count;
-			that.water_5 = that.dataLists.dehydration_time;
-		} else if (that.dataLists.online === 'false') {
-			this.isshowclose();
-		} else {
-			prompt.showToast({ message: "设备关机状态,不能操作" })
-		}
-	},
-	levelFilter(str) {
-		if (str) {
-			switch (str) {
-				case 'auto':
-					return '自动';
-					break;
-				case 'low':
-					return '低水位';
-					break;
-				case 'middle':
-					return '中水位';
-					break;
-				case 'high':
-					return '高水位';
-					break;
-				default:
-					return '--';
+	startPauseDevice() {
+		var params;
+		let status = this.dataLists;
+		if (this.running_status === 'work') {
+			params = {
+				control_status: 'pause'
 			}
+			status.running_status = 'pause';
 		} else {
-			return '--';
-		}
-	},
-	temFilter(str) {
-		let that = this;
-		if (str) {
-			switch (str) {
-				case '0':
-					return '冷水';
-					break;
-				case 'invalid':
-					return '--';
-					break;
-				default:
-					return str + '℃';
+			params = {
+				control_status: 'start'
 			}
-		} else {
-			return '--';
+			status.running_status = 'start';
 		}
-	},
-	speedFilter(str) {
-		let that = this;
-		if (str) {
-			switch (str) {
-				case '0':
-					return '免脱水';
-					break;
-				case 'invalid':
-					return '--';
-					break;
-				default:
-					return str + '转'
-			}
-		} else {
-			return '--';
-		}
-	},
-	countFilter(str) {
-		let that = this;
-		if (str) {
-			switch (str) {
-				case '5':
-					return '智能';
-					break;
-				case 'invalid':
-					return '--';
-					break;
-				default:
-					return str + '次'
-			}
-		} else {
-			return '--';
-		}
-	},
-	timeFilter(str) {
-		let that = this;
-		if (str) {
-			switch (str) {
-				case 'invalid':
-					return '--';
-					break;
-				default:
-					return str + '分钟'
-			}
-		} else {
-			return '--';
-		}
+		delete status.control_status;
+		this.postDeviceControl(params, status);
 	},
 	scrollbottom(e) {
 		let that = this;
@@ -681,133 +387,6 @@ module.exports = {
 	},
 	closeDialog() {
 		this.showDialog = false;
-	},
-	confirm() {
-		this.isloading = true;
-		this.showDialog = false;
-		let params = {
-			program: 'mixed_wash',
-			water_level: this.water_1,
-			temperature: this.water_2,
-			dehydration_speed: this.water_3,
-			soak_count: this.water_4,
-			dehydration_time: this.water_5,
-			control_status: 'start'
-		}
-		let status = this.dataLists;
-		delete status.soak_count;
-		this.postDeviceControl(params, status);
-	},
-	openData1() {
-		let that = this;
-		if (that.online === 'false') {
-			that.isshowclose();
-			return false;
-		}
-		let params;
-		let status = that.dataLists;
-		console.log("为什么跑到这里")
-		if (that.col === "on") {
-			params = {
-				power: "off"
-			}
-			status.power = 'off';
-		} else {
-			params = {
-				power: "on"
-			}
-			delete status.control_status
-		}
-		that.isloading = true;
-		delete status.running_status;
-		delete status.power;
-		that.postDeviceControl(params, status);
-	},
-	openData(str) {
-		let that = this;
-		console.log("that.col:" + that.col + ":::::::::::::that.online:" + that.online)
-		if (that.col == 'on' && that.online == 'true') {
-			that.isloading = true;
-			let params = {
-				program: str,
-				control_status: "start"
-			}
-			let status = that.dataLists;
-			delete status.program;
-			delete status.control_status;
-			that.postDeviceControl(params, status);
-		} else if (that.online === 'false') {
-			this.isshowclose();
-			// prompt.showToast({message:"设备离线状态"})
-		} else {
-			prompt.showToast({ message: "设备关机状态,不能操作" })
-		}
-	},
-	close_device() {
-		for (let i = 0; i < this.list_2.length; i++) {
-			this.list_2[i].value = false;
-			this.list_2[i].src = "./assets/img/" + this.list_2[i].data + "_off.png";
-		}
-		for (let n = 0; n < this.list_1.length; n++) {
-			if (n > 0) {
-				this.list_1[n].value = false;
-				this.list_1[n].src = "./assets/img/" + this.list_1[n].data + "_off.png";
-			}
-		}
-	},
-	closeOpen(str, obj, data) {
-		let that = this;
-		that.isopen_ = str;
-		let id = 90;
-		obj.forEach(function (item, i) {
-			if (item === data) {
-				id = i;
-				setTimeout(function () {
-					that.$element(str).scrollTo({ index: id });
-				}, 200)
-			}
-		})
-	},
-	changedata(obj, n) {
-		let that = this;
-		switch (obj) {
-			case 0:
-				return that.water[n].name;
-				break;
-			case 1:
-				return that.water_T[n].name;
-				break;
-			case 2:
-				return that.water_s[n].name;
-				break;
-			case 3:
-				return that.water_num[n].name;
-				break;
-			case 4:
-				return that.water_time[n].name;
-				break;
-		}
-		return obj
-	},
-	selectData(id, str) {
-		let that = this;
-		switch (id) {
-			case 0:
-				that.water_1 = str;
-				break;
-			case 1:
-				that.water_2 = str;
-				break;
-			case 2:
-				that.water_3 = str;
-				break;
-			case 3:
-				that.water_4 = str;
-				break;
-			case 4:
-				that.water_5 = str;
-				break;
-		}
 	},
 	//获取第三方登录信息
 	getdevicelist() {
@@ -946,7 +525,11 @@ module.exports = {
 				if (obj.running_status) {
 					that.running_status = obj.running_status;
 				} else {
-					that.running_status = 'error';
+					if (obj.power === 'on') {
+						that.running_status = 'standby';
+					} else {
+						that.running_status = 'error';
+					}
 				}
 				console.log("getdataLan that.running_status：" + that.running_status);
 				that.col = obj.power;
@@ -958,6 +541,68 @@ module.exports = {
 
 				if (obj.error_code && obj.error_code !== '0' && obj.error_code !== 'ff' && obj.error_code !== 'FF') {
 					that.running_status = 'error'
+				}
+
+				// 刷新页面背景颜色、按钮icon等
+				if (that.col === 'off') {
+					// 关机状态，底部白色
+					that.btnBgColor = '#ffffff';
+					that.btnPowOnOffImgSrc = './assets/img/off.png';
+					that.btnTextColor = '#666666';
+					that.isStartPaurseButtonEnable = false;
+					that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
+					that.btnStartPaurseText = '启动';
+					that.isErrorReminded = false;
+				} else {
+					// 开机状态，判断设备运行状态
+					if (that.running_status === 'work') {
+						// 运行中，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/pause.png';
+						that.btnStartPaurseText = '暂停';
+					} else if (that.running_status === 'pause') {
+						// 暂停，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/start.png';
+						that.btnStartPaurseText = '继续';
+					} else if (that.running_status === 'standby') {
+						// 待机，底部白色
+						that.btnBgColor = '#ffffff';
+						that.btnPowOnOffImgSrc = './assets/img/off.png';
+						that.btnTextColor = '#666666';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/start2.png';
+						that.btnStartPaurseText = '启动';
+					} else if (that.running_status === 'order') {
+						// 预约，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.isStartPaurseButtonEnable = false;
+						that.btnStartPaurseImgSrc = './assets/img/start_disable.png';
+						that.btnStartPaurseText = '启动';
+					} else {
+						// 故障、完成状态，底部白色
+						that.btnBgColor = '#ffffff';
+						that.btnPowOnOffImgSrc = './assets/img/off.png';
+						that.btnTextColor = '#666666';
+						that.isStartPaurseButtonEnable = false;
+						that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
+						that.btnStartPaurseText = '启动';
+					}
+				}
+
+				if (that.col === 'on' && that.running_status === 'error') {
+					if (!that.isErrorReminded) {
+						that.isErrorReminded = true;
+						that.showErrorDialog = true;
+					}
 				}
 
 				if (that.online != 'true') {
@@ -1067,7 +712,7 @@ module.exports = {
 			} else {
 				that.isagain = false;
 				that.lanOnline = "false";
-				that.getDeviceStatus(that.openId);
+				// that.getDeviceStatus(that.openId);
 			}
 		})
 	},
@@ -1434,7 +1079,6 @@ module.exports = {
 			}
 			this.time.push(obj);
 		}
-		this.datalist = this.water;
 		this.isloading = true;
 		let timestamp = Date.parse(new Date());
 		storage.get({
@@ -1467,6 +1111,7 @@ module.exports = {
 	},
 	onCreate() {
 		this.firstError = true;
+		this.isErrorReminded = false;
 	},
 	onBackPress() {
 		router.back();
