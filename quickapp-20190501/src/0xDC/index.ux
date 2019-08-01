@@ -2,6 +2,7 @@
 <!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
 <import name="midea-tips" src="../Component/MideaTips/index"></import>
 <import name="midea-head" src="../Component/MideaHead/index"></import>
+<import name="midea-showdialog" src="../Component/MideaShowdialog/index"></import>
 <template>
 	<div class="container">
 		<midea-head title="干衣机" onclose-websocket="closeWebsocket" language="{{language}}" power="{{col}}"></midea-head>
@@ -21,10 +22,14 @@
 					<text class="nav_time_show_label" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}">
 						<span>大约需要</span>
 					</text>
-					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}}" 
-						style="color: {{running_status !== 'fault'?'#ffffff':'#ff0000'}};">
+					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}} && running_status !== 'fault'">
 						<span>{{showTimeLabel()}}</span>
 					</text>
+					<div class="nav_time_show_text_error_container" if="{{col === 'on' && running_status === 'fault'}}">
+						<text class="nav_time_show_text_error">
+							错误: 请检查洗衣机是否故障
+						</text>
+					</div>
 					<text if="{{col === 'on' && running_status === 'standby'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">待机中</text>
 					<text if="{{col === 'on' && running_status === 'end'}}" class="nav_time_cancel" style="color: {{col === 'on'?'#ffffff':'#666666'}};">已完成</text>
 					<text if="{{col === 'on' && (running_status === 'standby' || running_status === 'end')}}" class="nav_time_canceltext" style="color: {{col === 'on'?'#ffffff':'#666666'}};">请选择下方功能</text>
@@ -37,44 +42,23 @@
 			style="color: {{col === 'on'?'#ffffff':'#666666'}};left: {{parseInt(remain_time)>99?'850px':'750px'}};">
 			<span>分</span>
 		</text>
-		<div class="nav_control_btn" if="{{col === 'off' || running_status + col === 'standbyon'}}">
-			<!-- <div class="nav_List_1"> -->
-			<div class="nav_listDetails" @click="openData1()">
-				<image class="nav_img" src="./assets/img/off.png"></image>
-				<text class="nav_control_text">{{col === 'off' ? '开机' : '关机'}}</text>
-			</div>
+		<div class="nav_control_btn" style="background-color: {{btnBgColor}};">
+			<div class="nav_control_btn_group">
+				<div class="nav_listDetails" @click="powOnOff()">
+					<image class="nav_img" src="{{btnPowOnOffImgSrc}}"></image>
+					<text class="nav_control_text" style="color: {{btnTextColor}};">{{col === 'off' ? '开机' : '关机'}}</text>
+				</div>
 
-			<div class="nav_listDetails" if="{{running_status + col === 'standbyon'}}" @click="startDevice()">
-				<image class="nav_img" src="./assets/img/start2.png"></image>
-				<text class="nav_control_text">启动</text>
+				<div class="nav_listDetails" @click="isStartPaurseButtonEnable && startPauseDevice()">
+					<image class="nav_img" src="{{btnStartPaurseImgSrc}}"></image>
+					<text class="nav_control_text" style="color: {{btnStartPaurseTextColor}};">{{btnStartPaurseText}}</text>
+				</div>
 			</div>
 		</div>
-		<!-- </div> -->
-		<!-- </div> -->
-		<div class="nav_start_stop" if="{{col === 'on' && running_status !== 'start' && running_status !== 'pause' && running_status !== 'standby'}}">
-			<image class="nav_start" src="./assets/img/stop.png" @click="stopDevice"></image>
-			<text class="nav_start_text">关机</text>
-		</div>
-		<div class="nav_stop_start" if="{{running_status + col === 'starton'}}">
-			<div class="nav_stop1" @click="stopDevice">
-				<image class="{{language?'nav_stop_img':'l_nav_stop_img'}}" src="./assets/img/stop.png"></image>
-				<text class="{{language?'nav_stop_text':'l_nav_stop_text'}}">关机</text>
-			</div>
-			<div class="nav_stop1" @click="pauseDevice">
-				<image class="{{language?'nav_stop_img1':'l_nav_stop_img1'}}" src="./assets/img/pause.png"></image>
-				<text class="{{language?'nav_stop_text1':'l_nav_stop_text1'}}">暂停</text>
-			</div>
-		</div>
-		<div class="nav_stop_start" if="{{running_status + col === 'pauseon'}}">
-			<div class="nav_stop1" @click="stopDevice">
-				<image class="{{language?'nav_stop_img':'l_nav_stop_img'}}" src="./assets/img/stop.png"></image>
-				<text class="{{language?'nav_stop_text':'l_nav_stop_text'}}">关机</text>
-			</div>
-			<div class="nav_stop1" @click="startDevice">
-				<image class="{{language?'nav_stop_img1':'l_nav_stop_img1'}}" src="./assets/img/start.png"></image>
-				<text class="{{language?'nav_stop_text1':'l_nav_stop_text1'}}">继续</text>
-			</div>
-		</div>
+		<midea-showdialog if="{{showErrorDialog}}" header="{{dialogHead}}" footer="{{dialogFoot}}" 
+			onclick-event1="closeErrorDialog()" onclick-event2="closeErrorDialog()" onclick-event3="closeErrorDialog()">
+			<text class="error_dialog_content">请检查设备是否故障</text>
+		</midea-showdialog>
 		<midea-loading if="{{isloading}}"></midea-loading>
 		<midea-tips if="{{istips}}"></midea-tips>
 	</div>
@@ -138,17 +122,6 @@ module.exports = {
 		water_5: '',
 		obj1: [],
 		obj2: [],
-		clock: {
-			onicon: './assets/img/clock_on.png',
-			officon: "./assets/img/clock_off.png",
-			icon: './assets/img/clock.png',
-			name: 'clock'
-		},
-		controlNavList: [{
-			name: '快净',
-			value: '',
-			src: ""
-		}],
 		power: "off",
 		program: "cotton",
 		control_status: "pause",
@@ -167,156 +140,40 @@ module.exports = {
 		datalist: [],
 		listDevice: {},
 		time: [],
-		water: [{
-			"name": "低水位",
-			"value": "low",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "中水位",
-			"value": "middle",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "高水位",
-			"value": "high",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "自动",
-			"value": "auto",
-			"icon": "",
-			"color": ''
+		dialogHead:{
+		    title:'错误',
+		    fontSize:48,
+		    color:"#000000",
+		    fontWeight:'bold'
+		},
+		dialogFoot:[{
+		    name:'取消',
+		    fontSize:48,
+		    color:"#333333",
+		    fontWeight:'nomal'
+		},{
+		    name:'确定',
+		    fontSize:48,
+		    color:"#3191FD",
+		    fontWeight:'nomal'
 		}],
-		water_T: [{
-			"name": "冷水",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "20℃",
-			"value": "20",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "30℃",
-			"value": "30",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "40℃",
-			"value": "40",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "60℃",
-			"value": "60",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "95℃",
-			"value": "95",
-			"icon": "",
-			"color": ''
-		}],
-		water_s: [{
-			"name": "0",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "600",
-			"value": "600",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "800",
-			"value": "800",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1000",
-			"value": "1000",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1400",
-			"value": "1400",
-			"icon": "",
-			"color": ''
-		}],
-		water_num: [{
-			"name": "0",
-			"value": "0",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "1",
-			"value": "1",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "2",
-			"value": "2",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "3",
-			"value": "3",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "4",
-			"value": "4",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "智能",
-			"value": "5",
-			"icon": "",
-			"color": ''
-		}],
-		water_time: [{
-			"name": "0",
-			"value": 0,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "10分钟",
-			"value": 10,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "20分钟",
-			"value": 20,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "30分钟",
-			"value": 30,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "40分钟",
-			"value": "",
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "50分钟",
-			"value": 50,
-			"icon": "",
-			"color": ''
-		}, {
-			"name": "60分钟",
-			"value": 60,
-			"icon": "",
-			"color": ''
-		}]
+		btnPowOnOffImgSrc: './assets/img/off.png',
+		isStartPaurseButtonEnable: false,
+		btnStartPaurseImgSrc: './assets/img/start_disable2.png',
+		btnStartPaurseText: '启动',
+		btnBgColor: '#ffffff',
+		btnTextColor: '#666666',
+		btnStartPaurseTextColor: '#33666666',
+		showErrorDialog: false,
+		isErrorReminded: false
 	},
 	public: {
 		deviceSeries: '',
 		deviceId: '',
 		openid: ''
+	},
+	closeErrorDialog() {
+		this.showErrorDialog = false;
 	},
 	isshowclose() {
 		let that = this;
@@ -402,37 +259,46 @@ module.exports = {
 			}
 		});
 	},
-	pauseDevice() {
-		let params = {
-			control_status: 'pause'
-		}
-		let status = this.dataLists;
-		// status.control_status = 'pause';
-		status.running_status = 'pause';
-		delete status.control_status;
-		this.postDeviceControl(params, status);
-	},
-	startDevice() {
-		let params = {
-			control_status: 'start'
-		}
-		let status = this.dataLists;
-		status.running_status = 'start';
-		delete status.control_status;
-		this.postDeviceControl(params, status);
-	},
-	stopDevice() {
-		this.isstop = true;
+	powOnOff() {
 		let that = this;
-		that.isloading = true;
-		let params;
-		params = {
-			power: "off"
+		if (that.online === 'false') {
+			that.isshowclose();
+			return false;
 		}
+		let params;
 		let status = that.dataLists;
-		status.power = 'off';
+		if (that.col === "on") {
+			params = {
+				power: "off"
+			}
+			// status.power = 'off';
+		} else {
+			params = {
+				power: "on"
+			}
+			delete status.control_status
+		}
+		that.isloading = true;
 		delete status.running_status;
+		delete status.power;
 		that.postDeviceControl(params, status);
+	},
+	startPauseDevice() {
+		var params;
+		let status = this.dataLists;
+		if (this.running_status === 'start') {
+			params = {
+				control_status: 'pause'
+			}
+			status.running_status = 'pause';
+		} else {
+			params = {
+				control_status: 'start'
+			}
+			status.running_status = 'start';
+		}
+		delete status.control_status;
+		this.postDeviceControl(params, status);
 	},
 	scrollbottom(e) {
 		let that = this;
@@ -510,31 +376,6 @@ module.exports = {
 				}
 			})
 		}, 3000)
-	},
-	openData1() {
-		let that = this;
-		if (that.online === 'false') {
-			that.isshowclose();
-			return false;
-		}
-		let params;
-		let status = that.dataLists;
-		console.log("为什么跑到这里")
-		if (that.col === "on") {
-			params = {
-				power: "off"
-			}
-			status.power = 'off';
-		} else {
-			params = {
-				power: "on"
-			}
-			delete status.control_status
-		}
-		that.isloading = true;
-		delete status.running_status;
-		delete status.power;
-		that.postDeviceControl(params, status);
 	},
 	//获取第三方登录信息
 	getdevicelist() {
@@ -674,7 +515,11 @@ module.exports = {
 				if (obj.running_status) {
 					that.running_status = obj.running_status;
 				} else {
-					that.running_status = 'fault';
+					if (obj.power === 'on') {
+						that.running_status = 'standby';
+					} else {
+						that.running_status = 'fault';
+					}
 				}
 				console.log("getdataLan that.running_status：" + that.running_status);
 				that.col = obj.power;
@@ -686,6 +531,74 @@ module.exports = {
 
 				if (obj.error_code && obj.error_code !== '0' && obj.error_code !== 'ff' && obj.error_code !== 'FF') {
 					that.running_status = 'fault'
+				}
+
+				// 刷新页面背景颜色、按钮icon等
+				if (that.col === 'off') {
+					// 关机状态，底部白色
+					that.btnBgColor = '#ffffff';
+					that.btnPowOnOffImgSrc = './assets/img/off.png';
+					that.btnTextColor = '#666666';
+					that.btnStartPaurseTextColor = '#33666666';
+					that.isStartPaurseButtonEnable = false;
+					that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
+					that.btnStartPaurseText = '启动';
+					that.isErrorReminded = false;
+				} else {
+					// 开机状态，判断设备运行状态
+					if (that.running_status === 'start') {
+						// 运行中，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#ffffff';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/pause.png';
+						that.btnStartPaurseText = '暂停';
+					} else if (that.running_status === 'pause') {
+						// 暂停，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#ffffff';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/start.png';
+						that.btnStartPaurseText = '继续';
+					} else if (that.running_status === 'standby') {
+						// 待机，底部白色
+						that.btnBgColor = '#ffffff';
+						that.btnPowOnOffImgSrc = './assets/img/off.png';
+						that.btnTextColor = '#666666';
+						that.btnStartPaurseTextColor = '#666666';
+						that.isStartPaurseButtonEnable = true;
+						that.btnStartPaurseImgSrc = './assets/img/start2.png';
+						that.btnStartPaurseText = '启动';
+					} else if (that.running_status === 'delay') {
+						// 预约，底部蓝色
+						that.btnBgColor = that.Color;
+						that.btnPowOnOffImgSrc = './assets/img/off2.png';
+						that.btnTextColor = '#ffffff';
+						that.btnStartPaurseTextColor = '#33ffffff';
+						that.isStartPaurseButtonEnable = false;
+						that.btnStartPaurseImgSrc = './assets/img/start_disable.png';
+						that.btnStartPaurseText = '启动';
+					} else {
+						// 故障、完成状态，底部白色
+						that.btnBgColor = '#ffffff';
+						that.btnPowOnOffImgSrc = './assets/img/off.png';
+						that.btnTextColor = '#666666';
+						that.btnStartPaurseTextColor = '#33666666';
+						that.isStartPaurseButtonEnable = false;
+						that.btnStartPaurseImgSrc = './assets/img/start_disable2.png';
+						that.btnStartPaurseText = '启动';
+					}
+				}
+
+				if (that.col === 'on' && that.running_status === 'fault') {
+					if (!that.isErrorReminded) {
+						that.isErrorReminded = true;
+						that.showErrorDialog = true;
+					}
 				}
 
 				if (that.online != 'true') {
@@ -1192,6 +1105,7 @@ module.exports = {
 	},
 	onCreate() {
 		this.firstError = true;
+		this.isErrorReminded = false;
 	},
 	onBackPress() {
 		router.back();
