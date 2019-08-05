@@ -23,8 +23,8 @@
 						<text class="nav_time" show="{{!isdone}}">大概还需要{{time}}s</text>
 					</div>
 					<div class="nav_bottom">
-						<text class="seting-tips">正在努力链接，请耐心等待...</text>
-						<!--<text class="seting-tips">请将设备尽量靠近路由器</text>-->
+						<text class="seting-tips" if="{{!isdone}}>正在努力链接，请耐心等待...</text>
+						<text class="seting-tips" if="{{isdone}}>请将设备尽量靠近路由器</text>
 						<div class="nav_tips">
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
 								<image show="{{language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="{{isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
@@ -78,9 +78,9 @@
 				</div>
 			</list-item>
 		</list>
-		<midea-set if="{{issetlan}}" ssid="{{ssid}}" password="{{password}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-set>
+		<!-- <midea-set if="{{issetlan}}" ssid="{{ssid}}" password="{{password}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-set> -->
 		
-		<midea-wifi if="{{issetwifi}}" ssid="{{ssid}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-wifi>
+		<!-- <midea-wifi if="{{issetwifi}}" ssid="{{ssid}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-wifi> -->
     </div>
 </template>
 
@@ -499,31 +499,32 @@
 									console.log(JSON.stringify(error))
 									$this.action = '';
 									$this.ssid = '';
-									let err = (typeof error != 'object') ? JSON.parse(error) : error;
-									if(err.message){
-										let errdata = (typeof err.message != 'object') ? JSON.parse(err.message) : err.message;
-										if(errdata.isCanResume){
-											let wifiInfo = (typeof errdata.wifiInfo != 'object') ? JSON.parse(errdata.wifiInfo) : errdata.wifiInfo;
-											console.log(JSON.stringify(wifiInfo));
-											if(wifiInfo.password){
-												$this.password = wifiInfo.password;
-											}
-											if(wifiInfo.ssid){
-												$this.ssid = errdata.wifiInfo.ssid;
-											}
-											if(wifiInfo.action){
-												$this.action = wifiInfo.action.toString();
-												if(wifiInfo.action.toString() == '0'){
-													$this.issetlan = true;
-												}else if(wifiInfo.action.toString() == '1'){
-													$this.issetwifi = true;
-												}
-											}
-											
-										}
-									}else{
-										$this.setSucc = true;
-									}
+									// let err = (typeof error != 'object') ? JSON.parse(error) : error;
+									$this.setSucc = true;
+									// if(err.message){
+									// 	let errdata = (typeof err.message != 'object') ? JSON.parse(err.message) : err.message;
+									// 	if(errdata.isCanResume){
+									// 		let wifiInfo = (typeof errdata.wifiInfo != 'object') ? JSON.parse(errdata.wifiInfo) : errdata.wifiInfo;
+									// 		console.log(JSON.stringify(wifiInfo));
+									// 		if(wifiInfo.password){
+									// 			$this.password = wifiInfo.password;
+									// 		}
+									// 		if(wifiInfo.ssid){
+									// 			$this.ssid = errdata.wifiInfo.ssid;
+									// 		}
+									// 		if(wifiInfo.action){
+									// 			$this.action = wifiInfo.action.toString();
+									// 			if(wifiInfo.action.toString() == '0'){
+									// 				$this.issetlan = true;
+									// 			}else if(wifiInfo.action.toString() == '1'){
+									// 				$this.issetwifi = true;
+									// 			}
+									// 		}
+									// 		
+									// 	}
+									// }else{
+									// 	$this.setSucc = true;
+									// }
 									// prompt.showToast({message:"配网失败" + JSON.stringify(data),duration:1})
 								}
 							})
