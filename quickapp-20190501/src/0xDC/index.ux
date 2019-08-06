@@ -22,7 +22,7 @@
 					<text class="nav_time_show_label" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}">
 						<span>大约需要</span>
 					</text>
-					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end'}} && running_status !== 'fault'">
+					<text class="nav_time_show_text" if="{{col === 'on' && running_status !== 'standby' && running_status !== 'end' && running_status !== 'fault'}}">
 						<span>{{showTimeLabel()}}</span>
 					</text>
 					<div class="nav_time_show_text_error_container" if="{{col === 'on' && running_status === 'fault'}}">
@@ -342,8 +342,42 @@ module.exports = {
 			}
 		})
 	},
+	getStatus() {
+		let that = this;
+		that.iswarm = false;
+		let timestamp = Date.parse(new Date());
+		storage.get({
+			key: 'openidToken',
+			success: function (data) {
+				if (data === '') {
+					that.getdevicelist();
+				} else {
+					let obj = JSON.parse(data);
+					if (parseInt(timestamp) > parseInt(obj.time)) {
+						that.getdevicelist();
+					} else {
+						if (obj.openid === that.openid) {
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							if (!that.isLanInit) {
+								that.LanOnlineGet();
+							}
+							that.getDeviceStatus(that.openId);
+						} else {
+							that.getdevicelist();
+						}
+					}
+				}
+				console.log('handling success')
+			},
+			fail: function (data, code) {
+				console.log(`handling fail, code = ${code}`)
+			}
+		})
+	},
 	timeGetData() {
 		let that = this;
+		that.getStatus();
 		that.timeoutInter = setInterval(function () {
 			that.iswarm = false;
 			let timestamp = Date.parse(new Date());
@@ -850,7 +884,10 @@ module.exports = {
 		// api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
 		api.postDeviceControl(params, that.accessToken, "false", that.deviceId).then((res) => {
 			that.isagain = true;
-			that.timeGetData();
+			// that.timeGetData();
+			setTimeout(function () {
+				that.timeGetData();
+			}, 1000)
 			if (res.lanonline) {
 				that.wlanControl(res);
 			} else {
@@ -863,7 +900,10 @@ module.exports = {
 				that.netWorkGet('操作设备失败,请稍后重试')
 				that.isloading = false;
 				that.isRefreshing = false;
-				that.timeGetData();
+				// that.timeGetData();
+				setTimeout(function () {
+					that.timeGetData();
+				}, 1000)
 			// } else {
 			// 	that.isagain = false;
 			// 	that.lanOnline = 'false';

@@ -38,8 +38,7 @@
 				</list-item>
 			</list>
 		</refresh>
-		<text class="nav_time_text" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}" 
-			style="color: {{col === 'on'?'#ffffff':'#666666'}};left: {{parseInt(remain_time)>99?'850px':'750px'}};">
+		<text class="nav_time_text" if="{{col === 'on' && running_status != 'standby' && running_status !== 'end'}}" style="color: {{col === 'on'?'#ffffff':'#666666'}};left: {{parseInt(remain_time)>99?'850px':'750px'}};">
 			<span>分</span>
 		</text>
 		<div class="nav_control_btn" style="background-color: {{btnBgColor}};">
@@ -55,8 +54,7 @@
 				</div>
 			</div>
 		</div>
-		<midea-showdialog if="{{showErrorDialog}}" header="{{dialogHead}}" footer="{{dialogFoot}}" 
-			onclick-event1="closeErrorDialog()" onclick-event2="closeErrorDialog()" onclick-event3="closeErrorDialog()">
+		<midea-showdialog if="{{showErrorDialog}}" header="{{dialogHead}}" footer="{{dialogFoot}}" onclick-event1="closeErrorDialog()" onclick-event2="closeErrorDialog()" onclick-event3="closeErrorDialog()">
 			<text class="error_dialog_content">请检查设备是否故障</text>
 		</midea-showdialog>
 		<midea-loading if="{{isloading}}"></midea-loading>
@@ -139,22 +137,22 @@ module.exports = {
 		list_2: [],
 		listDevice: {},
 		time: [],
-		dialogHead:{
-		    title:'错误',
-		    fontSize:48,
-		    color:"#000000",
-		    fontWeight:'bold'
+		dialogHead: {
+			title: '错误',
+			fontSize: 48,
+			color: "#000000",
+			fontWeight: 'bold'
 		},
-		dialogFoot:[{
-		    name:'取消',
-		    fontSize:48,
-		    color:"#333333",
-		    fontWeight:'nomal'
-		},{
-		    name:'确定',
-		    fontSize:48,
-		    color:"#3191FD",
-		    fontWeight:'nomal'
+		dialogFoot: [{
+			name: '取消',
+			fontSize: 48,
+			color: "#333333",
+			fontWeight: 'nomal'
+		}, {
+			name: '确定',
+			fontSize: 48,
+			color: "#3191FD",
+			fontWeight: 'nomal'
 		}],
 		btnPowOnOffImgSrc: './assets/img/off.png',
 		isStartPaurseButtonEnable: false,
@@ -340,7 +338,7 @@ module.exports = {
 			that.regetdata();
 		}
 	},
-	regetdata(){
+	regetdata() {
 		let that = this;
 		let timestamp = Date.parse(new Date());
 		storage.get({
@@ -374,9 +372,43 @@ module.exports = {
 			}
 		})
 	},
+	getStatus() {
+		let that = this;
+		that.iswarm = false;
+		let timestamp = Date.parse(new Date());
+		storage.get({
+			key: 'openidToken',
+			success: function (data) {
+				if (data === '') {
+					that.getdevicelist();
+				} else {
+					let obj = JSON.parse(data);
+					if (parseInt(timestamp) > parseInt(obj.time)) {
+						that.getdevicelist();
+					} else {
+						if (obj.openid === that.openid) {
+							that.openId = obj.openid;
+							that.accessToken = obj.accessToken;
+							if (!that.isLanInit) {
+								that.LanOnlineGet();
+							}
+							that.getDeviceStatus(that.openId);
+						} else {
+							that.getdevicelist();
+						}
+					}
+				}
+				console.log('handling success')
+			},
+			fail: function (data, code) {
+				console.log(`handling fail, code = ${code}`)
+			}
+		})
+	},
 	timeGetData() {
 		let that = this;
-		that.timeoutInter = setInterval(function () {
+		that.getStatus();
+		that.timeoutInter = setInterval(function() {
 			that.iswarm = false;
 			let timestamp = Date.parse(new Date());
 			storage.get({
@@ -663,7 +695,7 @@ module.exports = {
 										text: '确定',
 										color: '#33dd44'
 									}],
-									complete: function() {
+									complete: function () {
 										router.back();
 									}
 								});
@@ -745,7 +777,7 @@ module.exports = {
 		console.log("局域网：" + JSON.stringify(res))
 		if (parseInt(obj.code) == 0) {
 			setTimeout(function () {
-				that.getDeviceStatus(that.openId); 
+				that.getDeviceStatus(that.openId);
 			}, 1000)
 			// 				that.isRefreshing = false;
 			// 				that.isloading = false;
@@ -815,10 +847,10 @@ module.exports = {
 								that.isshowclose();
 								return false;
 							}
-							if(str1.toString() == '-1'){
+							if (str1.toString() == '-1') {
 								that.isagain = false
 							}
-							if(str1.toString() === '-100' && data.devices[0].description.toString() === '3123'){
+							if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
 								that.isshowclose();
 							} else {
 								that.netWorkGet(api.getStatus("post", str1, '操作设备失败'))
@@ -873,7 +905,10 @@ module.exports = {
 		// api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
 		api.postDeviceControl(params, that.accessToken, "false", that.deviceId).then((res) => {
 			that.isagain = true;
-			that.timeGetData();
+			// that.timeGetData();
+			setTimeout(function () {
+				that.timeGetData();
+			}, 1000)
 			if (res.lanonline) {
 				that.wlanControl(res);
 			} else {
@@ -881,12 +916,15 @@ module.exports = {
 			}
 		}).catch((error) => {
 			// if (error.online) {
-				that.initData();
-				that.isstop = true;
-				that.netWorkGet('操作设备失败,请稍后重试')
-				that.isloading = false;
-				that.isRefreshing = false;
+			that.initData();
+			that.isstop = true;
+			that.netWorkGet('操作设备失败,请稍后重试')
+			that.isloading = false;
+			that.isRefreshing = false;
+			// that.timeGetData();
+			setTimeout(function () {
 				that.timeGetData();
+			}, 1000)
 			// } else {
 			// 	that.isagain = false;
 			// 	that.lanOnline = 'false';
