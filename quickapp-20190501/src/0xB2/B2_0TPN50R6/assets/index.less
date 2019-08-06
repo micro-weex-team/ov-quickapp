@@ -11,6 +11,8 @@
 			width: 100%;
 			// height: 100%;
 			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 			&_lock_l{
 				width: 100%;
 				height: 84px;
@@ -23,8 +25,14 @@
 				resize-mode: cover;
 			}
 			&_time{
+				// position: relative;
 				flex-direction: row;
 				justify-content: center;
+				width: 800px;
+				height: 800px;
+				border-radius: 400px;
+				border-color: #FFFFFF;
+				border-width: 20px;
 			}
 			&_lock{
 				flex-direction: row;
@@ -44,31 +52,33 @@
 			}
 			&_data{
 				// width: 100%;
-				margin-top: 100px;
+				// margin-top: 100px;
 				text-align: center;
-				font-size: 330px;
+				font-size: 260px;
 			}
 			&_tag{
 				width: 60px;
 				font-size: 54px;
 				color: #FFFFFF;
-				margin-top: 250px;
+				margin-top: 120px;
 				margin-left: 20px;
+				// position: absolute;
 			}
 			&_about{
 				width: 100%;
 				text-align: center;
 				font-size: 48px;
 				color: #FFFFFF;
+				margin-top: -150px;
 			}
 			&_done{
-				margin-top: 300px;
+				margin-top: 60px;
 				width: 100%;
 				text-align: center;
 				font-size: 144px;
 			}
 			&_doneText{
-				margin-top: 112px;
+				margin-top: 60px;
 				width: 100%;
 				text-align: center;
 				font-size: 48px;
@@ -78,14 +88,14 @@
 				text-align: center;
 				font-size: 54px;
 				color: #FFFFFF;
-				margin-top: 100px;
+				margin-top: 140px;
 			}
 			&_mode{
 				width: 100%;
 				text-align: center;
 				font-size: 48px;
 				color: #FFFFFF;
-				margin-top: 100px;
+				margin-top: 60px;
 			}
 		}
 	}
@@ -148,11 +158,9 @@
 			flex-direction: column;
 			justify-content: center;
 			&_list{
-				margin-left: 60px;
-				margin-right: 60px;
-				width: 960px;
-// 				padding-left: 58px;
-// 				padding-right: 58px;
+				margin-left: 90px;
+				margin-right: 90px;
+				width: 900px;
 				border-radius: 30px;
 				background-color: #FFFFFF;
 				flex-direction: column;
@@ -168,8 +176,8 @@
 				&_item{
 					width: 100%;
 					height: 147px;
-					border-bottom-width: 1.5px;
-					border-bottom-color: #D9D9D9;
+					border-bottom-width: 1px;
+					border-bottom-color: #e9e9e9;
 					padding-left: 58px;
 					padding-right: 58px;
 					flex-direction: row;
@@ -208,38 +216,45 @@
 // 					border-bottom-width: 1.5px;
 // 					border-bottom-color: #D9D9D9;
 					flex-direction: row;
+					justify-content: center;
 					&_firelist{
 						width: 100%;
+						height: 0px;
 						border-left-width: 1.5px;
 						border-left-color: #D9D9D9;
-						height: 0px;
+						justify-content: center;
 					}
 					&_list{
+						position: relative;
 						width: 50%;
 						border-left-width: 1.5px;
 						border-left-color: #D9D9D9;
 						height: 450px;
-					}
-					.b0_alert_nav_list_select_list_item{
-						height: 105px;
-						width: 100%;
-						flex-direction: row;
-						&_data{
-							width: 50%;
-							text-align: right;
-							font-size: 48px;
-							color: #CCCCCC;
+						justify-content: center;
+						&_item{
+							position: relative;
+							height: 105px;
+							width: 100%;
+							justify-content: center;
+							text-align: center;
+							&_data{
+								font-size: 48px;
+								color: #CCCCCC;
+							}
+							&_img{
+								position: absolute;
+								right: 50px;
+								width: 40px;
+								height: 25px;
+								resize-mode: cover;
+								margin-left: 30px;
+								margin-right: 30px;
+								margin-top: 40px;
+								// background-color: red;
+							}
 						}
-						&_img{
-							width: 40px;
-							height: 25px;
-							resize-mode: cover;
-							margin-left: 30px;
-							margin-right: 30px;
-							margin-top: 40px;
-							// background-color: red;
-						}
 					}
+					
 				}
 				&_btn{
 					width: 100%;
@@ -272,16 +287,22 @@
 		}
 	}
 }
-
 .item-container {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    flex-direction: column;
+	display: flex;
+    padding-top: 40px;
+	padding-bottom: 20px;
+	margin-left: 60px;
+	margin-right: 60px;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom-width: 1.5px;
+	border-bottom-color: #e9e9e9;
   }
   .item-title {
-    padding-left: 30px;
+	font-size: 46px;
     padding-bottom: 20px;
-    color: #aaaaaa;
+    color: #666;
   }
   .item-content {
     padding-left: 30px;
@@ -295,7 +316,7 @@
     flex-direction: column;
   }
   .switch {
-    margin-right: 30px;
+	border-color: #F9CB3D
   }
 .bo_kong{
 	width: 50%;
