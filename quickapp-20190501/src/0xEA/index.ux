@@ -46,7 +46,8 @@
                         order_time_min)}}
                     </text>
                     <text class="EA_nav_list_status" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}"
-                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status_fun(mode,work_status)}}
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">
+                        {{work_status_fun(mode,work_status)}}
                     </text>
                     <text class="EA_nav_list_cancel" if="{{work_status === 'cancel'}}"
                           style="color: {{online === 'true'?'#ffffff':'#666666'}};">待机中
@@ -816,9 +817,9 @@
             this.left_time_min = this.EAdata.left_time_min;
             this.work_status = this.EAdata.work_status;
             this.mode = this.EAdata.mode;
-            if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
+            // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
                 that.timeGetdata();
-            }
+            // }
         },
         //网络检查
         netWorkGet(str) {
@@ -1522,9 +1523,9 @@
             // 	clearInterval(that.timeoutInter)
             // }
             if (that.online === 'true') {
-                if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
+                // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
                     that.timeGetdata();
-                }
+                // }
             }
 
             if (that.ws === '' && that.isws) {
