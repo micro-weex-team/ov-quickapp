@@ -1050,6 +1050,7 @@ module.exports = {
 				status: status
 			}]
 		}
+		clearInterval(that.timeoutInter);
 		that.isloading = true;
 
 		console.log("$Lanonline:" + JSON.stringify(net.$Lanonline) + "::::::::isagain:" + that.isagain)
@@ -1061,23 +1062,25 @@ module.exports = {
 		// api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
 		api.postDeviceControl(params, that.accessToken, 'false', that.deviceId).then((res) => {
 			that.isagain = true;
+			that.timeGetData();
 			if (res.lanonline) {
 				that.wlanControl(res);
 			} else {
 				that.lanControl(res, obj, status)
 			}
 		}).catch((error) => {
-			if (error.online) {
+			// if (error.online) {
 				that.initData();
 				that.isstop = true;
 				that.netWorkGet('操作设备失败,请稍后重试')
 				that.isloading = false;
 				that.isRefreshing = false;
-			} else {
-				that.isagain = false;
-				that.lanOnline = 'false';
-				that.postDeviceControl(obj, status);
-			}
+				that.timeGetData();
+			// } else {
+			// 	that.isagain = false;
+			// 	that.lanOnline = 'false';
+			// 	that.postDeviceControl(obj, status);
+			// }
 		})
 	},
 	initData() {
