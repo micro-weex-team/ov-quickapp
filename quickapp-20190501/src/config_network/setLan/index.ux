@@ -3,7 +3,7 @@
 		<div class="midea-title">
 			<image class="midea-title-back {{language?'':'l_image_back'}}" @click="backPage()" src="../../Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"></image>
 			<text class="midea-title-text">
-				连接{{name}}
+				连接{{deviceName}}
 			</text>
 		</div>
 		<list id="list" class="midea-list">
@@ -17,8 +17,8 @@
 							<text class="midea-tips-list">&#xe650;</text>
 						</div>
 						<div class="midea-tips-first-right">
-							<text class="midea-tips-first-right-text1">{{name}}已发出Wi-Fi信号，请将手机连接上此Wi-Fi：</text>
-							<text class="midea-tips-first-right-text2">{{name}}Wi-Fi：{{ssid}}</text>
+							<text class="midea-tips-first-right-text1">{{deviceName}}已发出Wi-Fi信号，请将手机连接上此Wi-Fi：</text>
+							<text class="midea-tips-first-right-text2">{{deviceName}}Wi-Fi：{{ssid}}</text>
 							<text class="midea-tips-first-right-text2">Wi-Fi密码：{{password}}</text>
 						</div>
 					</div>
@@ -37,20 +37,17 @@
 		
 		<div class="midea-tips-btn">
 			<text class="midea-tips-setLan" @click="gotosetlan()">
-				去连接{{name}}Wi-Fi
+				去连接{{deviceName}}Wi-Fi
 			</text>
 		</div>
 	</div>
 </template>
 <script>
 	import net from '../../Common/api/networkAPI.js';
+	import objindex from './assets/index.js';
 	export default {
 		name: 'setLan',
 		props: {
-			name:{
-				default: '空调',
-				type: String
-			},
 			ssid:{
 				default: 'midea_xx_xxxx',
 				type: String
@@ -65,7 +62,7 @@
 			}
 		},
 		data: {
-			deviceName:'',
+			deviceName:'空调',
 			deviceSsid:'',
 			ssidPassword:'',
 			devicelanguage:true
@@ -74,12 +71,12 @@
 			let that = this;
 			that.$emit("back",{param:"返回"})
 		},
-		setdata(){
+		setdata(val,oval){
 			let that = this;
-			that.deviceName = that.name;
-			that.deviceSsid = that.ssid;
-			that.ssidPassword = that.password;
-			that.devicelanguage = that.language;
+			
+			let str = '';
+			console.log("数据改变")
+			console.log(that.ssid)
 		},
 		gotosetlan(){
 			let that = this;
@@ -88,6 +85,14 @@
 		},
 		onInit () {
 			let that = this;
+			let str = '';
+			console.log(that.ssid)
+			if(that.ssid != ''){
+				str = that.ssid.substring(6,8).toLowerCase()
+			}
+			console.log(str)
+			that.deviceName = objindex.getName(str);
+			
 			// that.setdata();
 		}
 	}

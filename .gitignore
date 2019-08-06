@@ -1,0 +1,6 @@
+node_modules/
+.idea/
+build/
+quickapp-20190501/dist
+quickapp-20190501/log.txt
+quickapp-20190501/logs

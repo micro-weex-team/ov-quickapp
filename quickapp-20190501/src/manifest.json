@@ -115,15 +115,18 @@
         "origin": "*"
     }],
     "config": {
-        "logLevel": "",
+        "logLevel": "2",
         "designWidth": 1080,
         "data":{
             "winHight":0
         }
     },
     "router": {
-        "entry": "Demo",
+        "entry": "0xB1/B1_0TVN50R6",
         "pages": {
+			"0xFB": {
+			    "component": "index"
+			},
 			"0xF1": {
 			    "component": "index"
 			},
@@ -158,6 +161,18 @@
 				"component": "index"
 			},
 			"0xB0": {
+				"component": "index"
+            },
+            "0xB1": {
+				"component": "index"
+            },
+            "0xB1/B1_0TVN50R6": {
+				"component": "index"
+            },
+            "0xB2": {
+				"component": "index"
+            },
+            "0xB2/B2_0TPN50R6": {
 				"component": "index"
 			},
 			"0xB6": {

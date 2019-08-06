@@ -1,0 +1,176 @@
+<template>
+	<div class="nav_setlan">
+		<div class="midea-title">
+			<image class="midea-title-back {{language?'':'l_image_back'}}" @click="backPage()" src="../../Component/MideaTitle/assets/menu_ic_arrow_back_normal.png"></image>
+			<text class="midea-title-text">
+				连接Wi-Fi网络
+			</text>
+		</div>
+		<list id="list" class="midea-list">
+			<list-item type="listItem" class="midea-list-item">
+				<image src="../assets/Wifi.png" class="midea-product-img"></image>
+				<div class="midea-tips">
+					<text class="midea-tips-title">操作指引</text>
+					<div class="midea-tips-first">
+						<div class="midea-tips-first-right">
+							<text class="midea-tips-first-right-text1">请将手机切换至家庭Wi-Fi网络（暂不支持5GHz Wi-Fi）</text>
+							<text class="midea-tips-first-right-text2">家庭Wi-Fi：{{ssid}}</text>
+						</div>
+					</div>
+				</div>
+				
+			</list-item>
+		</list>
+		
+		<div class="midea-tips-btn">
+			<text class="midea-tips-setLan" @click="gotosetlan()">
+				连接Wi-Fi网络
+			</text>
+		</div>
+	</div>
+</template>
+<script>
+	import net from '../../Common/api/networkAPI.js';
+	export default {
+		name: 'setLan',
+		props: {
+			ssid:{
+				default: '',
+				type: String
+			},
+			language:{
+				default: true,
+				type: Boolean
+			}
+		},
+		data: {
+			deviceSsid:'',
+			ssidPassword:'',
+			devicelanguage:true
+		},
+		backPage(){
+			let that = this;
+			that.$emit("back",{param:"返回"})
+		},
+		gotosetlan(){
+			let that = this;
+			net.setWifi();
+			that.$emit("close",{param:"返回"});
+		},
+		onInit () {
+			let that = this;
+		}
+	}
+</script>
+<style lang='less' scoped>
+	 @font-face {
+		font-family: iconfont;
+		src: url("../assets/iconfont.ttf");
+	  }
+	.l_image_back{
+		/* margin-right: 40px; */
+		transform: rotate(180deg);
+	}
+	.l_nav_tips_list{
+		width: 100%;
+		margin-left: 400px;
+		margin-right: 200px;
+		flex-direction: row;
+	}
+	
+	.midea-list{
+		width: 100%;
+		flex-direction: column;
+		&-item{
+			width: 100%;
+			flex-direction: column;
+		}
+	}
+	
+	.nav_setlan{
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
+		background-color: #FFFFFF;
+		flex-direction: column;
+		.midea-title{
+			width: 100%;
+			height: 164px;
+			background-color: #ffffff;
+			border-bottom-color: #cccccc;
+			border-bottom-width: 1px;
+			flex-direction: row;
+		}
+		.midea-title-back{
+			width: 66px;
+			height:66px;
+			margin-top: 50px;
+			margin-left: 40px;
+			margin-right: 40px;
+		}
+		.midea-title-text{
+			width: 770px;
+			height: 164px;
+			text-align: center;
+			font-size: 50px;
+			color: #000000;
+			font-weight: bold;
+		}
+	}
+	.midea-product-img{
+		width: 100%;
+		height: 606px;
+	}
+	.midea-tips{
+		padding: 60px;
+		flex-direction: column;
+		&-btn{
+			width: 100%;
+			height: 140px;
+			padding-left: 60px;
+			padding-right: 60px;
+			margin-bottom: 60px;
+		}
+		&-setLan{
+			height: 100%;
+			font-size: 48px;
+			width: 100%;
+			text-align: center;
+			color: #FFFFFF;
+			border-radius: 16px;
+			background-color: #21D9E5;
+		}
+		&-title{
+			font-size: 60px;
+			font-weight: bold;
+		}
+		&-list{
+			font-family: iconfont;
+			color: #666666;
+			font-size: 65px;
+		}
+		&-first{
+			margin-top: 60px;
+			flex-direction: row;
+			&-left{
+				width: 86px;
+				height: 65px;
+			}
+			&-right{
+				flex-direction: column;
+				&-text1{
+					width: 725px;
+					font-size: 42px;
+					color: #666666;
+					margin-bottom: 16px;
+				}
+				&-text2{
+					font-size: 42px;
+					color: #3191FD;
+				}
+			}
+		}
+	}
+</style>

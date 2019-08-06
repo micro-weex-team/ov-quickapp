@@ -453,6 +453,21 @@ export default {
 		})
 	},
 	/**
+	 * 继续配网
+	 */
+	goResumeConfig(){
+		IOT.send({
+			action:'CustomerHandler.resumeConfig',
+			data:'随便的参数',
+			success: function(data) {
+				console.log('继续配网：'+JSON.stringify(data))
+			},
+			fail: function(data, code) {
+				console.log(JSON.stringify(data))
+			}
+		})
+	},
+	/**
 	 * 获取wifi信息
 	 */
 	getwifiinfo(){
@@ -468,6 +483,7 @@ export default {
 			})
 		})
 		return p;
-	}
+	},
+	
 	
 }
