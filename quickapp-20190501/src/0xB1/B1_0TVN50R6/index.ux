@@ -5,7 +5,7 @@
 <import name="midea-loading" src="../../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="大烤箱" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
+		<midea-head title="大烤箱R6" language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
@@ -321,6 +321,12 @@
 		startDevice() {
 			let that = this;
 			let params;
+			if(that.modeItem.work_mode == "underside_tube" && that.preheatCheck && parseInt(that.temperature) < 100){
+				prompt.showToast({
+					message: "下管烧烤，预热不能低于100度哦"
+				})
+				return;
+			}
 			if(parseInt(that.min)===0 && parseInt(that.setHour) === 0){
 				prompt.showToast({
 					message: "请选择加热时长"
@@ -649,7 +655,13 @@
 			that.pre_heat = that.listdata.pre_heat?that.listdata.pre_heat:'off';
 			let tips_code = that.listdata.tips_code;
 			that.tipsShow(tips_code);
-		
+			let error_code = that.listdata.error_code;
+			if(error_code){
+				prompt.showToast({
+					message: "设备故障了"
+				})
+				return;
+			}
 			if(this.listdata.work_status === 'save_power'){
 				that.power = 'off';
 			}else{
@@ -861,16 +873,17 @@
 		//显示离线提醒
 		isshowclose() {
 			let that = this;
-			if(that.timeTips != ''){
-				that.istips = false;
-				clearTimeout(that.timeTips)
-			}
-			if(that.iswarm){
-				that.istips = true;
-				that.timeTips = setTimeout(function() {
-					that.istips = false;
-				}, 3000)
-			}
+			that.istips = true;
+			// if(that.timeTips != ''){
+			// 	that.istips = false;
+			// 	clearTimeout(that.timeTips)
+			// }
+			// if(that.iswarm){
+			// 	that.istips = true;
+			// 	// that.timeTips = setTimeout(function() {
+			// 	// 	that.istips = false;
+			// 	// }, 3000)
+			// }
 		},
 		//获取后一天的时间戳
 		gettime() {
@@ -975,17 +988,21 @@
 			that.isfirst = true;
 			let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
 			if (parseInt(data.code) == 0) {
-					// prompt.showToast({
-					// 	message: data
-					// })
+				let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+				that.listdata = obj;
+				that.listDevice = obj;
+				that.online = that.listdata.online;
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
 				if (!parseInt(data.code)) {
-					let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
-					that.listdata = obj;
-					that.listDevice = obj;
-					that.online = that.listdata.online;
-					if (that.online != 'true') {
-						that.isshowclose();
-					}
+					// let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+					// that.listdata = obj;
+					// that.listDevice = obj;
+					// that.online = that.listdata.online;
+					// if (that.online != 'true') {
+					// 	that.isshowclose();
+					// }
 				} else {
 					that.isworking = true;
 					if (data.msg === '') {
@@ -1029,9 +1046,12 @@
 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 				that.listdata = data;
 				that.listDevice = data;
-				that.online = 'true';
-				that.listDevice.online = 'true';
-				that.listdata.online = 'true';
+				that.online = that.listdata.online;
+				// that.listDevice.online = 'true';
+				// that.listdata.online = 'true';
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
 			}else{
 				that.isagain = false;
 				that.lanOnline = "false";
@@ -1177,146 +1197,146 @@
 				}
 			})
 		},
-		/**
-		 * 局域网控制
-		 */
-		lanControl(res,obj1,status,bol){
-			let that = this;
-			let obj = (typeof res) == 'object'?res:JSON.parse(res);
-			console.log("局域网："+JSON.stringify(res))
-			if(parseInt(obj.code) == 0){
-				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
-				that.listdata = data;
-				that.listDevice = data;
-				that.online = 'true';
-				that.listDevice.online = 'true';
-				that.listdata.online = 'true';
-			}else{
-				that.isagain = false;
-				that.lanOnline = 'false';
-				that.ctrDevice(obj1,status,bol);
-				// that.netWorkGet('获取设备状态失败,请稍后重试');
-			}
-		},
-		/**
-		 * 广域网控制
-		 */
-		wlanControl(res){
-			let that = this;
-			let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+		// /**
+		//  * 局域网控制
+		//  */
+		// lanControl(res,obj1,status,bol){
+		// 	let that = this;
+		// 	let obj = (typeof res) == 'object'?res:JSON.parse(res);
+		// 	console.log("局域网："+JSON.stringify(res))
+		// 	if(parseInt(obj.code) == 0){
+		// 		let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
+		// 		that.listdata = data;
+		// 		that.listDevice = data;
+		// 		that.online = 'true';
+		// 		that.listDevice.online = 'true';
+		// 		that.listdata.online = 'true';
+		// 	}else{
+		// 		that.isagain = false;
+		// 		that.lanOnline = 'false';
+		// 		that.ctrDevice(obj1,status,bol);
+		// 		// that.netWorkGet('获取设备状态失败,请稍后重试');
+		// 	}
+		// },
+		// /**
+		//  * 广域网控制
+		//  */
+		// wlanControl(res){
+		// 	let that = this;
+		// 	let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 
-			if (parseInt(bind_res_data.code) == 0 || parseInt(bind_res_data.code) == 200) {
-				if(parseInt(bind_res_data.code) == 0){
-					if (!parseInt(bind_res_data.devices[0].status)) {
-						that.listdata.online = 'true';
-						that.online = 'true';
-						let isall = false;
-						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
-							bind_res_data.devices[0].props);
-						if (obj.save_power) {
-							that.listdata.power = obj.save_power
-						} else {
-							isall = true;
-						}
-						if (obj.lock) {
-							that.listdata.lock = obj.lock
-						} else {
-							isall = true;
-						}
-						if (obj.work_minute.toString()) {
-							that.listdata.work_minute = obj.work_minute
-						} else {
-							isall = true;
-						}
-						if (obj.work_hour.toString()) {
-							that.listdata.work_hour = obj.work_hour
-						} else {
-							isall = true;
-						}
-						if (obj.work_second.toString()) {
-							that.listdata.work_second = obj.work_second
-						} else {
-							isall = true;
-						}
-						if (obj.fire_power) {
-							that.listdata.fire_power = obj.fire_power
-						} else {
-							isall = true;
-						}
-						if (obj.work_status) {
-							that.listdata.work_status = obj.work_status
-						} else {
-							isall = true;
-						}
-						if (obj.temperature) {
-							that.listdata.temperature = obj.temperature
-						} else {
-							isall = true;
-						}
-						if (obj.pre_heat) {
-							that.listdata.pre_heat = obj.pre_heat;
-						} else {
-							isall = true;
-						}
-						let tips_code = that.listdata.tips_code;
-						that.tipsShow(tips_code);
-						that.listDevice = obj;
-						// if (isall) {
-						// 	that.isshowLoading = true;
-						// 	that.getDeviceList();
-						// } else {
-						// 	that.isRefreshing = false;
-						// 	that.isshowLoading = false;
-						// }
-						that.isRefreshing = false;
-						that.isshowLoading = false;
-					} else {
-						that.isRefreshing = false;
-						that.isshowLoading = false;
-						if (bind_res_data.msg === '') {
-							let str1 = '';
-							if (bind_res_data.devices[0].status) {
-								str1 = bind_res_data.devices[0].status;
-								if(str1.toString() === '-6'){
-									that.isshowclose();
-									return false;
-								}
-								if (str1.toString() != '-100') {
-									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-								} else {
-									if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
-										that.isshowclose();
-									}else{
-										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-									}
-								}
-							} else {
-								str1 = bind_res_data.code;
-								that.netWorkGet(api.getCode(str1, '操作设备失败'))
-							}
-							// $this.netWorkGet('操作设备失败')
-						} else {
-							that.netWorkGet(bind_res_data.msg)
-						}
-					}
-				}else{
-					that.isRefreshing = false;
-					that.isshowLoading = false;
-					if (bind_res_data.msg === '') {
-						let str1 = '';
-						str1 = bind_res_data.code;
-						that.netWorkGet(api.getCode(str1, '操作设备失败'))
-					} else {
-						that.netWorkGet(bind_res_data.msg)
-					}
-				}
+		// 	if (parseInt(bind_res_data.code) == 0 || parseInt(bind_res_data.code) == 200) {
+		// 		if(parseInt(bind_res_data.code) == 0){
+		// 			if (!parseInt(bind_res_data.devices[0].status)) {
+		// 				that.listdata.online = 'true';
+		// 				that.online = 'true';
+		// 				let isall = false;
+		// 				let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
+		// 					bind_res_data.devices[0].props);
+		// 				if (obj.save_power) {
+		// 					that.listdata.power = obj.save_power
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.lock) {
+		// 					that.listdata.lock = obj.lock
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.work_minute.toString()) {
+		// 					that.listdata.work_minute = obj.work_minute
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.work_hour.toString()) {
+		// 					that.listdata.work_hour = obj.work_hour
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.work_second.toString()) {
+		// 					that.listdata.work_second = obj.work_second
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.fire_power) {
+		// 					that.listdata.fire_power = obj.fire_power
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.work_status) {
+		// 					that.listdata.work_status = obj.work_status
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.temperature) {
+		// 					that.listdata.temperature = obj.temperature
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				if (obj.pre_heat) {
+		// 					that.listdata.pre_heat = obj.pre_heat;
+		// 				} else {
+		// 					isall = true;
+		// 				}
+		// 				let tips_code = that.listdata.tips_code;
+		// 				that.tipsShow(tips_code);
+		// 				that.listDevice = obj;
+		// 				// if (isall) {
+		// 				// 	that.isshowLoading = true;
+		// 				// 	that.getDeviceList();
+		// 				// } else {
+		// 				// 	that.isRefreshing = false;
+		// 				// 	that.isshowLoading = false;
+		// 				// }
+		// 				that.isRefreshing = false;
+		// 				that.isshowLoading = false;
+		// 			} else {
+		// 				that.isRefreshing = false;
+		// 				that.isshowLoading = false;
+		// 				if (bind_res_data.msg === '') {
+		// 					let str1 = '';
+		// 					if (bind_res_data.devices[0].status) {
+		// 						str1 = bind_res_data.devices[0].status;
+		// 						if(str1.toString() === '-6'){
+		// 							that.isshowclose();
+		// 							return false;
+		// 						}
+		// 						if (str1.toString() != '-100') {
+		// 							that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
+		// 						} else {
+		// 							if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
+		// 								that.isshowclose();
+		// 							}else{
+		// 								that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
+		// 							}
+		// 						}
+		// 					} else {
+		// 						str1 = bind_res_data.code;
+		// 						that.netWorkGet(api.getCode(str1, '操作设备失败'))
+		// 					}
+		// 					// $this.netWorkGet('操作设备失败')
+		// 				} else {
+		// 					that.netWorkGet(bind_res_data.msg)
+		// 				}
+		// 			}
+		// 		}else{
+		// 			that.isRefreshing = false;
+		// 			that.isshowLoading = false;
+		// 			if (bind_res_data.msg === '') {
+		// 				let str1 = '';
+		// 				str1 = bind_res_data.code;
+		// 				that.netWorkGet(api.getCode(str1, '操作设备失败'))
+		// 			} else {
+		// 				that.netWorkGet(bind_res_data.msg)
+		// 			}
+		// 		}
 				
-			} else {
-				that.isRefreshing = false;
-				that.isshowLoading = false;
-				that.netWorkGet('操作设备失败,请稍后重试')
-			}
-		},
+		// 	} else {
+		// 		that.isRefreshing = false;
+		// 		that.isshowLoading = false;
+		// 		that.netWorkGet('操作设备失败,请稍后重试')
+		// 	}
+		// },
 		//下拉刷新
 		scrollbottom(e) {
 			let that = this;
@@ -1476,6 +1496,9 @@
 					}
 					if (obj.status.tips_code) {
 						that.listdata.tips_code = obj.status.tips_code;
+					}
+					if (obj.status.error_code) {
+						that.listdata.error_code = obj.status.error_code;
 					}
 					let tips_code = obj.status.tips_code;
 					that.tipsShow(tips_code);

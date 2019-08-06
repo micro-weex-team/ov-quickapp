@@ -16,10 +16,9 @@
 					<div class="{{language?'b0_nav_list_lock':'b0_nav_list_lock_l'}}" @click="isMeiju()">
 						<image src="{{power === 'on'?'./assets/img/loadingMeiju.png':'./assets/img/meijuicon.png'}}" class="b0_nav_list_lock_img"></image>
 					</div>
-
 					<text class="b0_nav_list_usemeiju">使用美居</text>
-					<div class="b0_nav_list_time">
-						<text class="b0_nav_list_data" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
+					<div class="b0_nav_list_time" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}">
+						<text class="b0_nav_list_data" style="color: {{power === 'on'?'#ffffff':'#666666'}};font-size:{{showMinTag?'330px':'260px'}}">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
 						<text if="{{showMinTag}}" class="b0_nav_list_tag">{{tagText}}</text>
 					</div>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
@@ -90,17 +89,13 @@
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" id="listSec">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'min')" for="{{getHourMin(60)}}">
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{min === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
-								<div class="bo_kong{{language?'':'_l'}}">
-									<image src="./assets/img/select.png" show="{{min === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
-								</div>
+								<image src="./assets/img/select.png" show="{{min === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{min === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}</text>
 							</list-item>
 						</list>
 						<list class="b0_alert_nav_list_select_list {{doanimat}}" if="{{!language}}" id="listMin">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'setHour')" for="{{setTimeArr}}">
-								<div class="bo_kong_l">
-									<image src="./assets/img/select.png" show="{{setHour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
-								</div>
+								<image src="./assets/img/select.png" show="{{setHour === $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								<text class="b0_alert_nav_list_select_list_item_data" style="color:{{setHour === $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}小时</text>
 							</list-item>
 						</list>
@@ -118,9 +113,7 @@
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{setTempArr}}">
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{temperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
-								<div class="bo_kong{{language?'':'_l'}}">
-									<image src="./assets/img/select.png" show="{{temperature == $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
-								</div>
+								<image src="./assets/img/select.png" show="{{temperature == $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
 								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{temperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 							</list-item>
 						</list>
@@ -617,6 +610,13 @@
 			that.mode = that.listdata.work_mode;
 			that.lock = that.listdata.lock;
 			that.door_open = that.listdata.door_open;
+			let error_code = that.listdata.error_code;
+			if(error_code){
+				prompt.showToast({
+					message: "设备故障了"
+				})
+				return;
+			}
 			if(this.listdata.work_status === 'save_power'){
 				that.power = 'off';
 			}else{
@@ -840,16 +840,18 @@
 		//显示离线提醒
 		isshowclose() {
 			let that = this;
-			if(that.timeTips != ''){
-				that.istips = false;
-				clearTimeout(that.timeTips)
-			}
-			if(that.iswarm){
-				that.istips = true;
-				that.timeTips = setTimeout(function() {
-					that.istips = false;
-				}, 3000)
-			}
+			that.istips = true;
+
+			// if(that.timeTips != ''){
+			// 	that.istips = false;
+			// 	clearTimeout(that.timeTips)
+			// }
+			// if(that.iswarm){
+			// 	that.istips = true;
+			// 	// that.timeTips = setTimeout(function() {
+			// 	// 	that.istips = false;
+			// 	// }, 3000)
+			// }
 		},
 		//获取后一天的时间戳
 		gettime() {
@@ -954,17 +956,21 @@
 			that.isfirst = true;
 			let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
 			if (parseInt(data.code) == 0) {
-					// prompt.showToast({
-					// 	message: data
-					// })
+				let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+				that.listdata = obj;
+				that.listDevice = obj;
+				that.online = that.listdata.online;
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
 				if (!parseInt(data.code)) {
-					let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
-					that.listdata = obj;
-					that.listDevice = obj;
-					that.online = that.listdata.online;
-					if (that.online != 'true') {
-						that.isshowclose();
-					}
+					// let obj =  typeof data.devices[0].properties === 'object'?data.devices[0].properties:JSON.parse(data.devices[0].properties);
+					// that.listdata = obj;
+					// that.listDevice = obj;
+					// that.online = that.listdata.online;
+					// if (that.online != 'true') {
+					// 	that.isshowclose();
+					// }
 				} else {
 					that.isworking = true;
 					if (data.msg === '') {
@@ -1008,9 +1014,12 @@
 				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
 				that.listdata = data;
 				that.listDevice = data;
-				that.online = 'true';
-				that.listDevice.online = 'true';
-				that.listdata.online = 'true';
+				that.online = that.listdata.online;
+				// that.listDevice.online = 'true';
+				// that.listdata.online = 'true';
+				if (that.online != 'true') {
+					that.isshowclose();
+				}
 			}else{
 				that.isagain = false;
 				that.lanOnline = "false";
@@ -1460,6 +1469,9 @@
 					}
 					if (obj.status.door_open) {
 						that.listdata.door_open = obj.status.door_open;
+					}
+					if (obj.status.error_code) {
+						that.listdata.error_code = obj.status.error_code;
 					}
 					that.dataCan();
 				}
