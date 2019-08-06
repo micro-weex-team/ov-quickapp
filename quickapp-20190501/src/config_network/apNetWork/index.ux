@@ -1,4 +1,7 @@
 <!--<import name="midea-loading" src="../../Component/MideaLoading/index"></import>-->
+
+<import name="midea-set" src="../setLan/index.ux"></import>
+<import name="midea-wifi" src="../setWifi/index.ux"></import>
 <template>
     <div class="container">
 		 <div class="midea-title">
@@ -20,8 +23,8 @@
 						<text class="nav_time" show="{{!isdone}}">大概还需要{{time}}s</text>
 					</div>
 					<div class="nav_bottom">
-						<text class="seting-tips">正在努力链接，请耐心等待...</text>
-						<!--<text class="seting-tips">请将设备尽量靠近路由器</text>-->
+						<text class="seting-tips" if="{{!isdone}}>正在努力链接，请耐心等待...</text>
+						<text class="seting-tips" if="{{isdone}}>请将设备尽量靠近路由器</text>
 						<div class="nav_tips">
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
 								<image show="{{language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="{{isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
@@ -75,6 +78,9 @@
 				</div>
 			</list-item>
 		</list>
+		<!-- <midea-set if="{{issetlan}}" ssid="{{ssid}}" password="{{password}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-set> -->
+		
+		<!-- <midea-wifi if="{{issetwifi}}" ssid="{{ssid}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-wifi> -->
     </div>
 </template>
 
@@ -99,6 +105,12 @@
 	
     module.exports = {
 		private: {
+			password:'',
+			ssid:'',
+			action:'',
+			issetwifi:false,
+			issetlan:false,
+			isclickset:false,
 			isap: '',
 			ismore: true,
 			language: true,
@@ -200,13 +212,6 @@
 								let wifilist = (typeof res.message) === "object"? res.message.wifiList:JSON.parse(res.message).wifiList;
 								if(that.iot_url != '' || that.ssidDevice != ''){
 									let type = api.getDeviceInformation(that.iot_url);
-									// if(type || that.ssidDevice != ''){
-									// 	let str = ''
-									// 	if(type){
-									// 		str = type.substring(type.length-2,type.length).toLowerCase();
-									// 	}else{
-									// 		str = that.ssidDevice.toLowerCase();
-									// 	}
 									if(that.ssidDevice != '' || type){
 										let str = ''
 										if(that.ssidDevice != ''){
@@ -317,6 +322,9 @@
 						console.log(`handling fail, code = ${code}`)
 					}
 				})
+				
+				// that.iot_device_ssid = "midea_db_8888";
+				// that.startConfigDevice();
 			}
 		},
 		moreRead(){
@@ -394,7 +402,7 @@
 			  callback: function (data) {
 				  if(data.type === 'none'){
 						that.setSucc = true;
-					  prompt.showToast({message:"网络异常，请检查网络是否正常再重新尝试"})
+						prompt.showToast({message:"网络异常，请检查网络是否正常再重新尝试"})
 				  }else{
 						that.setSucc = false;
 						if(that.isloadindone === 4){
@@ -416,8 +424,10 @@
 			
 		},
 		startConfigDevice() {
-			this.ismore = true;
+			
 			let $this = this;
+			$this.ismore = true;
+			$this.setSucc = false;
 			$this.isloadindone = 1;
 			let ssid = $this.iot_device_ssid;
 			if($this.iot_config_type.toString() === '1' && $this.iot_url != ''){
@@ -485,8 +495,36 @@
 										$this.setSucc = true;
 									}
 								},
-								fail: function(data) {
+								fail: function(error) {
+									console.log(JSON.stringify(error))
+									$this.action = '';
+									$this.ssid = '';
+									// let err = (typeof error != 'object') ? JSON.parse(error) : error;
 									$this.setSucc = true;
+									// if(err.message){
+									// 	let errdata = (typeof err.message != 'object') ? JSON.parse(err.message) : err.message;
+									// 	if(errdata.isCanResume){
+									// 		let wifiInfo = (typeof errdata.wifiInfo != 'object') ? JSON.parse(errdata.wifiInfo) : errdata.wifiInfo;
+									// 		console.log(JSON.stringify(wifiInfo));
+									// 		if(wifiInfo.password){
+									// 			$this.password = wifiInfo.password;
+									// 		}
+									// 		if(wifiInfo.ssid){
+									// 			$this.ssid = errdata.wifiInfo.ssid;
+									// 		}
+									// 		if(wifiInfo.action){
+									// 			$this.action = wifiInfo.action.toString();
+									// 			if(wifiInfo.action.toString() == '0'){
+									// 				$this.issetlan = true;
+									// 			}else if(wifiInfo.action.toString() == '1'){
+									// 				$this.issetwifi = true;
+									// 			}
+									// 		}
+									// 		
+									// 	}
+									// }else{
+									// 	$this.setSucc = true;
+									// }
 									// prompt.showToast({message:"配网失败" + JSON.stringify(data),duration:1})
 								}
 							})
@@ -610,17 +648,6 @@
                 uri: '' + param
             })
         },
-		//监控
-		networkStatas(){
-			network.getType({
-			  callback: function (data) {
-				  if(data.type === 'none'){
-					  
-				  }
-				console.log('handling callback')
-			  }
-			})
-		},
         onInit(){
 			this.isap = this.is_ap;
 			api.getlanguage().then((res) => {
@@ -666,9 +693,64 @@
 			})
             
         },
+		/**
+		 * 获取已连接的wifi信息
+		 */
+		getWifiInfo(){
+			let that = this;
+			net.getwifiinfo().then((res) => {
+				console.log(JSON.stringify(res))
+				if(res.SSID == that.ssid){
+					that.setSucc = false;
+					net.goResumeConfig();
+					that.issetlan = false;
+					that.issetwifi = false;
+				}else{
+					that.setSucc = true;
+					let str = '';
+					if(that.action == '0'){
+						str = "设备热点";
+					}else if(that.action == '1'){
+						str = "家庭WIFI";
+					}
+					if(str == ''){
+						return false;
+					}
+					// if(that.isclickset){
+					// 	
+					// }
+					// prompt.showToast({
+					// 	message:"连接"+str+"失败，请重试"
+					// })
+				}
+			}).catch((error) => {
+				
+			})
+		},
+		goback(e){
+			// this.issetlan = false;
+			router.clear();
+			router.back();
+			// prompt.showToast({
+			// 	message:JSON.stringify(e)
+			// })
+		},
+		closedia(){
+			// this.isclickset = true;
+		},
         onReady(){
             // 发起接口请求
         },
+		onShow() {
+			let that = this;
+			console.log("sssss"+that.action);
+			if(that.action == '' || that.ssid == ''){
+				// that.setSucc = true;
+			}else{
+				that.getWifiInfo();
+				
+			}
+		},
 		onBackPress(){
 			this.stopConfigDevice();
 // 			IOT.send({

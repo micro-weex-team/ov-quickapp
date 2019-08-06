@@ -1,7 +1,6 @@
 <import name="midea-loading" src="../Component/MideaLoading/index"></import>
 <import name="midea-title" src="../Component/MideaTitle/index"></import>
 
-<import name="midea-set" src="./setLan/index.ux"></import>
 <template>
     <div class="container">
 		<midea-title title="配网帮助" language="{{language}}" back="{{isback}}"></midea-title>
@@ -31,7 +30,7 @@
 			<text if="{{isdone}}" class="nav_tops_btn_text" style="background-color: {{checked? '#CCCCCC':'#21D9E5'}};" @click="nextPage()">下一步</text>
 		</div>
 		<midea-loading if="{{isloading}}"></midea-loading>
-		<!-- <midea-set if="{{issetlan}}" onback="goback()" onclose="closedia()"></midea-set> -->
+		<!--  -->
     </div>
 </template>
 

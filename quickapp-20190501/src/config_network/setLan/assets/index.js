@@ -1,108 +1,330 @@
 
 const obj = [{
-	name:'中央空调',
-	type:'cc'
-},{
-	name:'面包机',
-	type:'e9'
-},{
-	name:'电磁炉',
-	type:'e9'
-},{
-	name:'电压力锅',
-	type:'ec'
-},{
-	name:'豆浆机',
-	type:'ef'
-},{
-	name:'炒菜机',
-	type:'eb'
-},{
-	name:'冰箱',
-	type:'ca'
-},{
-	name:'电饭煲',
-	type:'ea'
-},{
-	name:'插座',
+	name:'智能插座',
 	type:'10'
 },{
-	name:'晾衣机',
-	type:'17'
+	name:'智能遥控',
+	type:'11'
 },{
-	name:'除湿机',
-	type:'a1'
+	name:'传感器盒子',
+	type:'12'
+},{
+	name:'智能灯具',
+	type:'13'
+},{
+	name:'智能窗帘',
+	type:'14'
+},{
+	name:'智能路由',
+	type:'1B'
 },{
 	name:'空调',
-	type:'ac'
+	type:'AB'
+},{
+	name:'空调',
+	type:'AC'
 },{
 	name:'微波炉',
-	type:'b0'
+	type:'B0'
 },{
 	name:'大烤箱',
-	type:'b1'
-},{
-	name:'小烤箱',
-	type:'b4'
+	type:'B1'
 },{
 	name:'蒸汽炉',
-	type:'b2'
+	type:'B2'
+},{
+	name:'消毒柜',
+	type:'B3'
+},{
+	name:'小烤箱',
+	type:'B4'
+},{
+	name:'智能橱柜',
+	type:'BA'
 },{
 	name:'抽油烟机',
-	type:'b6'
+	type:'B6'
+},{
+	name:'燃气炉',
+	type:'B7'
 },{
 	name:'吸尘器',
-	type:'b8'
+	type:'B8'
 },{
-	name:'洗碗机',
-	type:'e1'
+	name:'多头炉',
+	type:'B9'
 },{
-	name:'波轮洗衣机',
-	type:'da'
+	name:'冰箱',
+	type:'CA'
 },{
-	name:'滚筒洗衣机',
-	type:'db'
-},{
-	name:'电热水器',
-	type:'e2'
-},{
-	name:'燃气热水器',
-	type:'e3'
-},{
-	name:'净水器',
-	type:'ed'
-},{
-	name:'电风扇',
-	type:'fa'
-},{
-	name:'电暖器',
-	type:'fb'
-},{
-	name:'空气净化器',
-	type:'fc'
-},{
-	name:'加湿器',
-	type:'fd'
-},{
-	name:'破壁机',
-	type:'f1'
-},{
-	name:'微波烤箱',
-	type:'9a'
-},{
-	name:'慢炖锅',
-	type:'e8'
+	name:'中央空调',
+	type:'CC'
 },{
 	name:'空气能热水器',
-	type:'cd'
+	type:'CD'
 },{
-	name:'调味机',
+	name:'波轮洗衣机',
+	type:'DA'
+},{
+	name:'滚筒洗衣机',
+	type:'DB'
+},{
+	name:'干衣机',
+	type:'DC'
+},{
+	name:'复式洗衣机',
+	type:'D9'
+},{
+	name:'洗碗机',
+	type:'E1'
+},{
+	name:'电热水器',
+	type:'E2'
+},{
+	name:'燃热水器',
+	type:'E3'
+},{
+	name:'水能源系统',
+	type:'E4'
+},{
+	name:'电饭煲',
+	type:'EA'
+},{
+	name:'烹饪机',
+	type:'EB'
+},{
+	name:'压力锅',
+	type:'EC'
+},{
+	name:'净水机',
+	type:'ED'
+},{
+	name:'豆浆机',
+	type:'EF'
+},{
+	name:'冷塔扇',
+	type:'90'
+},{
+	name:'风扇',
+	type:'FA'
+},{
+	name:'取暖器',
+	type:'FB'
+},{
+	name:'净化器',
+	type:'FC'
+},{
+	name:'加湿器',
+	type:'FD'
+},{
+	name:'空调扇',
+	type:'FE'
+},{
+	name:'广播家电类型',
+	type:'FF'
+},{
+	name:'除湿机',
+	type:'A1'
+},{
+	name:'浴室电暖器',
+	type:'B5'
+},{
+	name:'空气管家',
+	type:'01'
+},{
+	name:'营养管家',
+	type:'02'
+},{
+	name:'水管家',
+	type:'03'
+},{
+	name:'安全管家',
+	type:'04'
+},{
+	name:'能源管家',
+	type:'05'
+},{
+	name:'娱乐管家',
+	type:'06'
+},{
+	name:'展示柜',
+	type:'C7'
+},{
+	name:'酒柜',
+	type:'C8'
+},{
+	name:'面包机',
+	type:'E9'
+},{
+	name:'冷柜',
+	type:'C9'
+},{
+	name:'电炖锅',
+	type:'E8'
+},{
+	name:'机器人',
+	type:'28'
+},{
+	name:'空调',
+	type:'00'
+},{
+	name:'挂烫机',
+	type:'DD'
+},{
+	name:'原汁机',
+	type:'F0'
+},{
+	name:'电水壶',
+	type:'15'
+},{
+	name:'IH炒灶',
+	type:'BB'
+},{
+	name:'咖啡机',
+	type:'F2'
+},{
+	name:'传感器',
+	type:'BC'
+},{
+	name:'智能网关',
+	type:'16'
+},{
+	name:'空气Ball',
+	type:'AD'
+},{
+	name:'电磁炉',
+	type:'E7'
+},{
+	name:'家用空气消毒器',
+	type:'AE'
+},{
+	name:'云插座',
+	type:'AF'
+},{
+	name:'智能晾衣机',
+	type:'17'
+},{
+	name:'塑身机',
+	type:'07'
+},{
+	name:'健身车',
+	type:'08'
+},{
+	name:'美容仪',
+	type:'09'
+},{
+	name:'蒸脸仪',
+	type:'0A'
+},{
+	name:'按摩披肩',
+	type:'0B'
+},{
+	name:'塑身腰带',
+	type:'0C'
+},{
+	name:'美胸仪',
+	type:'0D'
+},{
+	name:'跑步机',
+	type:'0E'
+},{
+	name:'料理机',
+	type:'F3'
+},{
+	name:'养生壶',
+	type:'BD'
+},{
+	name:'电热水瓶',
+	type:'BE'
+},{
+	name:'健康秤',
+	type:'0F'
+},{
+	name:'复式洗衣机',
+	type:'D9'
+},{
+	name:'照明电器',
+	type:'18'
+},{
+	name:'智能音箱',
+	type:'1C'
+},{
+	name:'SPW灭菌仪',
+	type:'19'
+},{
+	name:'洁洗仪',
+	type:'3F'
+},{
+	name:'空调伴侣',
+	type:'1D'
+},{
+	name:'智能五谷杂粮机',
+	type:'1E'
+},{
+	name:'大屏智能冰箱',
+	type:'CB'
+},{
+	name:'燃气传感器',
+	type:'1F'
+},{
+	name:'微波蒸汽烤箱',
+	type:'BF'
+},{
+	name:'数据转换器',
+	type:'30'
+},{
+	name:'微波烤箱',
+	type:'9A'
+},{
+	name:'蒸汽烤箱',
+	type:'9B'
+},{
+	name:'红外炉',
+	type:'D0'
+},{
+	name:'智能门锁',
+	type:'20'
+},{
+	name:'Mini网关',
+	type:'2A'
+},{
+	name:'摄像头',
+	type:'2B'
+},{
+	name:'空气ball升级产品',
+	type:'A9'
+},{
+	name:'智能料理机',
 	type:'70'
 },{
-	name:'吸顶灯',
-	type:'13'
+	name:'烘焙机',
+	type:'E5'
+},{
+	name:'壁挂炉',
+	type:'E6'
+},{
+	name:'电热壁挂炉',
+	type:'C1'
+},{
+	name:'智能坐便器',
+	type:'C2'
+},{
+	name:'暖家',
+	type:'CF'
+},{
+	name:'新风机',
+	type:'CE'
 }]
 
 export default{
-	
+	getName(str){
+		let name = '';
+		obj.forEach(function(item,i){
+			if(item.type.toLowerCase() == str){
+				name = item.name;
+			}
+		})
+		console.log(name);
+		return name;
+	}
 }
