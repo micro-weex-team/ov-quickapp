@@ -252,7 +252,7 @@
             iswarm: true,
             left_time_hour: 0,
             left_time_min: 0,
-            EAlist: ['mode', 'work_status', 'order_time_hour', 'order_time_min', 'left_time_hour', 'left_time_min'],
+            EAlist: ['mode', 'work_status', 'order_time_hour', 'order_time_min', 'left_time_hour', 'left_time_min', 'error_code'],
             EAdata: {
                 order_time_hour: 0,
                 order_time_min: 0,
@@ -261,7 +261,8 @@
                 work_status: 'cancel',
                 mode: 'fast_congee',
                 warm_time_hour: 0,
-                warm_time_min: 0
+                warm_time_min: 0,
+                error_code: 0,
             },
             listDevice: {}
         },
@@ -448,7 +449,7 @@
                     mode_data = "稀饭";
                     break;
                 case 'cook_congee':
-					mode_data = "煮粥";
+                    mode_data = "煮粥";
                     break;
                 case 'stew_soup':
                     mode_data = "汤";
@@ -818,7 +819,7 @@
             this.work_status = this.EAdata.work_status;
             this.mode = this.EAdata.mode;
             // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
-                that.timeGetdata();
+            that.timeGetdata();
             // }
         },
         //网络检查
@@ -1215,6 +1216,12 @@
                 that.lanOnline = 'true';
             } else {
                 that.lanOnline = 'false';
+            }
+            if (obj.work_status === 'cooking' && that.EAdata.error_code !== 0) {
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                prompt.showToast({message: "设备故障码：" + that.EAdata.error_code, duration: 1})
+                return;
             }
             api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
                 that.isagain = true;

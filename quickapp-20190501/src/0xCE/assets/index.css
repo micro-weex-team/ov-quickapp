@@ -21,6 +21,12 @@ border: 1px solid transparent;
 /* margin-top: 144px; */
 flex-direction: column;
 }
+.oneWayBox{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 1000px;
+}
 .nav_data_show{
 text-align: center;
 
@@ -201,7 +207,7 @@ justify-content:center;
 
 .text_in{
 
-font-size: 48px;
+font-size: 38px;
 font-family: PingFangSC-Medium;
 }
 .nav_icon{

@@ -78,6 +78,7 @@
 			num: -1,
 			is_device:true,
 			deviceType:'',
+			deviceLanType:['0','1','2','3','4','5','6'],
 			// type:["ac","ca","b0","db","e2","ea","fa","fc","fd"]//支持的设备
 			type:["ac","ca","b0","db","e2","ea","fa","fc","fd","e1","e3","b8","b6"]//支持的设备
         },
@@ -108,6 +109,7 @@
 			let num = -1;
 			let mode = '';
 			console.log("app传过来的sn8："+that.iot_series);
+			console.log("app传过来的配网方式："+that.iot_config_type);
 			console.log("app传过来的wifi："+that.iot_wifi_ssid);
 			console.log("app传过来的密码："+that.iot_wifi_password);
 			if(that.iot_url != ""){
@@ -199,8 +201,19 @@
 							console.log("sn8码来了："+that.iot_series)
 							that.ssidDevice = that.iot_category.substring(that.iot_category.length-2,that.iot_category.length).toLowerCase();
 							that.deviceCode = that.iot_series;
-							that.iot_config_type = '0';
-							that.firsType = that.iot_config_type;
+							// that.iot_config_type = '0';
+							let str = false;
+							that.deviceLanType.forEach(function(item,i){
+								if(that.iot_config_type == item){
+									str = true;
+								}
+							})
+							if(str){
+								that.firsType = that.iot_config_type.toString();
+							}else{
+								that.firsType = '0';
+							}
+							// that.firsType = that.iot_config_type == '0' ?that.iot_config_type:'0';
 							that.getConfigDeviceInfo();
 						}else{
 							that.getWifiList();

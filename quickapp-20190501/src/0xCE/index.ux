@@ -8,7 +8,7 @@
 		<midea-head title="新风机" language="{{language}}" onclose-websocket="closeWebsocket" power="{{isopen?'on':'off'}}" isnew="{{false}}" coloron="{{allBgColorOn}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="refreshData" refreshing="{{isRefreshing}}">
 			<list onscrollbottom="" onscroll="" style="background-color: {{isopen?allBgColorOn:bgColor}};">
-				<list-item type="refresh" class="wrap">
+				<list-item type="refresh" class="wrap"  if="{{machine_type=='twoWay'}}">
 					<midea-logo isopen="{{isopen}}"></midea-logo>
 					<div class="nav_data_show">
 						<div class="nav_data nav_data2">
@@ -45,13 +45,35 @@
 							<text>{{testData}}</text>
 					</div> -->
 					<!-- 用于显示接口返回end -->
-				</list-item>    
+				</list-item>
+				<list-item type="refresh" class="wrap" else>
+					<midea-logo isopen="{{isopen}}"></midea-logo>
+					<div class="oneWayBox">
+						<div>
+							<text class="nav_data_text" style="color: {{isopen?dataColorOn:dataColorOff}};">{{wind_set}}</text>
+						</div>
+						<div>
+							<image src="{{isopen?'./assets/img/wind_on.png':'./assets/img/wind_off.png'}}"></image>
+							<text style="font-size: 48px;color: {{isopen?dataColorOn:dataColorOff}};opacity: {{isopen?'1':'0.2'}};padding-bottom: 8px;">风速</text>
+						</div>
+					</div>
+
+					<!--用于显示接口返回start  -->
+					<!-- <div class="api">
+							<text>{{testData}}</text>
+					</div>
+					<div>
+						<text>风速：{{baseData.fan_set}}</text>
+					</div> -->
+					<!-- 用于显示接口返回end -->
+					
+				</list-item>
 			</list>
 		</refresh>
 			<!--lua control-->
 			<div class="control" @swipe="swiperData({direction:[up]})">
 				<div class="tabs">
-					<div class="tabs_in" for="productList" @click="showDialog($item.value,$idx)">
+					<div class="tabs_in" for="productList" @click="showDialog($item.value,$idx)" if="{{machine_type!=='oneWay'||$idx!=3}}">
 
 						<div class="ctrl" 
 						style="background-color:{{isopen?$item.color:'#fff'}}; border-width: {{!$item.isBorder||footBtnIndex=='$inx'?'0':'3px'}};border-style:solid;border-color: {{isopen||$item.name=='开关'?'#d5d5d5':'#f3f3f3'}};">
@@ -71,15 +93,16 @@
       </div>
       
 		<div class="wind_dia_bg" if="{{is_wind_dia}}" @click="closeFun"></div>
-		<div class="wind_dia {{Height}}" if="{{is_wind_dia}}">
+		<!-- is_wind_dia -->
+		<div class="wind_dia {{Height}}" if="{{is_wind_dia}}" style="height:{{machine_type=='twoWay'?'1268px':'708px'}}">
 			<div class="windtabs">
 				<div class="tabcontent">
-					<div class="tabcontent-section">
+					<div class="tabcontent-section" style="height:{{machine_type=='twoWay'?'1120px':'560px'}}">
 						<list class="list-wind">
 							<block for="windList">
-								<list-item type="wind-speed" class="wind-item" @click="windSelect($idx)">
-									<text class="txt {{windIndex==$idx?'curColor':''}}" style="text-align:center">{{$item}}</text>
-									<image class="img-icon {{windIndex==$idx?'img-icon2':''}}" src="./assets/img/icon_selected.png"></image>
+								<list-item type="wind-speed" class="wind-item" @click="windSelect($item.id)">
+									<text class="txt {{windIndex==$item.id?'curColor':''}}" style="text-align:center">{{$item.wind}}</text>
+									<image class="img-icon {{windIndex==$item.id?'img-icon2':''}}" src="./assets/img/icon_selected.png"></image>
 								</list-item>
 							</block>
 						</list>
@@ -213,11 +236,13 @@ import net from '../Common/api/networkAPI.js'
 			list:[],
 		
 			time:[],
-			DBdata: ['power','mode','wind_speed','temperature','indoor_temperature','power_on_timer','power_on_time_value','power_off_timer',  'power_off_time_value','wind_swing_lr','wind_swing_ud','ptc'],
+			DBdata: ['power','room_temp_value','humidity_value','hcho_value','pm25_value','co2_value'],
 			dataLists: {},
 					
 			baseData: {},
-			windList: [],
+			windList: [
+				{wind:'自动风',id:0},{wind:'1档',id:1},{wind:'2档',id:2},{wind:'3档',id:3},{wind:'4档',id:4},{wind:'5档',id:5},{wind:'6档',id:6},{wind:'7档',id:7}
+			],
 			windIndex: 0,
 		
 			params: {}, //入参
@@ -230,7 +255,9 @@ import net from '../Common/api/networkAPI.js'
       co2_value:'--',
       hcho_value:'0.000',
       tvoc_value:'1档',
-			testData:'' //显示接口返回用
+			machine_type:'twoWay',//机型
+			wind_set:'--',
+			testData:'test' //显示接口返回用
     },
 		public: { 
       deviceId: '',
@@ -313,17 +340,6 @@ import net from '../Common/api/networkAPI.js'
 			this.isfirst = true;
 			let obj = {
 						'power': 'off',
-						'mode': 'auto',
-						'wind_speed': 'high',
-						'temperature':'--',
-						'indoor_temperature':'--',
-						'power_on_timer':'off',
-						'power_on_time_value':'--',
-						'power_off_timer':'off',
-						'power_off_time_value':'--',
-						'wind_swing_lr':'off',
-						'wind_swing_ud':'off',
-						'ptc':'off'
 					}
 			this.dataFormat(obj);
 		},
@@ -335,13 +351,22 @@ import net from '../Common/api/networkAPI.js'
 			that.baseData = JSON.parse(JSON.stringify(data)); //复制一份数据，方便后续判断
 			that.listDevice = data;
 			that.dataLists = data;
-			// that.testData = JSON.stringify(data) //显示接口返回用
+			that.testData = JSON.stringify(data) //显示接口返回用
+			console.log("返参",that.testData);
+			// 判断机型
+			if (data.machine_type == "airflow2_250" || data.machine_type == "airflow2_350") { //双向气流机型
+				this.machine_type = 'twoWay'
+			}else{ //单向气流机型
+				this.machine_type = 'oneWay'
+				this.windList = [{wind:"自动风",id:0},{wind:"低档",id:1},{wind:"中档",id:4},{wind:"高档",id:7}]
+			}
+			  
 			// 初始化数据
 
-			that.room_temp_value = data.room_temp_value?data.room_temp_value:'--℃'//室内温度
-			that.humidity_value = data.humidity_value?data.humidity_value:'--%'
-			that.pm25_value = data.pm25_value>75?data.pm25_value+'↑':data.pm25_value+'↓'
-			that.co2_value = data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓'
+			that.room_temp_value = data.room_temp_value?data.room_temp_value:'--'//室内温度
+			that.humidity_value = data.humidity_value?data.humidity_value:'--'
+			that.pm25_value = data.pm25_value?data.pm25_value>75?data.pm25_value+'↑':data.pm25_value+'↓':'--'
+			that.co2_value = data.co2_value?data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓':'--'
 			that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
 			
 			// prompt.showToast({message: '接口'})
@@ -351,13 +376,6 @@ import net from '../Common/api/networkAPI.js'
 
 					that.isopen = true;
 					that.dataLists = data;
-          
-          // that.room_temp_value = data.room_temp_value?data.room_temp_value:'--'//室内温度
-          // that.humidity_value = data.humidity_value?data.humidity_value:'--'
-          // that.pm25_value = data.pm25_value>75?data.pm25_value+'↓':data.pm25_value+'↑'
-          // that.co2_value = data.co2_value>=1000?data.co2_value+'↓':data.co2_value+'↑'
-          // that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
-          // that.tvoc_value = data.tvoc_value?data.tvoc_value:'1档'
 
 					if (data.room_aqi_value==='0') {
 						that.roomApi = "净氧"
@@ -425,6 +443,7 @@ import net from '../Common/api/networkAPI.js'
       // this.tvoc_value = '1档'
 
 			this.roomApi = '--'
+			this.wind_set = '--' //单向时的风速档位
 			this.isopen = false;
 			
 			this.productList[1].text = '';
@@ -816,32 +835,36 @@ import net from '../Common/api/networkAPI.js'
     },
     switchWind(fan_set){ //风速匹配
       // prompt.showToast({message: fan_set + "风速匹配"}) 
-      this.productList[1].id = fan_set;
+
 			this.windIndex = fan_set
 			switch (fan_set){
 				case '0':
 					this.productList[1].text = '自动风'
+					this.wind_set = '自动'
 					break;
 				case '1':
-					this.productList[1].text = '1挡'
+					this.productList[1].text = this.machine_type === "oneWay"?'低档':'1档'
+					this.wind_set = '低档'
 					break;
 				case '2':
-					this.productList[1].text = '2挡'
+					this.productList[1].text = '2档'
 					break;
 				case '3':
-					this.productList[1].text = '3挡'
+					this.productList[1].text = '3档'
           break;
         case '4':
-					this.productList[1].text = '4挡'
+					this.productList[1].text = this.machine_type === "oneWay"?'中档':'4档'
+					this.wind_set = '中档'
           break;
         case '5':
-					this.productList[1].text = '5挡'
+					this.productList[1].text = '5档'
           break;
         case '6':
-					this.productList[1].text = '6挡'
+					this.productList[1].text = '6档'
           break;
         case '7':
-					this.productList[1].text = '7挡'
+					this.productList[1].text = this.machine_type === "oneWay"?'高档':'7档'
+					this.wind_set = '高档'
 					break;
 				default:
 					break;
@@ -852,45 +875,22 @@ import net from '../Common/api/networkAPI.js'
 		},
 		windSure(evt){  //风速确定
 			// prompt.showToast({message: typeof this.windIndex + "是否节能状态"}) 
-			this.windIndex = Number(this.windIndex)
-			this.windCache = this.windIndex;
-			this.windTypeCache = this.windTypeIndex 
-			if (this.windIndex === 0) {  //自动风时不解除节能
+			
+			if (this.windIndex == 0) {  //自动风时不解除节能
         this.params = {
           fan_set:this.windIndex,
 					function_set_energy_save:this.baseData.function_set_energy_save==='on'?'on':'off'
         }
-        this.productList[1].text = '自动风'
       }else{
 				this.params = {
 					fan_set:this.windIndex,
 					function_set_energy_save:'off' //解除节能模式
 				}
 			}
-      if (this.windIndex === 1) {
-        this.productList[1].text = '1档'
-      }
-      if (this.windIndex === 2) {
-        this.productList[1].text = '2档'
-      }
-      if (this.windIndex === 3) {
-        this.productList[1].text = '3档'
-      }
-      if (this.windIndex === 4) {
-        this.productList[1].text = '4档'
-      } 
-      if (this.windIndex === 5) {
-        this.productList[1].text = '5档'
-      } 
-      if (this.windIndex === 6) {
-        this.productList[1].text = '6档'
-      } 
-      if (this.windIndex === 7) {
-        this.productList[1].text = '7档'
-        
-      }	 
-
-
+			if(this.baseData.fan_set==this.windIndex){ //减少请求
+				this.closeFun()
+				return
+			}
 			
 			let status = this.dataLists;
 			delete status.fan_set;
@@ -1110,7 +1110,7 @@ import net from '../Common/api/networkAPI.js'
 			// that.$on('openmenu', function(e){
 			// 	that.isabout = !that.isabout;
 			// })	
-			that.windList.push('自动风','1档','2档','3档','4档','5档','6档','7档');
+			// that.windList.push();
 			let timestamp = Date.parse(new Date());
 			storage.get({
 				key: 'openidToken',

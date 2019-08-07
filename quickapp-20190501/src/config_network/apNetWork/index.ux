@@ -1,5 +1,4 @@
 <!--<import name="midea-loading" src="../../Component/MideaLoading/index"></import>-->
-
 <import name="midea-set" src="../setLan/index.ux"></import>
 <import name="midea-wifi" src="../setWifi/index.ux"></import>
 <template>
@@ -14,7 +13,6 @@
 			<list-item class="nav_list_all" type="listItem1">
 				<div class="seting" if="{{!setSucc}}">
 					<div class="top">
-						<!-- <image class="top_done_1" src="./assets/img/complete.png"></image> -->
 						<image class="{{isdone?'top_done_1':'top_done'}}" src="{{isdone?'./assets/img/complete.png':'./assets/img/wifi_configuration_success_1.png'}}"></image>
 						<text class="progress" if="{{!isdone}}">
 							<span class="nav_progress">{{progress}}</span>
@@ -79,7 +77,6 @@
 			</list-item>
 		</list>
 		<!-- <midea-set if="{{issetlan}}" ssid="{{ssid}}" password="{{password}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-set> -->
-		
 		<!-- <midea-wifi if="{{issetwifi}}" ssid="{{ssid}}" language="{{language}}" onback="goback()" onclose="closedia()"></midea-wifi> -->
     </div>
 </template>
@@ -172,6 +169,7 @@
 		},
 		getDeviceinfo() {
 			this.isloadindone = 4;
+			console.log("设备信息")
 			let that = this;
 			if(that.code != '' && that.fisrtCode === 0){
 				that.getUserToken(that.code);		
@@ -361,6 +359,7 @@
 			}
 			let $this = this;
 			this.fisrtCode = 1;
+			console.log("拿token")
 			api.getUserToken(params).then((res) => {
 				console.log(JSON.stringify(res))
 				let data_accesstoken = res;
@@ -429,13 +428,15 @@
 			$this.ismore = true;
 			$this.setSucc = false;
 			$this.isloadindone = 1;
-			let ssid = $this.iot_device_ssid;
+			let startssid = ''
+			let ssid = $this.iot_device_ssid?$this.iot_device_ssid:"";
 			if($this.iot_config_type.toString() === '1' && $this.iot_url != ''){
 				ssid = api.getUrlCan($this.iot_url,"SSID")
 			}
 			if(!ssid){
 				ssid = api.getUrlSSid($this.iot_url);
 			}
+			startssid = ssid?ssid:'';
 			// prompt.showToast({message:"停止配网"});
 			IOT.send({
 			  action: 'stopConfigDevice',
@@ -458,22 +459,33 @@
 								}
 							}
 							console.log("配网参数:"+JSON.stringify(params))
+							console.log("startssid" + startssid)
 							IOT.send({
 								action: 'startConfigDevice',
 								data: params,
 								success: function(data) {
+									// console.log("asidguasgdua")
 									console.log(JSON.stringify(data))
 									let res = (typeof data != 'object') ? JSON.parse(data) : data;
 									if(!res.code || res.code.toString() == '0'){
 										let obj = (typeof res.message != 'object') ? JSON.parse(res.message) : res.message;
 										// prompt.showToast({message:JSON.stringify(res)});
-										$this.deviceType = obj.deviceType?obj.deviceType:'';
 										$this.modelNumber = obj.deviceSubType?obj.deviceSubType:'';
 										$this.deviceName = obj.deviceName?obj.deviceName:'';
+										console.log("ssid："+startssid)
 										$this.sn = obj.deviceSN?obj.deviceSN:'';
-										$this.deviceSSID = obj.deviceSSID;
+										$this.deviceSSID = obj.deviceSSID?obj.deviceSSID:'';
+										console.log("ssid："+startssid)
+										if(obj.deviceType){
+											$this.deviceType = obj.deviceType;
+										}else if(startssid != ''){
+											$this.deviceType = startssid.substring(6,8).toLowerCase();
+										}else{
+											$this.deviceType = '';
+										}
 										$this.deviceid = obj.deviceID?obj.deviceID:'';
 										$this.iswork = true;
+										console.log("来咯来咯")
 										$this.getDeviceinfo();
 									}else if(res.code.toString() === '1'){
 										let num  = 0;
@@ -496,11 +508,13 @@
 									}
 								},
 								fail: function(error) {
-									console.log(JSON.stringify(error))
 									$this.action = '';
 									$this.ssid = '';
-									// let err = (typeof error != 'object') ? JSON.parse(error) : error;
+									console.log(JSON.stringify(error))
 									$this.setSucc = true;
+									// let err = (typeof error != 'object') ? JSON.parse(error) : error;
+									// console.log("iausgdu");
+									// console.log(err.message)
 									// if(err.message){
 									// 	let errdata = (typeof err.message != 'object') ? JSON.parse(err.message) : err.message;
 									// 	if(errdata.isCanResume){
@@ -521,6 +535,8 @@
 									// 			}
 									// 		}
 									// 		
+									// 	}else{
+									// 		$this.setSucc = true;
 									// 	}
 									// }else{
 									// 	$this.setSucc = true;
@@ -613,6 +629,8 @@
 				'sn': this.sn,
 				'openId': this.openId
 			}
+			console.log("绑定的来了");
+			
 			// prompt.showToast({message:"绑定开始"})
 			let $this = this;
 			api.postDeviceBind(params, $this.accessToken).then((res) => {
