@@ -24,11 +24,11 @@
                             {{tempOrGear(power, mode, temperature, gear)}}
                         </text>
                         <text class="temp-grade" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                            {{power==="off"?'℃':(mode==="normal"?'℃':(mode==="cold_air"?'挡':''))}}
+                            {{power==="off"?'℃':(mode==="normal"||mode==="constant_temperature" ?'℃':(mode==="cold_air"?'挡':''))}}
                         </text>
                     </div>
                     <text class="tips" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                        {{power==="off"?'设定温度':(mode==="normal"?'设定温度':(mode==="cold_air"?'设定挡位':''))}}
+                        {{power==="off"?'设定温度':(mode==="normal"||mode==="constant_temperature"?'设定温度':(mode==="cold_air"?'设定挡位':''))}}
                     </text>
                     <text class="indoor" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
                         {{'室内温度:'+cur_temperature+'°'}}
@@ -52,21 +52,28 @@
                     开关
                 </text>
             </div>
-            <div class="footer-normal" @click="normalBtn()">
-                <image src="{{'./assets/img/normal-' + (power === 'on'? (mode==='normal'?'highlight':'on'):'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">暖风</text>
-            </div>
-            <div class="footer-normal" @click="coldAirBtn()">
-                <image src="{{'./assets/img/cold-air-' + (power === 'on'? (mode==='cold_air'?'highlight':'on'):'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">冷风</text>
-            </div>
+            <!--<div class="footer-normal" @click="normalBtn()">-->
+                <!--<image src="{{'./assets/img/normal-' + (power === 'on'? (mode==='normal'?'highlight':'on'):'on') + '.png'}}"-->
+                       <!--class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>-->
+                <!--<text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">暖风</text>-->
+            <!--</div>-->
+            <!--<div class="footer-normal" @click="coldAirBtn()">-->
+                <!--<image src="{{'./assets/img/cold-air-' + (power === 'on'? (mode==='cold_air'?'highlight':'on'):'on') + '.png'}}"-->
+                       <!--class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>-->
+                <!--<text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">冷风</text>-->
+            <!--</div>-->
             <div class="footer-normal" @click="showGearDia()">
                 <image src="{{'./assets/img/gear-' + (power === 'on'? (mode==='cold_air'?'highlight-cold':(mode==='normal'?'highlight-normal':'on')):'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on' && mode != 'efficient' ? '':'-disabled'}}"></image>
+                       class="footer-normal-img{{power === 'on' && mode != 'efficient' && mode != 'constant_temperature' ? '':'-disabled'}}"></image>
                 <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">
                     {{gearDesc(power, mode, gear)}}
+                </text>
+            </div>
+            <div class="footer-normal" @click="showTimeDialog()">
+                <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (power==='off' || mode==='normal' || mode==='constant_temperature' || mode=='efficient'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
+                       class="footer-normal-img"></image>
+                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
+                    timer_on_minute, timer_off_hour, timer_off_minute)}}
                 </text>
             </div>
         </div>
@@ -78,44 +85,37 @@
                 <text class="footer-gear-title" style="color: {{ gear && mode_n === 'normal' && power === 'on'? '#000000':'#cccccc'}};">风速</text>
             </div>
         </div> -->
-        <div class="footer-down">
-            <div class="footer-normal" @click="shakeBtn()">
-                <image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>
-            </div>
-            <div class="footer-normal" @click="humidityBtn()">
-                <image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>
-            </div>
-            <div class="footer-normal" @click="ecoBtn()">
-                <image src="{{'./assets/img/eco-' + (power==='on' && mode ==='efficient'? 'highlight':'on') + '.png'}}"
-                       class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>
-                <text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">节能</text>
-            </div>
-            <div class="footer-normal" @click="showTimeDialog()">
-                <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (power==='off' || mode==='normal' || mode=='efficient'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
-                       class="footer-normal-img"></image>
-                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
-                    timer_on_minute, timer_off_hour, timer_off_minute)}}
-                </text>
-            </div>
-            <!-- <div class="footer-wind" @click="change()">
-                <image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>
-                <text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>
-            </div>
-            <div class="footer-shake" @click="showDialog_()">
-                <image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>
-                <text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>
-            </div>
-            <div class="footer-timeout" @click="showTimeDialog()">
-                <div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">
-                    <text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>
-                </div>
-                <text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>
-            </div> -->
-        </div>
+        <!--<div class="footer-down">-->
+            <!--<div class="footer-normal" @click="shakeBtn()">-->
+                <!--<image src="{{'./assets/img/shake-' + (power==='on' && shake_switch ==='on'? (mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"-->
+                       <!--class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>-->
+                <!--<text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">摆风</text>-->
+            <!--</div>-->
+            <!--<div class="footer-normal" @click="humidityBtn()">-->
+                <!--<image src="{{'./assets/img/humidity-' + (power==='off'?'on':(humidification ==='off'? 'on':(mode==='normal' || mode === 'efficient' ? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')))) + '.png'}}"-->
+                       <!--class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>-->
+                <!--<text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">加湿</text>-->
+            <!--</div>-->
+            <!--<div class="footer-normal" @click="ecoBtn()">-->
+                <!--<image src="{{'./assets/img/eco-' + (power==='on' && mode ==='efficient'? 'highlight':'on') + '.png'}}"-->
+                       <!--class="footer-normal-img{{power === 'on'? '':'-disabled'}}"></image>-->
+                <!--<text class="footer-normal-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">节能</text>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; <div class="footer-wind" @click="change()">-->
+                <!--<image src="{{power === 'on'?'./assets/img/highlight/wind-':'./assets/img/gray/wind-'}}{{showData(modeselect,mode_n,'') == ''?'other':mode_n}}{{power === 'on'?'-highlight.png':'-gray.png'}}" class="footer-wind-img"></image>-->
+                <!--<text class="footer-wind-desc" style="color: {{ power === 'on'? '#000000':'#cccccc'}};">{{showData(modeselect,mode_n,'') == ''?'其他':showData(modeselect,mode_n,'')}}</text>-->
+            <!--</div>-->
+            <!--<div class="footer-shake" @click="showDialog_()">-->
+                <!--<image src="{{power + swing === 'onon'?'./assets/img/highlight/shake-lr-':'./assets/img/gray/shake-lr-'}}{{power + swing === 'onon'?'highlight.png':'gray.png'}}" class="footer-shake-img"></image>-->
+                <!--<text class="footer-shake-desc" style="color: {{ power + swing === 'onon'? '#000000':'#cccccc'}};">摇头</text>-->
+            <!--</div>-->
+            <!--<div class="footer-timeout" @click="showTimeDialog()">-->
+                <!--<div class="footer-timeout-text" style="background-color: {{ (time1 != 'off')? '#3191FD':'#ffffff'}};">-->
+                    <!--<text class="footer-timeout-text-time" style="color: {{ (time1 != 'off')? '#ffffff':'#cccccc'}};">{{(time1 === 'off')?'off':time1+'h'}}</text>-->
+                <!--</div>-->
+                <!--<text class="footer-timeout-desc" style="color: {{ (time1 != 'off')? '#000000':'#cccccc'}};">{{(time1 === 'off')?'定时':time1+'小时'+(power === 'on'? '关':'开')}}</text>-->
+            <!--</div> &ndash;&gt;-->
+        <!--</div>-->
         <div class="nav_mark" if="{{isshowDialog}}" @click="closeDialog()">
             <div class="nav_mark_dialog">
                 <div class="{{$idx === (mode.length-1)?'nav_mark_dialog_list':'nav_mark_dialog_list_1'}}" for="mode"
@@ -404,7 +404,7 @@
         },
         public: {
             deviceSeries: '',
-            deviceId: '',
+            deviceId: '19791209439987',
             openid: ''
         },
         onMenuPress() {
@@ -1810,6 +1810,7 @@
             that.listGear = [];
             for (let i = 1; i <= 3; i++) {
                 if (this.mode == 'normal' && i == 2) continue;
+                if (this.mode == 'cold_air' && i == 3) continue;
                 let data = {
                     "id": i,
                     "data": i + "档"
@@ -1932,7 +1933,7 @@
         },
         tempOrGear(p, m, t, g) {
             if (p === 'off') return '--';
-            if (m == 'normal') {
+            if (m == 'normal' || m=='constant_temperature') {
                 return t ? t : '--';
             } else if (m == 'cold_air') {
                 return g ? g : '--';
@@ -2023,6 +2024,12 @@
             }
         },
         tempUp(temperature) {
+            if (!temperature) {
+                this.startControlDevice({
+                    temperature: 5
+                }, this.FBdata);
+                return;
+            }
             let t = parseInt(temperature.toString());
             if (t == 35) {
                 prompt.showToast({message: "已经是最高温度了"})
@@ -2033,6 +2040,12 @@
             }
         },
         tempDown(temperature) {
+            if (!temperature) {
+                this.startControlDevice({
+                    temperature: 35
+                }, this.FBdata);
+                return;
+            }
             let t = parseInt(temperature.toString());
             if (t == 5) {
                 prompt.showToast({message: "已经是最低温度了"})
