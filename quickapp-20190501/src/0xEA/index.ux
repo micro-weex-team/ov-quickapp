@@ -1261,10 +1261,10 @@
                 warm_time_hour: 0,
                 warm_time_min: 0
             }
-            that.EAdata.online = 'false';
+            that.EAdata.online = 'true';
             that.listDevice = that.EAdata;
-            that.listDevice.online = "false";
-            that.online = 'false';
+            that.listDevice.online = "true";
+            that.online = 'true';
         },
         isshowclose() {
             let that = this;
@@ -1531,7 +1531,7 @@
             // }
             if (that.online === 'true') {
                 // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
-                    that.timeGetdata();
+                that.timeGetdata();
                 // }
             }
 
