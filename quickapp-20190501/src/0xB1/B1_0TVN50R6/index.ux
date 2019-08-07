@@ -52,11 +52,16 @@
 				<text class="b0_contrl_btn_text">启动</text>
 			</div> -->
 		</div>
-		<div class="b0_ctr" if="{{power === 'on' && start}}">
+		<div class="b0_ctr" if="{{power === 'on' && start && !isError}}">
 			<div class="b0_contrl_btn" @click="stopDevice()">
 				<image src="./assets/img/stop.png" class="b0_contrl_btn_img"></image>
 				<text class="b0_ctr_text">取消</text>
 			</div>
+			<div class="b0_contrl_btn" style="margin-left:120px;" if="{{preheat_finish}}" @click="continuteDevice()">
+				<image src="./assets/img/start.png" class="b0_contrl_btn_img"></image>
+				<text class="b0_ctr_text">继续</text>
+			</div>
+			
 		</div>
 		
 		<div class="b0_ctr" if="{{power === 'on' && work_status === 'work_finish'}}">
@@ -266,7 +271,9 @@
 			modeName: 0,
 			modeText: '--',
 			preheatCheck: false,
-			pre_heat:'off'
+			pre_heat:'off',
+			preheat_finish: false,
+			isError: false,
 		},
 		public: {
 			deviceSeries: '',
@@ -362,6 +369,22 @@
 		pauseDevice() {
 			let params = {
 				work_status: 'pause'
+			}
+			let status = ['work_status'];
+			// this.pause_data = true;
+			// clearTimeout(this.timeout);
+			if (this.lock === 'off') {
+				this.ctrDevice(params,status,false);
+			} else {
+				prompt.showToast({
+					message: "童锁打开状态,请关闭童锁在进行操作"
+				})
+			}
+		},
+		//继续
+		continuteDevice() {
+			let params = {
+				work_status: 'work'
 			}
 			let status = ['work_status'];
 			// this.pause_data = true;
@@ -483,6 +506,10 @@
 			let data = '待机中';
 			if(str=='work' && this.pre_heat == 'on'){
 				data = '预热中';
+				return data;
+			}
+			if(str=='work' && this.preheat_finish){
+				data = '预热完成';
 				return data;
 			}
 			switch (str) {
@@ -624,7 +651,10 @@
 				let codeData = 0;
 				if(tips_code == 8){
 					that.pre_heat = 'on';
-				}else{
+				}else if(tips_code == 9){
+					that.preheat_finish = true;
+				}
+				else{
 					// prompt.showToast({
 					// 	message: "故障了"
 					// })
@@ -636,6 +666,7 @@
 		//数据处理
 		dataCan() {
 			let that = this;
+			that.isError = false;
 			if(that.timeoutInter != ''){
 				clearInterval(that.timeoutInter)
 			}
@@ -653,6 +684,7 @@
 			that.mode = that.listdata.work_mode;
 			that.lock = that.listdata.lock;
 			that.pre_heat = that.listdata.pre_heat?that.listdata.pre_heat:'off';
+			that.preheat_finish = false;
 			let tips_code = that.listdata.tips_code;
 			that.tipsShow(tips_code);
 			let error_code = that.listdata.error_code;
@@ -660,6 +692,7 @@
 				prompt.showToast({
 					message: "设备故障了"
 				})
+				that.isError = true;
 				return;
 			}
 			if(this.listdata.work_status === 'save_power'){
@@ -1452,6 +1485,7 @@
 					if(that.timeout != ''){
 						clearTimeout(that.timeout)
 					}
+					that.isError = false;
 					that.pause_data = true;
 					let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
 					if(obj.status.online){
@@ -1499,6 +1533,7 @@
 					}
 					if (obj.status.error_code) {
 						that.listdata.error_code = obj.status.error_code;
+						that.isError = true;
 					}
 					let tips_code = obj.status.tips_code;
 					that.tipsShow(tips_code);
