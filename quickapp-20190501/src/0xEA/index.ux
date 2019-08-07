@@ -1217,7 +1217,7 @@
             } else {
                 that.lanOnline = 'false';
             }
-            if (obj.work_status === 'cooking' && that.EAdata.error_code !== 0) {
+            if (obj.work_status === 'cooking' && parseInt(that.EAdata.error_code.toString()) !== 0) {
                 that.isRefreshing = false;
                 that.isshowLoading = false;
                 prompt.showToast({message: "设备故障码：" + that.EAdata.error_code, duration: 1})
