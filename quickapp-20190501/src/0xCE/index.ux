@@ -31,8 +31,8 @@
 							<text style="font-size: 48px;color: {{isopen?'#f6f6f6':'#666666'}};opacity: 0.6;">室内</text>
             </div>
             <div class="nav_data nav_data_text_3">
-							<text class="nav_data_tip_in" style="color: {{isopen?hchoCO2On:dataColorOff}};">{{pm25_value}}</text>
-							<text class="nav_data_tip_in" style="color: {{isopen?hchoCO2On:dataColorOff}};padding-left: 65px;">{{co2_value}}</text>
+							<text class="nav_data_tip_in" style="color: {{isopen?pm25Color:dataColorOff}};">{{pm25_value}}</text>
+							<text class="nav_data_tip_in" style="color: {{isopen?Co2Color:dataColorOff}};padding-left: 65px;">{{co2_value}}</text>
             </div>
             <div class="nav_data nav_data_text_4">
 							<text class="nav_data_tip_in" style="color: {{isopen?dataColorOn:dataColorOff}};">PM2.5 ug/m³</text>
@@ -171,7 +171,8 @@ import net from '../Common/api/networkAPI.js'
 			dataColorOff: '#666666', //数据字体颜色
 			dataColorOn: '#ffffff',
 			hchoColor:'#ffffff',//甲醛字体颜色
-			hchoCO2On:'#FFFFFF', //甲醛和CO2上升下降值
+			pm25Color:'#FFFFFF', //pm2.5上升下降颜色
+			Co2Color:'#FFFFFF', //co2上升下降颜色
 			headColor:"#627BFF",
 			isopen: false,
 			issmork: false,
@@ -365,7 +366,7 @@ import net from '../Common/api/networkAPI.js'
 
 			that.room_temp_value = data.room_temp_value?data.room_temp_value:'--'//室内温度
 			that.humidity_value = data.humidity_value?data.humidity_value:'--'
-			that.pm25_value = data.pm25_value?data.pm25_value>75?data.pm25_value+'↑':data.pm25_value+'↓':'--'
+			that.pm25_value = data.pm25_value?data.pm25_value>=75?data.pm25_value+'↑':data.pm25_value+'↓':'--'
 			that.co2_value = data.co2_value?data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓':'--'
 			that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
 			
@@ -377,26 +378,29 @@ import net from '../Common/api/networkAPI.js'
 					that.isopen = true;
 					that.dataLists = data;
 
+					if (data.pm25_value>=75) {
+						that.pm25Color = "#E02020"
+					}else{
+						that.pm25Color = "#ffffff"
+					}
+					if (data.co2_value>=1000) {
+						that.Co2Color = "#E02020"
+					}else{
+						that.Co2Color = "#ffffff"
+					}
+
 					if (data.room_aqi_value==='0') {
 						that.roomApi = "净氧"
-						that.hchoCO2On = "#F7B500" //上升下降颜色
 						that.allBgColorOn = '#4CD964'
-						that.hchoColor = "#ffffff" //甲醛字体颜色
 					}else if(data.room_aqi_value==='1'){
 						that.roomApi = "清新"
-						that.hchoCO2On = "#F7B500"
 						that.allBgColorOn = '#5BD2FF'
-						that.hchoColor = "#ffffff"
 					}else if(data.room_aqi_value==='2'){
 						that.roomApi = "超标"
-						that.hchoCO2On = "#E02020"
 						that.allBgColorOn = '#FFA800'
-						that.hchoColor = "#E02020"
 					}else{
 						that.roomApi = "--"
-						that.hchoCO2On = "#FFF"
 						that.allBgColorOn = '#5D75F6'
-						that.hchoColor = "#ffffff"
 					}
 					//初始化图标显示
 					that.productList[1].color = that.allBgColorOn
@@ -1103,10 +1107,10 @@ import net from '../Common/api/networkAPI.js'
 			// that.$on('cancel', function(e){
 			// 	that.isabout = false;
 			// })
-			// that.$on('closetips', function(e){
-			// 	that.istips = false;
-			//  that.regetdata();
-			// })
+			that.$on('closetips', function(e){
+				that.istips = false;
+			 that.regetdata();
+			})
 			// that.$on('openmenu', function(e){
 			// 	that.isabout = !that.isabout;
 			// })	
