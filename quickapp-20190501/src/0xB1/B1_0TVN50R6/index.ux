@@ -906,17 +906,14 @@
 		//显示离线提醒
 		isshowclose() {
 			let that = this;
+			if(that.timeTips != ''){
+				that.istips = false;
+				clearTimeout(that.timeTips)
+			}
 			that.istips = true;
-			// if(that.timeTips != ''){
+			// that.timeTips = setTimeout(() => {
 			// 	that.istips = false;
-			// 	clearTimeout(that.timeTips)
-			// }
-			// if(that.iswarm){
-			// 	that.istips = true;
-			// 	// that.timeTips = setTimeout(function() {
-			// 	// 	that.istips = false;
-			// 	// }, 3000)
-			// }
+			// },3000)
 		},
 		//获取后一天的时间戳
 		gettime() {
