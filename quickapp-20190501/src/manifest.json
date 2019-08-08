@@ -122,11 +122,14 @@
         }
     },
     "router": {
-        "entry": "0xB1/B1_0TVN50R6",
+        "entry": "0xFB",
         "pages": {
 			"0xFB": {
 			    "component": "index"
 			},
+          "0xFB/FB_57008815": {
+            "component": "index"
+          },
 			"0xF1": {
 			    "component": "index"
 			},
