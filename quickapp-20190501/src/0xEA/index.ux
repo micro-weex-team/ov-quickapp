@@ -1415,6 +1415,17 @@
 			// that.isabout = false;
 		},
 		onInit() {
+            if(this.deviceSeries=='00000028'){
+                router.replace({
+                    uri: '/0xEA/EA_00000028',
+                    params: {
+                        deviceSeries: this.deviceSeries,
+                        deviceId: this.deviceId,
+                        openid: this.openid
+                    }
+                })
+                return;
+            }
 		  /* 如将 $element('id')获取到内容，赋值给成员变量，则有可能引发堆栈溢出 */
 		  this.setTime();
 		  //初始化

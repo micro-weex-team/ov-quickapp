@@ -160,6 +160,9 @@
 			"0xEA": {
 				"component": "index"
 			},
+          "0xEA/EA_00000028": {
+            "component": "index"
+          },
 			"0xB0": {
 				"component": "index"
             },
