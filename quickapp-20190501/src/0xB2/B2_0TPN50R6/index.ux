@@ -5,7 +5,7 @@
 <import name="midea-loading" src="../../Component/MideaLoading/index"></import>
 <template>
 	<div class="container">
-		<midea-head title="蒸汽炉R6 " language="{{language}}" onclose-websocket="closeWebsocket" isnew="{{bgColor}}" power="{{power}}"></midea-head>
+		<midea-head title="蒸汽炉R6 " language="{{language}}" isnew="{{bgColor}}" power="{{power}}"></midea-head>
 		<refresh class="B6_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
 			<list onscroll="" style="background-color: {{power === 'on'?'#F9CB3D':'#cccccc'}};" class="b0_nav" id="list">
 				<!-- 列表元素，属性type值相同时，需要确保渲染后的视图布局也完全相同 -->
@@ -103,18 +103,18 @@
 					<div if="{{hasTempSetting}}" class="b0_alert_nav_list_item" @click="doingAnimation('temperature')">
 						<text if="{{language}}" class="b0_alert_nav_list_item_title">温度</text>
 						<div class="b0_alert_nav_list_item_status{{language?'':'_l'}}">
-							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{temperature?temperature:'--'}}℃</text>
+							<text if="{{language}}" class="b0_alert_nav_list_item_status_data">{{setTemperature?setTemperature:'--'}}℃</text>
 							<image class="b0_alert_nav_list_item_status_img" src="./assets/img/arow_down.png"></image>
-							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{temperature?temperature:'--'}}℃</text>
+							<text if="{{!language}}" class="b0_alert_nav_list_item_status_data">{{setTemperature?setTemperature:'--'}}℃</text>
 						</div>
 						<text if="{{!language}}" class="b0_alert_nav_list_item_title">温度</text>
 					</div>
 					<div if="{{hasTempSetting}}" class="b0_alert_nav_list_select">
 						<list class="b0_alert_nav_list_select_firelist {{doneanimat}}" id="listFire">
 							<list-item type="list_Item" class="b0_alert_nav_list_select_list_item" @click="selectData($item.data,'temperature')" for="{{setTempArr}}">
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{temperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
-								<image src="./assets/img/select.png" show="{{temperature == $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
-								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{temperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{language}}" style="color:{{setTemperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
+								<image src="./assets/img/select.png" show="{{setTemperature == $item.data}}" class="b0_alert_nav_list_select_list_item_img"></image>
+								<text class="b0_alert_nav_list_select_list_item_data" if="{{!language}}" style="color:{{setTemperature == $item.data?'#F9CB3D':'#CCCCCC'}}">{{$item.data}}℃</text>
 							</list-item>
 						</list>
 					</div>
@@ -271,6 +271,11 @@
 			modeName: 0,
 			modeText: '--',
 			hasTempSetting: true,
+			preheatCheck: false,
+			pre_heat:'off',
+			preheat_finish: false,
+			isError: false,
+			setTemperature: 0,
 		},
 		public: {
 			deviceSeries: '',
@@ -345,7 +350,7 @@
 				})
 				return;
 			}
-			if (parseInt(that.min) >= 0 && parseInt(that.temperature) > 0) {
+			if (parseInt(that.min) >= 0 && parseInt(that.setTemperature) > 0) {
 				this.isset = false;
 				
 				params = {
@@ -353,7 +358,7 @@
 							work_mode: that.modeItem.work_mode,
 							work_minute: that.min,
 							work_hour: that.setHour,
-							temperature: that.temperature
+							temperature: that.setTemperature
 						}
 				let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
 				that.ctrDevice(params,status,true);
@@ -685,7 +690,7 @@
 					that.fire = data;
 					break;
 				case 'temperature': //温度处理
-					that.temperature = data;
+					that.setTemperature = data;
 					break;
 			}
 		},
@@ -774,21 +779,20 @@
 			that.doanimat = '';
 			that.doneanimat = '';
 			that.hasTempSetting = item.isNoTemp?false:true;
-			if(item.work_mode=='scale_clean'){ //如果是清洁模式，直接启动
-				let params = {
-							work_status: 'work',
-							work_mode: item.work_mode,
-							work_minute: 15,
-						}
-				let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
-				that.ctrDevice(params,status,true);
-				return;
-			}
 			
-
 			if (that.online === 'true') {
 				if (that.lock === 'off') {
 					if (that.power === 'on') {
+						if(item.work_mode=='scale_clean'){ //如果是清洁模式，直接启动
+							let params = {
+										work_status: 'work',
+										work_mode: item.work_mode,
+										work_minute: 15,
+									}
+							let status = ['lock', 'work_minute', 'work_hour', 'work_status','work_mode','temperature'];
+							that.ctrDevice(params,status,true);
+							return;
+						}
 						if(that.work_status != 'three'){
 							that.isset = true;
 							if (parseInt(that.listdata.work_minute) === 0 && parseInt(that.listdata.work_hour) === 0) {
@@ -809,9 +813,9 @@
 								that.fire = '--';
 							}
 							if (parseInt(that.listdata.temperature) > 0) {
-								that.temperature = that.listdata.temperature;
+								that.setTemperature = that.listdata.temperature;
 							} else {
-								that.temperature = '--';
+								that.setTemperature = '--';
 							}
 							that.dataCan();
 							that.doanimat = "";
@@ -1175,144 +1179,6 @@
 				}
 			})
 		},
-		/**
-		 * 局域网控制
-		 */
-		lanControl(res,obj1,status,bol){
-			let that = this;
-			let obj = (typeof res) == 'object'?res:JSON.parse(res);
-			console.log("局域网："+JSON.stringify(res))
-			if(parseInt(obj.code) == 0){
-				let data = (typeof obj.message) == 'object'?obj.message:JSON.parse(obj.message);
-				that.listdata = data;
-				that.listDevice = data;
-				that.online = 'true';
-				that.listDevice.online = 'true';
-				that.listdata.online = 'true';
-			}else{
-				that.isagain = false;
-				that.lanOnline = 'false';
-				that.ctrDevice(obj1,status,bol);
-				// that.netWorkGet('获取设备状态失败,请稍后重试');
-			}
-		},
-		/**
-		 * 广域网控制
-		 */
-		wlanControl(res){
-			let that = this;
-			let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-
-			if (parseInt(bind_res_data.code) == 0 || parseInt(bind_res_data.code) == 200) {
-				if(parseInt(bind_res_data.code) == 0){
-					if (!parseInt(bind_res_data.devices[0].status)) {
-						that.listdata.online = 'true';
-						that.online = 'true';
-						let isall = false;
-						let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(
-							bind_res_data.devices[0].props);
-						if (obj.save_power) {
-							that.listdata.power = obj.save_power
-						} else {
-							isall = true;
-						}
-						if (obj.lock) {
-							that.listdata.lock = obj.lock
-						} else {
-							isall = true;
-						}
-						if (obj.work_minute.toString()) {
-							that.listdata.work_minute = obj.work_minute
-						} else {
-							isall = true;
-						}
-						if (obj.work_hour.toString()) {
-							that.listdata.work_hour = obj.work_hour
-						} else {
-							isall = true;
-						}
-						if (obj.work_second.toString()) {
-							that.listdata.work_second = obj.work_second
-						} else {
-							isall = true;
-						}
-						if (obj.fire_power) {
-							that.listdata.fire_power = obj.fire_power
-						} else {
-							isall = true;
-						}
-						if (obj.work_status) {
-							that.listdata.work_status = obj.work_status
-						} else {
-							isall = true;
-						}
-						if (obj.temperature) {
-							that.listdata.temperature = obj.temperature
-						} else {
-							isall = true;
-						}
-						if (obj.door_open) {
-							that.listdata.door_open = obj.door_open;
-						} else {
-							isall = true;
-						}
-						that.listDevice = obj;
-						// if (isall) {
-						// 	that.isshowLoading = true;
-						// 	that.getDeviceList();
-						// } else {
-						// 	that.isRefreshing = false;
-						// 	that.isshowLoading = false;
-						// }
-						that.isRefreshing = false;
-						that.isshowLoading = false;
-					} else {
-						that.isRefreshing = false;
-						that.isshowLoading = false;
-						if (bind_res_data.msg === '') {
-							let str1 = '';
-							if (bind_res_data.devices[0].status) {
-								str1 = bind_res_data.devices[0].status;
-								if(str1.toString() === '-6'){
-									that.isshowclose();
-									return false;
-								}
-								if (str1.toString() != '-100') {
-									that.netWorkGet(api.getStatus("post",str1, '操作设备失败'))
-								} else {
-									if(str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123'){
-										that.isshowclose();
-									}else{
-										that.netWorkGet(api.getStatus("post",str1,'操作设备失败'))
-									}
-								}
-							} else {
-								str1 = bind_res_data.code;
-								that.netWorkGet(api.getCode(str1, '操作设备失败'))
-							}
-							// $this.netWorkGet('操作设备失败')
-						} else {
-							that.netWorkGet(bind_res_data.msg)
-						}
-					}
-				}else{
-					that.isRefreshing = false;
-					that.isshowLoading = false;
-					if (bind_res_data.msg === '') {
-						let str1 = '';
-						str1 = bind_res_data.code;
-						that.netWorkGet(api.getCode(str1, '操作设备失败'))
-					} else {
-						that.netWorkGet(bind_res_data.msg)
-					}
-				}
-				
-			} else {
-				that.isRefreshing = false;
-				that.isshowLoading = false;
-				that.netWorkGet('操作设备失败,请稍后重试')
-			}
-		},
 		//下拉刷新
 		scrollbottom(e) {
 			let that = this;
@@ -1409,109 +1275,12 @@
 					})
 			},str)
 		},
-		//websocket
-		webSocketdata() {
-			let that = this;
-			api.createWensocket(that.deviceId).then((ws) => {
-				that.ws = ws;
-				that.isws = true;
-				ws.onopen = function() {
-					console.log("websocket连接成功")
-				}
-				ws.onerror = function(data) {
-					// 连接失败
-					//失败之后再重启
-					that.webSocketdata();
-					console.log('websocket连接失败:'+JSON.stringify(data))
-				}
-				ws.onmessage = function(res) {
-					if(that.timeout != ''){
-						clearTimeout(that.timeout)
-					}
-					that.pause_data = true;
-					let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
-					if(obj.status.online){
-						that.online = obj.status.online;
-						that.listdata.online = obj.status.online;
-					}else{
-						that.online = 'true';
-						that.listdata.online = 'true';
-					}
-					if (obj.status.power) {
-						that.listdata.power = obj.status.power
-					}
-					if (obj.status.lock) {
-						that.listdata.lock = obj.status.lock
-					}
-					if (obj.status.hour) {
-						that.listdata.minutes = obj.status.minutes
-					}else{
-						that.listdata.minutes = 0;
-					}
-					if (obj.status.minutes) {
-						that.listdata.minutes = obj.status.minutes
-					}else{
-						that.listdata.minutes = 0;
-					}
-					if (obj.status.second) {
-						that.listdata.second = obj.status.second
-					}else{
-						that.listdata.second = 0;
-					}
-					if (obj.status.fire_power) {
-						that.listdata.fire_power = obj.status.fire_power
-					}
-					if (obj.status.temperature) {
-						that.listdata.temperature = obj.status.temperature
-					}
-					if (obj.status.work_status) {
-						that.listdata.work_status = obj.status.work_status
-					}
-					if (obj.status.door_open) {
-						that.listdata.door_open = obj.status.door_open;
-					}
-					if (obj.status.error_code) {
-						that.listdata.error_code = obj.status.error_code;
-					}
-					that.dataCan();
-				}
-				ws.onclose = function() {
-					// 关闭 websocket
-					// 关闭之后再重启
-					if(!that.isclosews){
-						that.webSocketdata();
-					}
-					console.log("websocket连接已关闭...")
-				};
-			});
-		},
 		onclickFn(e){
 			this.isabout = false;
-		},
-		closeWebsocket(){
-			let that = this;
-			that.isclosews = true;
-			if(that.timeoutInter != ''){
-				clearInterval(that.timeoutInter);
-			}
-			if(that.ws != ''){
-				that.ws.close({
-					code: 1000,
-					reason: '退出关闭',
-					success: function() {
-						that.ws = '';
-						console.log("关闭websocket成功")
-					},
-					fail: function(data, code) {
-						console.log("关闭websocke失败, code = "+JSON.stringify(code))
-					}
-				})
-			}
 		},
 		onHide(){
 			let that = this;
 			that.istips = false;
-			that.closeWebsocket();
 		},
 		onShow(){
 			let that = this;
@@ -1591,7 +1360,6 @@
 		},
 		onBackPress() {
 			let that = this;
-			that.closeWebsocket();
 			router.clear();
 			this.$app.exit();
 		}

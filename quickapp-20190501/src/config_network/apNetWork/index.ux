@@ -22,7 +22,8 @@
 					</div>
 					<div class="nav_bottom">
 						<text class="seting-tips" show="{{!isdone}}">正在努力链接，请耐心等待...</text>
-						<text class="seting-tips" show="{{isdone}}">请将设备尽量靠近路由器</text>
+						<!-- <text class="seting-tips" show="{{isdone}}">请将设备尽量靠近路由器</text> -->
+						<text class="seting-tips" show="{{isdone}}">配网成功</text>
 						<div class="nav_tips">
 							<div class="{{language?'nav_tips_list':'l_nav_tips_list'}}">
 								<image show="{{language}}" class="{{isstart?'nav_tips_list_img':'isanimation'}}" src="{{isstart?'./assets/img/wifi_complete.png':'./assets/img/wifi_refresh.png'}}"></image>
