@@ -1,0 +1,1616 @@
+<!-- 组件引入 -->
+<import name="midea-head" src="../../Component/MideaHead/index"></import>
+<!-- <import name="midea-about" src="../Component/MideaAbout/index"></import> -->
+<import name="midea-tips" src="../../Component/MideaTips/index"></import>
+<import name="midea-loading" src="../../Component/MideaLoading/index"></import>
+<import name="midea-meiju" src="../../Component/MideaMeiju/index"></import>
+
+<template>
+    <div class="container" id="container_body">
+        <text if="{{work_status === 'schedule'}}" class="EA_nav_list_data_fen"
+              style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:880px;">完成
+        </text>
+        <text if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}"
+              class="EA_nav_list_data_fen"
+              style="color: {{online === 'true'?'#ffffff':'#666666'}};padding-left:{{padingLeft(left_time_hour,left_time_min)}}px;">
+            分
+        </text>
+        <midea-head title="电饭煲" onclose-websocket="closeWebsocket" language="{{language}}" isnew="{{bgColor}}"
+                    power="{{online === 'true'?'on':'false'}}"></midea-head>
+        <refresh class="EA_refresh" offset="{{isoffset}}" onrefresh="scrollbottom" refreshing="{{isRefreshing}}">
+            <list onscroll="" style="background-color: {{online === 'true'?'#F9CB3D':'#cccccc'}};" class="EA_nav"
+                  id="list">
+                <list-item type="listItem" class="EA_nav_list">
+                    <div class="{{language?'EA_nav_list_lock':'EA_nav_list_lock_l'}}">
+                        <midea-meiju power="{{online === 'true'? 'on' : 'off'}}"></midea-meiju>
+                    </div>
+                    <div class="EA_nav_list_data"
+                         if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}">
+                        <text class="EA_nav_list_data_data_change"
+                              style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{work_status ===
+                            'cooking'?tiemData(left_time_hour,left_time_min):'--'}}
+                        </text>
+                    </div>
+                    <div class="EA_nav_list_data" if="{{work_status === 'schedule'}}">
+                        <text class="EA_nav_list_data_data_change"
+                              style="color: {{online === 'true'?'#ffffff':'#666666'}};">
+                            {{keepTime(order_time_hour,order_time_min)}}
+                        </text>
+                    </div>
+                    <text class="EA_nav_list_text"
+                          if="{{work_status != 'cancel' && work_status != 'keep_warm' && work_status != 'schedule'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">大约{{mode === 'heat_rice'?'还剩':'需要'}}
+                    </text>
+                    <text class="EA_nav_list_text" if="{{work_status === 'schedule'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">{{todayOrTomorrow(order_time_hour,
+                        order_time_min)}}
+                    </text>
+                    <text class="EA_nav_list_status" if="{{work_status != 'cancel' && work_status != 'keep_warm'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">
+                        {{work_status_fun(mode,work_status)}}
+                    </text>
+                    <text class="EA_nav_list_cancel" if="{{work_status === 'cancel'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">待机中
+                    </text>
+                    <!-- <text class="EA_nav_list_canceltext" if="{{work_status === 'cancel'}}" style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能</text> -->
+                    <text class="EA_nav_list_keepwarm" if="{{work_status === 'keep_warm'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">
+                        {{keepTime(warm_time_hour,warm_time_min)}}
+                    </text>
+                    <text class="EA_nav_list_keeptext" if="{{work_status === 'keep_warm'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">已持续保温
+                    </text>
+                    <text class="EA_nav_list_keepstatus" if="{{work_status === 'keep_warm'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">保温中
+                    </text>
+                    <text class="EA_nav_list_choosetips" if="{{work_status === 'cancel'}}"
+                          style="color: {{online === 'true'?'#ffffff':'#666666'}};">请选择下方功能
+                    </text>
+                </list-item>
+            </list>
+        </refresh>
+        <div class="EA_ctr"
+             if="{{online === 'false' || (work_status != 'cooking' && work_status != 'keep_warm' && work_status != 'schedule')}}">
+            <div class="EA_ctr_list">
+                <div class="EA_ctr_list_constrl" @click="selectData('luscious_rice')">
+                    <image src="./assets/img/fast.png" class="EA_ctr_list_constrl_img"></image>
+                    <text class="EA_ctr_list_constrl_text">香甜饭</text>
+                </div>
+                <div class="EA_ctr_list_constrl" @click="selectData('cook_congee')">
+                    <image src="./assets/img/keep_warm.png" class="EA_ctr_list_constrl_img"></image>
+                    <text class="EA_ctr_list_constrl_text">煮粥</text>
+                </div>
+                <div class="EA_ctr_list_constrl" @click="selectData('cook_soup')">
+                    <image src="./assets/img/heat.png" class="EA_ctr_list_constrl_img"></image>
+                    <text class="EA_ctr_list_constrl_text">煲汤</text>
+                </div>
+            </div>
+        </div>
+        <div class="EA_contrl"
+             if="{{online === 'true' && (work_status === 'cooking' || work_status === 'keep_warm' || work_status === 'schedule')}}">
+            <div class="EA_contrl_btn" @click="stopDevice()">
+                <image src="./assets/img/stop.png" class="EA_contrl_btn_img"></image>
+                <text class="EA_contrl_btn_text">停止</text>
+            </div>
+        </div>
+        <div class="EA_alert" if="{{showAlert}}" @click="closealert()">
+            <div class="EA_alert_nav">
+                <div class="EA_alert_nav_title">
+                    <text if="{{language}}" class="EA_alert_nav_title_text">立即启动</text>
+                    <div class="{{language?'EA_alert_nav_title_switch':'EA_alert_nav_title_switch_l'}}">
+                        <div class="EA_alert_nav_title_switch_btn"
+                             style="background-color: {{isswitch?'#F9CB3D':'#CCCCCC'}};" @click="switchChang()">
+                            <div if="{{language}}"
+                                 class="EA_alert_nav_title_switch_btn_select {{isswitch?'animationSelectOpne':'animationSelectClose'}}"></div>
+                            <div if="{{!language}}"
+                                 class="EA_alert_nav_title_switch_l_select {{isswitch?'animationSelectOpne_l':'animationSelectClose_l'}}"></div>
+                        </div>
+                    </div>
+                    <text if="{{!language}}" class="EA_alert_nav_title_text_l">立即启动</text>
+                </div>
+                <div class="EA_alert_nav_title">
+                    <text if="{{language}}" class="EA_alert_nav_title_text">预约完成时间</text>
+                    <div class="EA_alert_nav_title_data" if="{{language}}">
+                        <text if="{{!isswitch}}" class="EA_alert_nav_title_data_select">{{selHour <
+                            10?'0'+selHour:selHour}}:{{selMin < 10?'0'+selMin:selMin}}
+                        </text>
+                        <image src="./assets/img/arow_down.png" class="EA_alert_nav_title_data_img"></image>
+                    </div>
+                    <div class="EA_alert_nav_title_data_l" if="{{!language}}">
+                        <image src="./assets/img/arow_down.png" class="EA_alert_nav_title_data_img"></image>
+                        <text if="{{!isswitch}}" class="EA_alert_nav_title_data_select">{{selHour <
+                            10?'0'+selHour:selHour}}:{{selMin < 10?'0'+selMin:selMin}}
+                        </text>
+                    </div>
+                    <text if="{{!language}}" class="EA_alert_nav_title_text_l">预约完成时间</text>
+                </div>
+                <div class="EA_alert_nav_list" if="{{language}}">
+                    <list class="EA_alert_nav_list_hour" id="list" show="{{!isswitch}}">
+                        <list-item type="listItem" class="EA_alert_nav_list_hour_item" @click="selectTime('hour',$idx)"
+                                   for="{{listHour}}">
+                            <text class="EA_alert_nav_list_hour_item_text"
+                                  style="color: {{selHour === $idx?'#F9CB3D':'#cccccc'}};">{{$item.data}}
+                            </text>
+                            <div class="img_select">
+                                <image src="./assets/img/select.png" class="EA_alert_nav_list_hour_item_img"
+                                       show="{{selHour === $idx}}"></image>
+                            </div>
+                        </list-item>
+                    </list>
+                    <list class="EA_alert_nav_list_hour" id="list" show="{{!isswitch}}">
+                        <list-item type="listItem" class="EA_alert_nav_list_hour_item" @click="selectTime('min',$idx)"
+                                   for="{{listMin}}">
+                            <text class="EA_alert_nav_list_hour_item_text"
+                                  style="color: {{selMin === $idx?'#F9CB3D':'#cccccc'}};">{{$item.data}}
+                            </text>
+                            <div class="img_select">
+                                <image src="./assets/img/select.png" class="EA_alert_nav_list_hour_item_img"
+                                       show="{{selMin === $idx}}"></image>
+                            </div>
+                        </list-item>
+                    </list>
+                </div>
+                <div class="EA_alert_nav_list" if="{{!language}}">
+                    <list class="EA_alert_nav_list_hour" id="list" show="{{!isswitch}}">
+                        <list-item type="listItem" class="EA_alert_nav_list_hour_item" @click="selectTime('min',$idx)"
+                                   for="{{listMin}}">
+                            <div class="img_select_l">
+                                <image src="./assets/img/select.png" class="EA_alert_nav_list_hour_item_img"
+                                       show="{{selMin === $idx}}"></image>
+                            </div>
+                            <text class="EA_alert_nav_list_hour_item_text"
+                                  style="color: {{selMin === $idx?'#F9CB3D':'#cccccc'}};">{{$item.data}}
+                            </text>
+                        </list-item>
+                    </list>
+                    <list class="EA_alert_nav_list_hour" id="list" show="{{!isswitch}}">
+                        <list-item type="listItem" class="EA_alert_nav_list_hour_item" @click="selectTime('hour',$idx)"
+                                   for="{{listHour}}">
+                            <div class="img_select_l">
+                                <image src="./assets/img/select.png" class="EA_alert_nav_list_hour_item_img"
+                                       show="{{selHour === $idx}}"></image>
+                            </div>
+                            <text class="EA_alert_nav_list_hour_item_text"
+                                  style="color: {{selHour === $idx?'#F9CB3D':'#cccccc'}};">{{$item.data}}
+                            </text>
+                        </list-item>
+                    </list>
+                </div>
+                <div class="EA_alert_nav_btnList">
+                    <div class="EA_alert_nav_btnList_btn" if="{{language}}" @click="closealert()">
+                        <text class="EA_alert_nav_btnList_btn_text">取消</text>
+                    </div>
+                    <div class="EA_alert_nav_btnList_btn" @click="doingDevice()">
+                        <text class="EA_alert_nav_btnList_btn_text1">启动</text>
+                    </div>
+                    <div class="EA_alert_nav_btnList_btn" if="{{!language}}" @click="closealert()">
+                        <text class="EA_alert_nav_btnList_btn_text">取消</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 组件 -->
+        <!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
+        <midea-loading if="{{isshowLoading}}"></midea-loading>
+        <midea-tips if="{{istips}}"></midea-tips>
+    </div>
+</template>
+<script>
+    import api from '../../Common/api/api.js';
+    import prompt from '@system.prompt';
+    import router from '@system.router';
+    import fetch from '@system.fetch';
+    import account from '@service.account';
+    import storage from '@system.storage';
+    import barcode from '@system.barcode';
+    import pkg from '@system.package';
+    import network from '@system.network';
+    import net from '../../Common/api/networkAPI.js';
+
+    export default {
+        private: {
+            isagain: true,
+            lanOnline: 'false',
+            isLanInit: false,
+            timeTips: '',
+            isoffset: '-1000px',
+            isRefreshing: false,
+            warmtime: "",
+            ws: '',
+            fenClassname: false,
+            isws: false,
+            isclosews: false,
+            timeoutInter: '',
+            className: 'EA_nav_list_data_data',
+            className_l: 'EA_nav_list_data_data_l',
+            ismeiju: false,
+            isfirst: false,
+            isshowLoading: false,
+            istips: false,
+            isabout: false,
+            showAlert: false,
+            bgColor: true,
+            language: true,
+            deviceHeight: 0,
+            isswitch: false,
+            selHour: 0,
+            selMin: 0,
+            listHour: [],
+            listMin: [],
+            code: '',
+            openId: '',
+            accessToken: '',
+            online: 'false',
+            power: "on",
+            order_time_hour: 0,
+            order_time_min: 0,
+            warm_time_hour: 0,
+            warm_time_min: 0,
+            work_status: 'cancel',
+            mode: 'fast_congee',
+            selectMode: '',
+            iswarm: true,
+            left_time_hour: 0,
+            left_time_min: 0,
+            EAlist: ['mode', 'work_status', 'order_time_hour', 'order_time_min', 'left_time_hour', 'left_time_min', 'error_code'],
+            EAdata: {
+                order_time_hour: 0,
+                order_time_min: 0,
+                left_time_hour: 0,
+                left_time_min: 0,
+                work_status: 'cancel',
+                mode: 'fast_congee',
+                warm_time_hour: 0,
+                warm_time_min: 0,
+                error_code: 0,
+            },
+            listDevice: {}
+        },
+        public: {
+            deviceSeries: '',
+            deviceId: '',
+            openid: ''
+        },
+        //启动
+        doingDevice() {
+            let that = this;
+            let status = [];
+            let params;
+            let min = 0;
+            let hour = 0;
+            if (that.getTimeNow('min') > parseInt(that.selMin)) {
+                min = 60 + parseInt(that.selMin) - that.getTimeNow('min');
+                if (that.getTimeNow('hour') > (parseInt(that.selHour) - 1)) {
+                    hour = 24 + (parseInt(that.selHour) - 1) - that.getTimeNow('hour');
+                } else {
+                    hour = (parseInt(that.selHour) - 1) - that.getTimeNow('hour');
+                }
+            } else {
+                min = parseInt(that.selMin) - that.getTimeNow('min');
+                if (that.getTimeNow('hour') > parseInt(that.selHour)) {
+                    hour = 24 + parseInt(that.selHour) - that.getTimeNow('hour');
+                } else {
+                    hour = parseInt(that.selHour) - that.getTimeNow('hour');
+                }
+            }
+            if (that.isswitch) {
+                params = {
+                    'mode': that.selectMode,
+                    'work_status': 'cooking'
+                }
+                status = ['mode', 'work_status'];
+            } else {
+                params = {
+                    'mode': that.selectMode,
+                    'order_time_hour': hour,
+                    'order_time_min': min,
+                    'work_status': 'schedule'
+                }
+                status = ['mode', 'order_time_hour', 'order_time_min', 'work_status'];
+            }
+            that.isshowLoading = true;
+            that.showAlert = false;
+            that.ctrDevice(params, status);
+        },
+        //停止
+        stopDevice() {
+            let that = this;
+            let params = {
+                'work_status': 'cancel'
+            }
+            let status = ['mode', 'order_time_hour', 'order_time_min', 'work_status'];
+            that.isshowLoading = true;
+            that.ctrDevice(params, status);
+        },
+        //显示alert
+        selectData(str) {
+            let that = this;
+            let params;
+            if (that.online === 'true') {
+                if (str === 'keep_warm') {
+                    params = {
+                        'mode': str,
+                        'work_status': 'cooking'
+                    }
+                } else {
+                    params = {
+                        'mode': str,
+                        'work_status': 'cooking'
+                    }
+                }
+                let status = ['mode', 'work_status'];
+                that.isshowLoading = true;
+                that.ctrDevice(params, status);
+// 				this.showAlert = true;
+// 				this.isswitch = true;
+// 				this.initData();
+// 				this.selectMode = str;
+            } else {
+                that.isshowclose()
+            }
+        },
+        // 关闭alert
+        closealert() {
+            this.showAlert = false;
+            this.initData();
+        },
+        //选择时间
+        selectTime(str, id) {
+            let that = this;
+            if (str === 'hour') {
+                that.selHour = id;
+                if (id === 0) {
+                    if (that.selMin === 0 || that.selMin === '--') {
+                        that.selMin = 1;
+                    }
+                } else {
+                    if (that.selMin === '--') {
+                        that.selMin = 0;
+                    }
+                }
+            } else {
+                if (id === 0 && that.selHour === 0) {
+                } else {
+                    that.selMin = id;
+                    if (id === 0) {
+                        if (that.selHour === 0 || that.selHour === '--') {
+                            that.selHour = 1
+                        }
+                    } else {
+                        if (that.selHour === 0 || that.selHour === '--') {
+                            that.selHour = 0;
+                        }
+                    }
+                }
+            }
+        },
+        //获取目前时间
+        getTimeNow(timeType) {
+            let myDate = new Date();
+            if (timeType === 'hour') {
+                return parseInt(myDate.getHours())
+            } else if (timeType === 'min') {
+                return parseInt(myDate.getMinutes())
+            }
+        },
+        //switch开关
+        switchChang() {
+            this.isswitch = !this.isswitch;
+        },
+        //预约中显示今天还是明天
+        todayOrTomorrow(hour, min) {
+            let date = new Date();
+            if (hour * 60 + min <= date.getHours() * 60 + date.getMinutes()) {
+                return '明天'
+            } else {
+                return '今天'
+            }
+        },
+        //保温时间过滤
+        keepTime(hour, min) {
+            let H;
+            let M;
+            if (10 > parseInt(hour) > 0) {
+                H = '0' + parseInt(hour);
+            } else if (parseInt(hour) > 9) {
+                H = parseInt(hour);
+            } else if (parseInt(hour) === 0) {
+                H = "00";
+            } else {
+                H = "--";
+            }
+            if (10 > parseInt(min) > 0) {
+                M = "0" + parseInt(min);
+            } else if (parseInt(min) > 9) {
+                M = parseInt(min);
+            } else if (parseInt(min) === 0) {
+                M = "00";
+            } else {
+                M = "--";
+            }
+            return H + ":" + M;
+        },
+        //状态显示过滤器
+        work_status_fun(mode, str) {
+            let status = '';
+            let mode_data = "";
+            console.log("状态改变了")
+            switch (mode) {
+                case 'cook_rice':
+                    mode_data = "精华煮";
+                    break;
+                case 'fast_cook_rice':
+                    mode_data = "超快煮";
+                    break;
+                case 'standard_cook_rice':
+                    mode_data = "标准煮";
+                    break;
+                case 'gruel':
+                    mode_data = "稀饭";
+                    break;
+                case 'cook_congee':
+                    mode_data = "煮粥";
+                    break;
+                case 'stew_soup':
+                    mode_data = "汤";
+                    break;
+                case 'stewing':
+                    mode_data = "蒸煮";
+                    break;
+                case 'heat_rice':
+                    mode_data = "热饭";
+                    break;
+                case 'make_cake':
+                    mode_data = "蛋糕";
+                    break;
+                case 'yoghourt':
+                    mode_data = "酸奶";
+                    break;
+                case 'soup_rice':
+                    mode_data = "煲仔饭";
+                    break;
+                case 'coarse_rice':
+                    mode_data = "杂粮饭";
+                    break;
+                case 'five_ceeals_rice':
+                    mode_data = "五谷饭";
+                    break;
+                case 'eight_treasures_rice':
+                    mode_data = "八宝饭";
+                    break;
+                case 'crispy_rice':
+                    mode_data = "锅巴饭";
+                    break;
+                case 'shelled_rice':
+                    mode_data = "玄米";
+                    break;
+                case 'eight_treasures_congee':
+                    mode_data = "八宝粥";
+                    break;
+                case 'infant_congee':
+                    mode_data = "婴儿粥";
+                    break;
+                case 'older_rice':
+                    mode_data = "长者饭";
+                    break;
+                case 'rice_soup':
+                    mode_data = "米汤";
+                    break;
+                case 'rice_paste':
+                    mode_data = "米糊";
+                    break;
+                case 'egg_custard':
+                    mode_data = "蛋羹";
+                    break;
+                case 'warm_milk':
+                    mode_data = "温奶";
+                    break;
+                case 'hot_spring_egg':
+                    mode_data = "温泉蛋";
+                    break;
+                case 'millet_congee':
+                    mode_data = "小米粥";
+                    break;
+                case 'firewood_rice':
+                    mode_data = "柴火饭";
+                    break;
+                case 'few_rice':
+                    mode_data = "少量饭";
+                    break;
+                case 'red_potato':
+                    mode_data = "红薯";
+                    break;
+                case 'corn':
+                    mode_data = "玉米";
+                    break;
+                case 'quick_freeze_bun':
+                    mode_data = "速冻包";
+                    break;
+                case 'steam_ribs':
+                    mode_data = "蒸排骨";
+                    break;
+                case 'steam_egg':
+                    mode_data = "蒸鸡蛋";
+                    break;
+                case 'coarse_congee':
+                    mode_data = "杂粮粥";
+                    break;
+                case 'steep_rice':
+                    mode_data = "泡饭";
+                    break;
+                case 'appetizing_congee':
+                    mode_data = "开胃粥";
+                    break;
+                case 'corn_congee':
+                    mode_data = "玉米粥";
+                    break;
+                case 'sprout_rice':
+                    mode_data = "发芽米";
+                    break;
+                case 'luscious_rice':
+                    mode_data = "香甜饭";
+                    break;
+                case 'luscious_boiled':
+                    mode_data = "香甜煮";
+                    break;
+                case 'fast_rice':
+                    mode_data = "快速饭";
+                    break;
+                case 'fast_boil':
+                    mode_data = "快速煮";
+                    break;
+                case 'bean_rice_congee':
+                    mode_data = "豆米粥";
+                    break;
+                case 'fast_congee':
+                    mode_data = "快速粥";
+                    break;
+                case 'baby_congee':
+                    mode_data = "宝宝粥";
+                    break;
+                case 'cook_soup':
+                    mode_data = "煲汤";
+                    break;
+                case 'congee_coup':
+                    mode_data = "粥/汤";
+                    break;
+                case 'steam_corn':
+                    mode_data = "蒸玉米";
+                    break;
+                case 'steam_red_potato':
+                    mode_data = "蒸红薯";
+                    break;
+                case 'boil_congee':
+                    mode_data = "煮粥";
+                    break;
+                case 'delicious_steam':
+                    mode_data = "美味蒸";
+                    break;
+                case 'boil_egg':
+                    mode_data = "煮鸡蛋";
+                    break;
+                case 'keep_warm':
+                    mode_data = "保温";
+                    break;
+                case 'rice_wine':
+                    mode_data = "米酒";
+                    break;
+                case 'fruit_vegetable_paste':
+                    mode_data = "果蔬泥";
+                    break;
+                case 'vegetable_porridge':
+                    mode_data = "蔬菜粥";
+                    break;
+                case 'pork_porridge':
+                    mode_data = "肉末粥";
+                    break;
+                case 'fragrant_rice':
+                    mode_data = "香软饭";
+                    break;
+                case 'assorte_rice':
+                    mode_data = "什锦饭";
+                    break;
+                case 'steame_fish':
+                    mode_data = "蒸鱼肉";
+                    break;
+                case 'baby_rice':
+                    mode_data = "宝宝饭";
+                    break;
+                case 'essence_rice':
+                    mode_data = "精华饭";
+                    break;
+                case 'fragrant_dense_congee':
+                    mode_data = "香浓粥";
+                    break;
+                case 'one_two_cook':
+                    mode_data = "一锅两煮";
+                    break;
+                case 'original_steame':
+                    mode_data = "原味蒸";
+                    break;
+                case 'hot_fast_rice':
+                    mode_data = "热水快速饭";
+                    break;
+                case 'online_celebrity_rice':
+                    mode_data = "网红饭";
+                    break;
+                case 'sushi_rice':
+                    mode_data = "寿司饭";
+                    break;
+                case 'stone_bowl_rice':
+                    mode_data = "石锅饭";
+                    break;
+                case 'boiled_water_rice':
+                    mode_data = "热水快饭";
+                    break;
+                case 'no_water_treat':
+                    mode_data = "无水焗";
+                    break;
+                case 'diy':
+                    mode_data = "DIY";
+                    break;
+                default:
+                    mode_data = "--";
+                    break;
+            }
+            switch (str) {
+                case 'cooking':
+                    status = mode_data + " | " + "烹饪中";
+                    break;
+                case 'schedule':
+                    status = mode_data + " | " + "预约中";
+                    break;
+                case 'keep_warm':
+                    status = mode_data + " | " + "保温中";
+                    break;
+                case 'cancel':
+                    status = mode_data + " | " + "待机中";
+                    break;
+                default:
+                    status = mode_data + " | " + "--";
+                    break;
+            }
+            return status;
+        },
+        //样式过滤
+        padingLeft(hour, min) {
+            let Len = this.tiemData(hour, min).toString().length;
+            console.log("他的值" + this.tiemData(hour, min))
+            console.log("长度" + Len)
+            switch (Len) {
+                case 1:
+                    return '250'
+                    break;
+                case 2:
+                    return '450'
+                    break;
+                case 3:
+                    return '600'
+                    break;
+                case 4:
+                    return '750'
+                    break;
+                case 5:
+                    return '950'
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        },
+        //根据大小切换样式
+        styleChange(num) {
+            let that = this;
+            if (parseInt(num) > 99) {
+                that.fenClassname = true;
+                that.className = 'EA_nav_list_data_data_change';
+                that.className_l = 'EA_nav_list_data_data_l_change';
+            } else {
+                that.fenClassname = false;
+                that.className = 'EA_nav_list_data_data';
+                that.className_l = 'EA_nav_list_data_data_l';
+            }
+        },
+        //时间过滤器
+        tiemData(hour, min) {
+            let that = this;
+            // if((hour && min) || (hour === 'null' && min === 'null')){
+            if (parseInt(hour) === 0) {
+                if (parseInt(min) === 0) {
+                    that.styleChange(0);
+                    return "--";
+                } else {
+                    that.styleChange(parseInt(min));
+                    return parseInt(min);
+                }
+            } else if (parseInt(hour) < 24 && parseInt(min) < 60) {
+                that.styleChange((parseInt(hour) * 60) + parseInt(min))
+                return (parseInt(hour) * 60) + parseInt(min);
+            } else {
+                that.styleChange(0);
+                return "--";
+            }
+// 			}else{
+// 				return "--";
+// 			}
+
+        },
+        //小时以及分钟
+        setTime() {
+            let that = this;
+            let obj;
+            for (let i = 0; i < 2; i++) {
+                if (i === 0) {
+                    for (let h = 0; h < 24; h++) {
+                        if (h < 10) {
+                            obj = {
+                                id: h,
+                                data: '0' + h.toString()
+                            }
+                        } else {
+                            obj = {
+                                id: h,
+                                data: h.toString()
+                            }
+                        }
+                        that.listHour.push(obj)
+                    }
+                } else {
+                    for (let m = 0; m < 60; m++) {
+                        if (m < 10) {
+                            obj = {
+                                id: m,
+                                data: '0' + m.toString()
+                            }
+                        } else {
+                            obj = {
+                                id: m,
+                                data: m.toString()
+                            }
+                        }
+
+                        that.listMin.push(obj)
+                    }
+                }
+            }
+        },
+        //时间逻辑
+        timeGet() {
+            let that = this;
+            let time1 = parseInt(that.EAdata.order_time_hour);
+            let time2 = parseInt(that.EAdata.order_time_min);
+            if (that.EAdata.order_time_hour && that.EAdata.order_time_min) {
+                if (time1 < 24 && time2 < 60) {
+                    if (time1 >= 0 && time2 >= 0) {
+                        that.selHour = time1;
+                        that.selMin = time2;
+                        that.order_time_hour = time1;
+                        that.order_time_min = time2;
+                    } else {
+                        that.selHour = '--';
+                        that.selMin = '--'
+                    }
+                } else {
+                    that.selHour = '--';
+                    that.selMin = '--'
+                }
+            } else {
+                that.selHour = '--';
+                that.selMin = '--'
+            }
+        },
+        //初始化数据
+        initData() {
+            let that = this;
+            this.isfirst = true;
+            that.timeGet();
+            if (this.online === 'true') {
+                this.power = 'on';
+            } else {
+                this.power = 'off';
+            }
+            // if(that.timeoutInter != ''){
+            // 	clearTimeout(that.timeoutInter)
+            // }
+            this.warm_time_hour = this.EAdata.warm_time_hour;
+            this.warm_time_min = this.EAdata.warm_time_min;
+            this.left_time_hour = this.EAdata.left_time_hour;
+            this.left_time_min = this.EAdata.left_time_min;
+            this.work_status = this.EAdata.work_status;
+            this.mode = this.EAdata.mode;
+            // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
+            that.timeGetdata();
+            // }
+        },
+        //网络检查
+        netWorkGet(str) {
+            let that = this;
+            if (that.iswarm) {
+                network.getType({
+                    success: function (data) {
+                        if (data.type === 'none') {
+                            prompt.showToast({
+                                message: str + "，请检查网络",
+                                duration: 1
+                            })
+                        } else {
+                            prompt.showToast({
+                                message: str,
+                                duration: 1
+                            })
+                        }
+                    }
+                })
+            }
+
+        },
+        //获取后一天的时间戳
+        gettime() {
+            let timestamp = Date.parse(new Date());
+            return parseInt(timestamp) + 3600000;
+        },
+        //获取授权信息
+        getAuthor() {
+            let that = this;
+            console.log("第三步授权")
+            account.authorize({
+                type: 'code',
+                success: function (data) {
+                    console.log("第三步" + JSON.stringify(data))
+                    that.code = data.code;
+                    that.getToken(data.code);
+                },
+                fail: function (data, code) {
+                    console.log("第三步" + JSON.stringify(data))
+                    that.initData();
+                    that.isfirst = true;
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                    that.netWorkGet('授权失败,请稍后重试')
+                }
+            })
+        },
+        //获取token
+        getToken(code) {
+            let that = this;
+            let params = {
+                thirdUId: code,
+            }
+            that.pause_data = true;
+            api.getUserToken(params).then((res) => {
+                let data_accesstoken = res;
+                if (data_accesstoken.code && data_accesstoken.code === 200) {
+                    let result_data = typeof data_accesstoken.data === 'object' ? data_accesstoken.data : JSON.parse(data_accesstoken.data);
+                    if (!parseInt(result_data.code)) {
+                        that.openId = result_data.openId;
+                        that.openid = result_data.openId;
+                        that.accessToken = result_data.accessToken;
+                        let obj = {
+                            openid: that.openId,
+                            accessToken: that.accessToken,
+                            time: that.gettime()
+                        }
+                        storage.set({
+                            key: 'openidToken',
+                            value: JSON.stringify(obj),
+                            success: function (data) {
+
+                            },
+                            fail: function (data, code) {
+
+                            }
+                        })
+                        that.LanOnlineGet();
+                        that.getDeviceList();
+                    } else {
+                        that.initData();
+                        that.isfirst = true;
+                        that.isRefreshing = false;
+                        that.isshowLoading = false;
+                        that.netWorkGet(api.getCode(result_data.code, "获取访问令牌失败"))
+                    }
+                } else {
+                    that.initData();
+                    that.isfirst = true;
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                    that.netWorkGet('获取访问令牌失败,请稍后重试')
+                }
+            }).catch((error, code) => {
+                console.log("授权接口：error" + error + ":::code" + code)
+                that.initData();
+                that.isfirst = true;
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                that.netWorkGet('获取访问令牌失败,请稍后重试')
+            })
+        },
+        /**
+         * 局域网获取
+         */
+        getLanData(res) {
+            let that = this;
+            let obj = (typeof res) == 'object' ? res : JSON.parse(res);
+            if (parseInt(obj.code) == 0) {
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                that.isfirst = true;
+                let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+                that.EAdata = data;
+                that.listDevice = data;
+                that.listDevice.online = "true";
+                that.online = "true";
+            } else {
+                that.isagain = false;
+                that.lanOnline = "false";
+                that.getDeviceList();
+            }
+        },
+        /**
+         * 联网获取
+         */
+        getdataLan(res) {
+            let that = this;
+            that.isRefreshing = false;
+            that.isshowLoading = false;
+            that.isfirst = true;
+            if (res.code === 200) {
+                let data = (typeof res.data) === "object" ? res.data : JSON.parse(res.data);
+                if (!parseInt(data.code) && !parseInt(data.devices[0].status)) {
+                    let obj = data.devices[0].properties;
+                    that.EAdata = obj;
+                    that.listDevice = obj;
+                    that.online = that.EAdata.online;
+                    if (that.online != 'true') {
+                        that.isshowclose();
+                    }
+                } else {
+                    that.initall();
+                    if (data.msg === '') {
+                        let str1 = '';
+                        if (data.devices[0].status) {
+                            str1 = data.devices[0].status;
+                            if (str1.toString() === '-6') {
+                                that.isshowclose();
+                                return false;
+                            }
+                            if (str1.toString() == '-1') {
+                                that.isagain = false
+                            }
+                            if (str1.toString() === '-100' && data.devices[0].description.toString() === '3123') {
+                                that.isshowclose();
+                            } else {
+                                that.netWorkGet(api.getStatus("get", str1, '获取设备状态失败'))
+                            }
+                        } else {
+                            str1 = data.code;
+                            that.netWorkGet(api.getCode(str1, '获取设备状态失败'))
+                        }
+                    } else {
+                        that.netWorkGet(data.msg)
+                    }
+                }
+            } else {
+                that.initall();
+                that.netWorkGet('获取设备状态失败,请稍后重试')
+            }
+        },
+        //获取设备列表
+        getDeviceList() {
+            let that = this;
+            let params = {
+                openId: that.openId,
+                devices: [{
+                    deviceId: that.deviceId,
+                    properties: that.EAlist
+                }]
+            }
+            that.istips = false;
+            that.pause_data = true;
+            if (net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain) {
+                that.lanOnline = 'true';
+            } else {
+                that.lanOnline = 'false';
+            }
+            api.postDeviceStatusQuery(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
+                that.isagain = true;
+                if (res.lanonline) {
+                    that.getdataLan(res);
+                } else {
+                    that.getLanData(res);
+                }
+                that.initData();
+            }).catch((error) => {
+                if (error.online) {
+                    if (that.iswarm) {
+                        that.initall();
+                        that.initData();
+                    }
+                    that.netWorkGet('获取设备状态失败,请稍后重试');
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                    that.isfirst = true;
+                } else {
+                    that.isagain = false;
+                    that.lanOnline = "false";
+                    that.getDeviceList();
+                }
+
+            })
+        },
+        /**
+         * 局域网控制
+         */
+        lanControl(res, obj1, status) {
+            let that = this;
+            let obj = (typeof res) == 'object' ? res : JSON.parse(res);
+            console.log("局域网：" + JSON.stringify(res))
+            if (parseInt(obj.code) == 0) {
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                let data = (typeof obj.message) == 'object' ? obj.message : JSON.parse(obj.message);
+                that.EAdata.mode = data.mode;
+                that.mode = data.mode;
+                that.EAdata.order_time_hour = data.order_time_hour;
+                that.EAdata.order_time_min = data.order_time_min;
+                that.EAdata.left_time_hour = data.left_time_hour;
+                that.left_time_hour = data.left_time_hour;
+                that.EAdata.left_time_min = data.left_time_min;
+                that.left_time_min = data.left_time_min;
+                that.EAdata.warm_time_hour = data.warm_time_hour;
+                that.warm_time_hour = data.warm_time_hour;
+                that.EAdata.warm_time_min = data.warm_time_min;
+                that.warm_time_min = data.warm_time_min;
+                that.EAdata.work_status = data.work_status
+                that.EAdata.online = 'true';
+                that.listDevice = data;
+                that.listDevice.online = "true";
+                that.online = 'true';
+
+                that.initData();
+            } else {
+                that.isagain = false;
+                that.lanOnline = 'false';
+                that.ctrDevice(obj1, status);
+            }
+        },
+        /**
+         * 广域网控制
+         */
+        wlanControl(res) {
+            let that = this;
+            if (res.code && res.code === 200) {
+                console.log("第一步")
+                let bind_res_data = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                if (parseInt(bind_res_data.code) == 0) {
+                    console.log("第二步")
+                    if (!parseInt(bind_res_data.devices[0].status)) {
+                        that.EAdata.online = 'true';
+                        that.online = 'true';
+                        let isall = false;
+                        let obj = typeof bind_res_data.devices[0].props === 'object' ? bind_res_data.devices[0].props : JSON.parse(bind_res_data.devices[0].props);
+                        if (obj.mode) {
+                            that.EAdata.mode = obj.mode;
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.order_time_hour.toString()) {
+                            that.EAdata.order_time_hour = obj.order_time_hour
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.order_time_min.toString()) {
+                            that.EAdata.order_time_min = obj.order_time_min
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.left_time_hour.toString()) {
+                            that.EAdata.left_time_hour = obj.left_time_hour;
+                            that.left_time_hour = obj.left_time_hour;
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.left_time_min.toString()) {
+                            that.EAdata.left_time_min = obj.left_time_min;
+                            that.left_time_min = obj.left_time_min;
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.warm_time_hour.toString()) {
+                            that.EAdata.warm_time_hour = obj.warm_time_hour;
+                            that.warm_time_hour = obj.warm_time_hour;
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.warm_time_min.toString()) {
+                            that.EAdata.warm_time_min = obj.warm_time_min;
+                            that.warm_time_min = obj.warm_time_min;
+                        } else {
+                            isall = true;
+                        }
+                        if (obj.work_status) {
+                            that.EAdata.work_status = obj.work_status
+                        } else {
+                            isall = true;
+                        }
+                        that.listDevice = obj;
+                        if (isall) {
+                            that.isshowLoading = true;
+                            that.getDeviceList();
+                        } else {
+                            that.isRefreshing = false;
+                            that.isshowLoading = false;
+                        }
+                    } else {
+                        that.initall();
+                        console.log("第三步")
+                        that.isRefreshing = false;
+                        that.isshowLoading = false;
+                        if (bind_res_data.msg === '') {
+                            console.log("第四步")
+                            let str1 = '';
+                            if (bind_res_data.devices[0].status) {
+                                console.log("第5步")
+                                str1 = bind_res_data.devices[0].status;
+                                if (str1.toString() === '-6') {
+                                    that.isshowclose();
+                                    return false;
+                                }
+                                if (str1.toString() === '-100' && bind_res_data.devices[0].description.toString() === '3123') {
+                                    that.isshowclose();
+                                } else {
+                                    that.netWorkGet(api.getStatus("post", str1, '操作设备失败'))
+                                }
+                            } else {
+                                str1 = bind_res_data.code;
+                                that.netWorkGet(api.getCode(str1, '操作设备失败'))
+                            }
+                        } else {
+                            that.netWorkGet(bind_res_data.msg)
+                        }
+                    }
+                } else {
+                    that.initall();
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                    if (bind_res_data.msg === '') {
+                        let str1 = '';
+                        str1 = bind_res_data.code;
+                        that.netWorkGet(api.getCode(str1, '操作设备失败'))
+                    } else {
+                        that.netWorkGet(bind_res_data.msg)
+                    }
+                }
+            } else {
+                that.initall();
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                that.netWorkGet('操作设备失败,请稍后重试')
+            }
+            that.initData();
+        },
+        //控制家电
+        ctrDevice(obj, status) {
+            let that = this;
+            that.pause_data = true;
+            that.isshowLoading = true;
+            let EAdata = that.listDevice;
+            let status_params = that.EAdata;
+// 			for (let i = 0; i < status.length; i++) {
+// 				delete status_params[status[i]]
+// 			}
+            if (status_params.online) {
+                delete status_params.online
+            }
+            let params = {
+                'openId': that.openId,
+                'devices': [{
+                    "deviceId": that.deviceId,
+                    "properties": obj,
+                    "status": EAdata
+                    // "status": status_params
+                }]
+            }
+            console.log("$Lanonline:" + JSON.stringify(net.$Lanonline) + "::::::::isagain:" + that.isagain)
+            if (net.$Lanonline.deviceid == that.deviceId && net.$Lanonline.isonLan == 'true' && that.isagain) {
+                that.lanOnline = 'true';
+            } else {
+                that.lanOnline = 'false';
+            }
+            if (obj.work_status === 'cooking' && parseInt(that.EAdata.error_code.toString()) !== 0) {
+                that.isRefreshing = false;
+                that.isshowLoading = false;
+                prompt.showToast({message: "设备故障码：" + that.EAdata.error_code, duration: 1})
+                return;
+            }
+            api.postDeviceControl(params, that.accessToken, that.lanOnline, that.deviceId).then((res) => {
+                that.isagain = true;
+                that.iswarm = true;
+                if (res.lanonline) {
+                    that.wlanControl(res);
+                } else {
+                    that.lanControl(res, obj, status)
+                }
+            }).catch((error) => {
+                that.iswarm = true;
+                if (that.lanOnline == 'true') {
+                    console.log("ssssssss")
+                    that.isagain = false;
+                    that.lanOnline = 'false';
+                    that.ctrDevice(obj, status);
+                } else {
+                    that.initall();
+                    that.initData();
+                    that.netWorkGet('操作设备失败,请稍后重试');
+                    that.isRefreshing = false;
+                    that.isshowLoading = false;
+                    that.isfirst = true;
+                }
+
+            })
+        },
+        initall() {
+            let that = this;
+            that.EAdata = {
+                order_time_hour: 0,
+                order_time_min: 0,
+                left_time_hour: 0,
+                left_time_min: 0,
+                work_status: '--',
+                mode: '--',
+                warm_time_hour: 0,
+                warm_time_min: 0
+            }
+            that.EAdata.online = 'false';
+            that.listDevice = that.EAdata;
+            that.listDevice.online = "false";
+            that.online = 'false';
+        },
+        isshowclose() {
+            let that = this;
+            that.istips = false;
+            if (that.timeTips != '') {
+                clearTimeout(that.timeTips)
+            }
+            if (that.iswarm) {
+                that.istips = true;
+                // that.timeTips = setTimeout(() => {
+                // 	that.istips = false;
+                // },3000)
+            }
+        },
+        //下拉刷新
+        scrollbottom(e) {
+            let that = this;
+            that.isRefreshing = e.refreshing;
+            that.regetdata();
+            // if(that.isfirst){
+
+            // }
+        },
+        regetdata() {
+            let that = this;
+            that.isshowLoading = true;
+            let timestamp = Date.parse(new Date());
+            storage.get({
+                key: 'openidToken',
+                success: function (data) {
+                    that.iswarm = true;
+                    if (data === '') {
+                        that.getAuthor();
+                    } else {
+                        let obj = JSON.parse(data);
+                        if (parseInt(timestamp) > parseInt(obj.time)) {
+                            that.getAuthor();
+                        } else {
+                            if (obj.openid === that.openid) {
+                                that.openId = obj.openid;
+                                that.accessToken = obj.accessToken;
+                                if (!that.isLanInit) {
+                                    that.LanOnlineGet();
+                                }
+                                that.getDeviceList();
+                            } else {
+                                that.getAuthor();
+                            }
+                        }
+                    }
+                },
+                fail: function (data, code) {
+                    console.log(`handling fail, code = ${code}`)
+                }
+            })
+        },
+        timeGetdata() {
+            let that = this;
+            if (that.timeoutInter != '') {
+                clearInterval(that.timeoutInter)
+            }
+            that.timeoutInter = setInterval(function () {
+                that.iswarm = false;
+                let timestamp = Date.parse(new Date());
+                storage.get({
+                    key: 'openidToken',
+                    success: function (data) {
+                        if (data === '') {
+                            that.getAuthor();
+                        } else {
+                            let obj = JSON.parse(data);
+                            if (parseInt(timestamp) > parseInt(obj.time)) {
+                                that.getAuthor();
+                            } else {
+                                if (obj.openid === that.openid) {
+                                    that.openId = obj.openid;
+                                    that.accessToken = obj.accessToken;
+                                    if (!that.isLanInit) {
+                                        that.LanOnlineGet();
+                                    }
+                                    that.getDeviceList();
+                                } else {
+                                    that.getAuthor();
+                                }
+                            }
+                        }
+                    },
+                    fail: function (data, code) {
+                        console.log(`handling fail, code = ${code}`)
+                    }
+                })
+            }, 3000)
+        },
+        //判断是否安装美居
+        isMeiju() {
+            let that = this;
+            let str1 = "确定打开美居？（仅支持美居5.2及以上版本）";
+            let str2 = "您还没安装美居app，是否确定下载安装?";
+            pkg.hasInstalled({
+                package: 'com.midea.ai.appliances',
+                success: function (res) {
+                    prompt.showDialog({
+                        title: '提示',
+                        message: res.result ? str1 : str2,
+                        buttons: [
+                            {
+                                text: res.result ? '直接打开' : '去下载',
+                                color: '#33dd44'
+                            }
+                        ],
+                        success: function (data) {
+                            if (res.result) {
+                                router.push({uri: 'meiju://com.midea.meiju/main'});
+                            } else {
+                                pkg.install({
+                                    package: 'com.midea.ai.appliances',
+                                    success: function (resp) {
+                                        console.log(`handling success: ${resp.result}`);
+                                    },
+                                    fail: function (resp, code) {
+                                        console.log(`handling fail, code = ${code}`);
+                                    }
+                                });
+                            }
+                        },
+                        cancel: function () {
+                            console.log('handling cancel');
+                        },
+                        fail: function (data, code) {
+                            console.log(`handling fail, code = ${code}`);
+                        }
+                    });
+
+                    console.log(`handling success: ${res.result}`);
+                },
+                fail: function (res, code) {
+                    console.log(`handling fail, code = ${code}`);
+                }
+            });
+        },
+        //websocket
+        webSocketdata() {
+            let that = this;
+            api.createWensocket(that.deviceId).then((ws) => {
+                that.ws = ws;
+                that.isws = true;
+                ws.onopen = function () {
+                    console.log("websocket连接成功")
+                }
+                ws.onerror = function (data) {
+                    // 连接失败
+                    //失败之后再重启
+                    that.webSocketdata();
+                    console.log('websocket连接失败')
+                }
+                ws.onmessage = function (res) {
+// 					prompt.showDialog({
+// 						title: 'websocket',
+// 						message: "websocket："+ JSON.stringify(res),
+// 						buttons: [{
+// 							text: '确定',
+// 							color: '#33dd44'
+// 						}],
+// 						success: function (data) {
+// 						},
+// 						cancel: function () {
+// 							console.log('handling cancel')
+// 						},
+// 						fail: function (data, code) {
+// 							console.log(`handling fail, code = ${code}`)
+// 						}
+// 					})
+                    let obj = typeof res.data === 'object' ? res.data : JSON.parse(res.data);
+                    if (obj.status.online) {
+                        that.online = obj.status.online;
+                        that.EAdata.online = obj.status.online;
+                    } else {
+                        that.EAdata.online = 'true';
+                        that.online = 'true';
+                    }
+                    if (obj.status.mode) {
+                        that.EAdata.mode = obj.status.mode;
+                    }
+                    if (obj.status.order_time_hour) {
+                        that.EAdata.order_time_hour = obj.status.order_time_hour;
+                    }
+                    if (obj.status.order_time_min) {
+                        that.EAdata.order_time_min = obj.status.order_time_min;
+                    }
+                    if (obj.status.left_time_hour) {
+                        that.EAdata.left_time_hour = obj.status.left_time_hour;
+                        that.left_time_hour = obj.status.left_time_hour;
+                    }
+                    if (obj.status.left_time_min) {
+                        that.EAdata.left_time_min = obj.status.left_time_min;
+                        that.left_time_min = obj.status.left_time_min;
+                    }
+                    if (obj.status.warm_time_hour) {
+                        that.EAdata.warm_time_hour = obj.status.warm_time_hour;
+                        that.warm_time_hour = obj.status.warm_time_hour;
+                    }
+                    if (obj.status.warm_time_min) {
+                        that.EAdata.warm_time_min = obj.status.warm_time_min;
+                        that.warm_time_min = obj.status.warm_time_min;
+                    }
+                    if (obj.status.work_status) {
+                        that.EAdata.work_status = obj.status.work_status;
+                    }
+                    that.listDevice = that.EAdata;
+                    that.initData();
+                }
+                ws.onclose = function () {
+                    // 关闭 websocket
+                    // 关闭之后再重启
+                    if (!that.isclosews) {
+                        that.webSocketdata();
+                    }
+                    console.log("websocket连接已关闭...")
+                };
+            });
+        },
+        /**
+         * 局域网初始化
+         */
+        LanOnlineGet() {
+            let that = this;
+            net.deviceInit(that.accessToken, that.deviceId).then((res) => {
+                that.isLanInit = true;
+            }).catch((error) => {
+                that.isLanInit = false;
+            });
+        },
+        onclickFn(e) {
+            this.isabout = false;
+        },
+        onMenuPress() {
+            this.isabout = !this.isabout;
+        },
+        closeWebsocket(e) {
+            let that = this;
+            that.isclosews = true;
+            // if(that.timeoutInter != ''){
+            // 	clearInterval(that.timeoutInter)
+            // }
+            if (that.ws != '') {
+                that.ws.close({
+                    code: 1000,
+                    reason: '退出关闭',
+                    success: function () {
+                        that.ws = '';
+                        console.log("关闭websocket成功")
+                    },
+                    fail: function (data, code) {
+                        console.log("关闭websocke失败, code = " + JSON.stringify(code))
+                    }
+                })
+            }
+        },
+        onShow() {
+            let that = this;
+            that.isclosews = false;
+            // if(that.timeoutInter != ''){
+            // 	clearInterval(that.timeoutInter)
+            // }
+            if (that.online === 'true') {
+                // if (this.work_status === 'keep_warm' || this.work_status === 'cooking' || this.work_status === 'schedule') {
+                    that.timeGetdata();
+                // }
+            }
+
+            if (that.ws === '' && that.isws) {
+                // that.webSocketdata();
+            }
+        },
+        onBackPress() {
+            let that = this;
+            that.closeWebsocket();
+            router.clear();
+            this.$app.exit();
+        },
+        onHide() {
+            let that = this;
+            that.istips = false;
+            that.closeWebsocket();
+            // that.isabout = false;
+        },
+        onInit() {
+            /* 如将 $element('id')获取到内容，赋值给成员变量，则有可能引发堆栈溢出 */
+            this.setTime();
+            //初始化
+            this.initData();
+            // this.deviceHeight = this.$app.options.env.deviceHeight;
+            let that = this;
+            api.getlanguage().then((res) => {
+                if (res === 'ug') {
+                    that.language = false;
+                } else {
+                    that.language = true;
+                }
+            })
+            // this.isMeiju();
+            router.clear();
+            //组件控制
+            that.$on('openmenu', function (e) {
+                that.isabout = !this.isabout;
+            })
+            that.$on('cancel', function (e) {
+                that.isabout = false;
+            })
+            that.$on('closetips', function (e) {
+                that.istips = false;
+                that.regetdata();
+            })
+            let timestamp = Date.parse(new Date());
+            storage.get({
+                key: 'openidToken',
+                success: function (data) {
+                    that.isshowLoading = true;
+                    console.log("来这里" + data);
+
+                    if (data === '') {
+                        that.getAuthor();
+                    } else {
+                        let obj = JSON.parse(data);
+                        if (parseInt(timestamp) > parseInt(obj.time)) {
+                            that.getAuthor();
+                        } else {
+                            console.log("第一步")
+                            if (obj.openid === that.openid) {
+                                that.openId = obj.openid;
+                                that.accessToken = obj.accessToken;
+                                that.LanOnlineGet();
+                                that.getDeviceList();
+                            } else {
+                                that.getAuthor();
+                            }
+                        }
+                    }
+                },
+                fail: function (data, code) {
+                    console.log(`handling fail, code = ${code}`)
+                }
+            })
+        },
+    }
+</script>
+<style lang='less'>
+    @import "./assets/index.less";
+</style>
