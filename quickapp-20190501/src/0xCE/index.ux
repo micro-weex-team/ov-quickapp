@@ -364,11 +364,11 @@ import net from '../Common/api/networkAPI.js'
 			  
 			// 初始化数据
 
-			that.room_temp_value = data.room_temp_value?data.room_temp_value:'--'//室内温度
-			that.humidity_value = data.humidity_value?data.humidity_value:'--'
-			that.pm25_value = data.pm25_value?data.pm25_value>=75?data.pm25_value+'↑':data.pm25_value+'↓':'--'
-			that.co2_value = data.co2_value?data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓':'--'
-			that.hcho_value = data.hcho_value?data.hcho_value:'0.000'
+			that.room_temp_value = data.room_temp_value!=='invalid'?data.room_temp_value:'--'//室内温度
+			that.humidity_value = data.humidity_value!=='invalid'?data.humidity_value:'--'
+			that.pm25_value = data.pm25_value!=='invalid'?data.pm25_value>=75?data.pm25_value+'↑':data.pm25_value+'↓':'--'
+			that.co2_value = data.co2_value!=='invalid'?data.co2_value>=1000?data.co2_value+'↑':data.co2_value+'↓':'--'
+			that.hcho_value = data.hcho_value!=='invalid'?data.hcho_value:'0.000'
 			
 			// prompt.showToast({message: '接口'})
 
@@ -770,7 +770,7 @@ import net from '../Common/api/networkAPI.js'
         //设备控制接口
     postDeviceControl(obj,status){
 			// prompt.showToast({message: JSON.stringify(obj)+'设备控制接口'+JSON.stringify(status)})
-
+			console.log('设备控制接口',JSON.stringify(obj))
       this.isshowLoading = true;
 			let that = this;
 			if(status.online){
@@ -1098,9 +1098,11 @@ import net from '../Common/api/networkAPI.js'
 				success: function(ret) {
 					console.log(`handling success， brand = ${ret.brand}`);
 					console.log("屏幕高度："+ret.screenHeight);
+					console.log('获取设备信息',JSON.stringify(ret));
 					that.deviceHeight = ret.screenHeight;
 				}
 			})
+	
 			router.clear();
 			that.$page.setTitleBar({ text: '新风机' })
 		
