@@ -72,7 +72,7 @@
             <div class="footer-normal" @click="showTimeDialog()">
                 <image src="{{'./assets/img/timer-' + (isTimerOn(timer_on_hour, timer_on_minute, timer_off_hour, timer_off_minute)? (power==='off' || mode==='normal' || mode==='constant_temperature' || mode=='efficient'? 'highlight-normal': ((mode==='cold_air')?'highlight-cold':'on')):'on') + '.png'}}"
                        class="footer-normal-img"></image>
-                <text class="footer-normal-desc" style="color: '#000000'}};">{{timerOnText(power, timer_on_hour,
+                <text class="footer-normal-desc" style="color: '#000000';">{{timerOnText(power, timer_on_hour,
                     timer_on_minute, timer_off_hour, timer_off_minute)}}
                 </text>
             </div>
