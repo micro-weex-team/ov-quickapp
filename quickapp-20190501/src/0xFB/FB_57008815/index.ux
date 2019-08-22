@@ -1643,6 +1643,10 @@
                                     if (!that.isLanInit) {
                                         that.LanOnlineGet();
                                     }
+                                    if (that.istips) {
+                                        // 离线状态不查询
+                                        return;
+                                    }
                                     that.getDeviceStatus();
                                 } else {
                                     that.getdevicelist();
