@@ -1,8 +1,8 @@
 {
 	"package": "com.midea.iot.application",
     "name": "Midea-IoT",
-    "versionName": "1.8.1",
-    "versionCode": 181,
+    "versionName": "1.8.4",
+    "versionCode": 184,
     "icon": "/Common/logo.png",
     "minPlatformVersion": 1030,
     "features": [{
