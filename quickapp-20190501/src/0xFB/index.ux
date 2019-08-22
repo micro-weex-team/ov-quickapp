@@ -24,11 +24,11 @@
                             {{tempOrGear(power, mode, temperature, gear)}}
                         </text>
                         <text class="temp-grade" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                            {{power==="off"?'℃':(mode==="normal"||mode==="constant_temperature" ?'℃':(mode==="cold_air"?'挡':''))}}
+                            {{power==="off"?'℃':(mode==="normal"||mode==="constant_temperature" ?'℃':(mode==="cold_air"?'档':''))}}
                         </text>
                     </div>
                     <text class="tips" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
-                        {{power==="off"?'设定温度':(mode==="normal"||mode==="constant_temperature"?'设定温度':(mode==="cold_air"?'设定挡位':''))}}
+                        {{power==="off"?'设定温度':(mode==="normal"||mode==="constant_temperature"?'设定温度':(mode==="cold_air"?'设定档位':''))}}
                     </text>
                     <text class="indoor" style="color: {{ power === 'on'? '#ffffff':'#666666'}};">
                         {{'室内温度:'+cur_temperature+'°'}}
@@ -1977,12 +1977,12 @@
         gearDesc(power, mode, gear) {
             if (power === 'on') {
                 if (mode == 'cold_air' || mode == 'normal') {
-                    return gear ? gear + '挡' : '挡位';
+                    return gear ? gear + '档' : '档位';
                 } else {
-                    return '挡位';
+                    return '档位';
                 }
             } else {
-                return '挡位';
+                return '档位';
             }
         },
         toggleList() {
