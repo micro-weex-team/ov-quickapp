@@ -184,7 +184,7 @@
         </div>
         <div class="Midea-compont" if="{{isGeardialog}}" @click="closeDia">
             <div class="Midea-dialog">
-                <list class="Midea-list" id="list">
+                <list class="Midea-list" id="list" style="padding-top: {{listPadding}}; padding-bottom: {{listPadding}}">
                     <list-item class="Midea-item" type="listItem" for="{{listGear}}" @click="selectGear($item.id)">
                         <text class="Midea-text" if="{{language}}"
                               style="color: {{select_gear === $item.id?checkedColor(power, mode):'#cccccc'}};">
@@ -401,6 +401,7 @@
             realSn8: '',
             hours_min: '1',
             listOpen: false,
+            listPadding: '0px',
         },
         public: {
             deviceSeries: '',
@@ -1818,6 +1819,8 @@
                 }
                 that.listGear.push(data);
             }
+            if (that.listGear.length == 2) that.listPadding = '225px';
+            else if (that.listGear.length == 3) that.listPadding = '150px';
         },
         fetchRealSn8() {
             let that = this;
