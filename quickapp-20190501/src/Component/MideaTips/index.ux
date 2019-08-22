@@ -1,10 +1,10 @@
 <template>
     <div class="mdiea-tips_list">
-		<div class="mdiea-tips-mork">
+		<div class="mdiea-tips-mork"  @click="close()">
 			<div class="mdiea-tips">
 				<text class="mdiea-tips-text-push">当前设备离线，请检查连接状态</text>
 				<!--<text class="mdiea-tips-text1-push" @click="close()">X</text>-->
-				<image class="mdiea-tips-img" @click="close()" src="./assets/menu_ic_cancel_online.png" ></image>
+				<!-- <image class="mdiea-tips-img" @click="close()" src="./assets/menu_ic_cancel_online.png" ></image> -->
 			</div>
 		</div>
     </div>
