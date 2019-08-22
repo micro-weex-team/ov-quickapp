@@ -329,9 +329,9 @@
 		startDevice() {
 			let that = this;
 			let params;
-			if(that.modeItem.work_mode == "underside_tube" && that.preheatCheck && parseInt(that.temperature) < 100){
+			if((that.modeItem.work_mode == "underside_tube" || that.modeItem.work_mode == "hot_wind_bake" ) && that.preheatCheck && parseInt(that.setTemperature) < 100){
 				prompt.showToast({
-					message: "下管烧烤，预热不能低于100度哦"
+					message: "该烧烤模式，预热不能低于100度哦"
 				})
 				return;
 			}

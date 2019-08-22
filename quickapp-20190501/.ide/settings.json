@@ -1,3 +1,4 @@
 {
-    "hap.extractHapTypes": false
+    "hap.extractHapTypes": false,
+    "hap.typesVersion": "1050"
 }
