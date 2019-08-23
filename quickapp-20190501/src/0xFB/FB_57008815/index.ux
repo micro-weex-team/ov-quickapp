@@ -1885,10 +1885,10 @@
             // that.$on('cancel', function(e){
             // 	that.isabout = false;
             // })
-            // that.$on('closetips', function(e){
-            // 	that.istips = false;
-            // 	that.regetdata();
-            // })
+            that.$on('closetips', function(e){
+            	that.istips = false;
+            	that.regetdata();
+            })
             // that.$on('openmenu', function(e){
             // 	that.isabout = !that.isabout;
             // })
