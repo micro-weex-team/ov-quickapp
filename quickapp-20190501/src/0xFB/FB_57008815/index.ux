@@ -5,6 +5,7 @@
 <import name="midea-dialog" src="../../Component/MideaDialog/index"></import>
 <import name="midea-meiju" src="../../Component/MideaMeiju/index"></import>
 <import name="qui-switch" src="../../Component/qui-switch/index"></import>
+<import name="midea-selectbottom" src="../../Component/MideaSelectDiaBottom/index"></import>
 
 <template>
     <div class="container">
@@ -182,36 +183,37 @@
                 </text>
             </div>
         </div>
-        <div class="Midea-compont" if="{{isGeardialog}}" @click="closeDia">
-            <div class="Midea-dialog">
-                <list class="Midea-list" id="list" style="padding-top: {{listPadding}}; padding-bottom: {{listPadding}}">
-                    <list-item class="Midea-item" type="listItem" for="{{listGear}}" @click="selectGear($item.id)">
-                        <text class="Midea-text" if="{{language}}"
-                              style="color: {{select_gear === $item.id?checkedColor(power, mode):'#cccccc'}};">
-                            {{$item.data}}
-                        </text>
-                        <div class="Midea-{{language?'imgage':'imgage_l'}}">
-                            <image class="Midea-img" show="{{select_gear === $item.id}}"
-                                   src="{{mode=='cold_air'?'./assets/img/ic_select.png':'./assets/img/ic_select_normal.png'}}"></image>
-                        </div>
-                        <text class="Midea-text" if="{{!language}}"
-                              style="color: {{select_gear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}
-                        </text>
-                    </list-item>
-                </list>
-                <div class="Midea-btn">
-                    <div if="{{language}}" class="Midea-btn1" @click="closeDia">
-                        <text class="Midea-btn1text">取消</text>
-                    </div>
-                    <div class="Midea-btn1" @click="conData">
-                        <text class="Midea-btn2text" style="color:{{checkedColor(power, mode)}}">确定</text>
-                    </div>
-                    <div if="{{!language}}" class="Midea-btn1" @click="closeDia">
-                        <text class="Midea-btn1text">取消</text>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <midea-selectbottom onclose-dia="closeDia" if={{isGeardialog}} isshow="{{isGeardialog}}" isfoot="{{false}}" isform={{true}} datalist="{{selectlist}}" isselecticon="{{false}}" showline="{{selectlist.length}}" isyellow="{{mode!='cold_air'}}" onselect-num="selectGearNew"></midea-selectbottom>
+        <!--<div class="Midea-compont" if="{{isGeardialog}}" @click="closeDia">-->
+            <!--<div class="Midea-dialog">-->
+                <!--<list class="Midea-list" id="list" style="padding-top: {{listPadding}}; padding-bottom: {{listPadding}}">-->
+                    <!--<list-item class="Midea-item" type="listItem" for="{{listGear}}" @click="selectGear($item.id)">-->
+                        <!--<text class="Midea-text" if="{{language}}"-->
+                              <!--style="color: {{select_gear === $item.id?checkedColor(power, mode):'#cccccc'}};">-->
+                            <!--{{$item.data}}-->
+                        <!--</text>-->
+                        <!--<div class="Midea-{{language?'imgage':'imgage_l'}}">-->
+                            <!--<image class="Midea-img" show="{{select_gear === $item.id}}"-->
+                                   <!--src="{{mode=='cold_air'?'./assets/img/ic_select.png':'./assets/img/ic_select_normal.png'}}"></image>-->
+                        <!--</div>-->
+                        <!--<text class="Midea-text" if="{{!language}}"-->
+                              <!--style="color: {{select_gear === $item.id?'#3191FD':'#cccccc'}};">{{$item.data}}-->
+                        <!--</text>-->
+                    <!--</list-item>-->
+                <!--</list>-->
+                <!--<div class="Midea-btn">-->
+                    <!--<div if="{{language}}" class="Midea-btn1" @click="closeDia">-->
+                        <!--<text class="Midea-btn1text">取消</text>-->
+                    <!--</div>-->
+                    <!--<div class="Midea-btn1" @click="conData">-->
+                        <!--<text class="Midea-btn2text" style="color:{{checkedColor(power, mode)}}">确定</text>-->
+                    <!--</div>-->
+                    <!--<div if="{{!language}}" class="Midea-btn1" @click="closeDia">-->
+                        <!--<text class="Midea-btn1text">取消</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <midea-loading if="{{isshowLoading}}"></midea-loading>
         <!-- <midea-about if="{{isabout}}" oncan-cel="onclickFn" oncan-close="onclickFn"></midea-about> -->
         <midea-tips if="{{istips}}"></midea-tips>
@@ -402,6 +404,7 @@
             hours_min: '1',
             listOpen: false,
             listPadding: '0px',
+            selectlist:[],
         },
         public: {
             deviceSeries: '',
@@ -1039,6 +1042,17 @@
 // 			message:"sss"+JSON.stringify(e)
 // 		})
             that.select_gear = id;
+        },
+        selectGearNew(e) {
+            let that = this;
+            let i = e.detail.id;
+            let control_params = {
+                "gear": that.selectlist[i].data
+            };
+            let status = that.FBdata;
+            delete status.gear;
+            that.startControlDevice(control_params, status);
+            that.closeDia();
         },
         gearreduce() {
             let gear;
@@ -1813,6 +1827,7 @@
         setGear() {
             let that = this;
             that.listGear = [];
+            that.selectlist = [];
             for (let i = 1; i <= 4; i++) {
                 if (this.mode == 'normal' && i == 2) continue;
                 if (this.mode == 'cold_air' && i == 3) continue;
@@ -1822,6 +1837,11 @@
                     "data": i + "档"
                 }
                 that.listGear.push(data);
+                that.selectlist.push({
+                    name: i + "档",
+                    select: this.gear == i,
+                    data: i
+                })
             }
             if (that.listGear.length == 2) that.listPadding = '225px';
             else if (that.listGear.length == 3) that.listPadding = '150px';
@@ -1885,10 +1905,10 @@
             // that.$on('cancel', function(e){
             // 	that.isabout = false;
             // })
-            // that.$on('closetips', function(e){
-            // 	that.istips = false;
-            // 	that.regetdata();
-            // })
+            that.$on('closetips', function(e){
+            	that.istips = false;
+            	that.regetdata();
+            })
             // that.$on('openmenu', function(e){
             // 	that.isabout = !that.isabout;
             // })

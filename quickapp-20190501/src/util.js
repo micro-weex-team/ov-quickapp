@@ -20,7 +20,7 @@ const arry6 = ["e2","e3"];
 // 7、生活/清洁
 const arry7 = ["b8"];
 // 8、环境/照明
-const arry8 = ["fc","fa","ce","fd","cf"];
+const arry8 = ["fc","fa","ce","fd","cf","fb"];
 // 9、面板插座
 const arry9 = [];
 // 10、传感器
