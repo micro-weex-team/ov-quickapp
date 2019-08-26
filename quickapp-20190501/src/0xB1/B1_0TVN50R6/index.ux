@@ -18,8 +18,11 @@
 					</div>
 					<text class="b0_nav_list_usemeiju">使用美居</text>
 					<div class="b0_nav_list_time" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}">
-						<text class="b0_nav_list_data" style="color: {{power === 'on'?'#ffffff':'#666666'}};font-size:{{showMinTag?'330px':'260px'}}">{{power === 'on'?timeData(hour,minutes):'--'}}</text>
+						<text class="b0_nav_list_data" style="color: {{power === 'on'?'#ffffff':'#666666'}};font-size:{{showMinTag?'330px':'260px'}}">
+							{{power === 'on'?timeData(hour,minutes):'--'}}
+						</text>
 						<text if="{{showMinTag}}" class="b0_nav_list_tag">{{tagText}}</text>
+
 					</div>
 					<text class="b0_nav_list_about" if="{{power === 'on' && work_status != 'work_finish' && work_status != 'standby'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">大约剩余</text>
 					<text class="b0_nav_list_done" if="{{power === 'on' && work_status === 'work_finish'}}" style="color: {{power === 'on'?'#ffffff':'#666666'}};">已完成</text>
@@ -1216,7 +1219,9 @@
 		//下拉刷新
 		scrollbottom(e) {
 			let that = this;
-			that.isRefreshing = e.refreshing;
+			if(e){
+				that.isRefreshing = e.refreshing;
+			}
 			let timestamp = Date.parse(new Date());
 			if (that.isfirst) {
 				storage.get({
@@ -1357,7 +1362,8 @@
 			})
 			that.$on('closetips', function(e){
 				that.istips = false;
-				// prompt.showToast({message:"shdf" + e})
+				that.scrollbottom();
+					// prompt.showToast({message:"shdf" + e})
 			})
 			that.$on('openmenu', function(e){
 				that.isabout = !that.isabout;
